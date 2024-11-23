@@ -1,7 +1,11 @@
 name: Unit Tests
 
 on:
-  [pull_request, push]:
+  pull_request:
+    branches:
+      - main
+      - staging
+  push:
     branches:
       - main
       - staging
