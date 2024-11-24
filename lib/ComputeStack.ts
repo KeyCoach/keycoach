@@ -85,6 +85,7 @@ export class ComputeStack extends Stack {
     );
 
     // ########################### Backend API ###########################
+
     const sampleHandler = new NodejsFunction(this, name("SampleHandler", props.environment), {
       functionName: name("SampleHandler", props.environment),
       entry: HANDLER_PATH + "/SampleHandler/index.ts",
@@ -104,16 +105,19 @@ export class ComputeStack extends Stack {
     });
 
     const sampleResource: Resource = keyCoachRestApi.root.addResource("sample");
+    const sampleResourceHealth: Resource = sampleResource.addResource("health");
 
     sampleResource.addMethod("GET", sampleIntegration);
     sampleResource.addMethod("POST", sampleIntegration);
+    sampleResourceHealth.addMethod("GET", sampleIntegration);
+    sampleResourceHealth.addMethod("POST", sampleIntegration);
     addCorsOptions(sampleResource);
 
     props.sampleTable.grantReadWriteData(sampleHandler);
 
     ComputeStack.createLogGroup(this, sampleHandler, "LogGroup/GetMarketEntryDataHandler");
 
-    // ########################### Route53 Records ###########################
+    // ########################### Route53 Record ###########################
 
     new aws_route53.ARecord(this, name("ComputeApiDomain", props.environment), {
       zone: hostedZone,
