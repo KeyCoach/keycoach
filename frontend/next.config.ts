@@ -8,6 +8,7 @@ if (!envType) {
 
 const backendApiUrls: Record<string, string> = {
   local: "http://localhost:8080",
+  production: "http://localhost:8080",
 };
 
 export const backendApiUrl = backendApiUrls[envType];
