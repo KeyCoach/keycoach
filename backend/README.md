@@ -16,3 +16,9 @@ npm ci
 npm run build
 npm start
 ```
+
+## Test Scripts
+
+```bash
+npm test
+```
