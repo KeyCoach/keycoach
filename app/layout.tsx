@@ -1,6 +1,5 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { backendApiUrl } from "@/next.config";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -18,7 +17,6 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   console.log("Environment type:", process.env.ENV_TYPE);
-  console.log("Backend API Url:", backendApiUrl);
   return (
     <html lang="en">
       <head>
