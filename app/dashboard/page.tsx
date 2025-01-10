@@ -19,7 +19,7 @@ export default async function Dashboard() {
         <Link href="/typing/test">Take Typing Test</Link>
       </div>
       <div>
-        <Link href="/history">History</Link>
+        <Link href="/history">See Test and Lesson History</Link>
       </div>
     </div>
   );

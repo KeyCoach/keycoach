@@ -6,10 +6,13 @@ export default function Home() {
     <div>
       <H1>Keycoach Home Page</H1>
       <div>
-        <Link href="/register">Register</Link>
+        <Link href="/login">Log In</Link> or <Link href="/register">Register</Link>
       </div>
       <div>
         <Link href="/typing/test">Take a Typing Test</Link>
+      </div>
+      <div>
+        <Link href="/lesson">Do a Lesson</Link>
       </div>
     </div>
   );

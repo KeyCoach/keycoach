@@ -1,9 +1,9 @@
-import GetUser from "@/app/getUser";
 import Link from "next/link";
 import Logout from "./logout";
+import User from "@/app/user";
 
 export default async function Navbar() {
-  const { loggedIn } = await GetUser();
+  const { loggedIn } = await User();
   return (
     <nav className="bg-white shadow sticky top-0 z-50">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">

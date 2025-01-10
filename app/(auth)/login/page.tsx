@@ -9,8 +9,8 @@ import Cookies from "js-cookie";
 export default function Login() {
   async function LogIn(e: any) {
     e.preventDefault();
-    const email = e.target[0].value;
-    const password = e.target[1].value;
+    const email = e.target["email"].value;
+    const password = e.target["password"].value;
 
     axios
       .post("/api/login", {

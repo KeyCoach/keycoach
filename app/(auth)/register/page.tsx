@@ -4,30 +4,26 @@ import Button from "@/components/button";
 import Input from "@/components/input";
 import axios from "axios";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import Cookies from "js-cookie";
 
 export default function Register() {
-  const router = useRouter();
   async function Register(e: any) {
     e.preventDefault();
-    const name = e.target[0].value;
-    const email = e.target[1].value;
-    const password = e.target[2].value;
+    const firstName = e.target["first-name"].value;
+    const lastName = e.target["last-name"].value;
+    const email = e.target["email"].value;
+    const password = e.target["password"].value;
 
     axios
       .post("/api/register", {
-        name,
+        firstName,
+        lastName,
         email,
         password,
       })
       .then((res) => {
-        console.log(res.data);
-        router.push("/dashboard");
-      })
-      .catch((err) => {
-        if (err.response.status === 400) {
-          console.error("Email and password are required");
-        }
+        Cookies.set("token", res.data.token);
+        window.location.href = "/dashboard";
       });
   }
   return (
@@ -39,11 +35,21 @@ export default function Register() {
       <form onSubmit={Register}>
         <div className="pt-5">
           <Input
-            label="Name"
+            label="First Name"
             inputType="text"
-            inputId="name"
-            placeholder="john"
-            autoComplete="name"
+            inputId="first-name"
+            placeholder="John"
+            autoComplete="given-name"
+            required
+          />
+        </div>
+        <div className="py-3">
+          <Input
+            label="Last Name"
+            inputType="text"
+            inputId="last-name"
+            placeholder="Doe"
+            autoComplete="family-name"
             required
           />
         </div>

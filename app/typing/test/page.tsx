@@ -6,9 +6,6 @@ export default function Test() {
     <div>
       <H1>Typing Test</H1>
       <div>
-        <Link href="/dashboard">Back to User Dashboard</Link>
-      </div>
-      <div>
         <Link href="/typing/result/1">Get Test Feedback</Link>
       </div>
     </div>
