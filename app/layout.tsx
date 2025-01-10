@@ -1,5 +1,8 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import Navbar from "@/components/navbar";
+import UserProvider from "./userContext";
+import GetUser from "./getUser";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -11,12 +14,12 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  console.log("Environment type:", process.env.ENV_TYPE);
+  const user = await GetUser();
   return (
     <html lang="en">
       <head>
@@ -24,7 +27,10 @@ export default function RootLayout({
         <meta name="description" content="Keycoach" />
         <link rel="icon" href="/favicon.ico" sizes="any" />
       </head>
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>{children}</body>
+      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+        <Navbar />
+        <UserProvider user={user}>{children}</UserProvider>
+      </body>
     </html>
   );
 }

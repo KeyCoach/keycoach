@@ -10,9 +10,12 @@
     "test": "jest"
   },
   "dependencies": {
+    "@types/js-cookie": "^3.0.6",
+    "axios": "^1.7.9",
     "next": "15.1.4",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "js-cookie": "^3.0.5"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
