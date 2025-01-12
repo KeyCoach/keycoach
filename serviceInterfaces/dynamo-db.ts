@@ -1,4 +1,4 @@
-import { BcryptHash } from "./bcrypt";
+import { BcryptHashPassword } from "./bcrypt";
 
 // TODO: Implement DB User Retrieval
 export async function GetDbUser(email: string): Promise<Record<string, any> | null> {
@@ -6,7 +6,7 @@ export async function GetDbUser(email: string): Promise<Record<string, any> | nu
     email,
     firstName: "John",
     lastName: "Doe",
-    password: BcryptHash("password"),
+    password: BcryptHashPassword("password"),
   };
 }
 

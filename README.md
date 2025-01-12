@@ -1,14 +1,12 @@
 # KeyCoa.ch Source Code
 
-<https://www.keycoa.ch> coming soon!
-
-Use <https://main.d3rok16lggun1m.amplifyapp.com> for now.
+<https://www.keycoa.ch>
 
 ## Description
 
-Next.js project with TypeScript, Tailwind CSS, and ESLint. This project has all the frontend stuff and the backend API all lumped into one. The backend API is in the `app/api` directory.
+Next.js project with TypeScript, Tailwind CSS, and ESLint. This project has all the frontend stuff and the backend API all lumped into one. The backend API is in the `/app/api` directory.
 
-## Scripts
+## Running Locally
 
 ### Install and Get Started
 
@@ -31,11 +29,10 @@ npm start
 
 ## Testing
 
-I haven't written any tests, but we're all set up to write them with jest when we want to. If you write something that you think needs a test, put it in the `/test` directory. You can run the tests with:
+I haven't written any tests, but we're all set up to write them with jest when we want to. If you write some code that you think needs a test, put it in the `/test` directory. Make sure it follows the `**.test.ts` pattern. You can run the tests with:
 
 ```bash
 npm test
-
 ```
 
 Any test that you write will be run by GitHub actions every time we push to the `main` branch, so make sure they pass before you push.
@@ -50,4 +47,4 @@ I've never had a style guide before on a school project, but maybe we could try 
 
 ## Deployment
 
-This project is deployed to AWS Amplify. The deployment is triggered by pushing to the `main` branch, so push changes infrequently to keep costs down. Use the `dev` branch instead.
+This project is deployed to AWS Amplify. The deployment is triggered by pushing to the `main` branch, so avoid pushing too much to keep costs down. Use the `dev` branch instead.

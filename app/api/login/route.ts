@@ -1,7 +1,6 @@
 import { TUser } from "@/app/user-context";
-//import { BcryptVerifyPassword } from "@/serviceInterfaces/bcrypt";
 import { GetDbUser } from "@/serviceInterfaces/dynamo-db";
-import { SignToken } from "@/serviceInterfaces/json-web-token";
+import { CreateUserToken } from "@/serviceInterfaces/json-web-token";
 import { NextRequest } from "next/server";
 
 export async function POST(request: NextRequest) {
@@ -17,7 +16,7 @@ export async function POST(request: NextRequest) {
     return Response.json({ message: "Invalid email or password" }, { status: 401 });
   }
 
-  const token = SignToken(user);
+  const token = CreateUserToken(user);
 
   return Response.json({ message: "Success", token }, { status: 200 });
 }
@@ -29,9 +28,7 @@ async function LoginValid(email: string, _password: string): Promise<TUser | nul
     return null;
   }
 
-  //if (email !== dbUser.email || !BcryptVerifyPassword(password, dbUser.password)) {
-  //  return null;
-  //}
+  // TODO: Validate password
 
   return {
     firstName: dbUser.firstName,

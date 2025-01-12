@@ -7,7 +7,8 @@ export type TUser = {
   lastName: string;
 };
 
-export const UserContext = createContext({});
+const UserContext = createContext({});
+
 export default function UserProvider({
   children,
   data,

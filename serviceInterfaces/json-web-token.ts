@@ -12,6 +12,6 @@ export function VerifyToken(token: string): TUser | null {
   return user;
 }
 
-export function SignToken(user: TUser) {
-  return jwt.sign(user, "db5896e1-58d8-4172-a507-5755db17620a", { expiresIn: 60 * 60 });
+export function CreateUserToken(user: TUser, expiresIn = 60 * 60): string {
+  return jwt.sign(user, "db5896e1-58d8-4172-a507-5755db17620a", { expiresIn });
 }

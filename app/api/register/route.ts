@@ -1,5 +1,5 @@
 import { CreateDbUser, GetDbUser } from "@/serviceInterfaces/dynamo-db";
-import { SignToken } from "@/serviceInterfaces/json-web-token";
+import { CreateUserToken } from "@/serviceInterfaces/json-web-token";
 import { NextRequest } from "next/server";
 
 export async function POST(request: NextRequest) {
@@ -10,6 +10,7 @@ export async function POST(request: NextRequest) {
   }
 
   let existingUser = await GetDbUser(email);
+  // TODO: Delete this line when you implement the DB User Retrieval
   existingUser = null;
 
   if (existingUser) {
@@ -23,9 +24,9 @@ export async function POST(request: NextRequest) {
     lastName,
   };
 
-  const newUser = await CreateDbUser(newUserData);
+  const newDbUser = await CreateDbUser(newUserData);
 
-  const token = SignToken(newUser);
+  const token = CreateUserToken(newDbUser);
 
   return Response.json({ message: "Success", token }, { status: 200 });
 }
