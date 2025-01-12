@@ -1,36 +1,53 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# KeyCoa.ch Source Code
 
-## Getting Started
+<https://www.keycoa.ch> coming soon!
 
-First, run the development server:
+Use <https://main.d3rok16lggun1m.amplifyapp.com> for now.
+
+## Description
+
+Next.js project with TypeScript, Tailwind CSS, and ESLint. This project has all the frontend stuff and the backend API all lumped into one. The backend API is in the `app/api` directory.
+
+## Scripts
+
+### Install and Get Started
+
+```bash
+npm install
+```
+
+### Run Development Server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Run Production Server
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm run build
+npm start
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Testing
 
-## Learn More
+I haven't written any tests, but we're all set up to write them with jest when we want to. If you write something that you think needs a test, put it in the `/test` directory. You can run the tests with:
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+npm test
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Any test that you write will be run by GitHub actions every time we push to the `main` branch, so make sure they pass before you push.
 
-## Deploy on Vercel
+## Style Guide
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+I've never had a style guide before on a school project, but maybe we could try it out! Add whatever styles you're passionate about. I'm passionate about Styles Weiler. Here's some style guide stuff if you're into that:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- File names are all `kebab-case` (that's what next.js uses. Like `not-found.tsx` and `global-error.tsx`)
+- 2 spaces for indentation (set in `.prettierrc`)
+- 100 character line length limit (set in `.prettierrc`)
+
+## Deployment
+
+This project is deployed to AWS Amplify. The deployment is triggered by pushing to the `main` branch, so push changes infrequently to keep costs down. Use the `dev` branch instead.
