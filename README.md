@@ -45,6 +45,22 @@ I've never had a style guide before on a school project, but maybe we could try 
 - 2 spaces for indentation (set in `.prettierrc`)
 - 100 character line length limit (set in `.prettierrc`)
 
-## Deployment
+## Changes and Deployment
 
 This project is deployed to AWS Amplify. The deployment is triggered by pushing to the `production` branch, so make a pull request and merge it to `production` when you're ready to deploy.
+
+### Feature Changes
+
+Create a feature branch off of `main` and make your changes. When you're ready to merge, make a pull request to `main`.
+
+### Bug Fixes
+
+Create a bug fix branch off of `staging` and make your changes. When you're ready to merge, make a pull request to `staging`.
+
+### Hotfixes
+
+Create a hotfix branch off of `production` and make your changes. When you're ready to merge, make a pull request to `production`.
+
+### Deployment
+
+Pull requests to `production` will trigger a deployment to AWS Amplify.
