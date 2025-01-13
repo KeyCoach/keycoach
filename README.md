@@ -47,4 +47,4 @@ I've never had a style guide before on a school project, but maybe we could try 
 
 ## Deployment
 
-This project is deployed to AWS Amplify. The deployment is triggered by pushing to the `main` branch, so avoid pushing too much to keep costs down. Use the `dev` branch instead.
+This project is deployed to AWS Amplify. The deployment is triggered by pushing to the `production` branch, so make a pull request and merge it to `production` when you're ready to deploy.
