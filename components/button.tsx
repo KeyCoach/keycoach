@@ -5,7 +5,6 @@ export default function Button({
   variant = "primary",
 }: Readonly<{
   children: React.ReactNode;
-
   variant?: Variant;
 }>) {
   const variantClasses = {
@@ -15,8 +14,6 @@ export default function Button({
     warning: "bg-yellow-500 hover:bg-yellow-700 text-white",
   };
   return (
-    <button className={`${variantClasses[variant]}  font-bold py-2 px-4 rounded`}>
-      {children}
-    </button>
+    <button className={`${variantClasses[variant]} font-bold py-2 px-4 rounded`}>{children}</button>
   );
 }
