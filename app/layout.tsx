@@ -3,6 +3,7 @@ import "./globals.css";
 import Navbar from "@/components/navbar";
 import User from "./user";
 import UserProvider from "./user-context";
+import Script from "next/script";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

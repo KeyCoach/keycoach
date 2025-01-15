@@ -3,9 +3,11 @@ type Variant = "primary" | "secondary" | "danger" | "warning";
 export default function Button({
   children,
   variant = "primary",
+  onClick = () => {},
 }: Readonly<{
   children: React.ReactNode;
   variant?: Variant;
+  onClick?: () => void;
 }>) {
   const variantClasses = {
     primary: "bg-blue-500 hover:bg-blue-700 text-white",
@@ -14,6 +16,8 @@ export default function Button({
     warning: "bg-yellow-500 hover:bg-yellow-700 text-white",
   };
   return (
-    <button className={`${variantClasses[variant]} font-bold py-2 px-4 rounded`}>{children}</button>
+    <button onClick={onClick} className={`${variantClasses[variant]} font-bold py-2 px-4 rounded`}>
+      {children}
+    </button>
   );
 }

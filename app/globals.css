@@ -25,3 +25,27 @@ body {
   font-family: Arial, Helvetica, sans-serif;
   min-height: 100vh;
 }
+
+.blink {
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+
+
+  20% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
+
+  80% {
+    opacity: 1;
+  }
+
+
+
+
+}
