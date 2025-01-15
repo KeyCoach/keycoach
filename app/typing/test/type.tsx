@@ -8,7 +8,7 @@ import { KeyPosition, normalKeys, ProcessHandTrackingResults } from "./keyboardU
 
 enum Letter {
   Correct = "Correct",
-  Wrong = "Wrong",
+  WrongLetter = "WrongLetter",
   WrongFinger = "WrongFinger",
   Missing = "Missing",
 }
@@ -31,7 +31,7 @@ export default function Type({
   keyPositions: KeyPosition[][];
 }) {
   const sentence = useMemo(
-    () => ["The", "quick", "brown", "fox", "jumps", "over", "the", "lazy", "dog"],
+    () => ["The", "quick,", "brown;", "fox", "jumps", "over", "the", "lazy", "dog"],
     [],
   );
   const [userInput, setUserInput] = useState<Word[]>([{ word: sentence[0], inputs: [] }]);
@@ -68,14 +68,26 @@ export default function Type({
             if (prev.length === 1 && currWord.inputs.length === 0) {
               return prev;
             }
+
             const letterIndex = currWord.inputs.length;
-            if (letterIndex <= 1 && prev.length > 1) return prev.slice(0, -1);
+            if (letterIndex === 0 && prev.length > 1) {
+              const newUserInputs = prev.slice(0, -1);
+              while (newUserInputs.at(-1)?.inputs.at(-1)?.status === Letter.Missing) {
+                newUserInputs.at(-1)?.inputs.pop();
+              }
+              return newUserInputs;
+            }
+
+            let newInputs = currWord.inputs.slice(0, -1);
+            while (newInputs.at(-1)?.status === Letter.Missing) {
+              newInputs = newInputs.slice(0, -1);
+            }
 
             return [
               ...prev.slice(0, -1),
               {
                 word: currWord.word,
-                inputs: currWord.inputs.slice(0, -1),
+                inputs: newInputs,
               },
             ];
           });
@@ -109,7 +121,11 @@ export default function Type({
           const currWord = prev.at(-1)!;
           const letterIndex = currWord.inputs.length;
           const wrongLetter = currWord.word[letterIndex] !== key;
-          const status = wrongLetter ? Letter.Wrong : Letter.Correct;
+          const status = wrongLetter ? Letter.WrongLetter : Letter.Correct;
+          let displayKey = key;
+          if (status === Letter.WrongLetter) {
+            displayKey = currWord.word[letterIndex];
+          }
 
           return [
             ...prev.slice(0, -1),
@@ -118,7 +134,7 @@ export default function Type({
               inputs: [
                 ...currWord.inputs,
                 {
-                  key,
+                  key: displayKey,
                   status,
                 },
               ],
@@ -206,13 +222,13 @@ export default function Type({
         <p>
           {userInput.map((word, i) => {
             const correctWord = word.inputs.every((input) => input.status === Letter.Correct);
-            const wrongWordClass = correctWord ? "" : "underline decoration-red-900";
+            const wrongWordClass = correctWord ? "" : "underline decoration-red-400";
             return (
               <span key={i}>
                 {word.inputs.map((input, j) => {
                   const classes: Record<Letter, string> = {
                     [Letter.Correct]: "text-black",
-                    [Letter.Wrong]: "text-red-500",
+                    [Letter.WrongLetter]: "text-red-500",
                     [Letter.Missing]: "text-gray-500",
                     [Letter.WrongFinger]: "text-orange-500",
                   };
