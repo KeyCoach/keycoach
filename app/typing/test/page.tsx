@@ -11,7 +11,7 @@ export default function Test() {
   const [settingUp, setSettingUp] = useState(false);
   const [keyPositions, setKeyPositions] = useState(defaultKeyPositions);
 
-  // Load ml5 module.must be loaded before they open the setup page
+  // Load ml5 module. Must be loaded before they open the setup page
   useLoadMl5();
 
   return (

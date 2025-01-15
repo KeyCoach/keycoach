@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import p5 from "p5";
 import { KeyPosition, normalKeys, HandsFromTrackingResults } from "./hand-tracking";
 import { useRouter } from "next/navigation";
+import { startVideo } from "./p5";
 
 enum Letter {
   Correct = "Correct",
@@ -91,25 +92,22 @@ export default function Type({
 
     const mainSketch = (p: p5) => {
       p.setup = () => {
-        const handPose = window.ml5.handPose();
-        capture = p.createCapture("video");
-        const cameraDelay = 100;
-        capture.size(640, 480);
-        capture.hide();
+        capture = startVideo(p);
 
         keyPressListener = window.onkeydown = (e) => {
-          if (e.ctrlKey && e.code !== "Backspace") return;
-          if (!keyPositions.flat().some((key) => key.key === e.code)) return;
+          if (!validKey(e, keyPositions)) return;
           onKeyPress(e.key, e.ctrlKey);
 
           function HandDataHandler() {
-            handPose.detect(capture, (results: any) => {
+            // PERF: initializing the handtracking here might come with a performance cost
+            window.ml5.handPose().detect(capture, (results: any) => {
               const hands = HandsFromTrackingResults(results);
               // TODO: implement async hand tracking data handler
               console.log(hands);
             });
           }
 
+          const cameraDelay = 100;
           setTimeout(HandDataHandler, cameraDelay);
         };
       };
@@ -297,4 +295,9 @@ function TestComplete(userInput: Word[], sentence: string[]) {
   const lastWord = userInput.at(-1)!;
   if (lastWord.inputs.length < lastWord.word.length) return false;
   return lastWord.inputs.every((input) => input.status === Letter.Correct);
+}
+
+function validKey(e: KeyboardEvent, keyPositions: KeyPosition[][]) {
+  if (e.ctrlKey && e.code !== "Backspace") return false;
+  if (!keyPositions.flat().some((key) => key.key === e.code)) return false;
 }

@@ -1,11 +1,9 @@
 import { useEffect } from "react";
-import { Element } from "p5";
 
-// loads ml5 and p5 onto the Window Object
+// loads ml5 onto the Window Object
 declare global {
   interface Window {
     ml5: any;
-    video: Element;
   }
 }
 

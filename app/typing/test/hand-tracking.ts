@@ -59,13 +59,13 @@ export function HandsFromTrackingResults(results: any) {
   return hands;
 }
 
-export function UpdatedKeyPositions(keyCode: string, hands: any, keyPositions: KeyPosition[][]) {
+export function AddNewKey(keyCode: string, hands: any, keyPositions: KeyPosition[][]) {
   // Update the key positions with the new hand positions
   for (const row of keyPositions) {
     for (const key of row) {
       if (key.key === keyCode) {
-        key.x = hands.l_index?.x ?? hands.r_index?.x;
-        key.y = hands.l_index?.y ?? hands.r_index?.y;
+        key.x = hands.r_index?.x ?? hands.l_index?.x;
+        key.y = hands.r_index?.y ?? hands.l_index?.y;
         key.positionSet = true;
       }
     }
@@ -100,7 +100,7 @@ function CalculateTrendLines(keyPositions: KeyPosition[][]) {
   return regressionResults;
 }
 
-// TODO:
+// NOTE: We might want to implement the following checks:
 // Throw an error if trend Lines aren't roughly parallel
 // Throw an eror if the horizonal key spacing (between keys) is inconsistent
 // Throw an eror if the vertical key spacing (between rows) is inconsistent

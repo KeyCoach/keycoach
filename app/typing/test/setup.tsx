@@ -1,8 +1,9 @@
 import Button from "@/components/button";
 import { H1 } from "@/components/headers";
-import { Dispatch, SetStateAction, useEffect, useRef } from "react";
+import { Dispatch, RefObject, SetStateAction, useEffect, useRef } from "react";
 import p5 from "p5";
-import { KeyPosition, HandsFromTrackingResults, UpdatedKeyPositions } from "./hand-tracking";
+import { KeyPosition, HandsFromTrackingResults, AddNewKey } from "./hand-tracking";
+import { startVideo, showVideo } from "./p5";
 
 export default function Setup({
   setCameraSetup,
@@ -25,34 +26,19 @@ export default function Setup({
 
     const mainSketch = (p: p5) => {
       p.setup = () => {
-        // Open the camera and canvas. Initialize handtrack model
-        const handPose = window.ml5.handPose();
-        const canvas = p.createCanvas(640, 480);
-        if (canvasRef.current?.firstChild) {
-          canvasRef.current?.removeChild(canvasRef.current.firstChild);
-        }
-        canvas.parent(canvasRef.current!);
-        capture = p.createCapture("video");
-        const cameraDelay = 100;
-        capture.size(640, 480);
-        capture.hide();
+        capture = startVideo(p);
+        showVideo(p, canvasRef);
 
         keyPressListener = window.onkeydown = (e) => {
-          let hands;
-          if (e.ctrlKey) return;
-          if (!keyPositionRef.current.flat().some((key) => key.key === e.code)) return;
+          if (!validKey(e, keyPositionRef)) return;
+          const cameraDelay = 100;
 
-          function KeyPressHandler() {
-            handPose.detect(capture, (results: any) => {
-              if (results.length === 0) return;
-              hands = HandsFromTrackingResults(results);
-              const newKeyPositions = UpdatedKeyPositions(e.code, hands, keyPositionRef.current);
-              keyPositionRef.current = newKeyPositions; // update this ref for the draw function
-              setKeyPositions(newKeyPositions); // update the state for the parent component
+          setTimeout(() => {
+            // PERF: initializing the handtracking here might come with a performance cost
+            window.ml5.handPose().detect(capture, (results: any) => {
+              UpdateKeyPositions(results, e.code, keyPositionRef, setKeyPositions);
             });
-          }
-
-          setTimeout(KeyPressHandler, cameraDelay); // sync the camera with the key press
+          }, cameraDelay);
         };
       };
 
@@ -102,4 +88,21 @@ export default function Setup({
       </div>
     </div>
   );
+}
+
+function validKey(e: KeyboardEvent, keyPositionRef: RefObject<KeyPosition[][]>) {
+  return e.ctrlKey || !keyPositionRef.current.flat().some((key) => key.key === e.code);
+}
+
+function UpdateKeyPositions(
+  results: any,
+  keyCode: string,
+  keyPositionRef: RefObject<KeyPosition[][]>,
+  setKeyPositions: Dispatch<SetStateAction<KeyPosition[][]>>,
+) {
+  if (results.length === 0) return;
+  const hands = HandsFromTrackingResults(results);
+  const newKeyPositions = AddNewKey(keyCode, hands, keyPositionRef.current);
+  keyPositionRef.current = newKeyPositions; // update this ref for the draw function
+  setKeyPositions(newKeyPositions); // update the state for the parent component
 }
