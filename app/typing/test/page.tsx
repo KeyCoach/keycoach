@@ -3,8 +3,8 @@ import React from "react";
 import { useState } from "react";
 import Setup from "./setup";
 import Type from "./type";
-import { useLoadMl5 } from "./useLoadMl5";
-import { defaultKeyPositions } from "./keyboardUtils";
+import { useLoadMl5 } from "./use-load-ml5";
+import { defaultKeyPositions } from "./hand-tracking";
 
 export default function Test() {
   const [cameraSetup, setCameraSetup] = useState(false);

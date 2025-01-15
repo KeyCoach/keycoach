@@ -1,4 +1,31 @@
-export function ProcessHandTrackingResults(results: any) {
+type Finger = {
+  x: number;
+  y: number;
+};
+
+export type Hands = {
+  l_thumb: null | Finger;
+  l_index: null | Finger;
+  l_middle: null | Finger;
+  l_ring: null | Finger;
+  l_pinky: null | Finger;
+  r_thumb: null | Finger;
+  r_index: null | Finger;
+  r_middle: null | Finger;
+  r_ring: null | Finger;
+  r_pinky: null | Finger;
+};
+
+export type KeyPosition = {
+  key: string;
+  correctFingers: string[];
+  x: number;
+  y: number;
+  positionSet: boolean;
+  isLongKey?: boolean;
+};
+
+export function HandsFromTrackingResults(results: any) {
   const hands: Hands = {
     l_thumb: null,
     l_index: null,
@@ -32,57 +59,112 @@ export function ProcessHandTrackingResults(results: any) {
   return hands;
 }
 
-export type Hands = {
-  l_thumb: null | {
-    x: number;
-    y: number;
-  };
-  l_index: null | {
-    x: number;
-    y: number;
-  };
-  l_middle: null | {
-    x: number;
-    y: number;
-  };
-  l_ring: null | {
-    x: number;
-    y: number;
-  };
-  l_pinky: null | {
-    x: number;
-    y: number;
-  };
-  r_thumb: null | {
-    x: number;
-    y: number;
-  };
-  r_index: null | {
-    x: number;
-    y: number;
-  };
-  r_middle: null | {
-    x: number;
-    y: number;
-  };
-  r_ring: null | {
-    x: number;
-    y: number;
-  };
-  r_pinky: null | {
-    x: number;
-    y: number;
-  };
-};
+export function UpdatedKeyPositions(keyCode: string, hands: any, keyPositions: KeyPosition[][]) {
+  // Update the key positions with the new hand positions
+  for (const row of keyPositions) {
+    for (const key of row) {
+      if (key.key === keyCode) {
+        key.x = hands.l_index?.x ?? hands.r_index?.x;
+        key.y = hands.l_index?.y ?? hands.r_index?.y;
+        key.positionSet = true;
+      }
+    }
+  }
 
-export type KeyPosition = {
-  key: string;
-  correctFingers: string[];
-  x: number;
-  y: number;
-  positionSet: boolean;
-  isLongKey?: boolean;
-};
+  // Extrapolate the rest of the key positions
+  const trendLines = CalculateTrendLines(keyPositions);
+  return CalculateTunedKeyPositions(keyPositions, trendLines);
+}
+
+// Linear regression for each row
+function CalculateTrendLines(keyPositions: KeyPosition[][]) {
+  const regressionResults = [];
+  for (const row of keyPositions.slice(0, 5)) {
+    let xSum = 0;
+    let ySum = 0;
+    let xSquaredSum = 0;
+    let xySum = 0;
+    let keyCount = 0;
+    for (const key of row) {
+      if (key.x === 0 && key.y === 0) continue;
+      keyCount++;
+      xSum += key.x;
+      ySum += key.y;
+      xSquaredSum += key.x ** 2;
+      xySum += key.x * key.y;
+    }
+    const slope = (keyCount * xySum - xSum * ySum) / (keyCount * xSquaredSum - xSum ** 2);
+    const yIntercept = (ySum - slope * xSum) / keyCount;
+    regressionResults.push([yIntercept, slope]);
+  }
+  return regressionResults;
+}
+
+// TODO:
+// Throw an error if trend Lines aren't roughly parallel
+// Throw an eror if the horizonal key spacing (between keys) is inconsistent
+// Throw an eror if the vertical key spacing (between rows) is inconsistent
+// Throw an error if the sides of the keyboard are not roughly parallel
+// Throw an error if keys are out of order
+// Throw an error if their palm is visible?
+function CalculateTunedKeyPositions(keyPositions: KeyPosition[][], trendLines: number[][]) {
+  // Fit the key positions to the trend lines calculated in the regression
+  const fittedKeyPositions = FitKeyPositions(keyPositions, trendLines);
+  const spacedKeyPositions = SpaceKeyPositions(fittedKeyPositions);
+  return spacedKeyPositions;
+}
+
+// Fit the key positions to the trend lines
+function FitKeyPositions(keyPositions: KeyPosition[][], trendLines: number[][]): KeyPosition[][] {
+  const fittedKeyPositions = [];
+
+  for (let rowNum = 0; rowNum < 5; rowNum++) {
+    fittedKeyPositions[rowNum] = [];
+    const row = keyPositions[rowNum];
+    const [yIntercept, slope] = trendLines[rowNum];
+    if (Number.isNaN(yIntercept) || Number.isNaN(slope)) {
+      fittedKeyPositions[rowNum] = [...row];
+      continue;
+    }
+    for (let keyNum = 0; keyNum < row.length; keyNum++) {
+      const key = row[keyNum];
+      const [x, y] = GetClosestPointOnLine(key.x, key.y, slope, yIntercept);
+      fittedKeyPositions[rowNum][keyNum] = { ...key, x, y };
+    }
+  }
+
+  return fittedKeyPositions;
+}
+
+function GetClosestPointOnLine(x1: number, y1: number, m: number, b: number) {
+  const x = (y1 + x1 / m - b) / (m + 1 / m);
+  const y = m * x + b;
+  return [x, y];
+}
+
+// Space the keys evenly between the first and last key
+function SpaceKeyPositions(fittedKeyPositions: KeyPosition[][]): KeyPosition[][] {
+  const spacedKeyPositions = [...fittedKeyPositions];
+  for (let rowNum = 0; rowNum < 4; rowNum++) {
+    const row = spacedKeyPositions[rowNum];
+    const firstKey = row.find((key) => !key.isLongKey && key.positionSet);
+    const lastKey = row.toReversed().find((key) => !key.isLongKey && key.positionSet);
+    if (!firstKey || !lastKey || firstKey === lastKey) continue;
+    const firstKeyIndex = row.indexOf(firstKey);
+    const lastKeyIndex = row.indexOf(lastKey);
+    const xDistance = lastKey.x - firstKey.x;
+    const yDistance = lastKey.y - firstKey.y;
+    const avgXDistance = xDistance / (lastKeyIndex - firstKeyIndex);
+    const avgYDistance = yDistance / (lastKeyIndex - firstKeyIndex);
+    for (const key of row) {
+      if (key.isLongKey) continue;
+      key.x = firstKey.x + avgXDistance * (row.indexOf(key) - row.indexOf(firstKey));
+      key.y = firstKey.y + avgYDistance * (row.indexOf(key) - row.indexOf(firstKey));
+      key.positionSet = true;
+    }
+  }
+  return spacedKeyPositions;
+}
 
 export const defaultKeyPositions: KeyPosition[][] = [
   // Digit row

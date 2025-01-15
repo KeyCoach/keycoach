@@ -11,13 +11,13 @@ declare global {
 
 export function useLoadMl5() {
   useEffect(() => {
+    if (document.getElementById("ml5-script")) return;
+    if (window.ml5) return;
+
     const ml5Script = document.createElement("script");
     ml5Script.src = "https://unpkg.com/ml5@1/dist/ml5.js";
+    ml5Script.id = "ml5-script";
     ml5Script.async = true;
-    document.body.appendChild(ml5Script);
-
-    return () => {
-      document.body.removeChild(ml5Script);
-    };
+    document.head.appendChild(ml5Script);
   }, []);
 }
