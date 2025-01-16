@@ -1,10 +1,5 @@
-import React from "react";
-
-type InputProps = React.ComponentProps<"input"> & {
-  className?: string;
-};
-
-export const Input: React.FC<InputProps> = ({ className, ...props }) => {
+type InputProps = React.ComponentProps<"input">;
+export function Input({ className, ...props }: InputProps) {
   return (
     <>
       <input
@@ -13,15 +8,13 @@ export const Input: React.FC<InputProps> = ({ className, ...props }) => {
       />
     </>
   );
-};
+}
 
-type LabelProps = React.ComponentProps<"label"> & {
-  className?: string;
-};
-export const Label: React.FC<LabelProps> = ({ children, className, ...props }) => {
+type LabelProps = React.ComponentProps<"label">;
+export function Label({ children, className, ...props }: LabelProps) {
   return (
     <label className={`block mb-2 text-sm font-medium text-gray-900 ${className || ""}`} {...props}>
       {children}
     </label>
   );
-};
+}

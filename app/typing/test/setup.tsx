@@ -1,9 +1,8 @@
-import Button from "@/components/button";
-import { H1 } from "@/components/headers";
 import { Dispatch, RefObject, SetStateAction, useEffect, useRef } from "react";
 import p5 from "p5";
 import { KeyPosition, HandsFromTrackingResults, AddNewKey } from "./hand-tracking";
 import { startVideo, showVideo } from "./p5";
+import { H1, Button } from "@/design-lib";
 
 export default function Setup({
   setCameraSetup,

@@ -1,10 +1,8 @@
 "use client";
-import { H1 } from "@/components/headers";
-import Button from "@/components/button";
 import axios from "axios";
 import Link from "next/link";
 import Cookies from "js-cookie";
-import { Input, Label } from "@/components/input";
+import { H1, Button, Input, Label } from "@/design-lib";
 
 export default function Register() {
   async function Register(e: any) {

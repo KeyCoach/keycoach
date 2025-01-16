@@ -1,10 +1,9 @@
-import Button from "@/components/button";
-import { H1 } from "@/components/headers";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import p5 from "p5";
 import { KeyPosition, normalKeys, HandsFromTrackingResults } from "./hand-tracking";
 import { useRouter } from "next/navigation";
 import { startVideo } from "./p5";
+import { H1, Button } from "@/design-lib";
 
 enum Letter {
   Correct = "Correct",

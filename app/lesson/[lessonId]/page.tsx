@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { H1 } from "@/components/headers";
+import { H1 } from "@/design-lib";
 
 export default async function Test({ params }: { params: Promise<{ lessonId: string }> }) {
   const lessonId = (await params).lessonId;

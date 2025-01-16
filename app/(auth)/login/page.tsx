@@ -1,10 +1,8 @@
 "use client";
-import Button from "@/components/button";
-import { Input, Label } from "@/components/input";
 import axios from "axios";
 import Link from "next/link";
-import { H1 } from "@/components/headers";
 import Cookies from "js-cookie";
+import { H1, Button, Input, Label } from "@/design-lib";
 
 export default function Login() {
   async function LogIn(e: any) {

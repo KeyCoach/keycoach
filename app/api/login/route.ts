@@ -3,6 +3,7 @@ import { GetDbUser } from "@/serviceInterfaces/dynamo-db";
 import { CreateUserToken } from "@/serviceInterfaces/json-web-token";
 import { NextRequest } from "next/server";
 
+/** Handle the login request. */
 export async function POST(request: NextRequest) {
   const { email, password } = await request.json();
 
@@ -21,6 +22,7 @@ export async function POST(request: NextRequest) {
   return Response.json({ message: "Success", token }, { status: 200 });
 }
 
+/** Validate the login credentials. Return the user if valid */
 async function LoginValid(email: string, _password: string): Promise<TUser | null> {
   const dbUser = await GetDbUser(email);
 

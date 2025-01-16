@@ -7,6 +7,7 @@ declare global {
   }
 }
 
+/** Load ml5 module */
 export function useLoadMl5() {
   useEffect(() => {
     if (document.getElementById("ml5-script")) return;

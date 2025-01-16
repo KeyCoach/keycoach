@@ -2,6 +2,7 @@ import { CreateDbUser, GetDbUser } from "@/serviceInterfaces/dynamo-db";
 import { CreateUserToken } from "@/serviceInterfaces/json-web-token";
 import { NextRequest } from "next/server";
 
+/** Handle the register request. */
 export async function POST(request: NextRequest) {
   const { email, password, firstName, lastName } = await request.json();
 
