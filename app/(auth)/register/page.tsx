@@ -23,7 +23,7 @@ export default function Register() {
       })
       .then((res) => {
         Cookies.set("token", res.data.token);
-        window.location.href = "/dashboard"; // Use window.location.href because it rerenders the entire tree. This time, it will rerender with the user logged in.
+        window.location.href = "/dashboard"; // Use window.location.href instead of router because it rerenders the entire tree. This time with the user data available to all components.
       });
   }
   return (

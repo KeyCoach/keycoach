@@ -26,17 +26,21 @@ export default function Setup({
 
     const mainSketch = (p: p5) => {
       p.setup = () => {
+        const handPose = window.ml5.handPose();
         capture = startVideo(p);
         showVideo(p, canvasRef);
 
         keyPressListener = window.onkeydown = (e) => {
-          if (!validKey(e, keyPositionRef)) return;
+          if (invalidKey(e, keyPositionRef)) return;
           const cameraDelay = 100;
 
           setTimeout(() => {
-            // PERF: initializing the handtracking here might come with a performance cost
-            window.ml5.handPose().detect(capture, (results: any) => {
-              UpdateKeyPositions(results, e.code, keyPositionRef, setKeyPositions);
+            handPose.detect(capture, (results: any) => {
+              if (results.length === 0) return;
+              const hands = HandsFromTrackingResults(results);
+              const newKeyPositions = AddNewKey(e.code, hands, keyPositionRef.current);
+              keyPositionRef.current = newKeyPositions; // update this ref for the draw function
+              setKeyPositions(newKeyPositions); // update the state for the parent component
             });
           }, cameraDelay);
         };
@@ -90,19 +94,11 @@ export default function Setup({
   );
 }
 
-function validKey(e: KeyboardEvent, keyPositionRef: RefObject<KeyPosition[][]>) {
-  return e.ctrlKey || !keyPositionRef.current.flat().some((key) => key.key === e.code);
-}
-
-function UpdateKeyPositions(
-  results: any,
-  keyCode: string,
-  keyPositionRef: RefObject<KeyPosition[][]>,
-  setKeyPositions: Dispatch<SetStateAction<KeyPosition[][]>>,
-) {
-  if (results.length === 0) return;
-  const hands = HandsFromTrackingResults(results);
-  const newKeyPositions = AddNewKey(keyCode, hands, keyPositionRef.current);
-  keyPositionRef.current = newKeyPositions; // update this ref for the draw function
-  setKeyPositions(newKeyPositions); // update the state for the parent component
+function invalidKey(e: KeyboardEvent, keyPositionRef: RefObject<KeyPosition[][]>) {
+  if (e.ctrlKey) {
+    return true;
+  }
+  if (!keyPositionRef.current.flat().some((key) => key.key === e.code)) {
+    return true;
+  }
 }

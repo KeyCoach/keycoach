@@ -25,6 +25,7 @@ export type KeyPosition = {
   isLongKey?: boolean;
 };
 
+/** Reformats hand tracking results */
 export function HandsFromTrackingResults(results: any) {
   const hands: Hands = {
     l_thumb: null,
@@ -59,6 +60,7 @@ export function HandsFromTrackingResults(results: any) {
   return hands;
 }
 
+/** Adds a new key position to list of keys. Performs regression to line up and space keys */
 export function AddNewKey(keyCode: string, hands: any, keyPositions: KeyPosition[][]) {
   // Update the key positions with the new hand positions
   for (const row of keyPositions) {
@@ -76,7 +78,7 @@ export function AddNewKey(keyCode: string, hands: any, keyPositions: KeyPosition
   return CalculateTunedKeyPositions(keyPositions, trendLines);
 }
 
-// Linear regression for each row
+/** Runs linear regression for each row */
 function CalculateTrendLines(keyPositions: KeyPosition[][]) {
   const regressionResults = [];
   for (const row of keyPositions.slice(0, 5)) {
@@ -107,14 +109,15 @@ function CalculateTrendLines(keyPositions: KeyPosition[][]) {
 // Throw an error if the sides of the keyboard are not roughly parallel
 // Throw an error if keys are out of order
 // Throw an error if their palm is visible?
+
+/** Fits key positions to trendline, and spaces keys evenly */
 function CalculateTunedKeyPositions(keyPositions: KeyPosition[][], trendLines: number[][]) {
-  // Fit the key positions to the trend lines calculated in the regression
   const fittedKeyPositions = FitKeyPositions(keyPositions, trendLines);
   const spacedKeyPositions = SpaceKeyPositions(fittedKeyPositions);
   return spacedKeyPositions;
 }
 
-// Fit the key positions to the trend lines
+/** Fit the key positions to the trend lines */
 function FitKeyPositions(keyPositions: KeyPosition[][], trendLines: number[][]): KeyPosition[][] {
   const fittedKeyPositions = [];
 
@@ -142,7 +145,7 @@ function GetClosestPointOnLine(x1: number, y1: number, m: number, b: number) {
   return [x, y];
 }
 
-// Space the keys evenly between the first and last key
+/** Space the keys evenly between the first and last key */
 function SpaceKeyPositions(fittedKeyPositions: KeyPosition[][]): KeyPosition[][] {
   const spacedKeyPositions = [...fittedKeyPositions];
   for (let rowNum = 0; rowNum < 4; rowNum++) {

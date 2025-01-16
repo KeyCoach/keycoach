@@ -5,6 +5,7 @@ import p5 from "p5";
 import { KeyPosition, normalKeys, HandsFromTrackingResults } from "./hand-tracking";
 import { useRouter } from "next/navigation";
 import { startVideo } from "./p5";
+import axios from "axios";
 
 enum Letter {
   Correct = "Correct",
@@ -35,32 +36,48 @@ export default function Type({
     [],
   );
   const [userInput, setUserInput] = useState<Word[]>([{ word: sentence[0], inputs: [] }]);
-
   const router = useRouter();
 
   const FinishTest = useCallback(() => {
-    router.push("/typing/result/1");
+    // TODO: send the user input to the server to calculate the score and record the test
+
+    //axios.post("/api/test", { userInput }).then((res) => {
+    //  console.log(res.data);
+    //  router.push(`/typing/result/${res.data.id}`);
+    //});
+
+    router.push(`/typing/result/TestId`);
   }, [router]);
+
+  useEffect(() => {
+    if (TestIsComplete(userInput, sentence)) {
+      FinishTest();
+    }
+  }, [userInput, sentence, FinishTest]);
 
   const onKeyPress = useCallback(
     (key: string, ctrlKey: boolean) => {
       setUserInput((prev) => {
-        if (TestComplete(prev, sentence)) {
-          return prev;
+        const userInput = JSON.parse(JSON.stringify(prev)); // best way to deep copy. I was getting crazy side effects
+
+        if (TestIsComplete(userInput, sentence)) {
+          return userInput;
         }
-        let result = prev;
+
+        let result = userInput;
 
         if (key === "Backspace") {
           if (ctrlKey) {
-            result = HandleCtrlBackspace(prev);
+            result = HandleCtrlBackspace(userInput);
           } else {
-            result = HandleBackspace(prev);
+            result = HandleBackspace(userInput);
           }
         } else if (key === " ") {
-          result = HandleSpace(prev, sentence);
+          result = HandleSpace(userInput, sentence);
         } else if (normalKeys.includes(key)) {
-          result = HandleNormalKey(prev, key);
+          result = HandleNormalKey(userInput, key);
         }
+
         return result;
       });
     },
@@ -70,8 +87,7 @@ export default function Type({
   useEffect(() => {
     if (!cameraSetup) {
       const keyPressListener = (window.onkeydown = (e) => {
-        if (e.ctrlKey && e.code !== "Backspace") return;
-        if (!keyPositions.flat().some((key) => key.key === e.code)) return;
+        if (invalidKey(e, keyPositions)) return;
         onKeyPress(e.key, e.ctrlKey);
       });
 
@@ -92,15 +108,15 @@ export default function Type({
 
     const mainSketch = (p: p5) => {
       p.setup = () => {
+        const handPose = window.ml5.handPose();
         capture = startVideo(p);
 
         keyPressListener = window.onkeydown = (e) => {
-          if (!validKey(e, keyPositions)) return;
+          if (invalidKey(e, keyPositions)) return;
           onKeyPress(e.key, e.ctrlKey);
 
           function HandDataHandler() {
-            // PERF: initializing the handtracking here might come with a performance cost
-            window.ml5.handPose().detect(capture, (results: any) => {
+            handPose.detect(capture, (results: any) => {
               const hands = HandsFromTrackingResults(results);
               // TODO: implement async hand tracking data handler
               console.log(hands);
@@ -126,12 +142,6 @@ export default function Type({
       if (p) p.remove();
     };
   }, [userInput, cameraSetup, keyPositions, onKeyPress]);
-
-  useEffect(() => {
-    if (TestComplete(userInput, sentence)) {
-      FinishTest();
-    }
-  }, [userInput, sentence, FinishTest]);
 
   return (
     <div>
@@ -191,105 +201,99 @@ export default function Type({
   );
 }
 
+/**
+ * Delete the entire last word.
+ *
+ * If the last word has at least one letter, delete the word
+ *
+ * If the last word has no letters, delete the word, the space before it, and the word before that
+ */
 function HandleCtrlBackspace(userInput: Word[]) {
   const currWord = userInput.at(-1)!;
   const firstWord = userInput[0].word;
-  if (userInput.length > 1) {
-    if (currWord.inputs.length > 0) {
-      return [...userInput.slice(0, -1)];
-    } else {
-      const newInput = [...userInput.slice(0, -2)];
-      if (newInput.length === 0) {
-        return [{ word: firstWord, inputs: [] }];
-      }
-      return [...userInput.slice(0, -2)];
-    }
+
+  if (currWord.inputs.length === 0) {
+    userInput = userInput.slice(0, -1);
   }
-  return [
-    {
-      word: firstWord,
-      inputs: [],
-    },
-  ];
+
+  if (userInput.length === 0) {
+    return [{ word: firstWord, inputs: [] }];
+  }
+
+  userInput.at(-1)!.inputs = [];
+
+  return userInput;
 }
 
+/**
+ * Delete the last letter of the last word.
+ *
+ * If the last word has no letters, delete the word, the space before it, and any missing letters before that.
+ */
 function HandleBackspace(userInput: Word[]) {
   const currWord = userInput.at(-1)!;
+
   if (userInput.length === 1 && currWord.inputs.length === 0) {
     return userInput;
   }
 
-  const letterIndex = currWord.inputs.length;
-  if (letterIndex === 0 && userInput.length > 1) {
-    const newUserInputs = userInput.slice(0, -1);
-    while (newUserInputs.at(-1)?.inputs.at(-1)?.status === Letter.Missing) {
-      newUserInputs.at(-1)?.inputs.pop();
+  if (currWord.inputs.length === 0 && userInput.length > 1) {
+    userInput = userInput.slice(0, -1);
+    while (userInput.at(-1)?.inputs.at(-1)?.status === Letter.Missing) {
+      userInput.at(-1)?.inputs.pop();
     }
-    return newUserInputs;
   }
 
-  let newInputs = currWord.inputs.slice(0, -1);
-  while (newInputs.at(-1)?.status === Letter.Missing) {
-    newInputs = newInputs.slice(0, -1);
-  }
+  userInput.at(-1)!.inputs.pop();
 
-  return [
-    ...userInput.slice(0, -1),
-    {
-      word: currWord.word,
-      inputs: newInputs,
-    },
-  ];
+  return userInput;
 }
 
+/**
+ * Add a space to move the user to the next word.
+ *
+ * Do nothing if they haven't typed anything yet.
+ * */
 function HandleSpace(userInput: Word[], sentence: string[]) {
   const currWord = userInput.at(-1)!;
   if (currWord.inputs.length === 0) return userInput;
-  const lastWord = {
-    word: currWord.word,
-    inputs: currWord.inputs.concat(
-      currWord.word
-        .split("")
-        .map((letter) => ({
-          key: letter,
-          status: Letter.Missing,
-        }))
-        .slice(currWord.inputs.length),
-    ),
-  };
-  const newWord: Word = {
+
+  // Show shadow of missing letters
+  currWord.inputs.push(
+    ...currWord.word
+      .split("")
+      .map((letter) => ({
+        key: letter,
+        status: Letter.Missing,
+      }))
+      .slice(currWord.inputs.length),
+  );
+
+  userInput.push({
     word: sentence[userInput.length],
     inputs: [],
-  };
-  return [...userInput.slice(0, -1), lastWord, newWord];
+  });
+
+  return userInput;
 }
 
+/**
+ * Add a letter to the last word. Determine if the letter is correct or not.
+ * */
 function HandleNormalKey(userInput: Word[], key: string) {
   const currWord = userInput.at(-1)!;
-  const letterIndex = currWord.inputs.length;
-  const wrongLetter = currWord.word[letterIndex] !== key;
-  const status = wrongLetter ? Letter.WrongLetter : Letter.Correct;
-  let displayKey = key;
-  if (status === Letter.WrongLetter) {
-    displayKey = currWord.word[letterIndex] || key;
-  }
 
-  return [
-    ...userInput.slice(0, -1),
-    {
-      word: currWord.word,
-      inputs: [
-        ...currWord.inputs,
-        {
-          key: displayKey,
-          status,
-        },
-      ],
-    },
-  ];
+  const currLetter = currWord.word[currWord.inputs.length];
+  const status = currLetter !== key ? Letter.WrongLetter : Letter.Correct;
+
+  currWord.inputs.push({
+    key: currLetter || key,
+    status,
+  });
+  return userInput;
 }
 
-function TestComplete(userInput: Word[], sentence: string[]) {
+function TestIsComplete(userInput: Word[], sentence: string[]) {
   if (userInput.length < sentence.length) return false;
   if (userInput.length > sentence.length) return true;
   const lastWord = userInput.at(-1)!;
@@ -297,7 +301,12 @@ function TestComplete(userInput: Word[], sentence: string[]) {
   return lastWord.inputs.every((input) => input.status === Letter.Correct);
 }
 
-function validKey(e: KeyboardEvent, keyPositions: KeyPosition[][]) {
-  if (e.ctrlKey && e.code !== "Backspace") return false;
-  if (!keyPositions.flat().some((key) => key.key === e.code)) return false;
+function invalidKey(e: KeyboardEvent, keyPositions: KeyPosition[][]) {
+  if (e.ctrlKey && e.code !== "Backspace") {
+    return true;
+  }
+
+  if (!keyPositions.flat().some((key) => key.key === e.code)) {
+    return true;
+  }
 }
