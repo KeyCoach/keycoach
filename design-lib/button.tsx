@@ -12,7 +12,7 @@ export function Button({ children, className, variant = "primary", ...props }: B
   };
   return (
     <button
-      className={`${className || ""} ${variantClasses[variant]} font-bold py-2 px-4 rounded`}
+      className={`${className || ""} ${variantClasses[variant]} bg-black font-bold py-2 px-4 rounded`}
       {...props}
     >
       {children}

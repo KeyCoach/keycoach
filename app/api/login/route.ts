@@ -1,6 +1,6 @@
 import { TUser } from "@/app/user-context";
-import { GetDbUser } from "@/serviceInterfaces/dynamo-db";
-import { CreateUserToken } from "@/serviceInterfaces/json-web-token";
+import { GetUserFromEmail } from "@/service-interfaces/dynamo-db";
+import { CreateUserToken } from "@/service-interfaces/json-web-token";
 import { NextRequest } from "next/server";
 
 /** Handle the login request. */
@@ -24,7 +24,7 @@ export async function POST(request: NextRequest) {
 
 /** Validate the login credentials. Return the user if valid */
 async function LoginValid(email: string, _password: string): Promise<TUser | null> {
-  const dbUser = await GetDbUser(email);
+  const dbUser = await GetUserFromEmail(email);
 
   if (!dbUser) {
     return null;

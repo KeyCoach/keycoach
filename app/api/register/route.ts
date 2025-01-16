@@ -1,5 +1,5 @@
-import { CreateDbUser, GetDbUser } from "@/serviceInterfaces/dynamo-db";
-import { CreateUserToken } from "@/serviceInterfaces/json-web-token";
+import { CreateDbUser, GetUserFromEmail } from "@/service-interfaces/dynamo-db";
+import { CreateUserToken } from "@/service-interfaces/json-web-token";
 import { NextRequest } from "next/server";
 
 /** Handle the register request. */
@@ -10,7 +10,7 @@ export async function POST(request: NextRequest) {
     return Response.json({ message: "Name, email, and password are required" }, { status: 400 });
   }
 
-  let existingUser = await GetDbUser(email);
+  let existingUser = await GetUserFromEmail(email);
   // TODO: Delete this line when you implement the DB User Retrieval
   existingUser = null;
 

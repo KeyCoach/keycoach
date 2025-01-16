@@ -1,9 +1,10 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import p5 from "p5";
 import { KeyPosition, normalKeys, HandsFromTrackingResults } from "./hand-tracking";
 import { useRouter } from "next/navigation";
 import { startVideo } from "./p5";
-import { H1, Button } from "@/design-lib";
+import { Button, H1 } from "@/design-lib";
+import { Test } from "@/app/lib/definitions";
 
 enum Letter {
   Correct = "Correct",
@@ -21,18 +22,17 @@ type Word = {
 };
 
 export default function Type({
+  test,
   setSettingUp,
   cameraSetup,
   keyPositions,
 }: {
+  test: Test;
   setSettingUp: (value: boolean) => void;
   cameraSetup: boolean;
   keyPositions: KeyPosition[][];
 }) {
-  const sentence = useMemo(
-    () => ["The", "quick,", "brown;", "fox", "jumps", "over", "the", "lazy", "dog"],
-    [],
-  );
+  const sentence = test.text.split(" ");
   const [userInput, setUserInput] = useState<Word[]>([{ word: sentence[0], inputs: [] }]);
   const router = useRouter();
 
@@ -146,7 +146,12 @@ export default function Type({
       <H1>Typing Test</H1>
       Camera Setup: {cameraSetup ? "Yes" : "No"}
       <div>
-        <Button onClick={() => setSettingUp(true)}>
+        <Button
+          onClick={() => {
+            console.log("click");
+            setSettingUp(true);
+          }}
+        >
           {cameraSetup ? "Recalibrate Camera" : "Set Up Camera"}
         </Button>
       </div>
@@ -156,7 +161,7 @@ export default function Type({
             const correctWord = word.inputs.every((input) => input.status === Letter.Correct);
             const wrongWordClass = correctWord ? "" : "underline decoration-red-400";
             return (
-              <span key={i}>
+              <span key={i} id="word" className="inline-block">
                 {word.inputs.map((input, j) => {
                   const classes: Record<Letter, string> = {
                     [Letter.Correct]: "text-black",
@@ -167,6 +172,7 @@ export default function Type({
                   return (
                     <span
                       key={i + "," + j}
+                      id="letter"
                       className={`${classes[input.status]} ${wrongWordClass}`}
                     >
                       {input.key}
