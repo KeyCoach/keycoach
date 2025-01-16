@@ -5,7 +5,6 @@ import p5 from "p5";
 import { KeyPosition, normalKeys, HandsFromTrackingResults } from "./hand-tracking";
 import { useRouter } from "next/navigation";
 import { startVideo } from "./p5";
-import axios from "axios";
 
 enum Letter {
   Correct = "Correct",
@@ -87,7 +86,7 @@ export default function Type({
   useEffect(() => {
     if (!cameraSetup) {
       const keyPressListener = (window.onkeydown = (e) => {
-        if (invalidKey(e, keyPositions)) return;
+        if (InvalidKey(e, keyPositions)) return;
         onKeyPress(e.key, e.ctrlKey);
       });
 
@@ -112,7 +111,7 @@ export default function Type({
         capture = startVideo(p);
 
         keyPressListener = window.onkeydown = (e) => {
-          if (invalidKey(e, keyPositions)) return;
+          if (InvalidKey(e, keyPositions)) return;
           onKeyPress(e.key, e.ctrlKey);
 
           function HandDataHandler() {
@@ -242,9 +241,9 @@ function HandleBackspace(userInput: Word[]) {
     while (userInput.at(-1)?.inputs.at(-1)?.status === Letter.Missing) {
       userInput.at(-1)?.inputs.pop();
     }
+  } else {
+    userInput.at(-1)!.inputs.pop();
   }
-
-  userInput.at(-1)!.inputs.pop();
 
   return userInput;
 }
@@ -301,7 +300,7 @@ function TestIsComplete(userInput: Word[], sentence: string[]) {
   return lastWord.inputs.every((input) => input.status === Letter.Correct);
 }
 
-function invalidKey(e: KeyboardEvent, keyPositions: KeyPosition[][]) {
+function InvalidKey(e: KeyboardEvent, keyPositions: KeyPosition[][]) {
   if (e.ctrlKey && e.code !== "Backspace") {
     return true;
   }
