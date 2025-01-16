@@ -1,6 +1,6 @@
 "use client";
 import Button from "@/components/button";
-import Input from "@/components/input";
+import { Input, Label } from "@/components/input";
 import axios from "axios";
 import Link from "next/link";
 import { H1 } from "@/components/headers";
@@ -35,21 +35,21 @@ export default function Login() {
       </div>
       <form onSubmit={LogIn}>
         <div className="pt-5">
+          <Label htmlFor="email">Email</Label>
           <Input
-            label="Email"
-            inputType="email"
-            inputId="email"
+            type="email"
+            id="email"
             autoComplete="email"
             placeholder="example@email.com"
             required
           />
         </div>
         <div className="pt-3 pb-5">
+          <Label htmlFor="password">Password</Label>
           <Input
-            label="Password"
-            inputType="password"
+            type="password"
+            id="password"
             autoComplete="current-password"
-            inputId="password"
             placeholder="&bull;&bull;&bull;&bull;&bull;&bull;"
             required
           />

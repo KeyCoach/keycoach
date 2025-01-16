@@ -1,10 +1,10 @@
 "use client";
 import { H1 } from "@/components/headers";
 import Button from "@/components/button";
-import Input from "@/components/input";
 import axios from "axios";
 import Link from "next/link";
 import Cookies from "js-cookie";
+import { Input, Label } from "@/components/input";
 
 export default function Register() {
   async function Register(e: any) {
@@ -30,44 +30,38 @@ export default function Register() {
     <div>
       <H1>Welcome to KeyCoach!</H1>
       <div>
-        <Link href="/login">Already have an account? Sign in.</Link>
+        <Link href="/login">Already have an account? Sign in</Link>
       </div>
       <form onSubmit={Register}>
         <div className="pt-5">
+          <Label htmlFor="first-name">First Name</Label>
           <Input
-            label="First Name"
-            inputType="text"
-            inputId="first-name"
+            type="text"
+            id="first-name"
             placeholder="John"
             autoComplete="given-name"
             required
           />
         </div>
-        <div className="py-3">
-          <Input
-            label="Last Name"
-            inputType="text"
-            inputId="last-name"
-            placeholder="Doe"
-            autoComplete="family-name"
-            required
-          />
+        <div className="pt-2">
+          <Label htmlFor="last-name">Last Name</Label>
+          <Input type="text" id="last-name" placeholder="Doe" autoComplete="family-name" required />
         </div>
-        <div className="py-3">
+        <div className="pt-2">
+          <Label htmlFor="email">Email</Label>
           <Input
-            label="Email"
-            inputType="email"
-            inputId="email"
-            placeholder="example@email.com"
+            type="email"
+            id="email"
             autoComplete="email"
+            placeholder="example@email.com"
             required
           />
         </div>
-        <div className="pb-5">
+        <div className="pt-2 pb-5">
+          <Label htmlFor="password">Password</Label>
           <Input
-            label="Password"
-            inputType="password"
-            inputId="password"
+            type="password"
+            id="password"
             autoComplete="new-password"
             placeholder="&bull;&bull;&bull;&bull;&bull;&bull;"
             required
