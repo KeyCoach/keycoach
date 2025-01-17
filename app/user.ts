@@ -1,5 +1,5 @@
 import { cache } from "react";
-import { TUser } from "./user-context";
+import { User as TUser } from "./lib/types";
 import { VerifyToken } from "@/service-interfaces/json-web-token";
 import { GetToken } from "@/utils/get-token";
 
@@ -19,8 +19,8 @@ export const User = cache(async () => {
       loggedIn = true;
       user = {
         email: tokenUser.email,
-        firstName: tokenUser.firstName,
-        lastName: tokenUser.lastName,
+        fname: tokenUser.fname,
+        lname: tokenUser.lname,
       };
     }
   }

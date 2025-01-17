@@ -1,9 +1,9 @@
-import { TUser } from "@/app/user-context";
-import { GetUserFromEmail } from "@/service-interfaces/dynamo-db";
+import { User } from "@/app/lib/types";
+import { GetUserByEmail } from "@/service-interfaces/dynamo-db";
 import { CreateUserToken } from "@/service-interfaces/json-web-token";
 import { NextRequest } from "next/server";
 
-/** Handle the login request. */
+/** Login a user. */
 export async function POST(request: NextRequest) {
   const { email, password } = await request.json();
 
@@ -23,8 +23,8 @@ export async function POST(request: NextRequest) {
 }
 
 /** Validate the login credentials. Return the user if valid */
-async function LoginValid(email: string, _password: string): Promise<TUser | null> {
-  const dbUser = await GetUserFromEmail(email);
+async function LoginValid(email: string, _password: string): Promise<User | null> {
+  const dbUser = await GetUserByEmail(email);
 
   if (!dbUser) {
     return null;
@@ -33,8 +33,8 @@ async function LoginValid(email: string, _password: string): Promise<TUser | nul
   // TODO: Validate password
 
   return {
-    firstName: dbUser.firstName,
-    lastName: dbUser.lastName,
+    fname: dbUser.fname,
+    lname: dbUser.lname,
     email: dbUser.email,
   };
 }

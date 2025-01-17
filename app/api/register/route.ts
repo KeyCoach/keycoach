@@ -1,33 +1,29 @@
-import { CreateDbUser, GetUserFromEmail } from "@/service-interfaces/dynamo-db";
+import { User } from "@/app/lib/types";
+import { CreateDbUser } from "@/service-interfaces/dynamo-db";
 import { CreateUserToken } from "@/service-interfaces/json-web-token";
 import { NextRequest } from "next/server";
 
-/** Handle the register request. */
+/** Register a new user. */
 export async function POST(request: NextRequest) {
-  const { email, password, firstName, lastName } = await request.json();
+  const { email, password, fname, lname } = await request.json();
 
-  if (!email || !password || !firstName || !lastName) {
+  if (!email || !password || !fname || !lname) {
     return Response.json({ message: "Name, email, and password are required" }, { status: 400 });
   }
 
-  let existingUser = await GetUserFromEmail(email);
-  // TODO: Delete this line when you implement the DB User Retrieval
-  existingUser = null;
+  const newDbUser = await CreateDbUser(email, password, fname, lname);
 
-  if (existingUser) {
+  if (!newDbUser) {
     return Response.json({ message: "User already exists" }, { status: 400 });
   }
 
-  const newUserData = {
-    email,
-    password,
-    firstName,
-    lastName,
+  const newUser: User = {
+    email: newDbUser.email,
+    fname: newDbUser.lname,
+    lname: newDbUser.fname,
   };
 
-  const newDbUser = await CreateDbUser(newUserData);
-
-  const token = CreateUserToken(newDbUser);
+  const token = CreateUserToken(newUser);
 
   return Response.json({ message: "Success", token }, { status: 200 });
 }

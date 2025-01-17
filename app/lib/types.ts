@@ -7,17 +7,21 @@ export type Test = {
   wordCount: number;
 };
 
-export type TestAttempt = {
+export type Attempt = {
   id: string;
-  userId: string;
+  email?: string;
   testId: string;
   accuracy: number;
   wpm: number;
+  timeStamp: number;
 };
 
 export type User = {
   email: string;
   fname: string;
   lname: string;
-  password: string;
+};
+
+export type DbUser = User & {
+  passwordHash: string;
 };
