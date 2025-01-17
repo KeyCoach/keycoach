@@ -44,7 +44,7 @@ export default function Type({
     //  router.push(`/typing/result/${res.data.id}`);
     //});
 
-    router.push(`/typing/result/TestId`);
+    router.push(`/typing/result/AttemptId`);
   }, [router]);
 
   useEffect(() => {
