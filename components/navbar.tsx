@@ -1,6 +1,6 @@
 import Link from "next/link";
-import Logout from "./logout";
 import User from "@/app/user";
+import { LoginButton, LogoutButton } from "./nav-buttons";
 
 export default async function Navbar() {
   const { loggedIn } = await User();
@@ -16,7 +16,7 @@ export default async function Navbar() {
             <Link href="/dashboard">Dashboard</Link>
             <Link href="/lesson">Lessons</Link>
             <Link href="/typing/test">Take a Test</Link>
-            {loggedIn ? <Logout /> : <Link href="/login">Login</Link>}
+            {loggedIn ? <LogoutButton /> : <LoginButton />}
           </div>
         </div>
       </div>

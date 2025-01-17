@@ -2,16 +2,20 @@
 import Cookies from "js-cookie";
 import Link from "next/link";
 
-// This has to be in its own file because its a clint component in a server component.
-export default function Logout() {
+export function LogoutButton() {
   function removeCookie() {
     Cookies.remove("token");
     window.location.href = "/login"; // Use window.location.href because it rerenders the entire tree.
   }
 
   return (
-    <Link href="/login" onClick={removeCookie}>
+    <Link href="#" onClick={removeCookie}>
       Logout
     </Link>
   );
+}
+
+export function LoginButton() {
+  const location = window.location.pathname;
+  return <Link href={`/login?returnurl=${location}`}>Login</Link>;
 }
