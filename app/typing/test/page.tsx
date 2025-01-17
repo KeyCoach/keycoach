@@ -21,11 +21,6 @@ export default function Test() {
           <Button>Take Test 4</Button>
         </Link>
       </div>
-      {/* <br />
-      <br />
-      {/* <div>
-        <Link href="/typing/result/1">Get Test Feedback</Link>
-      </div> */}
     </div>
   );
 }

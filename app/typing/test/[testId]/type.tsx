@@ -1,10 +1,11 @@
-import { useCallback, useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useCallback, useEffect, useState } from "react";
 import p5 from "p5";
 import { KeyPosition, normalKeys, HandsFromTrackingResults } from "./hand-tracking";
 import { useRouter } from "next/navigation";
 import { startVideo } from "./p5";
 import { Button, H1 } from "@/design-lib";
 import { Test } from "@/app/lib/types";
+import axios from "axios";
 
 enum Letter {
   Correct = "Correct",
@@ -28,24 +29,30 @@ export default function Type({
   keyPositions,
 }: {
   test: Test;
-  setSettingUp: (value: boolean) => void;
+  setSettingUp: Dispatch<SetStateAction<boolean>>;
   cameraSetup: boolean;
   keyPositions: KeyPosition[][];
 }) {
+  const testId = test.id;
+  const [testStart, setTestStart] = useState(0);
   const sentence = test.text.split(" ");
-  const [userInput, setUserInput] = useState<Word[]>([{ word: sentence[0], inputs: [] }]);
   const router = useRouter();
+  const [userInput, setUserInput] = useState<Word[]>([{ word: sentence[0], inputs: [] }]);
+  const [mistakes, setMistakes] = useState(0);
+  const correctChars = userInput.reduce((acc, word) => {
+    return acc + word.inputs.filter((input) => input.status === Letter.Correct).length;
+  }, 0);
 
   const FinishTest = useCallback(() => {
-    // TODO: send the user input to the server to calculate the score and record the test
-
-    //axios.post("/api/test", { userInput }).then((res) => {
-    //  console.log(res.data);
-    //  router.push(`/typing/result/${res.data.id}`);
-    //});
+    axios
+      .post("/api/attempt", { testId, correctChars, duration: Date.now() - testStart, mistakes })
+      .then((res) => {
+        console.log(res.data);
+        router.push(`/typing/result/${res.data.attemptId}`);
+      });
 
     router.push(`/typing/result/AttemptId`);
-  }, [router]);
+  }, [router, testId, testStart, mistakes, correctChars]);
 
   useEffect(() => {
     if (TestIsComplete(userInput, sentence)) {
@@ -55,12 +62,25 @@ export default function Type({
 
   const onKeyPress = useCallback(
     (key: string, ctrlKey: boolean) => {
+      if (TestIsComplete(userInput, sentence)) {
+        return;
+      }
+      if (normalKeys.includes(key)) {
+        if (testStart === 0) {
+          setTestStart(Date.now());
+        }
+        const currWord = userInput.at(-1)!;
+
+        const currLetter = currWord.word[currWord.inputs.length];
+        const status = currLetter !== key ? Letter.WrongLetter : Letter.Correct;
+
+        if (status === Letter.WrongLetter) {
+          setMistakes((prev) => prev + 1);
+        }
+      }
+
       setUserInput((prev) => {
         const userInput = JSON.parse(JSON.stringify(prev)); // best way to deep copy. I was getting crazy side effects
-
-        if (TestIsComplete(userInput, sentence)) {
-          return userInput;
-        }
 
         let result = userInput;
 
@@ -79,7 +99,7 @@ export default function Type({
         return result;
       });
     },
-    [sentence],
+    [sentence, testStart, userInput],
   );
 
   useEffect(() => {
