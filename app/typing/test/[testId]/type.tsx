@@ -4,7 +4,7 @@ import { KeyPosition, normalKeys, HandsFromTrackingResults } from "./hand-tracki
 import { useRouter } from "next/navigation";
 import { startVideo } from "./p5";
 import { Button, H1 } from "@/design-lib";
-import { Test } from "@/app/lib/definitions";
+import { Test } from "@/app/lib/types";
 
 enum Letter {
   Correct = "Correct",

@@ -1,4 +1,4 @@
-import { Test } from "@/app/lib/definitions";
+import { Test } from "@/app/lib/types";
 import { tests } from "../test-data";
 
 export async function GetTestFromId(testId: string): Promise<Test | undefined> {

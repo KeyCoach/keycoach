@@ -6,7 +6,7 @@ import Type from "./type";
 import { useLoadMl5 } from "./use-load-ml5";
 import { defaultKeyPositions } from "./hand-tracking";
 import { useParams, useRouter } from "next/navigation";
-import { type Test } from "@/app/lib/definitions";
+import { type Test } from "@/app/lib/types";
 import axios from "axios";
 import { Loading } from "@/design-lib";
 
