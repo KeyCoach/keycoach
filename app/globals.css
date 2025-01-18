@@ -5,6 +5,9 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --white: #F8FAFC;
+  --gray: #333333;
+  --black: #000;
 }
 
 /*@media (prefers-color-scheme: dark) {*/
@@ -31,8 +34,6 @@ body {
 }
 
 @keyframes blink {
-
-
   20% {
     opacity: 1;
   }
@@ -44,8 +45,4 @@ body {
   80% {
     opacity: 1;
   }
-
-
-
-
 }
