@@ -11,7 +11,7 @@ export const tests = [
     id: "1",
     src: "A Portrait of the Artist as a Young Man",
     author: "James Joyce",
-    text: "A certain pride, a certain awe, withheld him from offering to God even one prayer at night, though he knew it was in God’s power to take away his life while he slept and hurl his soul hellward ere he could beg for mercy.",
+    text: "A certain pride, a certain awe, withheld him from offering to God even one prayer at night, though he knew it was in God's power to take away his life while he slept and hurl his soul hellward ere he could beg for mercy.",
     charCount: 220,
     wordCount: 44,
   },
@@ -39,4 +39,20 @@ export const tests = [
     charCount: 242,
     wordCount: 44,
   },
+  {
+    id: "5",
+    src: "The Book of Mormon",
+    author: "Mormon (duh)",
+    text: "And my father dwelt in a tent.",
+    charCount: 23,
+    wordCount: 7,
+  },
+  {
+    id: "6",
+    src: "Test",
+    author: "",
+    text: "' \" ` ~ : ;",
+    charCount: 23,
+    wordCount: 7,
+  }
 ];
