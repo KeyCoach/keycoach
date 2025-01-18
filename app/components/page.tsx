@@ -1,4 +1,5 @@
 import { Divider } from "@/components/divider";
+import { ProgressBar } from "@/components/progress-bar";
 
 export default async function Components() {
   return (
@@ -6,6 +7,7 @@ export default async function Components() {
       <Divider> </Divider>
       <Divider variant="sm"> </Divider>
       <Divider variant="md"> </Divider>
+      <ProgressBar colorVariant="primary" />
     </div>
   );
 }
