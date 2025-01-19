@@ -7,18 +7,19 @@ import { H1, Button, Input, Label } from "@/design-lib";
 export default function Register() {
   async function Register(e: any) {
     e.preventDefault();
-    const firstName = e.target["first-name"].value;
-    const lastName = e.target["last-name"].value;
-    const email = e.target["email"].value;
-    const password = e.target["password"].value;
+    if (e.target["password"].value !== e.target["confirm-password"].value) {
+      alert("Passwords do not match");
+      return;
+    }
+    const body = {
+      fname: e.target["first-name"].value,
+      lname: e.target["last-name"].value,
+      email: e.target["email"].value,
+      password: e.target["password"].value,
+    };
 
     axios
-      .post("/api/register", {
-        firstName,
-        lastName,
-        email,
-        password,
-      })
+      .post("/api/register", body)
       .then((res) => {
         Cookies.set("token", res.data.token);
         window.location.href = "/dashboard"; // Use window.location.href instead of router because it rerenders the entire tree. This time with the user data available to all components.
@@ -59,10 +60,20 @@ export default function Register() {
             required
           />
         </div>
-        <div className="pt-2 pb-5">
+        <div className="pt-2">
           <Label htmlFor="password">Password</Label>
           <Input
             type="password"
+            id="password"
+            autoComplete="new-password"
+            placeholder="&bull;&bull;&bull;&bull;&bull;&bull;"
+            required
+          />
+        </div>
+        <div className="pt-2 pb-5">
+          <Label htmlFor="confirm-password">Confirm Password</Label>
+          <Input
+            type="confirm-password"
             id="password"
             autoComplete="new-password"
             placeholder="&bull;&bull;&bull;&bull;&bull;&bull;"
