@@ -13,7 +13,7 @@ import { Loading } from "@/design-lib";
 export default function Test() {
   const [cameraSetup, setCameraSetup] = useState(false);
   const [settingUp, setSettingUp] = useState(false);
-  const [keyPositions, setKeyPositions] = useState(defaultKeyPositions);
+  const [keyPositions, setKeyPositions] = useState(JSON.parse(JSON.stringify(defaultKeyPositions)));
   const [test, setTest] = useState<Test | null>(null);
   const router = useRouter();
 

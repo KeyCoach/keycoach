@@ -1,6 +1,11 @@
-import { Dispatch, RefObject, SetStateAction, useEffect, useRef } from "react";
+import { Dispatch, RefObject, SetStateAction, useEffect, useRef, useState } from "react";
 import p5 from "p5";
-import { KeyPosition, HandsFromTrackingResults, AddNewKey } from "./hand-tracking";
+import {
+  KeyPosition,
+  HandsFromTrackingResults,
+  AddNewKey,
+  defaultKeyPositions,
+} from "./hand-tracking";
 import { startVideo, showVideo } from "./p5";
 import { H1, Button } from "@/design-lib";
 
@@ -17,6 +22,8 @@ export default function Setup({
 }) {
   const canvasRef = useRef<HTMLDivElement>(null);
   const keyPositionRef = useRef(keyPositions);
+  const [cameraReady, setCameraReady] = useState(false);
+  const rawKeyPositions = useRef<KeyPosition[][]>(JSON.parse(JSON.stringify(defaultKeyPositions)));
 
   useEffect(() => {
     let p: p5;
@@ -27,7 +34,19 @@ export default function Setup({
       p.setup = () => {
         const handPose = window.ml5.handPose();
         capture = startVideo(p);
-        showVideo(p, canvasRef);
+        showVideo(p, canvasRef, capture.width, capture.height);
+
+        async function checkMl5() {
+          let success = false;
+          while (!success) {
+            handPose.detect(capture, () => {
+              success = true;
+            });
+            await new Promise((resolve) => setTimeout(resolve, 1000));
+          }
+          setCameraReady(true);
+        }
+        checkMl5();
 
         keyPressListener = window.onkeydown = (e) => {
           if (invalidKey(e, keyPositionRef)) return;
@@ -37,7 +56,7 @@ export default function Setup({
             handPose.detect(capture, (results: any) => {
               if (results.length === 0) return;
               const hands = HandsFromTrackingResults(results);
-              const newKeyPositions = AddNewKey(e.code, hands, keyPositionRef.current);
+              const newKeyPositions = AddNewKey(e.code, hands, rawKeyPositions.current);
               keyPositionRef.current = newKeyPositions; // update this ref for the draw function
               setKeyPositions(newKeyPositions); // update the state for the parent component
             });
@@ -46,14 +65,16 @@ export default function Setup({
       };
 
       p.draw = () => {
-        p.image(capture, 0, 0);
+        p.scale(-1, 1);
+        p.image(capture, -capture.width, 0);
 
         // Draw red dots for the key positions
         for (const key of keyPositionRef.current.flat()) {
           if (key.positionSet) {
             p.fill(255, 0, 0);
             p.noStroke();
-            p.circle(key.x, key.y, 5);
+
+            p.circle(-capture.width + key.x, key.y, 5);
           }
         }
       };
@@ -61,6 +82,10 @@ export default function Setup({
 
     // Initialize the p5 sketch
     async function initializeP5() {
+      if (!window.ml5) {
+        setTimeout(initializeP5, 100);
+        return;
+      }
       const p5 = (await import("p5")).default;
       p = new p5(mainSketch);
     }
@@ -78,7 +103,29 @@ export default function Setup({
   return (
     <div>
       <H1>Setup Camera</H1>
-      <div ref={canvasRef}></div>
+      {!cameraReady && (
+        <div>
+          <p>Setting up camera...</p>
+          <p>Preparing hand tracking...</p>
+        </div>
+      )}
+      <div className={cameraReady ? "block" : "hidden"}>
+        <div ref={canvasRef}></div>
+
+        <div>
+          <Button
+            onClick={() => {
+              const newKeyPositions = JSON.parse(JSON.stringify(defaultKeyPositions));
+              setKeyPositions(newKeyPositions);
+              keyPositionRef.current = newKeyPositions;
+              rawKeyPositions.current = newKeyPositions;
+            }}
+          >
+            Start Over
+          </Button>
+        </div>
+      </div>
+
       <div>
         <Button
           onClick={() => {
