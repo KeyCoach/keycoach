@@ -2,21 +2,40 @@ export type Test = {
   id: string;
   src: string;
   author: string;
-  text: string;
+  textBody: string;
   charCount: number;
   wordCount: number;
+  difficulty: number;
 };
 
-export type Attempt = {
+export type KeyStroke = {
+  time: number;
+  correctFinger: string;
+  pressedFinger: string;
+  correctLetter: string;
+  pressedLetter: string;
+  modelConfidence: number;
+};
+
+export type DbAttempt = {
   id: string;
-  email?: string;
   testId: string;
+  email?: string;
   accuracy: number;
+  fingerAccuracy: number;
   wpm: number;
-  timeStamp: number;
+  mistakesCount: number;
+  duration: number;
+  date: number;
+  keyStrokes?: KeyStroke[];
+};
+
+export type Attempt = DbAttempt & {
+  test: Test;
 };
 
 export type User = {
+  id: string;
   email: string;
   fname: string;
   lname: string;

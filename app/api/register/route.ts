@@ -18,6 +18,7 @@ export async function POST(request: NextRequest) {
   }
 
   const newUser: User = {
+    id: newDbUser.id,
     email: newDbUser.email,
     fname: newDbUser.lname,
     lname: newDbUser.fname,
