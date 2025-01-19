@@ -1,15 +1,17 @@
 import Link from "next/link";
 import { H1, H3, Button } from "@/design-lib";
+import { GetAllTests } from "@/service-interfaces/dynamo-db";
 
-export default function Test() {
+export default async function Test() {
+  const tests = await GetAllTests();
   return (
     <div>
       <H1>Typing Test</H1>
       <br />
       <H3>Select your test:</H3>
       <div style={{ display: "flex", gap: "10px" }}>
-        {[...Array(6).keys()].map((i) => (
-          <Link key={i + 1} href={`/typing/test/${i + 1}`}>
+        {tests.map((test, i) => (
+          <Link key={test.id} href={`/typing/test/${test.id}`}>
             <Button>Take Test {i + 1}</Button>
           </Link>
         ))}
