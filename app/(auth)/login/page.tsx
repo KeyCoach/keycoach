@@ -27,9 +27,8 @@ export default function Login() {
         }
       })
       .catch((err) => {
-        if (err.response.status === 400) {
-          console.error("Email and password are required");
-        }
+        alert("There was an error logging in. Please try again.");
+        console.error(err);
       });
   }
   return (

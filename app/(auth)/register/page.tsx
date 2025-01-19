@@ -22,6 +22,10 @@ export default function Register() {
       .then((res) => {
         Cookies.set("token", res.data.token);
         window.location.href = "/dashboard"; // Use window.location.href instead of router because it rerenders the entire tree. This time with the user data available to all components.
+      })
+      .catch((err) => {
+        console.error(err);
+        alert("There was an error registering. Please try again.");
       });
   }
   return (
