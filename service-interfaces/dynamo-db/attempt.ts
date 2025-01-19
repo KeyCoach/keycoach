@@ -1,62 +1,118 @@
-import { Attempt } from "@/app/lib/types";
+import { Attempt, DbAttempt } from "@/app/lib/types";
+import { v4 as uuidv4 } from "uuid";
+import { dynamo, ATTEMPT_TABLE_NAME } from "./client";
+import { GetCommand, PutCommand, QueryCommand } from "@aws-sdk/lib-dynamodb";
+import { GetTestById } from "./test";
 
-// TODO: implement db connection to attempt table
 /** Gets attempt from DB by id. Returns null if there is no result */
-export async function GetAttemptById(attemptId: string): Promise<Attempt | null> {
-  return {
-    id: attemptId,
-    email: "email",
-    testId: "test-id",
-    accuracy: 0.9,
-    timeStamp: Date.now(),
-    wpm: 100,
-  };
+export async function GetAttemptById(
+  id: string,
+  email: string | null = "unknown",
+): Promise<Attempt | null> {
+  const getCommand = new GetCommand({
+    TableName: ATTEMPT_TABLE_NAME,
+    Key: {
+      id,
+      email: email ?? "unknown",
+    },
+  });
+
+  const item = await dynamo
+    .send(getCommand)
+    .then((res) => {
+      if (!res.Item) return null;
+      return res.Item as DbAttempt;
+    })
+
+    .catch((err) => {
+      console.error(err);
+      return null;
+    });
+
+  if (!item) return null;
+
+  return HydrateAttempt(item);
 }
 
-// TODO: implement db connection to attempt table
 /** Inserts attempt into DB. */
 export async function CreateTestAttempt(
-  email: string | undefined,
+  email: string | null,
   testId: string,
   accuracy: number,
   wpm: number,
-): Promise<Attempt> {
-  const id = "uuid";
-  return {
-    timeStamp: Date.now(),
-    id,
-    email,
+  fingerAccuracy: number,
+  mistakesCount: number,
+  duration: number,
+): Promise<DbAttempt> {
+  const attempt: DbAttempt = {
+    id: uuidv4(),
+    email: email ?? "unknown",
     testId,
     accuracy,
     wpm,
+    fingerAccuracy,
+    mistakesCount,
+    duration,
+    date: Date.now(),
   };
+
+  const putCommand = new PutCommand({
+    TableName: ATTEMPT_TABLE_NAME,
+    Item: attempt,
+  });
+
+  await dynamo.send(putCommand);
+
+  return attempt;
 }
 
+/** Gets all test attempts from DB by email. */
 export async function GetAttemptsByEmail(email: string): Promise<Attempt[] | null> {
-  return [
-    {
-      id: "uuid",
-      email,
-      testId: "1",
-      accuracy: 0.9,
-      timeStamp: Date.now(),
-      wpm: 100,
+  const query = new QueryCommand({
+    TableName: ATTEMPT_TABLE_NAME,
+    KeyConditionExpression: "email = :email",
+    ExpressionAttributeValues: {
+      ":email": email,
     },
-    {
-      id: "uuid1",
-      email,
-      testId: "2",
-      accuracy: 0.8,
-      timeStamp: Date.now(),
-      wpm: 90,
-    },
-    {
-      id: "uuid2",
-      email,
-      testId: "3",
-      accuracy: 0.7,
-      timeStamp: Date.now(),
-      wpm: 80,
-    },
-  ];
+  });
+
+  const res = await dynamo.send(query);
+
+  if (!res?.Items) return null;
+  const attempts = res.Items as DbAttempt[];
+
+  return HydrateAttempts(attempts);
+}
+
+/** Adds Test data to many attempt objects. Concurrently requests test data from DB */
+async function HydrateAttempts(attempts: DbAttempt[]): Promise<Attempt[]> {
+  const hydratedAttempts: Attempt[] = [];
+  const testIds = new Set(attempts.map((attempt) => attempt.testId));
+
+  const testFetches = [];
+
+  for (const testId of testIds) {
+    testFetches.push(GetTestById(testId));
+  }
+
+  const tests = await Promise.all(testFetches);
+
+  for (const attempt of attempts) {
+    hydratedAttempts.push({
+      ...attempt,
+      test: tests.find((test) => test?.id === attempt.testId)!,
+    });
+  }
+
+  return hydratedAttempts;
+}
+
+/** Adds Test data to the attempt object */
+async function HydrateAttempt(attempt: DbAttempt): Promise<Attempt> {
+  const test = await GetTestById(attempt.testId);
+
+  return {
+    ...attempt,
+    test: test!,
+  };
 }

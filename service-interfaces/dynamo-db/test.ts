@@ -1,58 +1,36 @@
 import { Test } from "@/app/lib/types";
+import { dynamo, TEST_TABLE_NAME } from "./client";
+import { GetCommand, ScanCommand } from "@aws-sdk/lib-dynamodb";
 
-// TODO: implement db connection to test table
 /** Gets test from DB by id. Returns null if there is no result */
 export async function GetTestById(testId: string): Promise<Test | null> {
-  return tests.find((test) => test.id === testId) ?? null;
+  const getCommand = new GetCommand({
+    TableName: TEST_TABLE_NAME,
+    Key: {
+      id: testId,
+    },
+  });
+
+  const res = await dynamo.send(getCommand).catch((err) => {
+    console.error(err);
+    return null;
+  });
+
+  if (!res?.Item) return null;
+
+  return res.Item as Test;
 }
 
-export const tests = [
-  {
-    id: "1",
-    src: "A Portrait of the Artist as a Young Man",
-    author: "James Joyce",
-    text: "A certain pride, a certain awe, withheld him from offering to God even one prayer at night, though he knew it was in God's power to take away his life while he slept and hurl his soul hellward ere he could beg for mercy.",
-    charCount: 220,
-    wordCount: 44,
-  },
-  {
-    id: "2",
-    src: "The Call of the Wild",
-    author: "Jack London",
-    text: "When, on the still cold nights, he pointed his nose at a star and howled long and wolf-like, it was his ancestors, dead and dust, pointing nose at star and howling down through the centuries and through him. And his cadences were their cadences, the cadences which voiced their woe and what to them was the meaning of the stillness, and the cold, and dark.",
-    charCount: 356,
-    wordCount: 65,
-  },
-  {
-    id: "3",
-    src: "Middlemarch",
-    author: "George Eliot",
-    text: "For years after Lydgate remembered the impression produced in him by this involuntary appeal—this cry from soul to soul, without other consciousness than their moving with kindred natures in the same embroiled medium, the same troublous fitfully-illuminated life.",
-    charCount: 263,
-    wordCount: 38,
-  },
-  {
-    id: "4",
-    src: "The Sound and the Fury",
-    author: "William Faulkner",
-    text: "The air brightened, the running shadow patches were now the obverse, and it seemed to him that the fact that the day was clearing was another cunning stroke on the part of the foe, the fresh battle toward which he was carrying ancient wounds.",
-    charCount: 242,
-    wordCount: 44,
-  },
-  {
-    id: "5",
-    src: "The Book of Mormon",
-    author: "Mormon (duh)",
-    text: "And my father dwelt in a tent.",
-    charCount: 23,
-    wordCount: 7,
-  },
-  {
-    id: "6",
-    src: "Test",
-    author: "",
-    text: "' \" ` ~ : ;",
-    charCount: 23,
-    wordCount: 7,
-  }
-];
+/** Gets all tests from DB. */
+export async function GetAllTests(): Promise<Test[]> {
+  const scanCommand = new ScanCommand({
+    TableName: TEST_TABLE_NAME,
+  });
+
+  const res = await dynamo.send(scanCommand);
+
+  if (!res?.Items) return [];
+  const tests = res.Items as Test[];
+
+  return tests;
+}
