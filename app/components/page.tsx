@@ -1,13 +1,17 @@
 import { Icon } from "@/components/icon";
+import { Button } from "@/components/button";
 
 export default async function Components() {
   return (
     <div>
       <div className="h-screen w-screen grid grid-cols-3 auto-rows-auto">
         <div id="centered-button" className="grid place-items-center">
-          <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-            Button
-          </button>
+          <Button variant="centered" children={<span>first button</span>} />
+          <Button
+            variant="centered"
+            className="bg-obsidian-200"
+            children={<span>first button</span>}
+          />
         </div>
         <div id="previous-button" className="grid place-items-center"></div>
         <div id="next-button" className="grid place-items-center"></div>
