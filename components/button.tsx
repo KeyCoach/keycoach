@@ -16,14 +16,10 @@ export function Button({
     icon: "grid place-items-center",
   };
 
-  let dynamicClass = className ? className : "bg-cerulean-500 text-gray-100 hover:bg-cerulean-700";
-  dynamicClass = dynamicClass.concat(` ${buttonVariants[variant]} px-4 py-2 rounded-md transition-colors duration-150`);
-
-  return (
-    <button
-      className={dynamicClass}
-    >
-      {children}
-    </button>
+  let dynamicClass = className ? className : "bg-cerulean-500 text-white hover:bg-cerulean-700";
+  dynamicClass = dynamicClass.concat(
+    ` ${buttonVariants[variant]} px-4 py-2 rounded-md transition-colors duration-200`
   );
+
+  return <button className={dynamicClass}>{children}</button>;
 }
