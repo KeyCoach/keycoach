@@ -5,25 +5,34 @@ export default async function Components() {
   return (
     <div>
       <div className="h-screen w-screen grid grid-cols-3 auto-rows-auto">
-        <div id="centered-button" className="">
-          <Button variant="next-nav" children={<span>first button</span>} />
+        <div id="centered-button" className="w-full flex flex-col items-center gap-4">
           <Button
-            className="bg-obsidian-200 hover:bg-obsidian-700"
-            variant="previous-nav"
-            children={
-              <>
-                <span>second button</span>
-              </>
-            }
-            disabled={false}
-            loading={false}
+            colorTheme="cerulean"
+            children={<span>primary button</span>}
           />
+          <Button
+            colorTheme="obsidian"
+            children={<span>primary button</span>}
+          />
+          <Button
+            colorTheme="red"
+            children={<span>primary button</span>}
+          />
+          <Button
+            colorTheme="amber"
+            children={<span>primary button</span>}
+          />
+          <Button
+            colorTheme="green"
+            children={<span>primary button</span>}
+          />
+          
         </div>
         <div id="previous-button" className="grid place-items-center">
-          <Button children={<span>previous</span>} />
+          <Button variant="previous-nav" children={<span>previous</span>} />
         </div>
         <div id="next-button" className="grid place-items-center">
-          <Button children={<span>next</span>} />
+          <Button variant="next-nav" children={<span>next</span>} />
         </div>
       </div>
 

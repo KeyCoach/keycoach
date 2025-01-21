@@ -15,6 +15,7 @@ export default {
         white: "var(--white)",
         gray: "var(--gray)",
         black: "var(--black)",
+        "button-shadow": "#323247",
         cerulean: {
           100: '#E8F1FA',
           200: '#C2DAF2',
