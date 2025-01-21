@@ -7,15 +7,18 @@ import { H1, Button, Input, Label } from "@/design-lib";
 export default function Register() {
   async function Register(e: any) {
     e.preventDefault();
-    if (e.target["password"].value !== e.target["confirm-password"].value) {
+    const formData = new FormData(e.target);
+
+    if (formData.get("password") !== formData.get("confirm-password")) {
       alert("Passwords do not match");
       return;
     }
+
     const body = {
-      fname: e.target["first-name"].value,
-      lname: e.target["last-name"].value,
-      email: e.target["email"].value,
-      password: e.target["password"].value,
+      fname: formData.get("first-name"),
+      lname: formData.get("last-name"),
+      email: formData.get("email"),
+      password: formData.get("password"),
     };
 
     axios
@@ -41,6 +44,7 @@ export default function Register() {
           <Input
             type="text"
             id="first-name"
+            name="first-name"
             placeholder="John"
             autoComplete="given-name"
             required
@@ -55,6 +59,7 @@ export default function Register() {
           <Input
             type="email"
             id="email"
+            name="email"
             autoComplete="email"
             placeholder="example@email.com"
             required
@@ -65,6 +70,7 @@ export default function Register() {
           <Input
             type="password"
             id="password"
+            name="password"
             autoComplete="new-password"
             placeholder="&bull;&bull;&bull;&bull;&bull;&bull;"
             required
@@ -73,8 +79,9 @@ export default function Register() {
         <div className="pt-2 pb-5">
           <Label htmlFor="confirm-password">Confirm Password</Label>
           <Input
-            type="confirm-password"
-            id="password"
+            type="password"
+            id="confirm-password"
+            name="confirm-password"
             autoComplete="new-password"
             placeholder="&bull;&bull;&bull;&bull;&bull;&bull;"
             required

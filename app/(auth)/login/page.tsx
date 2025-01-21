@@ -7,16 +7,18 @@ import { useSearchParams } from "next/navigation";
 
 export default function Login() {
   const params = useSearchParams();
+
   async function LogIn(e: any) {
     e.preventDefault();
-    const email = e.target["email"].value;
-    const password = e.target["password"].value;
+    const formData = new FormData(e.target);
+
+    const body = {
+      email: formData.get("email"),
+      password: formData.get("password"),
+    };
 
     axios
-      .post("/api/login", {
-        email,
-        password,
-      })
+      .post("/api/login", body)
       .then((res) => {
         Cookies.set("token", res.data.token);
         const redirect = params.get("redirect");
@@ -31,6 +33,7 @@ export default function Login() {
         console.error(err);
       });
   }
+
   return (
     <div>
       <H1>Welcome Back!</H1>
@@ -43,6 +46,7 @@ export default function Login() {
           <Input
             type="email"
             id="email"
+            name="email"
             autoComplete="email"
             placeholder="example@email.com"
             required
@@ -53,6 +57,7 @@ export default function Login() {
           <Input
             type="password"
             id="password"
+            name="password"
             autoComplete="current-password"
             placeholder="&bull;&bull;&bull;&bull;&bull;&bull;"
             required
