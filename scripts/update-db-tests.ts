@@ -1,8 +1,11 @@
 import { Test } from "@/app/lib/types";
-import { dynamo } from "@/service-interfaces/dynamo-db/client";
 import { UpdateCommand } from "@aws-sdk/lib-dynamodb";
+import { DynamoDBDocumentClient } from "@aws-sdk/lib-dynamodb";
+import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 
-const TEST_TABLE_NAME = "test-dev";
+export const dynamo = DynamoDBDocumentClient.from(new DynamoDBClient({ region: "us-east-1" }));
+
+const TEST_TABLE_NAME = "test";
 
 async function AddTestsToDb(tests: Test[]): Promise<void> {
   const testCommands = [];

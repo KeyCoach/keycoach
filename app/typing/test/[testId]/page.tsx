@@ -16,10 +16,9 @@ export default function Test() {
   const [keyPositions, setKeyPositions] = useState(JSON.parse(JSON.stringify(defaultKeyPositions)));
   const [test, setTest] = useState<Test | null>(null);
   const router = useRouter();
-
-  // Load ml5 module. Must be loaded before they open the setup page
-  useLoadMl5();
   const { testId } = useParams();
+
+  useLoadMl5();
 
   useEffect(() => {
     axios

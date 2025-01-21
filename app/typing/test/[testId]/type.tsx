@@ -193,7 +193,7 @@ export default function Type({
             const redUnderline = incorrect && notLastWord ? "underline decoration-red-400" : "";
             return (
               <span key={"word" + i}>
-                <span id="word" className="inline-block">
+                <span kc-type="word" className="inline-block">
                   {word.inputs.map((input, j) => {
                     const classes: Record<Letter, string> = {
                       [Letter.Correct]: "text-black",
@@ -204,7 +204,7 @@ export default function Type({
                     return (
                       <span
                         key={"letter" + i + "," + j}
-                        id="letter"
+                        kc-type="letter"
                         className={`${classes[input.status]} ${redUnderline}`}
                       >
                         {input.key}
@@ -212,7 +212,7 @@ export default function Type({
                     );
                   })}
                   {i === userInput.length - 1 && (
-                    <span id="cursor" className="absolute blink font-bold">
+                    <span kc-type="cursor" className="absolute blink font-bold">
                       ⎸
                     </span>
                   )}
@@ -222,23 +222,23 @@ export default function Type({
                     .map((letter, j) => (
                       <span
                         key={"ghost-letter" + j}
-                        id="ghost-letter"
+                        kc-type="ghost-letter"
                         className="text-gray-500 inline-block"
                       >
                         {letter}
                       </span>
                     ))}
                 </span>
-                <span id="space"> </span>
+                <span kc-type="space"> </span>
               </span>
             );
           })}
           {sentence.slice(userInput.length).map((word, i) => (
             <span key={"ghost-word" + i}>
-              <span id="ghost-word" className="text-gray-500 inline-block">
+              <span kc-type="ghost-word" className="text-gray-500 inline-block">
                 {word}
               </span>
-              <span id="space"> </span>
+              <span kc-type="space"> </span>
             </span>
           ))}
         </p>
