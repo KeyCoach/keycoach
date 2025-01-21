@@ -44,3 +44,12 @@ export type User = {
 export type DbUser = User & {
   passwordHash: string;
 };
+
+export type Errors = {
+  [key: string]: {
+    code: string;
+    message: string;
+    details?: string;
+    status: number;
+  };
+};

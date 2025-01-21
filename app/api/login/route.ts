@@ -3,19 +3,20 @@ import { BcryptVerifyPassword } from "@/service-interfaces/bcrypt";
 import { GetUserByEmail } from "@/service-interfaces/dynamo-db";
 import { CreateUserToken } from "@/service-interfaces/json-web-token";
 import { NextRequest } from "next/server";
+import { BackendErrors } from "../errors";
 
 /** Login a user. */
 export async function POST(request: NextRequest) {
   const { email, password } = await request.json();
 
   if (!email || !password) {
-    return Response.json({ message: "Email and password are required" }, { status: 400 });
+    return Response.json(BackendErrors.MISSING_ARGUMENTS, { status: 422 });
   }
 
   const user = await LoginValid(email, password);
 
   if (!user) {
-    return Response.json({ message: "Invalid email or password" }, { status: 401 });
+    return Response.json(BackendErrors.INVALID_CREDENTIALS, { status: 401 });
   }
 
   const token = CreateUserToken(user);
