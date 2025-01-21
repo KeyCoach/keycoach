@@ -9,13 +9,18 @@ export default {
   ],
   theme: {
     extend: {
+      minWidth:{
+        'button-min-width': '8rem'
+      },
+      boxShadow: {
+        'button-shadow': '0 4px 8px 0 rgba(50, 50, 71, 0.25)'
+      },
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
         white: "var(--white)",
         gray: "var(--gray)",
         black: "var(--black)",
-        "button-shadow": "#323247",
         cerulean: {
           100: '#E8F1FA',
           200: '#C2DAF2',

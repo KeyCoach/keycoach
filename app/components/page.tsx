@@ -8,23 +8,23 @@ export default async function Components() {
         <div id="centered-button" className="w-full flex flex-col items-center gap-4">
           <Button
             colorTheme="cerulean"
-            children={<span>primary button</span>}
+            children={<span>cerulean button</span>}
           />
           <Button
             colorTheme="obsidian"
-            children={<span>primary button</span>}
+            children={<span>obsidian button</span>}
           />
           <Button
             colorTheme="red"
-            children={<span>primary button</span>}
+            children={<span>red button</span>}
           />
           <Button
             colorTheme="amber"
-            children={<span>primary button</span>}
+            children={<span>amber button</span>}
           />
           <Button
             colorTheme="green"
-            children={<span>primary button</span>}
+            children={<span>green button</span>}
           />
           
         </div>

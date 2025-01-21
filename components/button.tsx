@@ -37,7 +37,7 @@ export function Button({
   let dynamicClass = className ? className : colorClasses[colorTheme];
 
   dynamicClass = dynamicClass.concat(
-    ` ${variantClasses[variant]} px-4 py-2 rounded-md transition-colors duration-200 font-medium shadow-button-shadow shadow-md`
+    ` ${variantClasses[variant]} px-4 py-2 rounded-lg transition-colors duration-200 font-medium shadow-button-shadow min-w-button-min-width`
   );
 
   // TODO: replace the children with a spinner
