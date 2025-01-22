@@ -20,7 +20,9 @@ export default function Login() {
       .then((res) => {
         Cookies.set("token", res.data.token);
         const redirect = params.get("redirect");
+      
         if (redirect) {
+
           window.location.href = redirect;
         } else {
           window.location.href = "/dashboard"; // Use window.location.href instead of router because it rerenders the entire tree. This time with the user data available to all components.
