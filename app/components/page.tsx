@@ -5,7 +5,8 @@ export default async function Components() {
   return (
     <div>
       <div className="h-screen w-screen grid grid-cols-3 auto-rows-auto">
-        <div id="centered-button" className="w-full flex flex-col items-center gap-4">
+        <div id="centered-button" className="w-full flex flex-row flex-wrap items-start gap-4">
+          <h1 className="text-3xl">Buttons</h1>
           <Button
             colorTheme="cerulean"
             children={<span>cerulean button</span>}
@@ -26,13 +27,12 @@ export default async function Components() {
             colorTheme="green"
             children={<span>green button</span>}
           />
-          
+          <Button variant="previous-nav" children={<span className="ml-auto">previous</span>} />
+          <Button variant="next-nav" children={<span className="mr-auto">next</span>} />
         </div>
-        <div id="previous-button" className="grid place-items-center">
-          <Button variant="previous-nav" children={<span>previous</span>} />
+        <div id="inputs" className="grid place-items-center">
         </div>
-        <div id="next-button" className="grid place-items-center">
-          <Button variant="next-nav" children={<span>next</span>} />
+        <div id="modals" className="grid place-items-center">
         </div>
       </div>
 

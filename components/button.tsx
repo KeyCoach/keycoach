@@ -19,8 +19,8 @@ export function Button({
 }: ButtonProps) {
   const variantClasses = {
     default: "grid place-items-center",
-    "previous-nav": "flex items-center flex-row-reverse gap-2",
-    "next-nav": "flex items-center row gap-2",
+    "previous-nav": "flex items-center flex-row-reverse gap-1",
+    "next-nav": "flex items-center row gap-1",
     icon: "grid place-items-center",
   };
 
@@ -50,12 +50,6 @@ export function Button({
     children = (
       <>
         {children}
-        <Icon
-          src="icons/button-vertical-divider.svg"
-          alt="chevron left icon"
-          w={"1rem"}
-          h={"1rem"}
-        />
         <Icon src={`icons/${navIconName}.svg`} alt="chevron right icon" w={"1rem"} h={"1rem"} />
       </>
     );
