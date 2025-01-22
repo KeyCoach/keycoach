@@ -5,8 +5,6 @@ import Cookies from "js-cookie";
 import { H1, Button, Input, Label } from "@/design-lib";
 import { useSearchParams } from "next/navigation";
 
-const dontRedirect = ["login", "register", "forgot"];
-
 export default function Login() {
   const params = useSearchParams();
   async function LogIn(e: any) {
@@ -22,7 +20,9 @@ export default function Login() {
       .then((res) => {
         Cookies.set("token", res.data.token);
         const redirect = params.get("redirect");
-        if (redirect && !dontRedirect.some((badUrl) => redirect.includes(badUrl))) {
+      
+        if (redirect) {
+
           window.location.href = redirect;
         } else {
           window.location.href = "/dashboard"; // Use window.location.href instead of router because it rerenders the entire tree. This time with the user data available to all components.
