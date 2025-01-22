@@ -1,7 +1,9 @@
 import Link from "next/link";
 import { H1 } from "@/design-lib";
+import { AuthenticateUser } from "@/utils/authenticate-user";
 
 export default async function Dashboard() {
+  const user = await AuthenticateUser();
   return (
     <div>
       <H1>User Dashboard</H1>
@@ -19,8 +21,20 @@ export default async function Dashboard() {
         <Link href="/typing/test">Take Typing Test</Link>
       </div>
       <div>
-        <Link href="/typing/result">See Test and Lesson History</Link>
+        <Link href="/history">See Test and Lesson History</Link>
       </div>
+
+      {user && (
+        <div>
+          <p>User Data</p>
+          <ul className="pl-8 list-disc">
+            <li>Email: {user.email}</li>
+            <li>Id: {user.id}</li>
+            <li>First Name: {user.fname}</li>
+            <li>Last Name: {user.lname}</li>
+          </ul>
+        </div>
+      )}
     </div>
   );
 }

@@ -1,9 +1,9 @@
-import { Dispatch, SetStateAction, useCallback, useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import p5 from "p5";
 import { KeyPosition, normalKeys, HandsFromTrackingResults } from "./hand-tracking";
 import { useRouter } from "next/navigation";
 import { startVideo } from "./p5";
-import { Button, H1 } from "@/design-lib";
+import { Button, H1, Loading } from "@/design-lib";
 import { Test } from "@/app/lib/types";
 import axios from "axios";
 
@@ -33,50 +33,56 @@ export default function Type({
   cameraSetup: boolean;
   keyPositions: KeyPosition[][];
 }) {
+  const sentence = useMemo(() => test.textBody.split(" "), [test.textBody]);
+  const router = useRouter();
   const testId = test.id;
   const src = test.src;
   const author = test.author;
   const [testStart, setTestStart] = useState(0);
-  const sentence = test.text.split(" ");
-  const router = useRouter();
   const [userInput, setUserInput] = useState<Word[]>([{ word: sentence[0], inputs: [] }]);
+  const userInputRef = useRef(userInput);
   const [mistakes, setMistakes] = useState(0);
   const correctChars = userInput.reduce((acc, word) => {
     return acc + word.inputs.filter((input) => input.status === Letter.Correct).length;
   }, 0);
 
+  // Logic for finishing the test
+  const testFinished = TestIsComplete(userInput, sentence);
   const FinishTest = useCallback(() => {
     axios
       .post("/api/attempt", { testId, correctChars, duration: Date.now() - testStart, mistakes })
       .then((res) => {
-        console.log(res.data);
         router.push(`/typing/result/${res.data.attemptId}`);
       });
-
-    router.push(`/typing/result/AttemptId`);
   }, [router, testId, testStart, mistakes, correctChars]);
-
   useEffect(() => {
-    if (TestIsComplete(userInput, sentence)) {
+    if (testFinished) {
       FinishTest();
     }
-  }, [userInput, sentence, FinishTest]);
+  }, [testFinished, FinishTest]);
 
+  // Logic for typing
   const onKeyPress = useCallback(
     (key: string, ctrlKey: boolean) => {
-      if (TestIsComplete(userInput, sentence)) {
+      if (testFinished) {
         return;
       }
       if (normalKeys.includes(key)) {
         if (testStart === 0) {
           setTestStart(Date.now());
         }
-        const currWord = userInput.at(-1)!;
+        const currWord = userInputRef.current.at(-1)!;
 
         const currLetter = currWord.word[currWord.inputs.length];
         const status = currLetter !== key ? Letter.WrongLetter : Letter.Correct;
 
-        if (status === Letter.WrongLetter) {
+        if (key === " ") {
+          if (currWord.inputs.length !== currWord.word.length) {
+            setMistakes(
+              (prev) => prev + Math.max(0, currWord.word.length - currWord.inputs.length),
+            );
+          }
+        } else if (status === Letter.WrongLetter) {
           setMistakes((prev) => prev + 1);
         }
       }
@@ -98,13 +104,17 @@ export default function Type({
           result = HandleNormalKey(userInput, key);
         }
 
+        userInputRef.current = result; // NOTE: anywhere you set userInput, you must also set userInputRef.current
+
         return result;
       });
     },
-    [sentence, testStart, userInput],
+    [sentence, testStart, userInputRef, testFinished],
   );
 
+  // Setup camera and key listeners. Runs once on mount
   useEffect(() => {
+    console.log("setting up camera and key listeners");
     if (!cameraSetup) {
       const keyPressListener = (window.onkeydown = (e) => {
         if (InvalidKey(e, keyPositions)) return;
@@ -150,6 +160,7 @@ export default function Type({
     };
 
     async function initializeP5() {
+      console.log("importing p5");
       const p5 = (await import("p5")).default;
       p = new p5(mainSketch);
     }
@@ -161,66 +172,87 @@ export default function Type({
       if (capture) capture.remove();
       if (p) p.remove();
     };
-  }, [userInput, cameraSetup, keyPositions, onKeyPress]);
+  }, [cameraSetup, keyPositions, onKeyPress]);
+
+  if (testFinished) {
+    return <Loading />;
+  }
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-50">
-      <div className="border-4 border-gray-300 rounded-lg p-10 w-full max-w-6xl">
-        {/* <div className="mb-6 text-center">
+    <div>
+      <Button onClick={() => setSettingUp((prev) => !prev)}>
+        {cameraSetup ? "Recalibrate Camera" : "Set up Camera"}
+      </Button>
+      <div className="flex items-center justify-center min-h-screen bg-gray-50">
+        <div className="border-4 border-gray-300 rounded-lg p-10 w-full max-w-6xl">
+          {/* <div className="mb-6 text-center">
           <H1 className="text-4xl font-extrabold mb-4">Typing Test</H1>
         </div> */}
-        <div className="font-mono text-4xl text-left mb-6 leading-relaxed">
-          <p className="whitespace-pre-wrap">
-            {userInput.map((word, i) => {
-              const correctWord = word.inputs.every((input) => input.status === Letter.Correct);
-              const wrongWordClass = correctWord ? "" : "underline decoration-red-400";
-              return (
-                <span key={i} id="word" className="inline-block">
-                  {word.inputs.map((input, j) => {
-                    const classes: Record<Letter, string> = {
-                      [Letter.Correct]: "text-black",
-                      [Letter.WrongLetter]: "text-red-500",
-                      [Letter.Missing]: "text-gray-500",
-                      [Letter.WrongFinger]: "text-orange-500",
-                    };
-                    return (
-                      <span
-                        key={i + "," + j}
-                        id="letter"
-                        className={`${classes[input.status]} ${wrongWordClass}`}
-                      >
-                        {input.key}
-                      </span>
-                    );
-                  })}
-                  {i === userInput.length - 1 && <span className="absolute blink font-bold">⎸</span>}
-                  {word.word
-                    ?.slice(word.inputs.length)
-                    .split("")
-                    .map((letter, j) => (
-                      <span key={j} className="text-gray-500">
-                        {letter}
-                      </span>
-                    )) || ""}
-                  <span key="space" className="no-underline">
-                    &nbsp;
+          <div className="font-mono text-4xl text-left mb-6 leading-relaxed">
+            <p className="whitespace-pre-wrap">
+              {userInput.map((word, i) => {
+                const correctWord = word.inputs.every((input) => input.status === Letter.Correct);
+                const wrongWordClass = correctWord ? "" : "underline decoration-red-400";
+                return (
+                  <span key={i}>
+                    <span kc-id="word" className="inline-block">
+                      {word.inputs.map((input, j) => {
+                        const classes: Record<Letter, string> = {
+                          [Letter.Correct]: "text-black",
+                          [Letter.WrongLetter]: "text-red-500",
+                          [Letter.Missing]: "text-slate-400",
+                          [Letter.WrongFinger]: "text-orange-500",
+                        };
+                        return (
+                          <span
+                            key={"letter" + i + "," + j}
+                            kc-id="letter"
+                            className={`${classes[input.status]} ${wrongWordClass}`}
+                          >
+                            {input.key}
+                          </span>
+                        );
+                      })}
+                      {i === userInput.length - 1 && (
+                        <span kc-id="cursor" className="absolute blink font-bold">
+                          ⎸
+                        </span>
+                      )}
+                      {word.word
+                        ?.slice(word.inputs.length)
+                        .split("")
+                        .map((letter, j) => (
+                          <span
+                            key={"ghost-letter" + j}
+                            kc-id="ghost-letter"
+                            className="text-slate-400"
+                          >
+                            {letter}
+                          </span>
+                        ))}
+                    </span>
+
+                    <span kc-id="space"> </span>
                   </span>
+                );
+              })}
+              {sentence.slice(userInput.length).map((word, i) => (
+                <span key={"ghost-wrod" + i}>
+                  <span kc-id="ghost-word" className="text-slate-400">
+                    {word}
+                  </span>
+                  <span kc-id="space"> </span>
                 </span>
-              );
-            })}
-            {sentence.slice(userInput.length).map((word, i) => (
-              <span key={i} className="text-gray-500">
-                {word}{" "}
-              </span>
-            ))}
-          </p>
-        </div>
-        <div className="text-right text-sm font-serif italic text-black-700">
-          <p>{`An excerpt from \"${src}\" by ${author}`}</p>
+              ))}
+            </p>
+          </div>
+          <div className="text-right text-sm font-serif italic text-black-700">
+            <p>{`An excerpt from \"${src}\" by ${author}`}</p>
+          </div>
         </div>
       </div>
     </div>
-  );   
+  );
 }
 
 /**

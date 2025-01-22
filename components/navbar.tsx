@@ -1,9 +1,9 @@
 import Link from "next/link";
-import User from "@/app/user";
 import { LoginButton, LogoutButton } from "./nav-buttons";
+import { AuthenticateUser } from "@/utils/authenticate-user";
 
 export default async function Navbar() {
-  const { loggedIn } = await User();
+  const user = await AuthenticateUser();
   return (
     <nav className="bg-white shadow sticky top-0 z-50">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -16,7 +16,7 @@ export default async function Navbar() {
             <Link href="/dashboard">Dashboard</Link>
             <Link href="/lesson">Lessons</Link>
             <Link href="/typing/test">Take a Test</Link>
-            {loggedIn ? <LogoutButton /> : <LoginButton />}
+            {user ? <LogoutButton /> : <LoginButton />}
           </div>
         </div>
       </div>

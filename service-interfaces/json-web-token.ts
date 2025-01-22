@@ -1,11 +1,14 @@
 import { User } from "@/app/lib/types";
 import jwt from "jsonwebtoken";
 
+const JWT_SECRET = "f71808ef-2176-46d8-9bb4-3c304117ba8c";
+
 /** Verify JWT. return user if valid */
-export function VerifyToken(token: string): User | null {
+export function VerifyToken(token: string | null): User | null {
+  if (!token) return null;
   let user;
   try {
-    user = jwt.verify(token, "db5896e1-58d8-4172-a507-5755db17620a") as User;
+    user = jwt.verify(token, JWT_SECRET) as User;
   } catch {
     return null;
   }
@@ -15,5 +18,5 @@ export function VerifyToken(token: string): User | null {
 
 /** Create JWT for user */
 export function CreateUserToken(user: User, expiresIn = 60 * 60): string {
-  return jwt.sign(user, "db5896e1-58d8-4172-a507-5755db17620a", { expiresIn });
+  return jwt.sign(user, JWT_SECRET, { expiresIn });
 }
