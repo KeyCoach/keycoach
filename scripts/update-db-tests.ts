@@ -5,7 +5,8 @@ import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 
 export const dynamo = DynamoDBDocumentClient.from(new DynamoDBClient({ region: "us-east-1" }));
 
-const TEST_TABLE_NAME = "test";
+//const TEST_TABLE_NAME = "test";
+const TEST_TABLE_NAME = "test-dev";
 
 async function AddTestsToDb(tests: Test[]): Promise<void> {
   const testCommands = [];
@@ -80,7 +81,7 @@ const tests: Test[] = [
   {
     id: "8c12b751-a1cc-410f-9ee6-71813d391f54",
     src: "The Book of Mormon",
-    author: "Mormon (duh)",
+    author: "Nephi",
     textBody: "And my father dwelt in a tent.",
     charCount: 23,
     wordCount: 7,
