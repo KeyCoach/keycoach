@@ -118,6 +118,7 @@ export default function Type({
     if (!cameraSetup) {
       const keyPressListener = (window.onkeydown = (e) => {
         if (InvalidKey(e, keyPositions)) return;
+        e.preventDefault();
         onKeyPress(e.key, e.ctrlKey);
       });
 
@@ -143,6 +144,7 @@ export default function Type({
 
         keyPressListener = window.onkeydown = (e) => {
           if (InvalidKey(e, keyPositions)) return;
+          e.preventDefault();
           onKeyPress(e.key, e.ctrlKey);
 
           function HandDataHandler() {
