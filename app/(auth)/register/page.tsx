@@ -7,21 +7,29 @@ import { H1, Button, Input, Label } from "@/design-lib";
 export default function Register() {
   async function Register(e: any) {
     e.preventDefault();
-    const firstName = e.target["first-name"].value;
-    const lastName = e.target["last-name"].value;
-    const email = e.target["email"].value;
-    const password = e.target["password"].value;
+    const formData = new FormData(e.target);
+
+    if (formData.get("password") !== formData.get("confirm-password")) {
+      alert("Passwords do not match");
+      return;
+    }
+
+    const body = {
+      fname: formData.get("first-name"),
+      lname: formData.get("last-name"),
+      email: formData.get("email"),
+      password: formData.get("password"),
+    };
 
     axios
-      .post("/api/register", {
-        firstName,
-        lastName,
-        email,
-        password,
-      })
+      .post("/api/register", body)
       .then((res) => {
         Cookies.set("token", res.data.token);
         window.location.href = "/dashboard"; // Use window.location.href instead of router because it rerenders the entire tree. This time with the user data available to all components.
+      })
+      .catch((err) => {
+        console.error(err);
+        alert("There was an error registering. Please try again.");
       });
   }
   return (
@@ -36,6 +44,7 @@ export default function Register() {
           <Input
             type="text"
             id="first-name"
+            name="first-name"
             placeholder="John"
             autoComplete="given-name"
             required
@@ -50,16 +59,29 @@ export default function Register() {
           <Input
             type="email"
             id="email"
+            name="email"
             autoComplete="email"
             placeholder="example@email.com"
             required
           />
         </div>
-        <div className="pt-2 pb-5">
+        <div className="pt-2">
           <Label htmlFor="password">Password</Label>
           <Input
             type="password"
             id="password"
+            name="password"
+            autoComplete="new-password"
+            placeholder="&bull;&bull;&bull;&bull;&bull;&bull;"
+            required
+          />
+        </div>
+        <div className="pt-2 pb-5">
+          <Label htmlFor="confirm-password">Confirm Password</Label>
+          <Input
+            type="password"
+            id="confirm-password"
+            name="confirm-password"
             autoComplete="new-password"
             placeholder="&bull;&bull;&bull;&bull;&bull;&bull;"
             required

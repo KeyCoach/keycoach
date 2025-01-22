@@ -13,13 +13,12 @@ import { Loading } from "@/design-lib";
 export default function Test() {
   const [cameraSetup, setCameraSetup] = useState(false);
   const [settingUp, setSettingUp] = useState(false);
-  const [keyPositions, setKeyPositions] = useState(defaultKeyPositions);
+  const [keyPositions, setKeyPositions] = useState(JSON.parse(JSON.stringify(defaultKeyPositions)));
   const [test, setTest] = useState<Test | null>(null);
   const router = useRouter();
-
-  // Load ml5 module. Must be loaded before they open the setup page
-  useLoadMl5();
   const { testId } = useParams();
+
+  useLoadMl5();
 
   useEffect(() => {
     axios
