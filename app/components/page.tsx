@@ -1,5 +1,6 @@
 import { Icon } from "@/components/icon";
 import { Button } from "@/components/button";
+import { TextInput } from "@/components/inputs/text-input";
 
 export default async function Components() {
   return (
@@ -31,6 +32,21 @@ export default async function Components() {
           <Button variant="next-nav" children={<span className="mr-auto">next</span>} />
         </div>
         <div id="inputs" className="grid place-items-center">
+          <h1 className="text-3xl">Inputs</h1>
+          <TextInput
+            label="Email"
+            id="email"
+            type="email"
+            placeholder="Email"
+            value=""
+          />
+          <TextInput
+            label="Password"
+            id="password"
+            type="password"
+            placeholder="Password"
+            value=""
+          />
         </div>
         <div id="modals" className="grid place-items-center">
         </div>
