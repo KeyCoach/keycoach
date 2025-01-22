@@ -165,11 +165,11 @@ export default function Type({
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-50">
-      <div className="border-4 border-gray-300 rounded-lg p-10 w-full max-w-7xl">
+      <div className="border-4 border-gray-300 rounded-lg p-10 w-full max-w-6xl">
         {/* <div className="mb-6 text-center">
           <H1 className="text-4xl font-extrabold mb-4">Typing Test</H1>
         </div> */}
-        <div className="font-mono text-5xl text-left-alignForfo mb-6">
+        <div className="font-mono text-4xl text-left mb-6 leading-relaxed">
           <p className="whitespace-pre-wrap">
             {userInput.map((word, i) => {
               const correctWord = word.inputs.every((input) => input.status === Letter.Correct);
