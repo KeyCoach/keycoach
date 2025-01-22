@@ -179,63 +179,80 @@ export default function Type({
   }
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-50">
-      <div className="border-4 border-gray-300 rounded-lg p-10 w-full max-w-6xl">
-        {/* <div className="mb-6 text-center">
+    <div>
+      <Button onClick={() => setSettingUp((prev) => !prev)}>
+        {cameraSetup ? "Recalibrate Camera" : "Set up Camera"}
+      </Button>
+      <div className="flex items-center justify-center min-h-screen bg-gray-50">
+        <div className="border-4 border-gray-300 rounded-lg p-10 w-full max-w-6xl">
+          {/* <div className="mb-6 text-center">
           <H1 className="text-4xl font-extrabold mb-4">Typing Test</H1>
         </div> */}
-        <div className="font-mono text-4xl text-left mb-6 leading-relaxed">
-          <p className="whitespace-pre-wrap">
-            {userInput.map((word, i) => {
-              const correctWord = word.inputs.every((input) => input.status === Letter.Correct);
-              const wrongWordClass = correctWord ? "" : "underline decoration-red-400";
-              return (
-                <span key={i} id="word" className="inline-block">
-                  {word.inputs.map((input, j) => {
-                    const classes: Record<Letter, string> = {
-                      [Letter.Correct]: "text-black",
-                      [Letter.WrongLetter]: "text-red-500",
-                      [Letter.Missing]: "text-gray-500",
-                      [Letter.WrongFinger]: "text-orange-500",
-                    };
-                    return (
-                      <span
-                        key={i + "," + j}
-                        id="letter"
-                        className={`${classes[input.status]} ${wrongWordClass}`}
-                      >
-                        {input.key}
-                      </span>
-                    );
-                  })}
-                  {i === userInput.length - 1 && <span className="absolute blink font-bold">⎸</span>}
-                  {word.word
-                    ?.slice(word.inputs.length)
-                    .split("")
-                    .map((letter, j) => (
-                      <span key={j} className="text-gray-500">
-                        {letter}
-                      </span>
-                    )) || ""}
-                  <span key="space" className="no-underline">
-                    &nbsp;
+          <div className="font-mono text-4xl text-left mb-6 leading-relaxed">
+            <p className="whitespace-pre-wrap">
+              {userInput.map((word, i) => {
+                const correctWord = word.inputs.every((input) => input.status === Letter.Correct);
+                const wrongWordClass = correctWord ? "" : "underline decoration-red-400";
+                return (
+                  <span key={i}>
+                    <span kc-id="word" className="inline-block">
+                      {word.inputs.map((input, j) => {
+                        const classes: Record<Letter, string> = {
+                          [Letter.Correct]: "text-black",
+                          [Letter.WrongLetter]: "text-red-500",
+                          [Letter.Missing]: "text-slate-400",
+                          [Letter.WrongFinger]: "text-orange-500",
+                        };
+                        return (
+                          <span
+                            key={"letter" + i + "," + j}
+                            kc-id="letter"
+                            className={`${classes[input.status]} ${wrongWordClass}`}
+                          >
+                            {input.key}
+                          </span>
+                        );
+                      })}
+                      {i === userInput.length - 1 && (
+                        <span kc-id="cursor" className="absolute blink font-bold">
+                          ⎸
+                        </span>
+                      )}
+                      {word.word
+                        ?.slice(word.inputs.length)
+                        .split("")
+                        .map((letter, j) => (
+                          <span
+                            key={"ghost-letter" + j}
+                            kc-id="ghost-letter"
+                            className="text-slate-400"
+                          >
+                            {letter}
+                          </span>
+                        ))}
+                    </span>
+
+                    <span kc-id="space"> </span>
                   </span>
+                );
+              })}
+              {sentence.slice(userInput.length).map((word, i) => (
+                <span key={"ghost-wrod" + i}>
+                  <span kc-id="ghost-word" className="text-slate-400">
+                    {word}
+                  </span>
+                  <span kc-id="space"> </span>
                 </span>
-              );
-            })}
-            {sentence.slice(userInput.length).map((word, i) => (
-              <span key={i} className="text-gray-500">
-                {word}{" "}
-              </span>
-            ))}
-          </p>
-        </div>
-        <div className="text-right text-sm font-serif italic text-black-700">
-          <p>{`An excerpt from \"${src}\" by ${author}`}</p>
+              ))}
+            </p>
+          </div>
+          <div className="text-right text-sm font-serif italic text-black-700">
+            <p>{`An excerpt from \"${src}\" by ${author}`}</p>
+          </div>
         </div>
       </div>
     </div>
-  );   
+  );
 }
 
 /**
