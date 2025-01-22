@@ -27,7 +27,7 @@ export const tests = [
     id: "3",
     src: "Middlemarch",
     author: "George Eliot",
-    text: "For years after Lydgate remembered the impression produced in him by this involuntary appeal—this cry from soul to soul, without other consciousness than their moving with kindred natures in the same embroiled medium, the same troublous fitfully-illuminated life.",
+    text: "For years after Lydgate remembered the impression produced in him by this involuntary appeal-this cry from soul to soul, without other consciousness than their moving with kindred natures in the same embroiled medium, the same troublous fitfully-illuminated life.",
     charCount: 263,
     wordCount: 38,
   },
@@ -51,7 +51,7 @@ export const tests = [
     id: "6",
     src: "Test",
     author: "",
-    text: "' \" ` ~ : ;",
+    text: "' \" ` ~ : ; -",
     charCount: 23,
     wordCount: 7,
   }

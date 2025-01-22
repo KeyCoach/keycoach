@@ -34,6 +34,8 @@ export default function Type({
   keyPositions: KeyPosition[][];
 }) {
   const testId = test.id;
+  const src = test.src;
+  const author = test.author;
   const [testStart, setTestStart] = useState(0);
   const sentence = test.text.split(" ");
   const router = useRouter();
@@ -162,67 +164,63 @@ export default function Type({
   }, [userInput, cameraSetup, keyPositions, onKeyPress]);
 
   return (
-    <div>
-      <H1>Typing Test</H1>
-      Camera Setup: {cameraSetup ? "Yes" : "No"}
-      <div>
-        <Button
-          onClick={() => {
-            console.log("click");
-            setSettingUp(true);
-          }}
-        >
-          {cameraSetup ? "Recalibrate Camera" : "Set Up Camera"}
-        </Button>
-      </div>
-      <div className="font-mono text-xl">
-        <p>
-          {userInput.map((word, i) => {
-            const correctWord = word.inputs.every((input) => input.status === Letter.Correct);
-            const wrongWordClass = correctWord ? "" : "underline decoration-red-400";
-            return (
-              <span key={i} id="word" className="inline-block">
-                {word.inputs.map((input, j) => {
-                  const classes: Record<Letter, string> = {
-                    [Letter.Correct]: "text-black",
-                    [Letter.WrongLetter]: "text-red-500",
-                    [Letter.Missing]: "text-gray-500",
-                    [Letter.WrongFinger]: "text-orange-500",
-                  };
-                  return (
-                    <span
-                      key={i + "," + j}
-                      id="letter"
-                      className={`${classes[input.status]} ${wrongWordClass}`}
-                    >
-                      {input.key}
-                    </span>
-                  );
-                })}
-                {i === userInput.length - 1 && <span className="absolute blink font-bold">⎸</span>}
-                {word.word
-                  ?.slice(word.inputs.length)
-                  .split("")
-                  .map((letter, j) => (
-                    <span key={j} className="text-gray-500">
-                      {letter}
-                    </span>
-                  )) || ""}
-                <span key="space" className="no-underline">
-                  &nbsp;
+    <div className="flex items-center justify-center min-h-screen bg-gray-50">
+      <div className="border-4 border-gray-300 rounded-lg p-10 w-full max-w-6xl">
+        {/* <div className="mb-6 text-center">
+          <H1 className="text-4xl font-extrabold mb-4">Typing Test</H1>
+        </div> */}
+        <div className="font-mono text-4xl text-left mb-6 leading-relaxed">
+          <p className="whitespace-pre-wrap">
+            {userInput.map((word, i) => {
+              const correctWord = word.inputs.every((input) => input.status === Letter.Correct);
+              const wrongWordClass = correctWord ? "" : "underline decoration-red-400";
+              return (
+                <span key={i} id="word" className="inline-block">
+                  {word.inputs.map((input, j) => {
+                    const classes: Record<Letter, string> = {
+                      [Letter.Correct]: "text-black",
+                      [Letter.WrongLetter]: "text-red-500",
+                      [Letter.Missing]: "text-gray-500",
+                      [Letter.WrongFinger]: "text-orange-500",
+                    };
+                    return (
+                      <span
+                        key={i + "," + j}
+                        id="letter"
+                        className={`${classes[input.status]} ${wrongWordClass}`}
+                      >
+                        {input.key}
+                      </span>
+                    );
+                  })}
+                  {i === userInput.length - 1 && <span className="absolute blink font-bold">⎸</span>}
+                  {word.word
+                    ?.slice(word.inputs.length)
+                    .split("")
+                    .map((letter, j) => (
+                      <span key={j} className="text-gray-500">
+                        {letter}
+                      </span>
+                    )) || ""}
+                  <span key="space" className="no-underline">
+                    &nbsp;
+                  </span>
                 </span>
+              );
+            })}
+            {sentence.slice(userInput.length).map((word, i) => (
+              <span key={i} className="text-gray-500">
+                {word}{" "}
               </span>
-            );
-          })}
-          {sentence.slice(userInput.length).map((word, i) => (
-            <span key={i} className="text-gray-500">
-              {word}{" "}
-            </span>
-          ))}
-        </p>
+            ))}
+          </p>
+        </div>
+        <div className="text-right text-sm font-serif italic text-black-700">
+          <p>{`An excerpt from \"${src}\" by ${author}`}</p>
+        </div>
       </div>
     </div>
-  );
+  );   
 }
 
 /**
