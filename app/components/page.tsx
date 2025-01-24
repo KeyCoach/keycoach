@@ -4,6 +4,7 @@ import { Icon } from "@/components/icon";
 import { Button } from "@/components/button";
 import { TextInput } from "@/components/inputs/text-input";
 import { TextArea } from "@/components/inputs/text-area";
+import { TextInputWithAddon } from "@/components/inputs/text-input-with-addon";
 
 export default function Components() {
   const [text, setText] = useState("");
@@ -83,6 +84,16 @@ export default function Components() {
             placeholder="Type a description here"
             onChange={(e) => setDescription(e.target.value)}
             value={description}
+          />
+          <TextInputWithAddon
+            label="Text Input with Addon"
+            id="text-input-with-addon"
+            type="text"
+            placeholder="Type here"
+            onChange={(e) => setText(e.target.value)}
+            value={text}
+            addon="$"
+            addonPosition="left"
           />
         </div>
         <div id="modals" className="grid place-items-center"></div>
