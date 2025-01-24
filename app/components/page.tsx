@@ -3,11 +3,13 @@ import { useState } from "react";
 import { Icon } from "@/components/icon";
 import { Button } from "@/components/button";
 import { TextInput } from "@/components/inputs/text-input";
+import { TextArea } from "@/components/inputs/text-area";
 
 export default function Components() {
   const [text, setText] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [description, setDescription] = useState("");
 
   return (
     <div>
@@ -36,8 +38,16 @@ export default function Components() {
             <span className="mr-auto">next</span>
           </Button>
         </div>
-        <div id="inputs" className="grid place-items-center">
+        <div id="inputs" className="flex flex-col items-center gap-8">
           <h1 className="text-3xl">Inputs</h1>
+          <TextInput
+            label="Regular Text Input (vertical label)"
+            id="regular-text-input"
+            type="text"
+            placeholder="Type here"
+            onChange={(e) => setText(e.target.value)}
+            value={text}
+          />
           <TextInput
             label="Regular Text Input"
             id="regular-text-input"
@@ -45,6 +55,23 @@ export default function Components() {
             placeholder="Type here"
             onChange={(e) => setText(e.target.value)}
             value={text}
+            labelSetting="horizontal"
+          />
+          <TextInput
+            label="Email (vertical label)"
+            id="email"
+            type="email"
+            placeholder="Email"
+            onChange={(e) => setEmail(e.target.value)}
+            value={email}
+          />
+          <TextInput
+            label="Password (vertical label)"
+            id="password"
+            type="password"
+            placeholder="Password"
+            onChange={(e) => setPassword(e.target.value)}
+            value={password}
           />
           <TextInput
             label="Email"
@@ -53,6 +80,7 @@ export default function Components() {
             placeholder="Email"
             onChange={(e) => setEmail(e.target.value)}
             value={email}
+            labelSetting="horizontal"
           />
           <TextInput
             label="Password"
@@ -61,10 +89,17 @@ export default function Components() {
             placeholder="Password"
             onChange={(e) => setPassword(e.target.value)}
             value={password}
+            labelSetting="horizontal"
+          />
+          <TextArea
+            label="Description"
+            id="text-area"
+            placeholder="Type a description here"
+            onChange={(e) => setDescription(e.target.value)}
+            value={description}
           />
         </div>
-        <div id="modals" className="grid place-items-center">
-        </div>
+        <div id="modals" className="grid place-items-center"></div>
       </div>
 
       <div className="h-screen w-screen grid grid-cols-3 grid-rows-3">
