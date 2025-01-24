@@ -1,8 +1,14 @@
+"use client"
+import { useState } from "react";
 import { Icon } from "@/components/icon";
 import { Button } from "@/components/button";
 import { TextInput } from "@/components/inputs/text-input";
 
-export default async function Components() {
+export default function Components() {
+  const [text, setText] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
   return (
     <div>
       <div className="h-screen w-screen grid grid-cols-3 auto-rows-auto">
@@ -34,18 +40,28 @@ export default async function Components() {
         <div id="inputs" className="grid place-items-center">
           <h1 className="text-3xl">Inputs</h1>
           <TextInput
+            label="Regular Text Input"
+            id="regular-text-input"
+            type="text"
+            placeholder="Type here"
+            onChange={(e) => setText(e.target.value)}
+            value={text}
+          />
+          <TextInput
             label="Email"
             id="email"
             type="email"
             placeholder="Email"
-            value=""
+            onChange={(e) => setEmail(e.target.value)}
+            value={email}
           />
           <TextInput
             label="Password"
             id="password"
             type="password"
             placeholder="Password"
-            value=""
+            onChange={(e) => setPassword(e.target.value)}
+            value={password}
           />
         </div>
         <div id="modals" className="grid place-items-center">
