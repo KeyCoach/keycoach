@@ -87,15 +87,6 @@ const tests: Test[] = [
     wordCount: 7,
     difficulty: 5,
   },
-  {
-    id: "8e25223f-ce2b-4e0f-9bf5-b6cb06ab8c38",
-    src: "Test",
-    author: "Styles Weiler",
-    textBody: "' \" ` ~ : ;",
-    charCount: 23,
-    wordCount: 7,
-    difficulty: 5,
-  },
 ];
 
 AddTestsToDb(tests);
