@@ -8,6 +8,7 @@ interface ButtonProps {
   variant?: "default" | "previous-nav" | "next-nav" | "icon";
   colorTheme?: "obsidian" | "cerulean" | "red" | "amber" | "green";
   darkMode?: boolean;
+  onClick?: () => void;
 }
 
 export function Button({
@@ -16,6 +17,7 @@ export function Button({
   loading,
   variant = "default",
   colorTheme = "cerulean",
+  onClick,
 }: ButtonProps) {
   const variantClasses = {
     default: "grid place-items-center",
@@ -55,5 +57,5 @@ export function Button({
     );
   }
 
-  return <button className={dynamicClass}>{children}</button>;
+  return <button onClick={onClick} className={dynamicClass}>{children}</button>;
 }
