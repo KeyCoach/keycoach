@@ -5,12 +5,14 @@ import { Button } from "@/components/button";
 import { TextInput } from "@/components/inputs/text-input";
 import { TextArea } from "@/components/inputs/text-area";
 import { TextInputWithAddon } from "@/components/inputs/text-input-with-addon";
+import { Modal } from "@/components/modal";
 
 export default function Components() {
   const [text, setText] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [description, setDescription] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
     <div>
@@ -93,10 +95,16 @@ export default function Components() {
             onChange={(e) => setText(e.target.value)}
             value={text}
             addon="$"
-            addonPosition="left"
+            addonPosition="right"
           />
         </div>
-        <div id="modals" className="grid place-items-center"></div>
+        <div id="modals" className="grid place-items-center">
+          <h1>Modals/Dialogues</h1>
+          <Button onClick={() => setIsModalOpen(true)} colorTheme="cerulean">
+            Edit Profile
+          </Button>
+          <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+        </div>
       </div>
 
       <div className="h-screen w-screen grid grid-cols-3 grid-rows-3">
