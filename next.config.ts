@@ -21,6 +21,22 @@ const nextConfig: NextConfig = {
   serverRuntimeConfig: {
     ...databases,
   },
+    images: {
+      // https://typing-background-images.s3.us-east-1.amazonaws.com/tests/${test.id}.jpg
+      remotePatterns: [
+        {
+          protocol: 'https',
+          hostname: 'typing-background-images.s3.us-east-1.amazonaws.com',
+          port: '',
+          pathname: '/**',
+          search: '',
+        },
+      ],
+    }
 };
 
 export default nextConfig;
+
+
+
+
