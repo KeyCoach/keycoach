@@ -14,6 +14,7 @@ export default function Components() {
   const [description, setDescription] = useState("");
   const [isFormModalOpen, setIsFormModalOpen] = useState(false);
   const [isNonFormModalOpen, setNonIsFormModalOpen] = useState(false);
+  const [isDialogueOpen, setIsDialogueOpen] = useState(false);
   const [modalEmail, setModalEmail] = useState("");
   const [modalUsername, setModalUsername] = useState("");
 
@@ -113,6 +114,9 @@ export default function Components() {
               <Button onClick={() => setNonIsFormModalOpen(true)} colorTheme="cerulean">
                 Open Modal without Form
               </Button>
+              <Button onClick={() => setIsDialogueOpen(true)} colorTheme="obsidian">
+                Open Dialogue
+              </Button>
               <Modal
                 modalTitle={"Example Modal with Form"}
                 modalDescription={
@@ -160,6 +164,16 @@ export default function Components() {
                   className="w-full rounded-lg"
                 />
               </Modal>
+              <Modal
+                modalTitle={"Example Dialogue"}
+                modalDescription={
+                  "This dialogue is to be used as a confirmation for the user. It can be used for deleting an item, or confirming a choice."
+                }
+                isOpen={isDialogueOpen}
+                onClose={() => setIsDialogueOpen(false)}
+                confirmButtonFunction={() => setIsDialogueOpen(false)}
+                dialogue={true}
+              ></Modal>
             </div>
           </div>
         </div>
