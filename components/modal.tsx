@@ -8,6 +8,7 @@ export function Modal({
   onClose,
   confirmButtonFunction,
   form = false,
+  dialogue = false,
   children,
 }: {
   modalTitle?: string;
@@ -16,6 +17,7 @@ export function Modal({
   onClose: () => void;
   confirmButtonFunction: () => void;
   form?: boolean;
+  dialogue?: boolean;
   children?: React.ReactNode; // Dynamic content for modal body
 }) {
   const modalRef = useRef<HTMLDivElement>(null);
@@ -73,12 +75,26 @@ export function Modal({
           </>
         )}
 
-        {!form && (
+        {!form && !dialogue && (
           <>
             <div className="mt-4 px-6">{children}</div>
             <div className="flex justify-end my-6 mr-4">
               <Button colorTheme="obsidian" onClick={onClose}>
                 close
+              </Button>
+            </div>
+          </>
+        )}
+
+        {dialogue && (
+          <>
+            <div className="mt-4 px-6">{children}</div>
+            <div className="flex justify-end my-6 mr-4">
+              <Button colorTheme="obsidian" onClick={onClose} className="mr-2">
+                Cancel
+              </Button>
+              <Button colorTheme="cerulean" onClick={confirmButtonFunction}>
+                Confirm
               </Button>
             </div>
           </>
