@@ -1,15 +1,14 @@
-import Link from "next/link";
-import { H1 } from "@/components";
+import { LessonSteps } from "./lesson-steps";
 
-export default async function Test({ params }: { params: Promise<{ lessonId: string }> }) {
-  const lessonId = (await params).lessonId;
+export default async function LessonPage({ params }: { params: { lessonId: string } }) {
+  const lessonId = params.lessonId;
+
   return (
     <div>
-      <H1>Typing Lesson</H1>
-      <div>id: {lessonId}</div>
-      <div>
-        <Link href="/lesson">Back to Lesson Dashboard</Link>
-      </div>
+      <h1>Typing Lesson</h1>
+      <div>Lesson ID: {lessonId}</div>
+      {/* Pass lessonId to the client-side component */}
+      <LessonSteps lessonId={lessonId} />
     </div>
   );
 }

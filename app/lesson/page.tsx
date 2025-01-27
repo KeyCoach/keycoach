@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { H1 } from "@/components";
 
+const lessons = ["a", "s", "d", "f", "g", "h", "j", "k", "l"];
+
 export default function LessonDashboard() {
   return (
     <div>
@@ -13,9 +15,10 @@ export default function LessonDashboard() {
       <div>
         <Link href="/dashboard">To User Dashboard</Link>
       </div>
-      {[...Array(10).keys()].map((i) => (
-        <div key={i}>
-          <Link href={`/lesson/${i}`}>Take Lesson {i + 1}</Link>
+      {/* for lesson in lesson create a link to that lesson */}
+      { lessons.map((lesson) => (
+        <div key={lesson}>
+          <Link href={`/lesson/${lesson}`}>Take Lesson {lesson.toUpperCase()}</Link>
         </div>
       ))}
     </div>
