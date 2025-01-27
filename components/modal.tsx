@@ -3,12 +3,24 @@ import { Button } from "@/components/button";
 import { TextInput } from "@/components/inputs/text-input";
 import { TextInputWithAddon } from "@/components/inputs/text-input-with-addon";
 
-export function Modal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
+export function Modal({
+  modalTitle,
+  modalDescription,
+  isOpen,
+  onClose,
+  confirmButtonFunction,
+}: {
+  modalTitle?: string;
+  modalDescription?: string;
+  isOpen: boolean;
+  onClose: () => void;
+  confirmButtonFunction: () => void;
+}) {
   const [name, setName] = useState("");
   const [username, setUsername] = useState("");
   const modalRef = useRef<HTMLDivElement>(null);
 
-  // Close modal when clicking outside the modal content
+  // close modal when clicking outside
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
@@ -25,15 +37,14 @@ export function Modal({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
     };
   }, [isOpen, onClose]);
 
+  // ensure the modal is closed if the isOpen prop is false
   if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-500 bg-opacity-40">
       <div ref={modalRef} className="max-w-md bg-white rounded-lg shadow-lg p-6">
-        <h2 className="text-lg font-semibold text-slate-800">Edit profile</h2>
-        <p className="text-sm text-slate-600 mt-1">
-          Make changes to your profile here. Click save when you're done.
-        </p>
+        <h2 className="text-xl font-semibold text-slate-800">{modalTitle}</h2>
+        <p className="text-md text-slate-600 mt-1">{modalDescription}</p>
         <form className="mt-4 space-y-4">
           <TextInput
             id="modal-input-email"
