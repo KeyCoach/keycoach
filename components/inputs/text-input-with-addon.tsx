@@ -45,7 +45,7 @@ export function TextInputWithAddon({
           {...props}
         />
         {addonPosition === "right" && (
-          <span className="absolute inset-y-0 right-0 flex items-center bg-slate-100 border-2 border-slate-300 px-3 text-slate-500 box-border">
+          <span className="absolute inset-y-0 rounded-r-md right-0 flex items-center bg-slate-100 border border-slate-300 px-3 text-slate-500 box-border border-r-md">
             {addon}
           </span>
         )}
