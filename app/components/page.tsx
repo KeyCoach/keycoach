@@ -20,30 +20,18 @@ export default function Components() {
 
   return (
     <div>
-      <div className="h-screen w-screen grid grid-cols-3 auto-rows-auto">
-        <div id="centered-button" className="w-full flex flex-row flex-wrap items-start gap-4">
-          <h1 className="text-3xl">Buttons</h1>
-          <Button colorTheme="cerulean">
-            <span>cerulean button</span>
-          </Button>
-          <Button colorTheme="obsidian">
-            <span>obsidian button</span>
-          </Button>
-          <Button colorTheme="red">
-            <span>red button</span>
-          </Button>
-          <Button colorTheme="amber">
-            <span>amber button</span>
-          </Button>
-          <Button colorTheme="green">
-            <span>green button</span>
-          </Button>
-          <Button variant="previous-nav">
-            <span className="ml-auto">previous</span>
-          </Button>
-          <Button variant="next-nav">
-            <span className="mr-auto">next</span>
-          </Button>
+      <div className="h-fit grid grid-cols-3 auto-rows-auto">
+        <div id="centered-button" className="">
+          <h1 className="text-3xl mb-8 text-center">Buttons</h1>
+          <div className="flex flex-row h-1/2 flex-wrap items-start gap-4">
+            <Button colorTheme="cerulean" children={<span>cerulean button</span>} />
+            <Button colorTheme="obsidian" children={<span>obsidian button</span>} />
+            <Button colorTheme="red" children={<span>red button</span>} />
+            <Button colorTheme="amber" children={<span>amber button</span>} />
+            <Button colorTheme="green" children={<span>green button</span>} />
+            <Button variant="previous-nav" children={<span className="ml-auto">previous</span>} />
+            <Button variant="next-nav" children={<span className="mr-auto">next</span>} />
+          </div>
         </div>
         <div id="inputs" className="flex flex-col items-center gap-8">
           <h1 className="text-3xl">Inputs</h1>
