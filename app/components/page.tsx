@@ -119,7 +119,13 @@ export default function Components() {
               <Button onClick={() => setIsModalOpen(true)} colorTheme="cerulean">
                 Open Modal
               </Button>
-              <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+              <Modal
+                modalTitle={"Example Modal"}
+                modalDescription={"This is an example of a modal. There are many components to be added as children, such as inputs or buttons."}
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                confirmButtonFunction={() => setIsModalOpen(false)}
+              />
             </div>
           </div>
         </div>
