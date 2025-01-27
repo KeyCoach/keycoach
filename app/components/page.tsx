@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { useState } from "react";
 import { Icon } from "@/components/icon";
 import { Button } from "@/components/button";
@@ -112,16 +112,20 @@ export default function Components() {
             addonPosition="right"
           />
         </div>
-        <div id="modals" className="grid place-items-center">
-          <h1>Modals/Dialogues</h1>
-          <Button onClick={() => setIsModalOpen(true)} colorTheme="cerulean">
-            Edit Profile
-          </Button>
-          <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+        <div id="modals" className="">
+          <div id="centered-button" className="flex flex-col justify-center items-center">
+            <h1 className="text-3xl mb-8">Modals/Dialogues</h1>
+            <div className="flex flex-row h-1/2 flex-wrap items-start">
+              <Button onClick={() => setIsModalOpen(true)} colorTheme="cerulean">
+                Open Modal
+              </Button>
+              <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+            </div>
+          </div>
         </div>
       </div>
 
-      <div className="h-screen w-screen grid grid-cols-3 grid-rows-3">
+      <div className="h-screen grid grid-cols-3 grid-rows-3 py-12">
         <div id="card"></div>
         <div id="modal"></div>
         <div id="icons" className="grid grid-cols-8 auto-rows-auto">
