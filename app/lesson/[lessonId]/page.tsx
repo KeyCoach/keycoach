@@ -1,4 +1,5 @@
-import { LessonSteps } from "./lesson-steps";
+// app/lesson/[lessonId]/page.tsx
+import { LessonFlow } from "./lesson-flow";
 
 export default async function LessonPage({ params }: { params: { lessonId: string } }) {
   const lessonId = params.lessonId;
@@ -7,8 +8,7 @@ export default async function LessonPage({ params }: { params: { lessonId: strin
     <div>
       <h1>Typing Lesson</h1>
       <div>Lesson ID: {lessonId}</div>
-      {/* Pass lessonId to the client-side component */}
-      <LessonSteps lessonId={lessonId} />
+      <LessonFlow />
     </div>
   );
 }
