@@ -13,12 +13,12 @@ export default function LessonDashboard() {
         <li>all lessons</li>
       </ul>
       <div>
-        <Link href="/dashboard">To User Dashboard</Link>
+        <Link className="dark:text-slate-50 text-slate-950" href="/dashboard">To User Dashboard</Link>
       </div>
       {/* for lesson in lesson create a link to that lesson */}
-      { lessons.map((lesson) => (
+      {lessons.map((lesson) => (
         <div key={lesson}>
-          <Link href={`/lesson/${lesson}`}>Take Lesson {lesson.toUpperCase()}</Link>
+          <Link className="dark:text-slate-50 text-slate-950" href={`/lesson/${lesson}`}>Take Lesson {lesson.toUpperCase()}</Link>
         </div>
       ))}
     </div>

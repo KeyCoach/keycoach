@@ -28,9 +28,11 @@ export default async function RootLayout({
         <meta name="description" content="Keycoach" />
         <link rel="icon" href="/favicon.ico" sizes="any" />
       </head>
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} dark:bg-slate-950 dark:text-slate-50 light:bg-slate-50 light:text-slate-950`}
+      >
         <Navbar />
-        <div className="">
+        <div>
           <UserProvider user={user}>{children}</UserProvider>
         </div>
       </body>

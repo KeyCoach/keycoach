@@ -6,9 +6,7 @@ export default async function LessonPage({ params }: { params: { lessonId: strin
 
   return (
     <div>
-      <h1>Typing Lesson</h1>
-      <div>Lesson ID: {lessonId}</div>
-      <LessonFlow />
+      <LessonFlow lessonId={lessonId} />
     </div>
   );
 }
