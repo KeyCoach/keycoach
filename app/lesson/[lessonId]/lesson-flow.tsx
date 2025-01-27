@@ -6,6 +6,7 @@ import { QuoteTest } from "./steps/quote-test";
 import { TypingGame } from "./steps/typing-game";
 import { FullTest } from "./steps/full-test";
 import { BufferScreen } from "./steps/buffer-screen";
+import Sidebar from "./lesson-sidebar";
 
 export function LessonFlow({ lessonId }: { lessonId: string }) {
   const [lessonStep, setLessonStep] = useState(1);
@@ -62,12 +63,14 @@ export function LessonFlow({ lessonId }: { lessonId: string }) {
   };
 
   return (
-    <div>
-      <div>lessonId: {lessonId}</div>
-      <div>lessonStep: {lessonStep}</div>
-
-      {renderStep()}
-      <button onClick={() => handleNextStep()}>Next Step</button>
+    <div className="flex w-full">
+      {/* lesson sidebar */}
+      <Sidebar lessonId={lessonId} currentLevel={lessonStep} />
+      <div className="flex flex-col w-full h-96">
+        {renderStep()}
+        <button onClick={() => handleNextStep()}>Next Step</button>
+      </div>
+      <Sidebar lessonId={lessonId} currentLevel={lessonStep} />
     </div>
   );
 }
