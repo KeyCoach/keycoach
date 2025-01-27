@@ -6,6 +6,7 @@ import { TextInput } from "@/components/inputs/text-input";
 import { TextArea } from "@/components/inputs/text-area";
 import { TextInputWithAddon } from "@/components/inputs/text-input-with-addon";
 import { Modal } from "@/components/modal";
+import Image from "next/image";
 
 export default function Components() {
   const [text, setText] = useState("");
@@ -24,13 +25,27 @@ export default function Components() {
         <div id="centered-button" className="">
           <h1 className="text-3xl mb-8 text-center">Buttons</h1>
           <div className="flex flex-row h-1/2 flex-wrap items-start gap-4">
-            <Button colorTheme="cerulean" children={<span>cerulean button</span>} />
-            <Button colorTheme="obsidian" children={<span>obsidian button</span>} />
-            <Button colorTheme="red" children={<span>red button</span>} />
-            <Button colorTheme="amber" children={<span>amber button</span>} />
-            <Button colorTheme="green" children={<span>green button</span>} />
-            <Button variant="previous-nav" children={<span className="ml-auto">previous</span>} />
-            <Button variant="next-nav" children={<span className="mr-auto">next</span>} />
+            <Button colorTheme="cerulean">
+              cerulean button
+            </Button>
+            <Button colorTheme="obsidian">
+              obsidian button
+            </Button>
+            <Button colorTheme="red">
+              red button
+            </Button>
+            <Button colorTheme="amber">
+              amber button
+            </Button>
+            <Button colorTheme="green">
+              green button
+            </Button>
+            <Button variant="previous-nav">
+              <span className="ml-auto">previous</span>
+            </Button>
+            <Button variant="next-nav">
+              <span className="mr-auto">next</span>
+            </Button>
           </div>
         </div>
         <div id="inputs" className="flex flex-col items-center gap-8">
@@ -158,7 +173,7 @@ export default function Components() {
                 confirmButtonFunction={() => setNonIsFormModalOpen(false)}
                 form={false}
               >
-                <img
+                <Image
                   src="https://images.unsplash.com/photo-1734784547207-7ad9f04c1f0a?q=80&w=3432&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                   alt="example image"
                   className="w-full rounded-lg"
