@@ -192,8 +192,6 @@ export default function Components() {
       </div>
 
       <div className="h-screen grid grid-cols-3 grid-rows-3 py-12">
-        <div id="card"></div>
-        <div id="modal"></div>
         <div id="icons" className="grid grid-cols-8 auto-rows-auto">
           <Icon src="icons/check.svg" alt="checkmark icon" w={24} h={24} />
           <Icon src="icons/bookmark.svg" alt="bookmark icon" w={24} h={24} />
