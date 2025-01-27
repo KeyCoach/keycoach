@@ -12,7 +12,10 @@ export default function Components() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [description, setDescription] = useState("");
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isFormModalOpen, setIsFormModalOpen] = useState(false);
+  const [isNonFormModalOpen, setNonIsFormModalOpen] = useState(false);
+  const [modalEmail, setModalEmail] = useState("");
+  const [modalUsername, setModalUsername] = useState("");
 
   return (
     <div>
@@ -103,17 +106,60 @@ export default function Components() {
         <div id="modals" className="">
           <div id="centered-button" className="flex flex-col justify-center items-center">
             <h1 className="text-3xl mb-8">Modals/Dialogues</h1>
-            <div className="flex flex-row h-1/2 flex-wrap items-start">
-              <Button onClick={() => setIsModalOpen(true)} colorTheme="cerulean">
-                Open Modal
+            <div className="flex flex-row h-1/2 gap-4 flex-wrap items-start">
+              <Button onClick={() => setIsFormModalOpen(true)} colorTheme="cerulean">
+                Open Modal with Form
+              </Button>
+              <Button onClick={() => setNonIsFormModalOpen(true)} colorTheme="cerulean">
+                Open Modal without Form
               </Button>
               <Modal
-                modalTitle={"Example Modal"}
-                modalDescription={"This is an example of a modal. There are many components to be added as children, such as inputs or buttons."}
-                isOpen={isModalOpen}
-                onClose={() => setIsModalOpen(false)}
-                confirmButtonFunction={() => setIsModalOpen(false)}
-              />
+                modalTitle={"Example Modal with Form"}
+                modalDescription={
+                  "This is an example of a modal. There are many components to be added as children, such as inputs or buttons."
+                }
+                isOpen={isFormModalOpen}
+                onClose={() => setIsFormModalOpen(false)}
+                confirmButtonFunction={() => setIsFormModalOpen(false)}
+                form={true}
+              >
+                <div className="flex flex-col gap-4">
+                  <TextInput
+                    id="modal-input-email"
+                    label="Email"
+                    type="text"
+                    placeholder="Email"
+                    onChange={(e) => setModalEmail(e.target.value)}
+                    value={modalEmail}
+                  />
+                  <TextInputWithAddon
+                    label="Username"
+                    id="modal-input-username"
+                    type="text"
+                    placeholder="Username"
+                    onChange={(e) => setModalUsername(e.target.value)}
+                    value={modalUsername}
+                    addon="@"
+                    addonPosition="left"
+                  />
+                </div>
+              </Modal>
+              <Modal
+                modalTitle={"Example Modal without a Form"}
+                modalDescription={
+                  "This is an example of a modal. There are many components to be added as children, such as inputs or buttons."
+                }
+                isOpen={isNonFormModalOpen}
+                onClose={() => setNonIsFormModalOpen(false)}
+                confirmButtonFunction={() => setNonIsFormModalOpen(false)}
+                form={false}
+              >
+                <img
+                  src="https://images.unsplash.com/photo-1734784547207-7ad9f04c1f0a?q=80&w=3432&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                  alt="example image"
+                  className="w-full rounded-lg"
+                />
+              </Modal>
             </div>
           </div>
         </div>
