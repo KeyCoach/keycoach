@@ -41,8 +41,8 @@ export function Modal({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-500 bg-opacity-40">
-      <div ref={modalRef} className="max-w-md bg-white rounded-lg shadow-lg">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-500 bg-opacity-40 animate-modalBackground">
+      <div ref={modalRef} className="max-w-md bg-white rounded-lg shadow-lg animate-fadeInUp">
         {modalTitle && (
           <div className="bg-slate-200 pt-4 pb-2 px-6 rounded-t-lg shadow-button-shadow">
             <h2 className="text-xl font-semibold text-slate-800">{modalTitle}</h2>

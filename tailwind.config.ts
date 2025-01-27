@@ -9,6 +9,20 @@ export default {
   ],
   theme: {
     extend: {
+      keyframes: {
+        fadeInUp: {
+          '0%': { opacity: '0', transform: 'translateY(8rem)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        modalBackground: {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' },
+        }
+      },
+      animation: {
+        fadeInUp: 'fadeInUp 0.4s ease-out',
+        modalBackground: 'modalBackground 0.4s ease',
+      },
       minWidth:{
         'button-min-width': '8rem'
       },
