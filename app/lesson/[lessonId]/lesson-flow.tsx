@@ -6,7 +6,8 @@ import { QuoteTest } from "./steps/quote-test";
 import { TypingGame } from "./steps/typing-game";
 import { FullTest } from "./steps/full-test";
 import { BufferScreen } from "./steps/buffer-screen";
-import Sidebar from "./lesson-sidebar";
+import Sidebar from "./sidebar";
+import StatsPanel from "./stats-panel";
 
 export function LessonFlow({ lessonId }: { lessonId: string }) {
   const [lessonStep, setLessonStep] = useState(1);
@@ -70,7 +71,7 @@ export function LessonFlow({ lessonId }: { lessonId: string }) {
         {renderStep()}
         <button onClick={() => handleNextStep()}>Next Step</button>
       </div>
-      <Sidebar lessonId={lessonId} currentLevel={lessonStep} />
+      <StatsPanel />
     </div>
   );
 }
