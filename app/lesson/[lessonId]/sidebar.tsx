@@ -15,7 +15,7 @@ export default function Sidebar({
     <aside
       className={`${
         isCollapsed ? "w-16" : "w-fit"
-      } border-gray-700 transition-width flex h-full flex-col text-nowrap rounded-lg border-r bg-slate-50 text-slate-950 shadow-lg duration-300 dark:bg-slate-950 dark:text-slate-50`}
+      } border-gray-700 transition-width flex h-full flex-col text-nowrap rounded-lg border bg-slate-50 text-slate-950 shadow-lg duration-300 dark:bg-slate-950 dark:text-slate-50`}
       id={`lesson-sidebar-${lessonId}`}
     >
       <div className="border-gray-700 flex items-center justify-between border-b p-4">
@@ -34,7 +34,7 @@ export default function Sidebar({
         {levels.map((level) => (
           <li
             key={level}
-            className={`border-gray-700 ${level < 10 ? "border-b" : "rounded-r-lg border-b"} p-4 ${level === currentLevel ? "bg-cerulean-600 font-bold text-slate-50 dark:bg-cerulean-300 dark:text-slate-950" : "hover:bg-gray-700"} `}
+            className={`border-gray-700 ${level < 10 ? "border-b" : ""} p-4 ${level === currentLevel ? "bg-cerulean-600 font-bold text-slate-50 dark:bg-cerulean-300 dark:text-slate-950" : "hover:bg-gray-700"} `}
           >
             {isCollapsed ? level : `Level ${level}`}
           </li>
