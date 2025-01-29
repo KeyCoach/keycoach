@@ -1,5 +1,4 @@
-import { Badge } from "@/components/badges";
-import { Card } from "@/components/card";
+import { Card, Badge } from "@/components";
 
 export default async function Components() {
   return (

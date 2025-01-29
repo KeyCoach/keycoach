@@ -1,6 +1,6 @@
 "use client";
 import { useRef, useEffect } from "react";
-import { Button } from "@/components/button";
+import { Button } from "@/components";
 
 export function Modal({
   modalTitle,

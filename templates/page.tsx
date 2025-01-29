@@ -1,4 +1,4 @@
-import { H1 } from "@/components/headers";
+import { H1 } from "@/components";
 
 export default function SamplePage() {
   return (

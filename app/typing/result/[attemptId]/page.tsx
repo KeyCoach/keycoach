@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { H1 } from "@/components/headers";
+import { H1 } from "@/components";
 import { GetAttemptById } from "@/service-interfaces/dynamo-db";
 import { AuthenticateUser } from "@/utils/authenticate-user";
 import { type Attempt } from "@/app/lib/types";

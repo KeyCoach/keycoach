@@ -2,9 +2,7 @@
 import axios from "axios";
 import Link from "next/link";
 import Cookies from "js-cookie";
-import { TextInput } from "@/components/inputs";
-import { Button } from "@/components/button";
-import { H1 } from "@/components/headers";
+import { Button, H1, TextInput } from "@/components";
 
 export default function Register() {
   async function Register(e: any) {

@@ -2,9 +2,7 @@
 import axios from "axios";
 import Link from "next/link";
 import Cookies from "js-cookie";
-import { Button } from "@/components/button";
-import { TextInput } from "@/components/inputs/text-input";
-import { H1 } from "@/components/headers";
+import { H1, TextInput, Button } from "@/components";
 import { useSearchParams } from "next/navigation";
 
 export default function Login() {

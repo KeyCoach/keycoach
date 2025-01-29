@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { LoginButton, LogoutButton } from "@/components/nav-buttons";
+import { LoginButton, LogoutButton } from "./nav-buttons";
 import { AuthenticateUser } from "@/utils/authenticate-user";
 
 export async function Navbar() {

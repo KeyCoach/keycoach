@@ -1,6 +1,5 @@
 "use client";
-import { Button } from "@/components/button";
-import { Badge } from "@/components/badges";
+import { Badge, Button } from "@/components";
 
 interface CardProps {
   title: string;

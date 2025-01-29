@@ -1,5 +1,5 @@
 "use client";
-import { Icon } from "@/components/icon";
+import { Icon } from "@/components";
 
 type Variant =
   | "primary"

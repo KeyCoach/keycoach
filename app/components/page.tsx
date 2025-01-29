@@ -2,10 +2,7 @@
 import { useState } from "react";
 
 import Image from "next/image";
-import { Button } from "@/components/button";
-import { TextArea, TextInput, TextInputWithAddon } from "@/components/inputs";
-import { Icon } from "@/components/icon";
-import { Modal } from "@/components/modal";
+import { Icon, Modal, TextArea, TextInput, TextInputWithAddon, Button } from "@/components";
 
 export default function Components() {
   const [text, setText] = useState("");
