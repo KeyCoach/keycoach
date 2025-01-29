@@ -1,5 +1,5 @@
 import { type User as TUser } from "@/app/lib/types";
-import { H1 } from "@/components";
+import { H1 } from "@/components/headers";
 import { GetAttemptsByEmail } from "@/service-interfaces/dynamo-db";
 import { AuthenticateUser } from "@/utils/authenticate-user";
 

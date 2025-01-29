@@ -1,8 +1,8 @@
 import Link from "next/link";
-import { LoginButton, LogoutButton } from "./nav-buttons";
+import { LoginButton, LogoutButton } from "@/components/nav-buttons";
 import { AuthenticateUser } from "@/utils/authenticate-user";
 
-export default async function Navbar() {
+export async function Navbar() {
   const user = await AuthenticateUser();
   return (
     <nav className="bg-white shadow sticky top-0 z-50">

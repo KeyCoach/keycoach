@@ -7,12 +7,7 @@ interface BadgeProps {
   label?: string; // Add a prop for the text label
 }
 
-export function Badge({
-  className,
-  icon,
-  colorTheme = "cerulean",
-  label,
-}: BadgeProps) {
+export function Badge({ className, icon, colorTheme = "cerulean", label }: BadgeProps) {
   const colorClasses = {
     obsidian: "bg-obsidian-500 text-slate-100",
     cerulean: "bg-cerulean-500 text-slate-100",

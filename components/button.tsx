@@ -1,6 +1,15 @@
+"use client";
 import { Icon } from "@/components/icon";
 
-type Variant = "primary" | "secondary" | "danger" | "warning" | "default" | "previous-nav" | "next-nav" | "icon";
+type Variant =
+  | "primary"
+  | "secondary"
+  | "danger"
+  | "warning"
+  | "default"
+  | "previous-nav"
+  | "next-nav"
+  | "icon";
 type ColorTheme = "obsidian" | "cerulean" | "red" | "amber" | "green";
 
 type ButtonProps = React.ComponentProps<"button"> & {
@@ -10,13 +19,13 @@ type ButtonProps = React.ComponentProps<"button"> & {
   loading?: boolean;
 };
 
-export function Button({ 
-  children, 
-  className = "", 
-  variant = "default", 
-  colorTheme = "cerulean", 
-  loading, 
-  ...props 
+export function Button({
+  children,
+  className = "",
+  variant = "default",
+  colorTheme = "cerulean",
+  loading,
+  ...props
 }: ButtonProps) {
   const variantClasses = {
     primary: "bg-blue-500 hover:bg-blue-700 text-white",
@@ -30,11 +39,15 @@ export function Button({
   };
 
   const colorClasses = {
-    obsidian: "bg-obsidian-500 text-slate-100 hover:bg-obsidian-300 disabled:bg-obsidian-100 focus:bg-obsidian-200",
-    cerulean: "bg-cerulean-500 text-slate-100 hover:bg-cerulean-300 disabled:bg-cerulean-100 focus:bg-cerulean-200",
+    obsidian:
+      "bg-obsidian-500 text-slate-100 hover:bg-obsidian-300 disabled:bg-obsidian-100 focus:bg-obsidian-200",
+    cerulean:
+      "bg-cerulean-500 text-slate-100 hover:bg-cerulean-300 disabled:bg-cerulean-100 focus:bg-cerulean-200",
     red: "bg-red-500 text-slate-100 hover:bg-red-300 disabled:bg-red-100 focus:bg-red-200",
-    amber: "bg-amber-500 text-slate-100 hover:bg-amber-300 disabled:bg-amber-100 focus:bg-amber-200",
-    green: "bg-green-500 text-slate-100 hover:bg-green-300 disabled:bg-green-100 focus:bg-green-200",
+    amber:
+      "bg-amber-500 text-slate-100 hover:bg-amber-300 disabled:bg-amber-100 focus:bg-amber-200",
+    green:
+      "bg-green-500 text-slate-100 hover:bg-green-300 disabled:bg-green-100 focus:bg-green-200",
   };
 
   let dynamicClass = className ? className : colorClasses[colorTheme];
@@ -50,16 +63,20 @@ export function Button({
     children = (
       <>
         {children}
-        <Icon 
-          src={`public/icons/${navIconName}.svg`} 
-          alt={`${navIconName} icon`} 
-          w="1rem" 
-          h="1rem" 
-          className="inline-block ml-2"
+        <Icon
+          src={`/icons/${navIconName}.svg`}
+          alt={`${navIconName} icon`}
+          w={18}
+          h={18}
+          className="inline-block"
         />
       </>
     );
   }
 
-  return <button className={dynamicClass} {...props}>{children}</button>;
+  return (
+    <button className={dynamicClass} {...props}>
+      {children}
+    </button>
+  );
 }

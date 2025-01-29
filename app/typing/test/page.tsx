@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { H1, H3, Button } from "@/components";
+import { H1, H3 } from "@/components/headers";
+import { Button } from "@/components/button";
 import { GetAllTests } from "@/service-interfaces/dynamo-db";
 
 export default async function Test() {

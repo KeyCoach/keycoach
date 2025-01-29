@@ -1,12 +1,13 @@
+"use client";
 import { useRef, useEffect } from "react";
-import { Button } from "@/components/old-button";
+import { Button } from "@/components/button";
 
 export function Modal({
   modalTitle,
   modalDescription,
   isOpen,
-  onClose,
-  confirmButtonFunction,
+  onCloseAction,
+  confirmButtonAction,
   form = false,
   dialogue = false,
   children,
@@ -14,8 +15,8 @@ export function Modal({
   modalTitle?: string;
   modalDescription?: string;
   isOpen: boolean;
-  onClose: () => void;
-  confirmButtonFunction: () => void;
+  onCloseAction: () => void;
+  confirmButtonAction: () => void;
   form?: boolean;
   dialogue?: boolean;
   children?: React.ReactNode; // Dynamic content for modal body
@@ -26,7 +27,7 @@ export function Modal({
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
-        onClose();
+        onCloseAction();
       }
     }
 
@@ -37,7 +38,7 @@ export function Modal({
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [isOpen, onClose]);
+  }, [isOpen, onCloseAction]);
 
   // Ensure the modal is closed if the isOpen prop is false
   if (!isOpen) return null;
@@ -57,7 +58,7 @@ export function Modal({
             <form
               onSubmit={(e) => {
                 e.preventDefault();
-                confirmButtonFunction();
+                confirmButtonAction();
               }}
               className="mt-4 mx-6"
             >
@@ -65,10 +66,10 @@ export function Modal({
             </form>
 
             <div className="flex justify-end my-6 mr-4">
-              <Button colorTheme="obsidian" onClick={onClose} className="mr-2">
+              <Button colorTheme="obsidian" onClick={onCloseAction} className="mr-2">
                 Cancel
               </Button>
-              <Button colorTheme="cerulean" onClick={confirmButtonFunction}>
+              <Button colorTheme="cerulean" onClick={confirmButtonAction}>
                 Confirm
               </Button>
             </div>
@@ -79,7 +80,7 @@ export function Modal({
           <>
             <div className="mt-4 px-6">{children}</div>
             <div className="flex justify-end my-6 mr-4">
-              <Button colorTheme="obsidian" onClick={onClose}>
+              <Button colorTheme="obsidian" onClick={onCloseAction}>
                 close
               </Button>
             </div>
@@ -90,10 +91,10 @@ export function Modal({
           <>
             <div className="mt-4 px-6">{children}</div>
             <div className="flex justify-end my-6 mr-4">
-              <Button colorTheme="obsidian" onClick={onClose} className="mr-2">
+              <Button colorTheme="obsidian" onClick={onCloseAction} className="mr-2">
                 Cancel
               </Button>
-              <Button colorTheme="cerulean" onClick={confirmButtonFunction}>
+              <Button colorTheme="cerulean" onClick={confirmButtonAction}>
                 Confirm
               </Button>
             </div>

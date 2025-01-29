@@ -1,4 +1,4 @@
-import { H1 } from "@/components";
+import { H1 } from "@/components/headers";
 
 // Global 404 page
 export default function NotFound() {

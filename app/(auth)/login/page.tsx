@@ -2,7 +2,9 @@
 import axios from "axios";
 import Link from "next/link";
 import Cookies from "js-cookie";
-import { H1, Button, Input, Label } from "@/components";
+import { Button } from "@/components/button";
+import { TextInput } from "@/components/inputs/text-input";
+import { H1 } from "@/components/headers";
 import { useSearchParams } from "next/navigation";
 
 export default function Login() {
@@ -22,9 +24,8 @@ export default function Login() {
       .then((res) => {
         Cookies.set("token", res.data.token);
         const redirect = params.get("redirect");
-      
-        if (redirect) {
 
+        if (redirect) {
           window.location.href = redirect;
         } else {
           window.location.href = "/dashboard"; // Use window.location.href instead of router because it rerenders the entire tree. This time with the user data available to all components.
@@ -44,8 +45,8 @@ export default function Login() {
       </div>
       <form onSubmit={LogIn}>
         <div className="pt-5">
-          <Label htmlFor="email">Email</Label>
-          <Input
+          <TextInput
+            label="Email"
             type="email"
             id="email"
             name="email"
@@ -55,8 +56,8 @@ export default function Login() {
           />
         </div>
         <div className="pt-3 pb-5">
-          <Label htmlFor="password">Password</Label>
-          <Input
+          <TextInput
+            label="Password"
             type="password"
             id="password"
             name="password"

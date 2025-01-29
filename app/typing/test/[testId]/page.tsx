@@ -8,7 +8,7 @@ import { defaultKeyPositions } from "./hand-tracking";
 import { useParams, useRouter } from "next/navigation";
 import { type Test } from "@/app/lib/types";
 import axios from "axios";
-import { Loading } from "@/components";
+import { Loading } from "@/components/loading";
 
 export default function Test() {
   const [cameraSetup, setCameraSetup] = useState(false);
