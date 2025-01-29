@@ -3,7 +3,7 @@ import p5 from "p5";
 import { KeyPosition, normalKeys, HandsFromTrackingResults } from "./hand-tracking";
 import { useRouter } from "next/navigation";
 import { startVideo } from "./p5";
-import { Button, H1, Loading } from "@/design-lib";
+import { Button, H1, Loading } from "@/components";
 import { Test } from "@/app/lib/types";
 import axios from "axios";
 import Image from 'next/image';

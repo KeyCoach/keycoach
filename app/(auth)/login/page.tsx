@@ -2,7 +2,7 @@
 import axios from "axios";
 import Link from "next/link";
 import Cookies from "js-cookie";
-import { H1, Button, Input, Label } from "@/design-lib";
+import { H1, Button, Input, Label } from "@/components";
 import { useSearchParams } from "next/navigation";
 
 export default function Login() {

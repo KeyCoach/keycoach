@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { Icon } from "@/components/icon";
-import { Button } from "@/components/button";
+import { Button } from "@/components/old-button";
 import { TextInput } from "@/components/inputs/text-input";
 import { TextArea } from "@/components/inputs/text-area";
 import { TextInputWithAddon } from "@/components/inputs/text-input-with-addon";

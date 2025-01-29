@@ -1,5 +1,5 @@
 import { Badge } from "@/components/badges";
-import { Button } from "@/components/button";
+import { Button } from "@/components/old-button";
 import { Icon } from "@/components/icon";
 
 

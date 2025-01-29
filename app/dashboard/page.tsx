@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { H1 } from "@/design-lib";
+import { H1 } from "@/components";
 import { AuthenticateUser } from "@/utils/authenticate-user";
 
 export default async function Dashboard() {
