@@ -11,7 +11,7 @@ export function LogoutButton() {
   }
 
   return (
-    <Link href="#" onClick={removeCookie}>
+    <Link className="text-black no-underline" href="#" onClick={removeCookie}>
       Logout
     </Link>
   );
@@ -33,7 +33,7 @@ export function LoginButton() {
   }
 
   return (
-    <Link href="#" onClick={GoToLogin}>
+    <Link className="text-black no-underline hover:underline" href="#" onClick={GoToLogin}>
       Login
     </Link>
   );
