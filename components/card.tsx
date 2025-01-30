@@ -1,7 +1,5 @@
-import { Badge } from "@/components/badges";
-import { Button } from "@/components/button";
-import { Icon } from "@/components/icon";
-
+"use client";
+import { Badge, Button } from "@/components";
 
 interface CardProps {
   title: string;
@@ -18,6 +16,7 @@ export function Card({
   badgeIcon,
   badgeTheme = "green",
   buttonText,
+  onButtonClick,
 }: CardProps) {
   return (
     <div className="w-full max-w-xs border rounded-lg shadow-md overflow-hidden transition-transform transform hover:scale-105 hover:shadow-lg">
@@ -27,10 +26,9 @@ export function Card({
       </div>
       <div className="flex items-center justify-between p-4 bg-slate-100">
         <Badge icon={badgeIcon} colorTheme={badgeTheme} />
-        <Button
-          colorTheme="cerulean"
-          children={<span>{buttonText}</span>}
-        />
+        <Button colorTheme="cerulean" onClick={onButtonClick}>
+          <span>{buttonText}</span>{" "}
+        </Button>
       </div>
       {/*Just an idea?
       <div className="w-full bg-gray-100 rounded-full">

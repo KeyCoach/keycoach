@@ -2,7 +2,7 @@
 import axios from "axios";
 import Link from "next/link";
 import Cookies from "js-cookie";
-import { H1, Button, Input, Label } from "@/design-lib";
+import { Button, H1, TextInput } from "@/components";
 
 export default function Register() {
   async function Register(e: any) {
@@ -40,8 +40,8 @@ export default function Register() {
       </div>
       <form onSubmit={Register}>
         <div className="pt-5">
-          <Label htmlFor="first-name">First Name</Label>
-          <Input
+          <TextInput
+            label="First Name"
             type="text"
             id="first-name"
             name="first-name"
@@ -51,12 +51,18 @@ export default function Register() {
           />
         </div>
         <div className="pt-2">
-          <Label htmlFor="last-name">Last Name</Label>
-          <Input type="text" id="last-name" placeholder="Doe" autoComplete="family-name" required />
+          <TextInput
+            label="Last Name"
+            type="text"
+            id="last-name"
+            placeholder="Doe"
+            autoComplete="family-name"
+            required
+          />
         </div>
         <div className="pt-2">
-          <Label htmlFor="email">Email</Label>
-          <Input
+          <TextInput
+            label="Email"
             type="email"
             id="email"
             name="email"
@@ -66,8 +72,8 @@ export default function Register() {
           />
         </div>
         <div className="pt-2">
-          <Label htmlFor="password">Password</Label>
-          <Input
+          <TextInput
+            label="Password"
             type="password"
             id="password"
             name="password"
@@ -77,8 +83,8 @@ export default function Register() {
           />
         </div>
         <div className="pt-2 pb-5">
-          <Label htmlFor="confirm-password">Confirm Password</Label>
-          <Input
+          <TextInput
+            label="Confirm Password"
             type="password"
             id="confirm-password"
             name="confirm-password"

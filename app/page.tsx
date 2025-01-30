@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { H1 } from "@/design-lib";
+import { H1 } from "@/components";
 import { Button } from "@/components/button";
 import Image from "next/image";
 

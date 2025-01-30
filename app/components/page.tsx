@@ -1,12 +1,8 @@
 "use client";
 import { useState } from "react";
-import { Icon } from "@/components/icon";
-import { Button } from "@/components/button";
-import { TextInput } from "@/components/inputs/text-input";
-import { TextArea } from "@/components/inputs/text-area";
-import { TextInputWithAddon } from "@/components/inputs/text-input-with-addon";
-import { Modal } from "@/components/modal";
+
 import Image from "next/image";
+import { Icon, Modal, TextArea, TextInput, TextInputWithAddon, Button } from "@/components";
 
 export default function Components() {
   const [text, setText] = useState("");
@@ -25,21 +21,11 @@ export default function Components() {
         <div id="centered-button" className="">
           <h1 className="text-3xl mb-8 text-center">Buttons</h1>
           <div className="flex flex-row h-1/2 flex-wrap items-start gap-4">
-            <Button colorTheme="cerulean">
-              cerulean button
-            </Button>
-            <Button colorTheme="obsidian">
-              obsidian button
-            </Button>
-            <Button colorTheme="red">
-              red button
-            </Button>
-            <Button colorTheme="amber">
-              amber button
-            </Button>
-            <Button colorTheme="green">
-              green button
-            </Button>
+            <Button colorTheme="cerulean">cerulean button</Button>
+            <Button colorTheme="obsidian">obsidian button</Button>
+            <Button colorTheme="red">red button</Button>
+            <Button colorTheme="amber">amber button</Button>
+            <Button colorTheme="green">green button</Button>
             <Button variant="previous-nav">
               <span className="ml-auto">previous</span>
             </Button>
@@ -138,8 +124,8 @@ export default function Components() {
                   "This is an example of a modal. There are many components to be added as children, such as inputs or buttons."
                 }
                 isOpen={isFormModalOpen}
-                onClose={() => setIsFormModalOpen(false)}
-                confirmButtonFunction={() => setIsFormModalOpen(false)}
+                onCloseAction={() => setIsFormModalOpen(false)}
+                confirmButtonAction={() => setIsFormModalOpen(false)}
                 form={true}
               >
                 <div className="flex flex-col gap-4">
@@ -169,12 +155,14 @@ export default function Components() {
                   "This is an example of a modal. There are many components to be added as children, such as inputs or buttons."
                 }
                 isOpen={isNonFormModalOpen}
-                onClose={() => setNonIsFormModalOpen(false)}
-                confirmButtonFunction={() => setNonIsFormModalOpen(false)}
+                onCloseAction={() => setNonIsFormModalOpen(false)}
+                confirmButtonAction={() => setNonIsFormModalOpen(false)}
                 form={false}
               >
                 <Image
                   src="https://images.unsplash.com/photo-1734784547207-7ad9f04c1f0a?q=80&w=3432&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                  width={3432}
+                  height={2288}
                   alt="example image"
                   className="w-full rounded-lg"
                 />
@@ -185,8 +173,8 @@ export default function Components() {
                   "This dialogue is to be used as a confirmation for the user. It can be used for deleting an item, or confirming a choice."
                 }
                 isOpen={isDialogueOpen}
-                onClose={() => setIsDialogueOpen(false)}
-                confirmButtonFunction={() => setIsDialogueOpen(false)}
+                onCloseAction={() => setIsDialogueOpen(false)}
+                confirmButtonAction={() => setIsDialogueOpen(false)}
                 dialogue={true}
               ></Modal>
             </div>

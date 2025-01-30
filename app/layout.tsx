@@ -1,6 +1,6 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/navbar";
+import { Navbar } from "./navbar";
 import UserProvider from "./user-context";
 import { AuthenticateUser } from "@/utils/authenticate-user";
 

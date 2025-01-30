@@ -7,7 +7,7 @@ import {
   defaultKeyPositions,
 } from "./hand-tracking";
 import { startVideo, showVideo } from "./p5";
-import { H1, Button } from "@/design-lib";
+import { Button, H1 } from "@/components";
 
 export default function Setup({
   setCameraSetup,

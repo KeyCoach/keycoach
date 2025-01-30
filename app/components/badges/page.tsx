@@ -1,5 +1,4 @@
-import { Badge } from "@/components/badges";
-import { Card } from "@/components/card";
+import { Card, Badge } from "@/components";
 
 export default async function Components() {
   return (
@@ -28,9 +27,8 @@ export default async function Components() {
           <Badge icon="bookmark" colorTheme="green" label="Save" />
           <Badge icon="stop" colorTheme="red" label="Help" />
         </div>
-        
       </div>
-        <div className="h-screen w-screen flex flex-col gap-6 p-8">
+      <div className="h-screen w-screen flex flex-col gap-6 p-8">
         <h1 className="text-3xl font-bold">Cards</h1>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -55,8 +53,3 @@ export default async function Components() {
     </div>
   );
 }
-
-
-
-
-

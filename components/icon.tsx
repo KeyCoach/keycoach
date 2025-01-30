@@ -1,27 +1,30 @@
+import Image from "next/image";
+
 export function Icon({
   src = "public/icons/check.svg",
   alt = "checkmark icon",
-  w = "1em",
-  h = "1em",
-  className
+  w = 18,
+  h = 18,
+  className,
 }: Readonly<{
   src?: string;
   alt?: string;
-  w?: number | string;
-  h?: number | string;
+  w?: number;
+  h?: number;
   className?: string;
 }>) {
   return (
-    <img
+    <Image
       src={src}
       alt={alt}
       className={className}
+      width={w}
+      height={h}
       style={{
         display: "inline-block",
-        width: typeof w === "number" ? `${w}px` : w,
-        height: typeof h === "number" ? `${h}px` : h,
+        width: `${w}px`,
+        height: `${h}px`,
       }}
     />
   );
-};
-
+}

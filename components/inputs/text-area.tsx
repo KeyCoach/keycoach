@@ -1,29 +1,23 @@
+"use client";
+type ButtonProps = React.ComponentProps<"textarea"> & {
+  label: string;
+  labelSetting?: "vertical" | "horizontal";
+  containerWidth?: string;
+};
+
 export function TextArea({
   label,
   id,
-  placeholder,
-  value,
-  onChange,
   rows = 4,
   className = "",
   containerWidth = "w-full",
   labelSetting = "vertical",
   ...props
-}: Readonly<{
-  label: string;
-  id: string;
-  placeholder: string;
-  value: string;
-  onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
-  rows?: number;
-  className?: string;
-  containerWidth?: string;
-  labelSetting?: "vertical" | "horizontal";
-}>) {
+}: ButtonProps) {
   const containerClasses = {
     vertical: "flex flex-col space-y-1",
     horizontal: "flex flex-row gap-4 items-center space-y-1",
-  }
+  };
 
   return (
     <div className={`${containerClasses[labelSetting]} ${containerWidth}`}>
@@ -31,10 +25,6 @@ export function TextArea({
         {label}
       </label>
       <textarea
-        id={id}
-        placeholder={placeholder}
-        value={value}
-        onChange={onChange}
         rows={rows}
         className={`w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-md text-slate-800 placeholder-slate-400 focus:border-blue-500 focus:ring focus:ring-blue-300 focus:ring-opacity-50 transition duration-200 ease-in-out box-border ${className}`}
         {...props}

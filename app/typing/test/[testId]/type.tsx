@@ -3,10 +3,10 @@ import p5 from "p5";
 import { KeyPosition, normalKeys, HandsFromTrackingResults } from "./hand-tracking";
 import { useRouter } from "next/navigation";
 import { startVideo } from "./p5";
-import { Button, H1, Loading } from "@/design-lib";
+import { Button, Loading } from "@/components";
 import { Test } from "@/app/lib/types";
 import axios from "axios";
-import Image from 'next/image';
+import Image from "next/image";
 
 enum Letter {
   Correct = "Correct",
@@ -187,84 +187,83 @@ export default function Type({
         {cameraSetup ? "Recalibrate Camera" : "Set up Camera"}
       </Button>
       <div className="flex items-center justify-center min-h-screen bg-gray-50">
-      <div className="relative border-4 border-gray-300 rounded-lg p-10 w-full max-w-6xl">
-        {/* Background Image */}
-        <div className="absolute inset-0 z-0 opacity-20 pointer-events-none">
-          <Image
-            src={`https://typing-background-images.s3.us-east-1.amazonaws.com/tests/${test.id}.jpg`}
-            alt="Background"
-            layout="fill"
-            objectFit="cover"
-            className="rounded-lg"
-          />
-        </div>
+        <div className="relative border-4 border-gray-300 rounded-lg p-10 w-full max-w-6xl">
+          {/* Background Image */}
+          <div className="absolute inset-0 z-0 opacity-20 pointer-events-none">
+            <Image
+              src={`https://typing-background-images.s3.us-east-1.amazonaws.com/tests/${test.id}.jpg`}
+              alt="Background"
+              layout="fill"
+              objectFit="cover"
+              className="rounded-lg"
+            />
+          </div>
 
-        {/* Main Content */}
-        <div className="relative z-10 font-mono text-4xl text-left mb-6 leading-relaxed">
-          <p className="whitespace-pre-wrap">
-            {userInput.map((word, i) => {
-              const correctWord = word.inputs.every((input) => input.status === Letter.Correct);
-              const wrongWordClass = correctWord ? "" : "underline decoration-red-400";
-              return (
-                <span key={i}>
-                  <span kc-id="word" className="inline-block">
-                    {word.inputs.map((input, j) => {
-                      const classes: Record<Letter, string> = {
-                        [Letter.Correct]: "text-black",
-                        [Letter.WrongLetter]: "text-red-500",
-                        [Letter.Missing]: "text-slate-400",
-                        [Letter.WrongFinger]: "text-orange-500",
-                      };
-                      return (
-                        <span
-                          key={"letter" + i + "," + j}
-                          kc-id="letter"
-                          className={`${classes[input.status]} ${wrongWordClass}`}
-                        >
-                          {input.key}
+          {/* Main Content */}
+          <div className="relative z-10 font-mono text-4xl text-left mb-6 leading-relaxed">
+            <p className="whitespace-pre-wrap">
+              {userInput.map((word, i) => {
+                const correctWord = word.inputs.every((input) => input.status === Letter.Correct);
+                const wrongWordClass = correctWord ? "" : "underline decoration-red-400";
+                return (
+                  <span key={i}>
+                    <span kc-id="word" className="inline-block">
+                      {word.inputs.map((input, j) => {
+                        const classes: Record<Letter, string> = {
+                          [Letter.Correct]: "text-black",
+                          [Letter.WrongLetter]: "text-red-500",
+                          [Letter.Missing]: "text-slate-400",
+                          [Letter.WrongFinger]: "text-orange-500",
+                        };
+                        return (
+                          <span
+                            key={"letter" + i + "," + j}
+                            kc-id="letter"
+                            className={`${classes[input.status]} ${wrongWordClass}`}
+                          >
+                            {input.key}
+                          </span>
+                        );
+                      })}
+                      {i === userInput.length - 1 && (
+                        <span kc-id="cursor" className="absolute blink font-bold">
+                          ⎸
                         </span>
-                      );
-                    })}
-                    {i === userInput.length - 1 && (
-                      <span kc-id="cursor" className="absolute blink font-bold">
-                        ⎸
-                      </span>
-                    )}
-                    {word.word
-                      ?.slice(word.inputs.length)
-                      .split("")
-                      .map((letter, j) => (
-                        <span
-                          key={"ghost-letter" + j}
-                          kc-id="ghost-letter"
-                          className="text-slate-400"
-                        >
-                          {letter}
-                        </span>
-                      ))}
+                      )}
+                      {word.word
+                        ?.slice(word.inputs.length)
+                        .split("")
+                        .map((letter, j) => (
+                          <span
+                            key={"ghost-letter" + j}
+                            kc-id="ghost-letter"
+                            className="text-slate-400"
+                          >
+                            {letter}
+                          </span>
+                        ))}
+                    </span>
+
+                    <span kc-id="space"> </span>
                   </span>
-
+                );
+              })}
+              {sentence.slice(userInput.length).map((word, i) => (
+                <span key={"ghost-wrod" + i}>
+                  <span kc-id="ghost-word" className="text-slate-400">
+                    {word}
+                  </span>
                   <span kc-id="space"> </span>
                 </span>
-              );
-            })}
-            {sentence.slice(userInput.length).map((word, i) => (
-              <span key={"ghost-wrod" + i}>
-                <span kc-id="ghost-word" className="text-slate-400">
-                  {word}
-                </span>
-                <span kc-id="space"> </span>
-              </span>
-            ))}
-          </p>
-        </div>
+              ))}
+            </p>
+          </div>
 
-        <div className="text-right text-sm font-serif italic text-black-700">
-          <p>{`An excerpt from \"${src}\" by ${author}`}</p>
+          <div className="text-right text-sm font-serif italic text-black-700">
+            <p>{`An excerpt from \"${src}\" by ${author}`}</p>
+          </div>
         </div>
       </div>
-    </div>
-        
     </div>
   );
 }
