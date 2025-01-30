@@ -20,6 +20,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const user = await AuthenticateUser();
+
   return (
     <html lang="en">
       <head>
@@ -28,8 +29,8 @@ export default async function RootLayout({
         <link rel="icon" href="/favicon.ico" sizes="any" />
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <Navbar />
-        <div className="p-3">
+      <Navbar/>
+      <div className="p-3">
           <UserProvider user={user}>{children}</UserProvider>
         </div>
       </body>
