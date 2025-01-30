@@ -15,7 +15,7 @@ export default function Sidebar({
     <aside
       className={`${
         isCollapsed ? "w-16" : "w-fit"
-      } border-gray-700 transition-width flex h-full flex-col text-nowrap rounded-lg border bg-slate-50 text-slate-950 shadow-lg duration-300 dark:bg-slate-950 dark:text-slate-50`}
+      } border-gray-700 transition-width h-contain absolute top-1/2 ml-8 flex transform flex-col text-nowrap rounded-lg border bg-slate-50 text-slate-950 shadow-lg duration-300 dark:bg-slate-950 dark:text-slate-50`}
       id={`lesson-sidebar-${lessonId}`}
     >
       <div className="border-gray-700 flex items-center justify-between border-b p-4">

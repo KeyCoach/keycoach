@@ -64,7 +64,7 @@ export function LessonFlow({ lessonId }: { lessonId: string }) {
   };
 
   return (
-    <div className="flex w-full">
+    <div className="flex w-full relative">
       {/* lesson sidebar */}
       <Sidebar lessonId={lessonId} currentLevel={lessonStep} />
       <div className="flex flex-col w-full h-96">
