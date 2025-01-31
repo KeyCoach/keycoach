@@ -1,14 +1,24 @@
-// app/lesson/[lessonId]/BufferScreen.tsx
 "use client";
-import { useState, useEffect } from "react";
 import { Button } from "@/components/button";
 import JSConfetti from "js-confetti";
 
 const jsConfetti = new JSConfetti();
 
-export function BufferScreen({ lessonStep }: { lessonStep: number }) {
-  const [jsConfetti, setJsConfetti] = useState<JSConfetti | null>(null);
-  const lessonStepMap: { [key: number]: string } = {
+interface confettiProps {
+  confettiRadius: number;
+  confettiNumber: number;
+  emojis?: string[];
+  confettiColors?: string[];
+}
+
+export function BufferScreen({
+  lessonStep,
+  confettiNumber = 100,
+}: {
+  lessonStep: number;
+  confettiNumber?: number;
+}) {
+  const lessonStepMap: Record<number, string> = {
     1: "concept-explanation",
     2: "quote-test",
     3: "typing-game",
@@ -20,30 +30,36 @@ export function BufferScreen({ lessonStep }: { lessonStep: number }) {
     9: "full-test",
   };
 
-  const lessonStepDescription = lessonStepMap[lessonStep];
-
-  if (!lessonStepDescription) {
-    return <div className="w-full text-center">Invalid lesson step</div>;
-  }
-
-  useEffect(() => {
-    setJsConfetti(new JSConfetti()); // Initialize only on the client
-  }, []);
+  const lessonStepDescription = lessonStepMap[lessonStep] || "Invalid lesson step";
 
   const popConfetti = async () => {
-    if (jsConfetti) {
-      await jsConfetti.addConfetti({
-        confettiColors: ["#ff0000", "#00ff00", "#0000ff"],
-      });
-    }
+    let confettiProps: confettiProps = {
+      confettiRadius: 8,
+      confettiNumber: confettiNumber,
+    };
+
+    Math.random() > 0.5
+      ? (confettiProps["emojis"] = ["🎉", "🎊", "🥳", "🚀", "🌟"])
+      : (confettiProps["confettiColors"] = [
+          "#E8975F",
+          "#73C89B",
+          "#6CB9DA",
+          "#EB847F",
+          "#669CD7",
+          "#f2f2f2",
+        ]);
+
+    jsConfetti.addConfetti({
+      ...confettiProps,
+    });
   };
 
   return (
     <div className="flex w-full flex-col items-center text-center">
       The buffer screen for {lessonStepDescription}
-      <div className="mt-4">
-        <Button onClick={popConfetti}>Celebrate</Button>
-      </div>
+      <Button className="mt-4" onClick={popConfetti} colorTheme="cerulean">
+        Celebrate
+      </Button>
     </div>
   );
 }
