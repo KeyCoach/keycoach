@@ -18,5 +18,5 @@ export function BufferScreen({ lessonStep }: { lessonStep: number }) {
     return <div>Invalid lesson step</div>;
   }
 
-  return <div>The buffer screen for {lessonStepDescription}</div>;
+  return <div className="w-full bg-slate-400">The buffer screen for {lessonStepDescription}</div>;
 }

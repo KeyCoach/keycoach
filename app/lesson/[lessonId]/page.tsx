@@ -5,7 +5,7 @@ export default async function LessonPage({ params }: { params: { lessonId: strin
   const lessonId = params.lessonId;
 
   return (
-    <div>
+    <div className="">
       <LessonFlow lessonId={lessonId} />
     </div>
   );

@@ -64,10 +64,10 @@ export function LessonFlow({ lessonId }: { lessonId: string }) {
   };
 
   return (
-    <div className="flex w-full relative">
+    <div className="relative flex h-screen w-full justify-center">
       {/* lesson sidebar */}
       <Sidebar lessonId={lessonId} currentLevel={lessonStep} />
-      <div className="flex flex-col w-full h-96">
+      <div className="flex w-3/5 flex-col absolute top-1/2 -translate-y-1/2 dark:bg-slate-900 bg-slate-200">
         {renderStep()}
         <button onClick={() => handleNextStep()}>Next Step</button>
       </div>
