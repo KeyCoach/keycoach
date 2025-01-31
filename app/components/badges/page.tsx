@@ -1,6 +1,8 @@
+"use client";
+
 import { Card, Badge } from "@/components";
 
-export default async function Components() {
+export default function Components() {
   return (
     <div>
       <div className="h-screen w-screen grid grid-cols-3 auto-rows-auto p-8 gap-6">
@@ -31,7 +33,7 @@ export default async function Components() {
       <div className="h-screen w-screen flex flex-col gap-6 p-8">
         <h1 className="text-3xl font-bold">Cards</h1>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 auto-rows-auto items-start">
           <Card
             title="Home Row"
             subtitle="Begin learning the Home Row"
@@ -39,6 +41,8 @@ export default async function Components() {
             badgeTheme="green"
             buttonText="Relearn"
             onButtonClick={() => alert("Relearn clicked!")}
+            imageUrl="https://typing-background-images.s3.us-east-1.amazonaws.com/card/keys.jpg"
+            imageAlt="Practice"
           />
           <Card
             title="Typing Test"
