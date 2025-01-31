@@ -29,8 +29,8 @@ export default async function RootLayout({
         <link rel="icon" href="/favicon.ico" sizes="any" />
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-      <Navbar/>
-      <div className="p-3">
+        <Navbar />
+        <div>
           <UserProvider user={user}>{children}</UserProvider>
         </div>
       </body>
