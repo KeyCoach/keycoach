@@ -19,7 +19,7 @@ export default function Sidebar({
       } border-gray-700 transition-width h-contain absolute left-0 top-1/2 ml-8 flex -translate-y-1/2 transform flex-col text-nowrap rounded-lg border bg-slate-50 text-slate-950 shadow-lg duration-300 dark:bg-slate-950 dark:text-slate-50`}
       id={`lesson-sidebar-${lessonId}`}
     >
-      <div className="border-gray-700 flex dark:bg-slate-900 rounded-lg items-center justify-between border-b p-4">
+      <div className="border-gray-700 flex items-center justify-between rounded-t-lg border-b p-4 dark:bg-slate-900">
         <h2 className={`text-xl font-bold ${isCollapsed ? "hidden" : "block"}`}>
           Lesson <span className="text-clip text-amber-700 dark:text-amber-200">{lessonId}</span>{" "}
           Progress
