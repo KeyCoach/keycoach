@@ -22,41 +22,57 @@ export function LessonFlow({ lessonId }: { lessonId: string }) {
     switch (lessonStep) {
       case 1:
         return bufferScreen ? (
-          <BufferScreen lessonStep={lessonStep} />
+          <BufferScreen lessonStep={lessonStep} handleNextStep={handleNextStep} />
         ) : (
-          <ConceptExplanation conceptPhase={1} />
+          <ConceptExplanation conceptPhase={1} handleNextStep={handleNextStep} />
         );
       case 2:
-        return bufferScreen ? <BufferScreen lessonStep={lessonStep} /> : <QuoteTest />;
+        return bufferScreen ? (
+          <BufferScreen lessonStep={lessonStep} handleNextStep={handleNextStep} />
+        ) : (
+          <QuoteTest handleNextStep={handleNextStep} />
+        );
       case 3:
-        return bufferScreen ? <BufferScreen lessonStep={lessonStep} /> : <TypingGame />;
+        return bufferScreen ? (
+          <BufferScreen lessonStep={lessonStep} handleNextStep={handleNextStep} />
+        ) : (
+          <TypingGame handleNextStep={handleNextStep} />
+        );
       case 4:
         return bufferScreen ? (
-          <BufferScreen lessonStep={lessonStep} />
+          <BufferScreen lessonStep={lessonStep} handleNextStep={handleNextStep} />
         ) : (
-          <FullTest testType="1 min" />
+          <FullTest testType="1 min" handleNextStep={handleNextStep} />
         );
       case 5:
         return bufferScreen ? (
-          <BufferScreen lessonStep={lessonStep} />
+          <BufferScreen lessonStep={lessonStep} handleNextStep={handleNextStep} />
         ) : (
-          <ConceptExplanation conceptPhase={2} />
+          <ConceptExplanation conceptPhase={2} handleNextStep={handleNextStep} />
         );
       case 6:
-        return bufferScreen ? <BufferScreen lessonStep={lessonStep} /> : <QuoteTest />;
+        return bufferScreen ? (
+          <BufferScreen lessonStep={lessonStep} handleNextStep={handleNextStep} />
+        ) : (
+          <QuoteTest handleNextStep={handleNextStep} />
+        );
       case 7:
-        return bufferScreen ? <BufferScreen lessonStep={lessonStep} /> : <TypingGame />;
+        return bufferScreen ? (
+          <BufferScreen lessonStep={lessonStep} handleNextStep={handleNextStep} />
+        ) : (
+          <TypingGame handleNextStep={handleNextStep} />
+        );
       case 8:
         return bufferScreen ? (
-          <BufferScreen lessonStep={lessonStep} />
+          <BufferScreen lessonStep={lessonStep} handleNextStep={handleNextStep} />
         ) : (
-          <ConceptExplanation conceptPhase={3} />
+          <ConceptExplanation conceptPhase={3} handleNextStep={handleNextStep} />
         );
       case 9:
         return bufferScreen ? (
-          <BufferScreen lessonStep={lessonStep} />
+          <BufferScreen lessonStep={lessonStep} handleNextStep={handleNextStep} />
         ) : (
-          <FullTest testType="3 min" />
+          <FullTest testType="3 min" handleNextStep={handleNextStep} />
         );
       default:
         return <div>Lesson Complete!</div>;
@@ -67,9 +83,8 @@ export function LessonFlow({ lessonId }: { lessonId: string }) {
     <div className="relative flex h-screen w-full justify-center">
       {/* lesson sidebar */}
       <Sidebar lessonId={lessonId} currentLevel={lessonStep} />
-      <div className="flex w-3/5 flex-col absolute top-1/2 -translate-y-1/2 dark:bg-slate-900 bg-slate-200">
+      <div className="absolute top-1/2 flex w-3/5 -translate-y-1/2 flex-col bg-slate-200 dark:bg-slate-900">
         {renderStep()}
-        <button onClick={() => handleNextStep()}>Next Step</button>
       </div>
       <StatsPanel />
     </div>
