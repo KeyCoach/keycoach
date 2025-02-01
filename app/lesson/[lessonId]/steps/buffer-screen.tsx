@@ -23,11 +23,13 @@ export function BufferScreen({
   confettiNumber = 100,
   activityType = activityEnum.conceptExplanation,
   handleNextStep,
+  handlePreviousStep,
 }: {
   lessonStep: number;
   confettiNumber?: number;
   activityType?: activityEnum;
   handleNextStep: () => void;
+  handlePreviousStep: () => void;
 }) {
   const lessonStepMap: Record<number, string> = {
     1: "concept-explanation",
@@ -75,9 +77,14 @@ export function BufferScreen({
       <Button className="mt-4" onClick={popConfetti} colorTheme="cerulean">
         Celebrate
       </Button>
-      <Button className="mt-4" onClick={handleNextStep} colorTheme="amber">
-        Next
-      </Button>
+      <div className="flex justify-end">
+        <Button className="mt-4" onClick={handlePreviousStep} colorTheme="amber">
+          Previous
+        </Button>
+        <Button className="mt-4" onClick={handleNextStep} colorTheme="amber">
+          Next
+        </Button>
+      </div>
     </div>
   );
 }

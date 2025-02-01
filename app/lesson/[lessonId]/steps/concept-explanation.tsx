@@ -9,11 +9,13 @@ export function ConceptExplanation({
   handleNextStep: () => void;
 }) {
   return (
-    <div>
-      {conceptPhase === 1 && <div>Intro Concept Explanation</div>}
-      {conceptPhase === 2 && <div>Second Concept Explanation</div>}
-      {conceptPhase === 3 && <div>Review Concept Explanation</div>}
+    <>
+      <div>
+        {conceptPhase === 1 && <div>Intro Concept Explanation</div>}
+        {conceptPhase === 2 && <div>Second Concept Explanation</div>}
+        {conceptPhase === 3 && <div>Review Concept Explanation</div>}
+      </div>
       <Button onClick={handleNextStep}>Next Step</Button>
-    </div>
+    </>
   );
 }

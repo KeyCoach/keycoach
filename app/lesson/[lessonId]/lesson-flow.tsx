@@ -18,59 +18,106 @@ export function LessonFlow({ lessonId }: { lessonId: string }) {
     setBufferScreen(!bufferScreen);
   }
 
+  function handlePreviousStep() {
+    setLessonStep(lessonStep - 1);
+    setBufferScreen(!bufferScreen);
+  }
+
   const renderStep = () => {
     switch (lessonStep) {
       case 1:
         return bufferScreen ? (
-          <BufferScreen lessonStep={lessonStep} handleNextStep={handleNextStep} />
+          <BufferScreen
+            lessonStep={lessonStep}
+            handlePreviousStep={handlePreviousStep}
+            handleNextStep={handleNextStep}
+          />
         ) : (
           <ConceptExplanation conceptPhase={1} handleNextStep={handleNextStep} />
         );
       case 2:
         return bufferScreen ? (
-          <BufferScreen lessonStep={lessonStep} handleNextStep={handleNextStep} />
+          <BufferScreen
+            lessonStep={lessonStep}
+            handlePreviousStep={handlePreviousStep}
+            handleNextStep={handleNextStep}
+          />
         ) : (
           <QuoteTest handleNextStep={handleNextStep} />
         );
       case 3:
         return bufferScreen ? (
-          <BufferScreen lessonStep={lessonStep} handleNextStep={handleNextStep} />
+          <BufferScreen
+            lessonStep={lessonStep}
+            handlePreviousStep={handlePreviousStep}
+            handleNextStep={handleNextStep}
+          />
         ) : (
           <TypingGame handleNextStep={handleNextStep} />
         );
       case 4:
         return bufferScreen ? (
-          <BufferScreen lessonStep={lessonStep} handleNextStep={handleNextStep} />
+          <BufferScreen
+            lessonStep={lessonStep}
+            handlePreviousStep={handlePreviousStep}
+            handleNextStep={handleNextStep}
+          />
         ) : (
           <FullTest testType="1 min" handleNextStep={handleNextStep} />
         );
       case 5:
         return bufferScreen ? (
-          <BufferScreen lessonStep={lessonStep} handleNextStep={handleNextStep} />
+          <BufferScreen
+            lessonStep={lessonStep}
+            handlePreviousStep={handlePreviousStep}
+            handleNextStep={handleNextStep}
+          />
         ) : (
-          <ConceptExplanation conceptPhase={2} handleNextStep={handleNextStep} />
+          <ConceptExplanation
+            conceptPhase={2}
+            handleNextStep={handleNextStep}
+          />
         );
       case 6:
         return bufferScreen ? (
-          <BufferScreen lessonStep={lessonStep} handleNextStep={handleNextStep} />
+          <BufferScreen
+            lessonStep={lessonStep}
+            handlePreviousStep={handlePreviousStep}
+            handleNextStep={handleNextStep}
+          />
         ) : (
           <QuoteTest handleNextStep={handleNextStep} />
         );
       case 7:
         return bufferScreen ? (
-          <BufferScreen lessonStep={lessonStep} handleNextStep={handleNextStep} />
+          <BufferScreen
+            lessonStep={lessonStep}
+            handlePreviousStep={handlePreviousStep}
+            handleNextStep={handleNextStep}
+          />
         ) : (
           <TypingGame handleNextStep={handleNextStep} />
         );
       case 8:
         return bufferScreen ? (
-          <BufferScreen lessonStep={lessonStep} handleNextStep={handleNextStep} />
+          <BufferScreen
+            lessonStep={lessonStep}
+            handlePreviousStep={handlePreviousStep}
+            handleNextStep={handleNextStep}
+          />
         ) : (
-          <ConceptExplanation conceptPhase={3} handleNextStep={handleNextStep} />
+          <ConceptExplanation
+            conceptPhase={3}
+            handleNextStep={handleNextStep}
+          />
         );
       case 9:
         return bufferScreen ? (
-          <BufferScreen lessonStep={lessonStep} handleNextStep={handleNextStep} />
+          <BufferScreen
+            lessonStep={lessonStep}
+            handlePreviousStep={handlePreviousStep}
+            handleNextStep={handleNextStep}
+          />
         ) : (
           <FullTest testType="3 min" handleNextStep={handleNextStep} />
         );
