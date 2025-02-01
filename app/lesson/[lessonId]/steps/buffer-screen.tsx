@@ -1,8 +1,7 @@
 "use client";
+import { useEffect, useRef } from "react";
 import { Button } from "@/components/button";
-import JSConfetti from "js-confetti";
-
-const jsConfetti = new JSConfetti();
+import { Confetti } from "@/components/confetti";
 
 interface confettiProps {
   confettiRadius: number;
@@ -31,6 +30,7 @@ export function BufferScreen({
   handleNextStep: () => void;
   handlePreviousStep: () => void;
 }) {
+  const { triggerConfetti } = Confetti({ confettiNumber: 100 });
   const lessonStepMap: Record<number, string> = {
     1: "concept-explanation",
     2: "quote-test",
@@ -45,43 +45,21 @@ export function BufferScreen({
 
   const lessonStepDescription = lessonStepMap[lessonStep] || "Invalid lesson step";
 
-  const popConfetti = async () => {
-    let confettiProps: confettiProps = {
-      confettiRadius: 8,
-      confettiNumber: confettiNumber,
-    };
-
-    Math.random() > 0.5
-      ? (confettiProps["emojis"] = ["🎉", "🎊", "🥳", "🚀", "🌟"])
-      : (confettiProps["confettiColors"] = [
-          "#E8975F",
-          "#73C89B",
-          "#6CB9DA",
-          "#EB847F",
-          "#669CD7",
-          "#f2f2f2",
-        ]);
-
-    jsConfetti.addConfetti({
-      ...confettiProps,
-    });
-  };
-
   return (
-    <div className="roudned-lg absolute top-1/2 mx-auto flex w-full -translate-y-1/2 bg-slate-200 shadow-md shadow-slate-600 dark:bg-slate-900">
+    <div className="absolute top-1/2 mx-auto flex w-full -translate-y-1/2 rounded-lg bg-slate-200 shadow-md shadow-slate-600 dark:bg-slate-900">
       <div id="buffer-screen-character" className="h-full w-1/3 text-center">
         where the character will go
       </div>
-      <h1>{}</h1>
+      <h1>{lessonStepDescription}</h1>
       The buffer screen for {lessonStepDescription}
-      <Button className="mt-4" onClick={popConfetti} colorTheme="cerulean">
-        Celebrate
-      </Button>
       <div className="flex justify-end">
-        <Button className="mt-4" onClick={handlePreviousStep} colorTheme="amber">
+        <Button className="mt-4" onClick={triggerConfetti}>
+          Celebrate
+        </Button>
+        <Button className="mt-4" onClick={handlePreviousStep}>
           Previous
         </Button>
-        <Button className="mt-4" onClick={handleNextStep} colorTheme="amber">
+        <Button className="mt-4" onClick={handleNextStep}>
           Next
         </Button>
       </div>
