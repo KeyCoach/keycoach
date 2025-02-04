@@ -15,14 +15,14 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ totalLevels = 9, currentLevel
       </div>
 
       {/* Progress Bar */}
-      <div className="mx-4 flex w-full flex-1 gap-2">
+      <div className="mx-4 flex w-full flex-1 gap-0.5">
         {Array.from({ length: totalLevels }, (_, index) => {
           const isActive = index + 1 === currentLevel;
           return (
             <div
               key={index}
               className={`box-border flex-1 py-2 text-center text-sm font-medium ${
-                isActive ? "bg-slate-300 text-slate-900" : "bg-slate-800 text-slate-300"
+                isActive ? "bg-slate-300 text-slate-900 rounded-b-lg shadow-b-md shadow-slate-600" : "bg-slate-800 text-slate-300"
               } ${index === 0 ? "rounded-l-lg rounded-t-none" : ""} ${index === totalLevels - 1 ? "rounded-r-lg rounded-t-none" : ""} shadow-md shadow-slate-600`}
             >
               {index + 1}

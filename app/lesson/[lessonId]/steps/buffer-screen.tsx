@@ -3,6 +3,7 @@ import { useEffect, useRef } from "react";
 import { Button } from "@/components/button";
 import { Confetti } from "@/components/confetti";
 import ProgressBar from "./buffer-screen/progress-bar";
+import Accordion from "./buffer-screen/key-accuracy-accordion";
 
 enum activityEnum {
   conceptExplanation = "concept-explanation",
@@ -41,40 +42,32 @@ export function BufferScreen({
   const lessonPerformanceSummary = "You typed 100 words per minute with 95% accuracy";
 
   return (
-    <div className="flex min-h-screen items-center justify-center">
-      {/* grid of 5 rows, vertically centered on the page */}
-      <div className="grid h-3/4 w-full grid-rows-5 gap-4">
-        {/* first row is the completion message */}
-        <div className="row-span-1 flex flex-col items-center justify-center gap-6 rounded-2xl bg-slate-800 py-6 shadow-md shadow-slate-600">
+    <div className="flex min-h-screen items-center justify-center px-4">
+      <div className="grid w-full max-w-6xl auto-rows-auto gap-6">
+        <div className="flex flex-col items-center justify-center gap-6 rounded-2xl py-6 shadow-md dark:bg-slate-800 dark:shadow-slate-600">
           <h1 className="text-4xl">{lessonStepDescription}</h1>
           <p className="text-xl">{lessonPerformanceSummary}</p>
         </div>
-        {/* second row is the character */}
-        <div className="row-span-1 flex w-full items-center justify-center gap-12">
-          <div
-            id="buffer-screen-character"
-            className="grid h-full w-1/3 place-items-center text-center"
-          >
+
+        <div className="flex w-full h-56 items-center justify-center gap-12 py-4">
+          <div id="buffer-screen-character" className="w-1/3 text-center">
             where the character will go
           </div>
           <div
             id="character-quote"
-            className="grid h-full w-1/3 place-items-center rounded-3xl bg-slate-800 shadow-md shadow-slate-600"
+            className="w-1/3 rounded-3xl h-full grid place-items-center shadow-md dark:bg-slate-800 dark:shadow-slate-600"
           >
             the quote the character will say
           </div>
         </div>
-        {/* third row is the keyboard accuracy chart */}
-        <div className="row-span-1 flex w-full items-center justify-center">
-          <div
-            id="keyboard-accuracy-chart"
-            className="grid h-full w-1/3 place-items-center text-center"
-          >
-            click to expand the keyboard accuracy chart
+
+        <div className="flex w-full items-center justify-center">
+          <div className="w-full">
+            <Accordion />
           </div>
         </div>
-        {/* fourth row is the buttons */}
-        <div className="row-span-1 flex w-full items-center justify-between gap-12">
+
+        <div className="flex w-full items-center justify-between gap-12">
           <Button onClick={triggerConfetti}>back to lessons</Button>
           <Button onClick={triggerConfetti}>Celebrate</Button>
           <div className="flex gap-4">
@@ -82,8 +75,8 @@ export function BufferScreen({
             <Button onClick={handleNextStep}>Next</Button>
           </div>
         </div>
-        {/* fifth row is the lesson progress bar */}
-        <div className="row-span-1 flex w-full items-center justify-center">
+
+        <div className="flex w-full items-center justify-center">
           <ProgressBar currentLevel={lessonStep} />
         </div>
       </div>
