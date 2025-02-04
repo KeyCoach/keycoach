@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Keyboard from "./keyboard/keyboard";
 
 const Accordion = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -22,13 +23,10 @@ const Accordion = () => {
         </button>
 
         <div
-          className={`overflow-hidden shadow-md shadow-slate-600 transition-all duration-300 ease-in-out ${isOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"}`}
+          className={`w-full overflow-hidden shadow-md shadow-slate-600 transition-all duration-300 ease-in-out ${isOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"}`}
         >
-          <div className="border-t p-4 dark:border-slate-400 dark:bg-slate-800">
-            <p>
-              This is where the keyboard accuracy chart will go. It will show the user's typing
-              accuracy during the previous level.
-            </p>
+          <div className="grid place-items-center border-t p-4 dark:border-slate-400 dark:bg-slate-800">
+            <Keyboard />
           </div>
         </div>
       </div>

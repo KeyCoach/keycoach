@@ -6,10 +6,10 @@ interface ProgressBarProps {
 const ProgressBar: React.FC<ProgressBarProps> = ({ totalLevels = 9, currentLevel }) => {
   return (
     <div className="flex w-full flex-col items-center justify-between shadow-md">
-      <div className="mb-2 flex w-full justify-between rounded-t-xl bg-slate-800 px-6 py-4 shadow-md shadow-slate-600">
-        <h2 className="text-xl font-semibold">Lesson Progress</h2>
+      <div className="mb-2 flex w-full justify-between rounded-t-xl bg-slate-800 px-6 py-3 shadow-md shadow-slate-600">
+        <h2 className="text-lg font-semibold">Lesson Progress</h2>
 
-        <p className="text-lg font-medium">
+        <p className="text-md font-medium">
           {currentLevel} / {totalLevels} Screens Completed
         </p>
       </div>

@@ -43,19 +43,19 @@ export function BufferScreen({
 
   return (
     <div className="flex min-h-screen items-center justify-center px-4">
-      <div className="grid w-full max-w-6xl auto-rows-auto gap-6">
-        <div className="flex flex-col items-center justify-center gap-6 rounded-2xl py-6 shadow-md dark:bg-slate-800 dark:shadow-slate-600">
-          <h1 className="text-4xl">{lessonStepDescription}</h1>
+      <div className="grid w-full max-w-5xl auto-rows-auto gap-6">
+        <div className="flex flex-col items-center justify-center gap-4 rounded-2xl py-4 shadow-md dark:bg-slate-800 dark:shadow-slate-600">
+          <h1 className="text-3xl">{lessonStepDescription}</h1>
           <p className="text-xl">{lessonPerformanceSummary}</p>
         </div>
 
         <div className="flex w-full h-56 items-center justify-center gap-12 py-4">
-          <div id="buffer-screen-character" className="w-1/3 text-center">
+          <div id="buffer-screen-character" className="w-2/5 text-center">
             where the character will go
           </div>
           <div
             id="character-quote"
-            className="w-1/3 rounded-3xl h-full grid place-items-center shadow-md dark:bg-slate-800 dark:shadow-slate-600"
+            className="w-2/5 rounded-3xl h-full grid place-items-center shadow-md dark:bg-slate-800 dark:shadow-slate-600"
           >
             the quote the character will say
           </div>
