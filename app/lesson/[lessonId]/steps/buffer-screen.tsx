@@ -3,13 +3,6 @@ import { useEffect, useRef } from "react";
 import { Button } from "@/components/button";
 import { Confetti } from "@/components/confetti";
 
-interface confettiProps {
-  confettiRadius: number;
-  confettiNumber: number;
-  emojis?: string[];
-  confettiColors?: string[];
-}
-
 enum activityEnum {
   conceptExplanation = "concept-explanation",
   quoteTest = "quote-test",
@@ -30,7 +23,7 @@ export function BufferScreen({
   handleNextStep: () => void;
   handlePreviousStep: () => void;
 }) {
-  const { triggerConfetti } = Confetti({ confettiNumber: 100 });
+  const { triggerConfetti } = Confetti({ confettiNumber: confettiNumber });
   const lessonStepMap: Record<number, string> = {
     1: "concept-explanation",
     2: "quote-test",
@@ -44,24 +37,77 @@ export function BufferScreen({
   };
 
   const lessonStepDescription = lessonStepMap[lessonStep] || "Invalid lesson step";
+  const lessonPerformanceSummary = "You typed 100 words per minute with 95% accuracy";
 
-  return (
-    <div className="absolute top-1/2 mx-auto flex w-full -translate-y-1/2 rounded-lg bg-slate-200 shadow-md shadow-slate-600 dark:bg-slate-900">
+  /*
+
+  <div className="absolute top-1/2 mx-auto flex w-full -translate-y-1/2 rounded-lg bg-slate-200 shadow-md shadow-slate-600 dark:bg-slate-900">
       <div id="buffer-screen-character" className="h-full w-1/3 text-center">
         where the character will go
       </div>
-      <h1>{lessonStepDescription}</h1>
-      The buffer screen for {lessonStepDescription}
-      <div className="flex justify-end">
-        <Button className="mt-4" onClick={triggerConfetti}>
-          Celebrate
-        </Button>
-        <Button className="mt-4" onClick={handlePreviousStep}>
-          Previous
-        </Button>
-        <Button className="mt-4" onClick={handleNextStep}>
-          Next
-        </Button>
+      <div className="w-2/3 h-full">
+        <h1>{lessonStepDescription}</h1>
+      </div>
+      <div className="flex w-full justify-end">
+        <Button onClick={triggerConfetti}>Celebrate</Button>
+        <Button onClick={handlePreviousStep}>Previous</Button>
+        <Button onClick={handleNextStep}>Next</Button>
+      </div>
+    </div>
+
+  */
+
+  return (
+    <div className="flex min-h-screen items-center justify-center">
+      {/* grid of 5 rows, vertically centered on the page */}
+      <div className="grid h-3/4 w-full grid-rows-5 gap-4">
+        {/* first row is the completion message */}
+        <div className="row-span-1 flex flex-col items-center justify-center gap-6 rounded-2xl bg-slate-800 shadow-md shadow-slate-600">
+          <h1 className="text-4xl">{lessonStepDescription}</h1>
+          <p className="text-xl">{lessonPerformanceSummary}</p>
+        </div>
+        {/* second row is the character */}
+        <div className="row-span-1 flex w-full items-center justify-center gap-12">
+          <div
+            id="buffer-screen-character"
+            className="grid h-full w-1/3 place-items-center text-center"
+          >
+            where the character will go
+          </div>
+          <div
+            id="character-quote"
+            className="grid h-full w-1/3 place-items-center rounded-3xl bg-slate-800 shadow-md shadow-slate-600"
+          >
+            the quote the character will say
+          </div>
+        </div>
+        {/* third row is the keyboard accuracy chart */}
+        <div className="row-span-1 flex w-full items-center justify-center">
+          <div
+            id="keyboard-accuracy-chart"
+            className="grid h-full w-1/3 place-items-center text-center"
+          >
+            click to expand the keyboard accuracy chart
+          </div>
+        </div>
+        {/* fourth row is the buttons */}
+        <div className="row-span-1 flex w-full items-center justify-between gap-12">
+          <Button onClick={triggerConfetti}>back to lessons</Button>
+          <Button onClick={triggerConfetti}>Celebrate</Button>
+          <div className="flex gap-4">
+            <Button onClick={handlePreviousStep}>Previous</Button>
+            <Button onClick={handleNextStep}>Next</Button>
+          </div>
+        </div>
+        {/* fifth row is the lesson progress bar */}
+        <div className="row-span-1 flex w-full items-center justify-center">
+          <div
+            id="lesson-progress-bar"
+            className="grid h-full w-1/3 place-items-center text-center"
+          >
+            the lesson progress bar
+          </div>
+        </div>
       </div>
     </div>
   );
