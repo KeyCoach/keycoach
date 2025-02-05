@@ -53,7 +53,7 @@ body {
   }
 }
 
-@keyframes fadeIn {
+@keyframes fade-in {
   from {
     opacity: 0;
     transform: translate(var(--translate-x, 0), var(--translate-y, 0));
@@ -66,7 +66,27 @@ body {
 
 .animate-fade-in {
   opacity: 0;
-  animation: fadeIn var(--duration, 0.7s) ease-out;
+  animation: fade-in var(--duration, 0.7s) ease-out;
   animation-delay: var(--delay, 0);
   animation-fill-mode: forwards;
+}
+
+@keyframes key-bounce {
+  0%, 20%, 50% {
+    transform: translateY(0) rotateZ(var(--start-rotation, -8deg));
+  }
+  35% {
+    transform: translateY(var(--middle-translate, -5px)) rotateZ(var(--middle-rotation, 12deg));
+  }
+  65% {
+    transform: translateY(var(--end-translate, -2px)) rotateZ(var(--end-rotation, 2deg));
+  }
+  100% {
+    transform: translateY(0) rotateZ(var(--start-rotation, -8deg));
+  }
+}
+
+.animate-bounce {
+  animation: key-bounce var(--duration, 1s) infinite ease-in-out;
+  animation-delay: var(--delay, 500ms);
 }

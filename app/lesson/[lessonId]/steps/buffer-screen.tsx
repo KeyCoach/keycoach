@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { Button } from "@/components/button";
 import { Confetti } from "@/components/confetti";
 import { FadeInSection } from "@/components/fade-in-section";
+import { BounceAnimation } from "@/components/bounce-animation";
 import ProgressBar from "./buffer-screen/progress-bar";
 import Accordion from "./buffer-screen/key-accuracy-accordion";
 
@@ -56,7 +57,10 @@ export function BufferScreen({
     const accuracy = Number(Math.random() * 10 + 90).toFixed(2);
     return (
       <p className="text-xl">
-        In that last level, you typed at <span className="font-semibold dark:text-cerulean-300 text-cerulean-700">{wpm} WPM</span>, with an typing accuracy of <span className="font-semibold dark:text-cerulean-300 text-cerulean-700">{accuracy}%</span>.
+        In that last level, you typed at{" "}
+        <span className="font-semibold text-cerulean-700 dark:text-cerulean-300">{wpm} WPM</span>,
+        with a typing accuracy of{" "}
+        <span className="font-semibold text-cerulean-700 dark:text-cerulean-300">{accuracy}%</span>.
       </p>
     );
   };
@@ -65,7 +69,51 @@ export function BufferScreen({
     <div className="flex min-h-screen items-center justify-center px-4">
       <div className="grid w-full max-w-5xl auto-rows-auto gap-6">
         <FadeInSection delay={0}>
-          <div className="flex flex-col items-center justify-center gap-4 rounded-2xl py-4 shadow-md dark:bg-slate-800 dark:shadow-slate-600">
+          <div className="relative flex min-h-[100px] flex-col items-center justify-center gap-4 rounded-2xl py-4 shadow-md dark:bg-slate-800 dark:shadow-slate-600">
+            <BounceAnimation
+              duration="normal"
+              startRotation={-6}
+              middleRotation={6}
+              endRotation={1}
+              middleTranslate={-6}
+              endTranslate={-3}
+              className="absolute -left-4 -top-4 z-10"
+            >
+              <img src="/img/e-key.png" alt="E key" className="h-16 w-16" />
+            </BounceAnimation>
+            <BounceAnimation
+              duration="normal"
+              startRotation={-4}
+              middleRotation={14}
+              endRotation={3}
+              middleTranslate={-2}
+              endTranslate={-7}
+              className="absolute -right-4 top-4 z-10"
+            >
+              <img src="/img/!-key.png" alt="! key" className="h-12 w-12" />
+            </BounceAnimation>
+            <BounceAnimation
+              duration="slow"
+              startRotation={-12}
+              middleRotation={2}
+              endRotation={-4}
+              middleTranslate={-10}
+              endTranslate={-7}
+              className="absolute -top-2 right-12 z-10"
+            >
+              <img src="/img/y-key.png" alt="Y key" className="h-14 w-14" />
+            </BounceAnimation>
+            <BounceAnimation
+              duration="slow"
+              startRotation={-6}
+              middleRotation={5}
+              endRotation={-3}
+              middleTranslate={2}
+              endTranslate={7}
+              className="absolute -top-2 left-16 z-10"
+            >
+              <img src="/img/ctrl-key.png" alt="ctrl key" className="h-10 w-10" />
+            </BounceAnimation>
             <h1 className="text-3xl">{lessonStepDescription}</h1>
             {lessonPerformanceSummary()}
           </div>
