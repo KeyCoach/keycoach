@@ -2,14 +2,14 @@
 import JSConfetti from "js-confetti";
 
 interface ConfettiProps {
-  confettiNumber?: number;
+  confettiAmount?: number;
   confettiRadius?: number;
   emojis?: string[];
   confettiColors?: string[];
 }
 
 export function Confetti({
-  confettiNumber = 100,
+  confettiAmount = 100,
   confettiRadius = 8,
   emojis,
   confettiColors,
@@ -19,7 +19,7 @@ export function Confetti({
   const triggerConfetti = () => {
     const confettiProps: ConfettiProps = {
       confettiRadius,
-      confettiNumber,
+      confettiAmount,
     };
 
     if (Math.random() > 0.5) {

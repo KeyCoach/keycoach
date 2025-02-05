@@ -16,18 +16,42 @@ enum activityEnum {
 
 export function BufferScreen({
   lessonStep,
-  confettiNumber = 100,
+  // TODO: pass a real number from lesson flow, calculated based on previous level performance
+  // TODO: reset confettiAmount to 0 when the user goes back to the previous step
+  confettiAmount = 0,
   activityType = activityEnum.conceptExplanation,
   handleNextStep,
   handlePreviousStep,
 }: {
   lessonStep: number;
-  confettiNumber?: number;
+  confettiAmount?: number;
   activityType?: activityEnum;
   handleNextStep: () => void;
   handlePreviousStep: () => void;
 }) {
-  const { triggerConfetti } = Confetti({ confettiNumber: confettiNumber });
+  // random wpm between 40-80
+  const wpm = Math.round(Math.random() * 40 + 40);
+  // random accuracy between 90-100
+  const accuracy: number = Math.random() * 10 + 90;
+
+  // adjust confetti number based on performance
+  if (wpm > 50) {
+    confettiAmount += 18;
+  } else if (wpm > 70) {
+    confettiAmount += 18;
+  } else if (wpm > 80) {
+    confettiAmount += 18;
+  }
+
+  if (accuracy > 92) {
+    confettiAmount += 18;
+  } else if (accuracy > 95) {
+    confettiAmount += 18;
+  } else if (accuracy > 98) {
+    confettiAmount += 18;
+  }
+
+  const { triggerConfetti } = Confetti({ confettiAmount: confettiAmount });
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -51,16 +75,12 @@ export function BufferScreen({
 
   const lessonStepDescription = lessonStepMap[lessonStep] || "Invalid lesson step";
   const lessonPerformanceSummary = (): React.ReactNode => {
-    // random wpm between 40-80
-    const wpm = Math.round(Math.random() * 40 + 40);
-    // random accuracy between 90-100
-    const accuracy = Number(Math.random() * 10 + 90).toFixed(2);
     return (
       <p className="text-xl">
         In that last level, you typed at{" "}
         <span className="font-semibold text-cerulean-700 dark:text-cerulean-300">{wpm} WPM</span>,
         with a typing accuracy of{" "}
-        <span className="font-semibold text-cerulean-700 dark:text-cerulean-300">{accuracy}%</span>.
+        <span className="font-semibold text-cerulean-700 dark:text-cerulean-300">{accuracy.toFixed(1)}%</span>.
       </p>
     );
   };

@@ -9,7 +9,17 @@ interface BounceAnimationProps {
   middleTranslate?: number;
   endTranslate?: number;
   fadeIn?: boolean;
+  distance?: number;
   className?: string;
+}
+
+function getDuration(duration: Duration): string {
+  const durations = {
+    fast: "4s",
+    normal: "6s",
+    slow: "9s",
+  };
+  return durations[duration];
 }
 
 export function BounceAnimation({
@@ -41,13 +51,4 @@ export function BounceAnimation({
       {children}
     </div>
   );
-}
-
-function getDuration(duration: Duration): string {
-  const durations = {
-    fast: "4s",
-    normal: "6s",
-    slow: "9s",
-  };
-  return durations[duration];
 }
