@@ -11,9 +11,9 @@ export default function StatsPanel({
   const [isExpanded, setIsExpanded] = useState(false);
 
   return (
-    <section className="dark:border-gray-300 w-contain absolute right-0 top-1/2 mr-8 max-w-md flex-1 text-nowrap rounded-lg border border-slate-950 bg-slate-200 p-4 shadow-lg dark:border-slate-50 dark:bg-slate-900 -translate-y-3/4">
+    <section className="w-contain absolute right-0 top-1/2 mr-8 max-w-md flex-1 -translate-y-3/4 text-nowrap rounded-lg border border-slate-950 bg-slate-100 p-4 text-slate-950 shadow-md shadow-slate-200 dark:bg-slate-800 dark:shadow-slate-600 dark:text-slate-50">
       <div
-        className="flex cursor-pointer items-center gap-6 justify-between"
+        className="flex cursor-pointer items-center justify-between gap-6"
         onClick={() => setIsExpanded(!isExpanded)}
       >
         <h2 className="text-xl font-bold">Lesson Stats</h2>
@@ -22,11 +22,11 @@ export default function StatsPanel({
           alt="chevron icon"
           w={"1rem"}
           h={"1rem"}
-          className="duration-250 ease transition-transform rotate-180"
+          className="duration-250 ease rotate-180 transition-transform"
         />
       </div>
       <div
-        className={`duration-500 mt-4 overflow-hidden transition-[max-height] ease-in-out ${isExpanded ? "max-h-96" : "max-h-0"}`}
+        className={`mt-4 overflow-hidden transition-[max-height] duration-500 ease-in-out ${isExpanded ? "max-h-96" : "max-h-0"}`}
       >
         {isExpanded && (
           <div>

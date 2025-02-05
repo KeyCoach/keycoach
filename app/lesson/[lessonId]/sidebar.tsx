@@ -16,10 +16,10 @@ export default function Sidebar({
     <aside
       className={`${
         isCollapsed ? "w-16" : "w-fit"
-      } border-gray-700 transition-width h-contain absolute left-0 top-1/2 ml-8 flex -translate-y-1/2 transform flex-col text-nowrap rounded-lg border bg-slate-50 text-slate-950 shadow-lg duration-300 dark:bg-slate-950 dark:text-slate-50`}
+      } transition-width h-contain absolute left-0 top-1/2 ml-8 flex -translate-y-1/2 transform flex-col gap-2 text-nowrap rounded-lg bg-slate-50 text-slate-950 shadow-md shadow-slate-200 duration-300 dark:bg-slate-950 dark:text-slate-50 dark:shadow-slate-600`}
       id={`lesson-sidebar-${lessonId}`}
     >
-      <div className="border-gray-700 flex items-center justify-between rounded-t-lg border-b p-4 dark:bg-slate-900">
+      <div className="flex items-center justify-between rounded-t-lg p-4 dark:bg-slate-900">
         <h2 className={`text-xl font-bold ${isCollapsed ? "hidden" : "block"}`}>
           Lesson <span className="text-clip text-amber-700 dark:text-amber-200">{lessonId}</span>{" "}
           Progress
@@ -35,7 +35,7 @@ export default function Sidebar({
         {levels.map((level) => (
           <li
             key={level}
-            className={`border-gray-700 ${level < 10 ? "border-b" : "rounded-lg"} p-4 ${level === currentLevel ? "bg-cerulean-600 font-bold text-slate-50 dark:bg-cerulean-300 dark:text-slate-950" : "hover:bg-gray-700 dark:bg-slate-900"} `}
+            className={`${level < 10 ? "" : "rounded-lg"} p-4 ${level === currentLevel ? "bg-cerulean-600 font-bold text-slate-50 dark:bg-cerulean-300 dark:text-slate-950" : "hover:bg-gray-700 dark:bg-slate-900"} border border-slate-50 dark:border-slate-950`}
           >
             {isCollapsed ? level : `Level ${level}`}
           </li>
