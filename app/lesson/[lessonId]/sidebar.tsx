@@ -16,7 +16,7 @@ export default function Sidebar({
     <aside
       className={`${
         isCollapsed ? "w-16" : "w-fit"
-      } transition-width h-contain absolute left-0 top-1/2 ml-8 flex -translate-y-1/2 transform flex-col gap-2 text-nowrap rounded-lg bg-slate-50 text-slate-950 shadow-md shadow-slate-200 duration-300 dark:bg-slate-950 dark:text-slate-50 dark:shadow-slate-600`}
+      } transition-width h-contain flex -translate-y-1/2 transform flex-col gap-2 text-nowrap rounded-lg bg-slate-50 text-slate-950 shadow-md shadow-slate-200 duration-300 dark:bg-slate-950 dark:text-slate-50 dark:shadow-slate-600`}
       id={`lesson-sidebar-${lessonId}`}
     >
       <div className="flex items-center justify-between rounded-t-lg p-4 dark:bg-slate-900">

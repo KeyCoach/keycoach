@@ -2,7 +2,7 @@
 import { LessonFlow } from "./lesson-flow";
 
 export default async function LessonPage({ params }: { params: { lessonId: string } }) {
-  const lessonId = params.lessonId;
+  const { lessonId } = await params;
 
   return (
     <div className="">

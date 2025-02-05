@@ -11,7 +11,7 @@ export default function StatsPanel({
   const [isExpanded, setIsExpanded] = useState(false);
 
   return (
-    <section className="w-contain absolute right-0 top-1/2 mr-8 max-w-md flex-1 -translate-y-3/4 text-nowrap rounded-lg border border-slate-950 bg-slate-100 p-4 text-slate-950 shadow-md shadow-slate-200 dark:bg-slate-800 dark:shadow-slate-600 dark:text-slate-50">
+    <section className="w-contain max-w-md flex-1 -translate-y-3/4 text-nowrap rounded-lg border border-slate-950 bg-slate-100 p-4 text-slate-950 shadow-md shadow-slate-200 dark:bg-slate-800 dark:shadow-slate-600 dark:text-slate-50">
       <div
         className="flex cursor-pointer items-center justify-between gap-6"
         onClick={() => setIsExpanded(!isExpanded)}
