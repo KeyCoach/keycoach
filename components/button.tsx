@@ -10,7 +10,7 @@ type Variant =
   | "previous-nav"
   | "next-nav"
   | "icon";
-type ColorTheme = "obsidian" | "cerulean" | "red" | "amber" | "green";
+type ColorTheme = "obsidian" | "cerulean" | "ceruleanLight" | "red" | "amber" | "green";
 
 type ButtonProps = React.ComponentProps<"button"> & {
   variant?: Variant;
@@ -48,6 +48,8 @@ export function Button({
       "bg-amber-500 text-slate-100 hover:bg-amber-300 disabled:bg-amber-100 focus:bg-amber-200",
     green:
       "bg-green-500 text-slate-100 hover:bg-green-300 disabled:bg-green-100 focus:bg-green-200",
+    ceruleanLight:
+      "bg-cerulean-400 text-slate-100 hover:bg-cerulean-300 disabled:bg-cerulean-100 focus:bg-cerulean-150",
   };
 
   let dynamicClass = className ? className : colorClasses[colorTheme];
