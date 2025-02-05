@@ -2,6 +2,7 @@
 import { useEffect } from "react";
 import { Button } from "@/components/button";
 import { Confetti } from "@/components/confetti";
+import { FadeInSection } from "@/components/fade-in-section";
 import ProgressBar from "./buffer-screen/progress-bar";
 import Accordion from "./buffer-screen/key-accuracy-accordion";
 
@@ -11,18 +12,6 @@ enum activityEnum {
   typingGame = "typing-game",
   fullTest = "full-test",
 }
-
-const FadeInSection = ({ children, delay }: { children: React.ReactNode; delay: number }) => (
-  <div
-    className="animate-fade-in"
-    style={{
-      animationDelay: `${delay}ms`,
-      animationFillMode: "forwards",
-    }}
-  >
-    {children}
-  </div>
-);
 
 export function BufferScreen({
   lessonStep,
@@ -39,54 +28,46 @@ export function BufferScreen({
 }) {
   const { triggerConfetti } = Confetti({ confettiNumber: confettiNumber });
 
-    useEffect(() => {
-      const timer = setTimeout(() => {
-        triggerConfetti();
-      }, 1400);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      triggerConfetti();
+    }, 1400);
 
-      return () => clearTimeout(timer);
-    }, []);
+    return () => clearTimeout(timer);
+  }, []);
 
   const lessonStepMap: Record<number, string> = {
     1: "concept-explanation",
-    2: "quote-test",
-    3: "typing-game",
-    4: "full-test",
-    5: "concept-explanation",
-    6: "quote-test",
-    7: "typing-game",
-    8: "concept-explanation",
-    9: "full-test",
+    2: "Nice job! You've completed the concept explanation.",
+    3: "Great work in that last typing test.",
+    4: "Woah, speedy fingers! You're doing great.",
+    5: "You're on fire! Keep up the good work.",
+    6: "It seems like you're getting the hang of this.",
+    7: "Another great typing test. Keep it up!",
+    8: "You blasted those asteroids!",
+    9: "Get ready for the final challenge!",
   };
 
   const lessonStepDescription = lessonStepMap[lessonStep] || "Invalid lesson step";
-  const lessonPerformanceSummary = "You typed 100 words per minute with 95% accuracy";
+  const lessonPerformanceSummary = (): React.ReactNode => {
+    // random wpm between 40-80
+    const wpm = Math.round(Math.random() * 40 + 40);
+    // random accuracy between 90-100
+    const accuracy = Number(Math.random() * 10 + 90).toFixed(2);
+    return (
+      <p className="text-xl">
+        In that last level, you typed at <span className="font-semibold dark:text-cerulean-300 text-cerulean-700">{wpm} WPM</span>, with an typing accuracy of <span className="font-semibold dark:text-cerulean-300 text-cerulean-700">{accuracy}%</span>.
+      </p>
+    );
+  };
 
   return (
     <div className="flex min-h-screen items-center justify-center px-4">
-      <style jsx global>{`
-        @keyframes fadeIn {
-          from {
-            opacity: 0;
-            transform: translateY(10px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-
-        .animate-fade-in {
-          opacity: 0;
-          animation: fadeIn 0.7s ease-out;
-          animation-fill-mode: forwards;
-        }
-      `}</style>
       <div className="grid w-full max-w-5xl auto-rows-auto gap-6">
         <FadeInSection delay={0}>
           <div className="flex flex-col items-center justify-center gap-4 rounded-2xl py-4 shadow-md dark:bg-slate-800 dark:shadow-slate-600">
             <h1 className="text-3xl">{lessonStepDescription}</h1>
-            <p className="text-xl">{lessonPerformanceSummary}</p>
+            {lessonPerformanceSummary()}
           </div>
         </FadeInSection>
 
