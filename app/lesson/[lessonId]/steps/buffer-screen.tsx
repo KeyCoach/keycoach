@@ -39,6 +39,14 @@ export function BufferScreen({
 }) {
   const { triggerConfetti } = Confetti({ confettiNumber: confettiNumber });
 
+    useEffect(() => {
+      const timer = setTimeout(() => {
+        triggerConfetti();
+      }, 1400);
+
+      return () => clearTimeout(timer);
+    }, []);
+
   const lessonStepMap: Record<number, string> = {
     1: "concept-explanation",
     2: "quote-test",
