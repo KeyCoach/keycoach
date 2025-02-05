@@ -27,7 +27,9 @@ export default {
         'button-min-width': '8rem'
       },
       boxShadow: {
-        'button-shadow': '0 4px 8px 0 rgba(50, 50, 71, 0.25)'
+        'button-shadow': '0 4px 8px 0 rgba(50, 50, 71, 0.25)',
+        // TODO: figure out why this is not working
+        'shadow-bottom-md': '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)',
       },
       colors: {
         background: "var(--background)",

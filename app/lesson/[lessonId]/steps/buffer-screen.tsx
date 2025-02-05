@@ -1,5 +1,4 @@
 "use client";
-import { useEffect, useRef } from "react";
 import { Button } from "@/components/button";
 import { Confetti } from "@/components/confetti";
 import ProgressBar from "./buffer-screen/progress-bar";
@@ -49,15 +48,15 @@ export function BufferScreen({
           <p className="text-xl">{lessonPerformanceSummary}</p>
         </div>
 
-        <div className="flex w-full h-56 items-center justify-center gap-12 py-4">
+        <div className="flex h-56 w-full items-center justify-center gap-12 py-4">
           <div id="buffer-screen-character" className="w-2/5 text-center">
-            where the character will go
+            where the fox mascot will go
           </div>
           <div
             id="character-quote"
-            className="w-2/5 rounded-3xl h-full grid place-items-center shadow-md dark:bg-slate-800 dark:shadow-slate-600"
+            className="grid h-full w-2/5 place-items-center rounded-3xl bg-slate-50 shadow-md shadow-slate-200 dark:bg-slate-800 dark:shadow-slate-600"
           >
-            the quote the character will say
+            the quote the fox mascot will say
           </div>
         </div>
 
