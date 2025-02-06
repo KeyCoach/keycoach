@@ -36,7 +36,7 @@ export function Card({
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             />
           </div>
-          <div className="bg-slate-100 p-4">
+          <div className="bg-slate-300 p-4">
             <h3 className="text-lg font-bold mb-1">{title}</h3>
             <p className="text-sm text-gray-600 mb-4">{subtitle}</p>
             <div className="flex items-center justify-between">
@@ -49,11 +49,11 @@ export function Card({
         </>
       ) : (
         <div className="flex flex-col">
-          <div className="p-3 bg-white">
-            <h3 className="text-lg font-bold mb-1">{title}</h3>
-            <p className="text-sm text-gray-600">{subtitle}</p>
+          <div className="p-3 bg-slate-200 dark:bg-slate-500">
+            <h3 className="text-lg font-bold mb-1 text-slate-900 dark:text-slate-50">{title}</h3>
+            <p className="text-sm text-slate-900 dark:text-slate-50">{subtitle}</p>
           </div>
-          <div className="bg-slate-100 p-4 mt-auto">
+          <div className="bg-slate-300 dark:bg-slate-800 p-4 mt-auto">
             <div className="flex items-center justify-between">
               <Badge icon={badgeIcon} colorTheme={badgeTheme} />
               <Button colorTheme="cerulean" onClick={onButtonClick}>
