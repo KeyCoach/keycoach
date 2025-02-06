@@ -55,6 +55,11 @@ export function Button({
   let dynamicClass = className ? className : colorClasses[colorTheme];
   dynamicClass += ` ${variantClasses[variant]} px-4 py-2 rounded-lg transition-colors duration-200 font-medium shadow-button-shadow min-w-button-min-width`;
 
+  dynamicClass = dynamicClass.concat(
+    ` ${variantClasses[variant]} px-4 py-2 rounded-lg transition-colors duration-200 font-medium shadow-button-shadow min-w-button-min-width`,
+  );
+
+  // TODO: replace the children with a spinner
   if (loading) {
     dynamicClass += " bg-gray-300 cursor-wait";
     children = <span>Loading...</span>; // Replace with actual spinner if needed
@@ -77,7 +82,7 @@ export function Button({
   }
 
   return (
-    <button className={dynamicClass} {...props}>
+    <button className={dynamicClass} {...props} disabled={loading || props.disabled}>
       {children}
     </button>
   );

@@ -11,7 +11,7 @@ export function LogoutButton() {
   }
 
   return (
-    <Link className="text-black no-underline" href="#" onClick={removeCookie}>
+    <Link href="#" onClick={removeCookie} className="dark:text-slate-50 text-slate-950">
       Logout
     </Link>
   );
