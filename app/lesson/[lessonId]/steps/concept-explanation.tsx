@@ -1,4 +1,4 @@
-import { Button } from "@/design-lib";
+import { Button } from "@/components/button";
 
 // app/lesson/[lessonId]/ConceptExplanation.tsx
 export function ConceptExplanation({

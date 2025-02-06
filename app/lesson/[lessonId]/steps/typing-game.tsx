@@ -1,6 +1,5 @@
-import { Button } from "@/design-lib";
+import { Button } from "@/components/button";
 
-// app/lesson/[lessonId]/TypingGame.tsx
 export function TypingGame({ handleNextStep }: { handleNextStep: () => void }) {
   return (
     <>

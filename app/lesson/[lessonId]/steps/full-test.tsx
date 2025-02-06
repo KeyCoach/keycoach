@@ -1,6 +1,5 @@
-import { Button } from "@/design-lib";
+import { Button } from "@/components/button";
 
-// app/lesson/[lessonId]/FullTest.tsx
 export function FullTest({
   testType,
   handleNextStep,
