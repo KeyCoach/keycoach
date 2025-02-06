@@ -6,6 +6,7 @@ import { FadeInSection } from "@/components/fade-in-section";
 import { BounceAnimation } from "@/components/bounce-animation";
 import ProgressBar from "./buffer-screen/progress-bar";
 import Accordion from "./buffer-screen/key-accuracy-accordion";
+import Image from "next/image";
 
 enum activityEnum {
   conceptExplanation = "concept-explanation",
@@ -99,7 +100,7 @@ export function BufferScreen({
               endTranslate={-3}
               className="absolute -left-4 -top-4 z-10"
             >
-              <img src="/img/e-key.png" alt="E key" className="h-16 w-16" />
+              <Image src="/img/e-key.png" alt="E key" className="h-16 w-16" />
             </BounceAnimation>
             <BounceAnimation
               duration="normal"
@@ -110,7 +111,7 @@ export function BufferScreen({
               endTranslate={-7}
               className="absolute -right-4 top-4 z-10"
             >
-              <img src="/img/!-key.png" alt="! key" className="h-12 w-12" />
+              <Image src="/img/!-key.png" alt="! key" className="h-12 w-12" />
             </BounceAnimation>
             <BounceAnimation
               duration="slow"
@@ -121,7 +122,7 @@ export function BufferScreen({
               endTranslate={-7}
               className="absolute -top-2 right-12 z-10"
             >
-              <img src="/img/y-key.png" alt="Y key" className="h-14 w-14" />
+              <Image src="/img/y-key.png" alt="Y key" className="h-14 w-14" />
             </BounceAnimation>
             <BounceAnimation
               duration="slow"
@@ -132,7 +133,7 @@ export function BufferScreen({
               endTranslate={7}
               className="absolute -top-2 left-16 z-10"
             >
-              <img src="/img/ctrl-key.png" alt="ctrl key" className="h-10 w-10" />
+              <Image src="/img/ctrl-key.png" alt="ctrl key" className="h-10 w-10" />
             </BounceAnimation>
             <h1 className="text-3xl">{lessonStepDescription}</h1>
             {lessonPerformanceSummary()}

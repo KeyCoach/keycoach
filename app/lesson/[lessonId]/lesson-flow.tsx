@@ -24,15 +24,15 @@ export function LessonFlow({ lessonId }: { lessonId: string }) {
   }
 
   const steps = [
-    <ConceptExplanation conceptPhase={1} handleNextStep={handleNextStep} />,
-    <QuoteTest handleNextStep={handleNextStep} />,
-    <TypingGame handleNextStep={handleNextStep} />,
-    <FullTest testType="1 min" handleNextStep={handleNextStep} />,
-    <ConceptExplanation conceptPhase={2} handleNextStep={handleNextStep} />,
-    <QuoteTest handleNextStep={handleNextStep} />,
-    <TypingGame handleNextStep={handleNextStep} />,
-    <ConceptExplanation conceptPhase={3} handleNextStep={handleNextStep} />,
-    <FullTest testType="3 min" handleNextStep={handleNextStep} />,
+    <ConceptExplanation key="concept-1" conceptPhase={1} handleNextStep={handleNextStep} />,
+    <QuoteTest key="quote-1" handleNextStep={handleNextStep} />,
+    <TypingGame key="game-1" handleNextStep={handleNextStep} />,
+    <FullTest key="test-1" testType="1 min" handleNextStep={handleNextStep} />,
+    <ConceptExplanation key="concept-1" conceptPhase={2} handleNextStep={handleNextStep} />,
+    <QuoteTest key="quote-2" handleNextStep={handleNextStep} />,
+    <TypingGame key="game-2" handleNextStep={handleNextStep} />,
+    <ConceptExplanation key="concept-3" conceptPhase={3} handleNextStep={handleNextStep} />,
+    <FullTest key="test-2" testType="3 min" handleNextStep={handleNextStep} />,
   ];
 
   const currentStep = bufferScreen ? (
