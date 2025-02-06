@@ -1,8 +1,7 @@
-// app/lesson/[lessonId]/page.tsx
 import { LessonFlow } from "./lesson-flow";
 
 export default async function LessonPage({ params }: { params: { lessonId: string } }) {
-  const { lessonId } = await params;
+  const { lessonId } = params;
 
   return (
     <div className="">

@@ -60,7 +60,7 @@ export function BufferScreen({
     }, 1400);
 
     return () => clearTimeout(timer);
-  }, []);
+  }, [triggerConfetti, confettiAmount]);
 
   const lessonStepMap: Record<number, string> = {
     1: "concept-explanation",
@@ -81,7 +81,10 @@ export function BufferScreen({
         In that last level, you typed at{" "}
         <span className="font-semibold text-cerulean-700 dark:text-cerulean-300">{wpm} WPM</span>,
         with a typing accuracy of{" "}
-        <span className="font-semibold text-cerulean-700 dark:text-cerulean-300">{accuracy.toFixed(1)}%</span>.
+        <span className="font-semibold text-cerulean-700 dark:text-cerulean-300">
+          {accuracy.toFixed(1)}%
+        </span>
+        .
       </p>
     );
   };
