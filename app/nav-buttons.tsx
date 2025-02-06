@@ -33,7 +33,7 @@ export function LoginButton() {
   }
 
   return (
-    <Link href="#" onClick={GoToLogin} className="dark:text-slate-50 text-slate-950">
+    <Link className="text-slate-900 no-underline dark:text-slate-50 hover:underline" href="#" onClick={GoToLogin}>
       Login
     </Link>
   );
