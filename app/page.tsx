@@ -5,13 +5,13 @@ import Image from "next/image";
 
 export default function Home() {
   return (
-    <div className="absolute min-h-screen relative bg-gradient-to-b from-cerulean-800 to-cerulean-500">
+    <div className="relative min-h-screen bg-gradient-to-b from-cerulean-800 to-cerulean-500">
       {/* Stars */}
-      <div className="absolute inset-0 pointer-events-none">
+      <div className="pointer-events-none absolute inset-0">
         {Array.from({ length: 30 }).map((_, i) => (
           <div
             key={i}
-            className="absolute bg-white rounded-full opacity-80"
+            className="absolute rounded-full bg-white opacity-80"
             style={{
               width: `${Math.random() * 4 + 2}px`,
               height: `${Math.random() * 4 + 2}px`,
@@ -23,23 +23,23 @@ export default function Home() {
       </div>
 
       {/* Content */}
-      <div className="relative z-10 flex flex-col items-center px-4 text-center pt-52">
+      <div className="relative z-10 flex flex-col items-center px-4 pt-52 text-center">
         <div className="w-full max-w-3xl">
-          <H1 className="text-5xl font-bold text-slate-50 mb-20 relative">
+          <H1 className="relative mb-20 text-5xl font-bold text-slate-50">
             <span className="inline-block">Learn to Type with KeyCoach!</span>
-            <span className="inline-block center blink align-text-top">|</span>
+            <span className="center blink inline-block align-text-top">|</span>
           </H1>
 
           <div className="space-y-8">
             <div className="flex justify-center space-x-8">
               <Button colorTheme="ceruleanLight">
-                <Link className="w-40 block text-slate-50 no-underline" href="/typing/test">
+                <Link className="block w-40 text-slate-50 no-underline" href="/typing/test">
                   Test my Speed
                 </Link>
               </Button>
 
               <Button colorTheme="ceruleanLight">
-                <Link className="w-40 block text-slate-50 no-underline" href="/lesson">
+                <Link className="block w-40 text-slate-50 no-underline" href="/lesson">
                   Try a Lesson
                 </Link>
               </Button>
@@ -50,15 +50,16 @@ export default function Home() {
 
       {/* Skyline */}
       <div className="absolute bottom-0 left-0 w-full">
-      <Image
+        <Image
           src="https://typing-background-images.s3.us-east-1.amazonaws.com/home/skyline.jpg"
           alt="Skyline"
           width={1920}
           height={600}
-          className="w-full h-[500px] object-cover"
+          className="h-[500px] w-full object-cover"
           priority
         />
       </div>
     </div>
   );
 }
+

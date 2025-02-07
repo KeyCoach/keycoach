@@ -31,7 +31,10 @@ export default function Setup({
     let keyPressListener: any;
 
     const mainSketch = (p: p5) => {
-      p.setup = () => {
+      p.setup = async () => {
+        while (!window.ml5) {
+          await new Promise((resolve) => setTimeout(resolve, 1000));
+        }
         const handPose = window.ml5.handPose();
         capture = startVideo(p);
         showVideo(p, canvasRef, capture.width, capture.height);
@@ -50,6 +53,7 @@ export default function Setup({
 
         keyPressListener = window.onkeydown = (e) => {
           if (invalidKey(e, keyPositionRef)) return;
+          e.preventDefault();
           const cameraDelay = 100;
 
           setTimeout(() => {
@@ -59,6 +63,7 @@ export default function Setup({
               const newKeyPositions = AddNewKey(e.code, hands, rawKeyPositions.current);
               keyPositionRef.current = newKeyPositions; // update this ref for the draw function
               setKeyPositions(newKeyPositions); // update the state for the parent component
+              sessionStorage.setItem("keyPositions", JSON.stringify(newKeyPositions));
             });
           }, cameraDelay);
         };
