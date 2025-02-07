@@ -101,9 +101,15 @@ export function BufferScreen({
               endRotation={1}
               middleTranslate={-6}
               endTranslate={-3}
-              className="absolute -left-4 -top-4 z-10"
+              className="absolute -left-6 -top-4 z-10"
             >
-              <Image src="/img/e-key.png" alt="E key" className="h-16 w-16" />
+              <Image
+                src="/img/e-key.png"
+                alt="E key"
+                width={256}
+                height={256}
+                className="h-14 w-14"
+              />
             </BounceAnimation>
             <BounceAnimation
               duration="normal"
@@ -114,7 +120,13 @@ export function BufferScreen({
               endTranslate={-7}
               className="absolute -right-4 top-4 z-10"
             >
-              <Image src="/img/!-key.png" alt="! key" className="h-12 w-12" />
+              <Image
+                src="/img/!-key.png"
+                alt="! key"
+                width={256}
+                height={256}
+                className="h-12 w-12"
+              />
             </BounceAnimation>
             <BounceAnimation
               duration="slow"
@@ -123,9 +135,15 @@ export function BufferScreen({
               endRotation={-4}
               middleTranslate={-10}
               endTranslate={-7}
-              className="absolute -top-2 right-12 z-10"
+              className="absolute -top-6 right-12 z-10"
             >
-              <Image src="/img/y-key.png" alt="Y key" className="h-14 w-14" />
+              <Image
+                src="/img/y-key.png"
+                alt="Y key"
+                width={256}
+                height={256}
+                className="h-10 w-10"
+              />
             </BounceAnimation>
             <BounceAnimation
               duration="slow"
@@ -134,9 +152,15 @@ export function BufferScreen({
               endRotation={-3}
               middleTranslate={2}
               endTranslate={7}
-              className="absolute -top-2 left-16 z-10"
+              className="absolute -top-8 left-16 z-10"
             >
-              <Image src="/img/ctrl-key.png" alt="ctrl key" className="h-10 w-10" />
+              <Image
+                src="/img/ctrl-key.png"
+                alt="ctrl key"
+                width={256}
+                height={256}
+                className="h-10 w-10"
+              />
             </BounceAnimation>
             <h1 className="text-3xl">{lessonStepDescription}</h1>
             {lessonPerformanceSummary()}
