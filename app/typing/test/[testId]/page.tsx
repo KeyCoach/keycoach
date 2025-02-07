@@ -11,9 +11,12 @@ import axios from "axios";
 import { Loading } from "@/components";
 
 export default function Test() {
-  const [cameraSetup, setCameraSetup] = useState(false);
   const [settingUp, setSettingUp] = useState(false);
-  const [keyPositions, setKeyPositions] = useState(JSON.parse(JSON.stringify(defaultKeyPositions)));
+  const savedKeyPositions = sessionStorage.getItem("keyPositions");
+  const [cameraSetup, setCameraSetup] = useState(!!savedKeyPositions);
+  const [keyPositions, setKeyPositions] = useState(
+    JSON.parse(savedKeyPositions ?? JSON.stringify(defaultKeyPositions)),
+  );
   const [test, setTest] = useState<Test | null>(null);
   const router = useRouter();
   const { testId } = useParams();
