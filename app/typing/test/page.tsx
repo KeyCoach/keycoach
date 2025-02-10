@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "@/components/link";
 import { Button, H1, H3 } from "@/components";
 import { GetAllTests } from "@/service-interfaces/dynamo-db";
 

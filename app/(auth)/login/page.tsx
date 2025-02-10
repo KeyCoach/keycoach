@@ -1,6 +1,6 @@
 "use client";
 import axios from "axios";
-import Link from "next/link";
+import { Link } from "@/components/link";
 import Cookies from "js-cookie";
 import { H1, TextInput, Button } from "@/components";
 import { useSearchParams } from "next/navigation";
@@ -53,7 +53,7 @@ export default function Login() {
             required
           />
         </div>
-        <div className="pt-3 pb-5">
+        <div className="pb-5 pt-3">
           <TextInput
             label="Password"
             type="password"

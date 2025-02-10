@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { Link } from "@/components/link";
 import { Button, Card, Badge, H1, H3 } from "@/components";
 
 const lessons = ["a", "s", "d", "f", "g", "h", "j", "k", "l"];
@@ -13,16 +13,6 @@ export default function LessonDashboard() {
         <H3 className="mb-10 text-lg">
           Choose from our typing lessons below to improve your skills:
         </H3>
-        {/* <div className="mb-8 flex flex-col items-center">
-          <ul className="text-left list-disc mb-6">
-            <li>View lesson progress</li>
-            <li>Recommended next lesson</li>
-            <li>All lessons</li>
-          </ul>
-          <Link href="/dashboard" className="no-underline">
-            <Button colorTheme="cerulean">Back to Dashboard</Button>
-          </Link>
-        </div> */}
         <div className="grid grid-cols-1 gap-4 px-4 sm:grid-cols-2 lg:grid-cols-4">
           {lessons.map((lesson) => (
             <Link key={lesson} className="text-slate-900 no-underline" href={`/lesson/${lesson}`}>
