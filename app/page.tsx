@@ -1,6 +1,6 @@
 import { Link } from "@/components/link";
 import { H1 } from "@/components";
-import { Button } from "@/components/button";
+import { Button } from "@/components";
 import Image from "next/image";
 
 export default function Home() {

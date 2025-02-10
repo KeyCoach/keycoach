@@ -16,10 +16,11 @@ export function Link({
   linkVariant?: Variant;
 }>) {
   const variantClasses = {
-    breadcrumb: "text-obsidian-800 dark:text-slate-300 hover:underline",
-    normal: "text-slate-900 dark:text-slate-100 hover:underline",
-    "navbar-link": "text-slate-900 dark:text-slate-100 text-white hover:underline",
-    "navbar-link-home": "text-2xl text-slate-900 dark:text-slate-100 text-white hover:underline",
+    breadcrumb: "text-obsidian-800 dark:text-slate-300 no-underline hover:underline",
+    normal: "text-slate-900 dark:text-slate-100 no-underline hover:underline",
+    "navbar-link": "text-slate-900 dark:text-slate-100 no-underline hover:underline",
+    "navbar-link-home":
+      "text-2xl text-slate-900 dark:text-slate-100 no-underline hover:underline",
   };
 
   const dynamicClass = `${variantClasses[linkVariant]} ${className || ""}`;
