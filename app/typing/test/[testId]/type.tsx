@@ -1,27 +1,18 @@
 import { Dispatch, SetStateAction, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import p5 from "p5";
-import { KeyPosition, normalKeys, HandsFromTrackingResults } from "./hand-tracking";
+import {
+  KeyPosition,
+  normalKeys,
+  HandsFromTrackingResults,
+  UpdateFingerTechnique,
+} from "./hand-tracking";
 import { useRouter } from "next/navigation";
 import { startVideo } from "./p5";
 import { Button, Loading } from "@/components";
-import { Test } from "@/app/lib/types";
+import { Letter, Test, Word } from "@/app/lib/types";
 import axios from "axios";
 import Image from "next/image";
-
-enum Letter {
-  Correct = "Correct",
-  WrongLetter = "WrongLetter",
-  WrongFinger = "WrongFinger",
-  Missing = "Missing",
-}
-
-type Word = {
-  word: string;
-  inputs: {
-    key: string;
-    status: Letter;
-  }[];
-};
+import { v4 as uuidv4 } from "uuid";
 
 export default function Type({
   test,
@@ -43,6 +34,7 @@ export default function Type({
   const [userInput, setUserInput] = useState<Word[]>([{ word: sentence[0], inputs: [] }]);
   const userInputRef = useRef(userInput);
   const [mistakes, setMistakes] = useState(0);
+  const [cameraReady, setCameraReady] = useState(false);
   const correctChars = userInput.reduce((acc, word) => {
     return acc + word.inputs.filter((input) => input.status === Letter.Correct).length;
   }, 0);
@@ -64,7 +56,7 @@ export default function Type({
 
   // Logic for typing
   const onKeyPress = useCallback(
-    (key: string, ctrlKey: boolean) => {
+    (key: string, ctrlKey: boolean, inputId: string) => {
       if (testFinished) {
         return;
       }
@@ -100,9 +92,9 @@ export default function Type({
             result = HandleBackspace(userInput);
           }
         } else if (key === " ") {
-          result = HandleSpace(userInput, sentence);
+          result = HandleSpace(userInput, sentence, inputId);
         } else if (normalKeys.includes(key)) {
-          result = HandleNormalKey(userInput, key);
+          result = HandleNormalKey(userInput, key, inputId);
         }
 
         userInputRef.current = result; // NOTE: anywhere you set userInput, you must also set userInputRef.current
@@ -120,7 +112,8 @@ export default function Type({
       const keyPressListener = (window.onkeydown = (e) => {
         if (InvalidKey(e, keyPositions)) return;
         e.preventDefault();
-        onKeyPress(e.key, e.ctrlKey);
+        const id = uuidv4();
+        onKeyPress(e.key, e.ctrlKey, id);
       });
 
       return () => {
@@ -135,28 +128,44 @@ export default function Type({
       }
     }
     let p: p5;
-    let capture: p5.Element;
+    let capture: p5.MediaElement;
     let keyPressListener: any;
 
+    const cameraDelay = 120;
+
     const mainSketch = (p: p5) => {
-      p.setup = () => {
+      p.setup = async () => {
+        while (!window.ml5) {
+          await new Promise((resolve) => setTimeout(resolve, 1000));
+        }
         const handPose = window.ml5.handPose();
         capture = startVideo(p);
+
+        async function checkMl5() {
+          let success = false;
+          while (!success) {
+            handPose.detect(capture, () => {
+              success = true;
+            });
+            await new Promise((resolve) => setTimeout(resolve, 1000));
+          }
+          setCameraReady(true);
+        }
+        checkMl5();
 
         keyPressListener = window.onkeydown = (e) => {
           if (InvalidKey(e, keyPositions)) return;
           e.preventDefault();
-          onKeyPress(e.key, e.ctrlKey);
+          const id = uuidv4();
+          onKeyPress(e.key, e.ctrlKey, id);
 
           function HandDataHandler() {
             handPose.detect(capture, (results: any) => {
               const hands = HandsFromTrackingResults(results);
-              // TODO: implement async hand tracking data handler
-              console.log(hands);
+              UpdateFingerTechnique(e.code, id, hands, formattedKeyPositions, setUserInput);
             });
           }
 
-          const cameraDelay = 100;
           setTimeout(HandDataHandler, cameraDelay);
         };
       };
@@ -181,15 +190,20 @@ export default function Type({
     return <Loading />;
   }
 
+  if (cameraSetup && !cameraReady) {
+    return <Loading />;
+  }
+
   return (
     <div>
       <Button onClick={() => setSettingUp((prev) => !prev)}>
         {cameraSetup ? "Recalibrate Camera" : "Set up Camera"}
       </Button>
-      <div className="flex items-center justify-center min-h-screen bg-gray-50">
-        <div className="relative border-4 border-gray-300 rounded-lg p-10 w-full max-w-6xl">
+
+      <div className="bg-gray-50 flex min-h-screen items-center justify-center">
+        <div className="border-gray-300 relative w-full max-w-6xl rounded-lg border-4 p-10">
           {/* Background Image */}
-          <div className="absolute inset-0 z-0 opacity-20 pointer-events-none">
+          <div className="pointer-events-none absolute inset-0 z-0 opacity-20">
             <Image
               src={`https://typing-background-images.s3.us-east-1.amazonaws.com/tests/${test.id}.jpg`}
               alt="Background"
@@ -200,7 +214,7 @@ export default function Type({
           </div>
 
           {/* Main Content */}
-          <div className="relative z-10 font-mono text-4xl text-left mb-6 leading-relaxed">
+          <div className="relative z-10 mb-6 text-left font-mono text-4xl leading-relaxed">
             <p className="whitespace-pre-wrap">
               {userInput.map((word, i) => {
                 const correctWord = word.inputs.every((input) => input.status === Letter.Correct);
@@ -226,7 +240,7 @@ export default function Type({
                         );
                       })}
                       {i === userInput.length - 1 && (
-                        <span kc-id="cursor" className="absolute blink font-bold">
+                        <span kc-id="cursor" className="blink absolute font-bold">
                           ⎸
                         </span>
                       )}
@@ -249,8 +263,8 @@ export default function Type({
                 );
               })}
               {sentence.slice(userInput.length).map((word, i) => (
-                <span key={"ghost-wrod" + i}>
-                  <span kc-id="ghost-word" className="text-slate-400">
+                <span key={"ghost-word" + i}>
+                  <span kc-id="ghost-word" className="inline-block text-slate-400">
                     {word}
                   </span>
                   <span kc-id="space"> </span>
@@ -259,7 +273,7 @@ export default function Type({
             </p>
           </div>
 
-          <div className="text-right text-sm font-serif italic text-black-700">
+          <div className="text-black-700 text-right font-serif text-sm italic">
             <p>{`An excerpt from \"${src}\" by ${author}`}</p>
           </div>
         </div>
@@ -321,7 +335,7 @@ function HandleBackspace(userInput: Word[]) {
  *
  * Do nothing if they haven't typed anything yet.
  * */
-function HandleSpace(userInput: Word[], sentence: string[]) {
+function HandleSpace(userInput: Word[], sentence: string[], inputId: string) {
   const currWord = userInput.at(-1)!;
   if (currWord.inputs.length === 0) return userInput;
 
@@ -330,6 +344,7 @@ function HandleSpace(userInput: Word[], sentence: string[]) {
     ...currWord.word
       .split("")
       .map((letter) => ({
+        id: inputId,
         key: letter,
         status: Letter.Missing,
       }))
@@ -347,13 +362,14 @@ function HandleSpace(userInput: Word[], sentence: string[]) {
 /**
  * Add a letter to the last word. Determine if the letter is correct or not.
  * */
-function HandleNormalKey(userInput: Word[], key: string) {
+function HandleNormalKey(userInput: Word[], key: string, inputId: string) {
   const currWord = userInput.at(-1)!;
 
   const currLetter = currWord.word[currWord.inputs.length];
   const status = currLetter !== key ? Letter.WrongLetter : Letter.Correct;
 
   currWord.inputs.push({
+    id: inputId,
     key: currLetter || key,
     status,
   });

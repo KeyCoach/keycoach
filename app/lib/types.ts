@@ -8,6 +8,22 @@ export type Test = {
   difficulty: number;
 };
 
+export enum Letter {
+  Correct = "Correct",
+  WrongLetter = "WrongLetter",
+  WrongFinger = "WrongFinger",
+  Missing = "Missing",
+}
+
+export type Word = {
+  word: string;
+  inputs: {
+    key: string;
+    id: string;
+    status: Letter;
+  }[];
+};
+
 export type KeyStroke = {
   time: number;
   correctFinger: string;
