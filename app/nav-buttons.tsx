@@ -1,7 +1,7 @@
 "use client";
 import Cookies from "js-cookie";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { Link } from "@/components/link";
 
 export function LogoutButton() {
   function removeCookie(e: React.MouseEvent<HTMLAnchorElement>) {
@@ -11,7 +11,12 @@ export function LogoutButton() {
   }
 
   return (
-    <Link href="#" onClick={removeCookie} className="dark:text-slate-50 text-slate-950">
+    <Link
+      href="#"
+      onClick={removeCookie}
+      linkVariant="navbar-link"
+      className="transition-all duration-150 ease-in-out hover:underline"
+    >
       Logout
     </Link>
   );
@@ -33,7 +38,12 @@ export function LoginButton() {
   }
 
   return (
-    <Link className="text-slate-900 no-underline dark:text-slate-50 hover:underline" href="#" onClick={GoToLogin}>
+    <Link
+      className="no-underline transition-all duration-150 ease-in-out hover:underline"
+      href="#"
+      linkVariant="navbar-link"
+      onClick={GoToLogin}
+    >
       Login
     </Link>
   );

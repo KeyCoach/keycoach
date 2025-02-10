@@ -1,6 +1,6 @@
 "use client";
 import axios from "axios";
-import Link from "next/link";
+import { Link } from "@/components/link";
 import Cookies from "js-cookie";
 import { H1, TextInput, Button } from "@/components";
 import { useSearchParams } from "next/navigation";
@@ -37,12 +37,12 @@ export default function Login() {
 
   return (
     <div>
-      <H1>Welcome Back!</H1>
-      <div>
+      <H1 className="">Welcome Back!</H1>
+      <div className="mt-1">
         <Link href="/register">New to KeyCoach? Sign Up.</Link>
       </div>
       <form onSubmit={LogIn}>
-        <div className="pt-5">
+        <div className="mt-5">
           <TextInput
             label="Email"
             type="email"
@@ -53,7 +53,7 @@ export default function Login() {
             required
           />
         </div>
-        <div className="pt-3 pb-5">
+        <div className="mt-3">
           <TextInput
             label="Password"
             type="password"
@@ -64,10 +64,14 @@ export default function Login() {
             required
           />
         </div>
-        <div>
+        <div className="mt-3">
           <Link href="/forgot">Forgot Password?</Link>
         </div>
-        <Button>Log In</Button>
+        <div className="mt-3 flex w-full justify-end">
+          {/* TODO: logic for back button */}
+          <Button className="mr-4">Back</Button>
+          <Button>Log In</Button>
+        </div>
       </form>
     </div>
   );

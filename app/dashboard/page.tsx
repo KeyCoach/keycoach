@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "@/components/link";
 import { H1 } from "@/components";
 import { AuthenticateUser } from "@/utils/authenticate-user";
 
@@ -7,7 +7,7 @@ export default async function Dashboard() {
   return (
     <div>
       <H1>User Dashboard</H1>
-      <ul className="pl-8 list-disc">
+      <ul className="list-disc pl-8">
         <li>navigate to lessons</li>
         <li>see last test</li>
         <li>account settings?</li>
@@ -27,7 +27,7 @@ export default async function Dashboard() {
       {user && (
         <div>
           <p>User Data</p>
-          <ul className="pl-8 list-disc">
+          <ul className="list-disc pl-8">
             <li>Email: {user.email}</li>
             <li>Id: {user.id}</li>
             <li>First Name: {user.fname}</li>

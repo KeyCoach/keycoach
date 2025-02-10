@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "@/components/link";
 import Image from "next/image";
 import { LoginButton, LogoutButton } from "./nav-buttons";
 import { AuthenticateUser } from "@/utils/authenticate-user";
@@ -6,33 +6,33 @@ import { AuthenticateUser } from "@/utils/authenticate-user";
 export async function Navbar() {
   const user = await AuthenticateUser();
   return (
-    <nav className="bg-white dark:bg-slate-950 shadow sticky top-0 z-50">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 dark:bg-slate-950">
-        <div className="flex justify-between items-center h-16">
-          <div className="flex-shrink-0 flex items-center pl-4 relative">
-          <div className="absolute left-[-50] w-12 h-12 rounded-full overflow-hidden">
-          <Image
+    <nav className="shadow-slate-300 dark:shadow-slate-800 fixed w-full top-0 z-50 py-1 bg-slate-50 shadow-md  dark:bg-slate-900">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex h-16 items-center justify-between">
+          <div className="relative flex flex-shrink-0 items-center pl-4">
+            <div className="absolute left-[-50] h-12 w-12 overflow-hidden rounded-full">
+              <Image
                 src="https://typing-background-images.s3.us-east-1.amazonaws.com/home/Mascot.jpg"
                 alt="KeyCoach Mascot"
                 fill
-                className="object-cover scale-100 object-center"
+                className="scale-100 object-cover object-center"
                 sizes="48px"
                 priority
               />
             </div>
-            <Link href="/" className="text-slate-900 dark:text-slate-50 no-underline text-2xl font-bold hover:underline">
+            <Link href="/" linkVariant="navbar-link-home">
               KeyCoach
             </Link>
           </div>
 
-          <div className="hidden md:flex space-x-10">
-            <Link href="/dashboard" className="text-slate-900 dark:text-slate-50 no-underline hover:underline">
+          <div className="hidden space-x-10 md:flex">
+            <Link href="/dashboard" linkVariant="navbar-link">
               Dashboard
             </Link>
-            <Link href="/lesson" className="text-slate-900 dark:text-slate-50 no-underline hover:underline">
+            <Link href="/lesson" linkVariant="navbar-link">
               Lessons
             </Link>
-            <Link href="/typing/test" className="text-slate-900 dark:text-slate-50 no-underline hover:underline">
+            <Link href="/typing/test" linkVariant="navbar-link">
               Take a Test
             </Link>
             {user ? <LogoutButton /> : <LoginButton />}

@@ -1,6 +1,6 @@
 "use client";
 import axios from "axios";
-import Link from "next/link";
+import { Link } from "@/components/link";
 import Cookies from "js-cookie";
 import { Button, H1, TextInput } from "@/components";
 
@@ -82,7 +82,7 @@ export default function Register() {
             required
           />
         </div>
-        <div className="pt-2 pb-5">
+        <div className="pb-5 pt-2">
           <TextInput
             label="Confirm Password"
             type="password"
