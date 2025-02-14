@@ -5,7 +5,7 @@ import { AuthenticateUser } from "@/utils/authenticate-user";
 export default async function Dashboard() {
   const user = await AuthenticateUser();
   return (
-    <div>
+    <div className="flex min-h-screen flex-col justify-center">
       <H1>User Dashboard</H1>
       <ul className="list-disc pl-8">
         <li>navigate to lessons</li>

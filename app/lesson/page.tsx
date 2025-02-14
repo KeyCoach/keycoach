@@ -7,8 +7,8 @@ const lessons = ["a", "s", "d", "f", "g", "h", "j", "k", "l"];
 
 export default function LessonDashboard() {
   return (
-    <div className="min-h-screen w-full bg-white dark:bg-slate-950">
-      <div className="mx-auto max-w-7xl pt-10 text-center text-slate-900 dark:text-slate-50">
+    <div className="min-h-screen w-full flex items-center bg-white dark:bg-slate-950">
+      <div className="mx-auto max-w-7xl text-center text-slate-900 dark:text-slate-50">
         <H1 className="mb-10">Lesson Dashboard</H1>
         <H3 className="mb-10 text-lg">
           Choose from our typing lessons below to improve your skills:

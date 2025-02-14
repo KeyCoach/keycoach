@@ -195,13 +195,13 @@ export default function Type({
   }
 
   return (
-    <div>
-      <Button onClick={() => setSettingUp((prev) => !prev)}>
+    <div className="relative min-h-screen">
+      <Button onClick={() => setSettingUp((prev) => !prev)} className="absolute top-56">
         {cameraSetup ? "Recalibrate Camera" : "Set up Camera"}
       </Button>
 
       <div className="bg-gray-50 flex min-h-screen items-center justify-center">
-        <div className="border-gray-300 relative w-full max-w-6xl rounded-lg border-4 p-10">
+        <div className="border-gray-300 relative w-full max-w-6xl rounded-lg border-4">
           {/* Background Image */}
           <div className="pointer-events-none absolute inset-0 z-0 opacity-20">
             <Image
