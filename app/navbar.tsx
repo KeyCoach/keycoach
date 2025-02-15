@@ -12,7 +12,7 @@ export async function Navbar() {
           <div className="flex-shrink-0 flex items-center pl-4 relative">
           <div className="absolute left-[-50] w-12 h-12 rounded-full overflow-hidden">
           <Image
-                src="https://typing-background-images.s3.us-east-1.amazonaws.com/home/Mascot.jpg"
+                src="/img/Mascot.jpg"
                 alt="KeyCoach Mascot"
                 fill
                 className="object-cover scale-100 object-center"

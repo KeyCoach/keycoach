@@ -51,7 +51,7 @@ export default function Home() {
       {/* Skyline */}
       <div className="absolute bottom-0 left-0 w-full">
       <Image
-          src="https://typing-background-images.s3.us-east-1.amazonaws.com/home/skyline.jpg"
+          src="/img/skyline.png"
           alt="Skyline"
           width={1920}
           height={600}
