@@ -1,3 +1,6 @@
+import { Letter, Word } from "@/app/lib/types";
+import { Dispatch, SetStateAction } from "react";
+
 type Finger = {
   x: number;
   y: number;
@@ -41,8 +44,7 @@ export function HandsFromTrackingResults(results: any) {
   };
 
   results.forEach((hand: any) => {
-    // NOTE: not sure why, but it totally gets the hands wrong. Awkward...
-    if (hand.handedness === "Right") {
+    if (hand.handedness === "Left") {
       hands.l_thumb = { x: hand.thumb_tip.x, y: hand.thumb_tip.y };
       hands.l_index = { x: hand.index_finger_tip.x, y: hand.index_finger_tip.y };
       hands.l_middle = { x: hand.middle_finger_tip.x, y: hand.middle_finger_tip.y };
@@ -258,6 +260,52 @@ export const defaultKeyPositions: KeyPosition[][] = [
     { key: "ArrowRight", correctFingers: ["*"] },
   ],
 ].map((row) => row.map((key) => ({ ...key, x: 0, y: 0, positionSet: false })));
+
+export function UpdateFingerTechnique(
+  keyCode: string,
+  inputId: string,
+  hands: Hands,
+  keyPositions: Record<string, KeyPosition>,
+  setUserInput: Dispatch<SetStateAction<Word[]>>,
+) {
+  console.log(keyCode, hands, keyPositions, setUserInput);
+  if (!keyPositions[keyCode]) return;
+  if (!keyPositions[keyCode].positionSet) return;
+
+  const closestFinger = { fingerName: "", distance: Infinity };
+
+  Object.entries(hands).forEach(([finger_name, finger_coords]) => {
+    if (!finger_coords) return;
+    const distance = Math.sqrt(
+      (finger_coords.x - keyPositions[keyCode].x) ** 2 +
+        (finger_coords.y - keyPositions[keyCode].y) ** 2,
+    );
+    if (distance < closestFinger.distance) {
+      closestFinger.distance = distance;
+      closestFinger.fingerName = finger_name;
+    }
+  });
+
+  const usedIncorrectFinger =
+    !keyPositions[keyCode].correctFingers.includes(closestFinger.fingerName) &&
+    !keyPositions[keyCode].correctFingers.includes("*");
+
+  if (usedIncorrectFinger) {
+    setUserInput((prev) => {
+      const userInput: Word[] = JSON.parse(JSON.stringify(prev));
+
+      for (const word of userInput) {
+        for (const letter of word.inputs) {
+          if (letter.id === inputId && letter.status === Letter.Correct) {
+            letter.status = Letter.WrongFinger;
+          }
+        }
+      }
+
+      return userInput;
+    });
+  }
+}
 
 export const normalKeys = [
   "a",

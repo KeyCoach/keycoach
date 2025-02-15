@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "@/components/link";
 import { H1 } from "@/components";
 import { Button } from "@/components";
 import { GetAttemptById } from "@/service-interfaces/dynamo-db";
