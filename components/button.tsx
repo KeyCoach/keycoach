@@ -40,17 +40,17 @@ export function Button({
 
   const colorClasses = {
     obsidian:
-      "bg-obsidian-400 dark:bg-obsidian-500 text-slate-100 hover:bg-obsidian-300 dark:hover:bg-obsidian-600 disabled:bg-obsidian-100 dark:disabled:bg-obsidian-800 focus:bg-obsidian-200 dark:focus:bg-obsidian-500",
+      "bg-obsidian-400 dark:bg-obsidian-500 text-slate-100 hover:bg-obsidian-300 dark:hover:bg-obsidian-400 disabled:bg-obsidian-100 dark:disabled:bg-obsidian-800 focus:bg-obsidian-200 dark:focus:bg-obsidian-500",
     cerulean:
-      "bg-cerulean-400 dark:bg-cerulean-500 text-slate-100 hover:bg-cerulean-300 dark:hover:bg-cerulean-600 disabled:bg-cerulean-100 dark:disabled:bg-cerulean-800 focus:bg-cerulean-200 dark:focus:bg-cerulean-500",
+      "bg-cerulean-400 dark:bg-cerulean-500 text-slate-100 hover:bg-cerulean-300 dark:hover:bg-cerulean-400 disabled:bg-cerulean-100 dark:disabled:bg-cerulean-800 focus:bg-cerulean-200 dark:focus:bg-cerulean-500",
     red: 
-      "bg-red-400 dark:bg-red-500 text-slate-100 hover:bg-red-300 dark:hover:bg-red-600 disabled:bg-red-100 dark:disabled:bg-red-800 focus:bg-red-200 dark:focus:bg-red-500",
+      "bg-red-400 dark:bg-red-500 text-slate-100 hover:bg-red-300 dark:hover:bg-red-300 disabled:bg-red-100 dark:disabled:bg-red-800 focus:bg-red-200 dark:focus:bg-red-500",
     amber:
-      "bg-amber-400 dark:bg-amber-600 text-slate-100 hover:bg-amber-300 dark:hover:bg-amber-600 disabled:bg-amber-100 dark:disabled:bg-amber-800 focus:bg-amber-200 dark:focus:bg-amber-500",
+      "bg-amber-400 dark:bg-amber-600 text-slate-100 hover:bg-amber-300 dark:hover:bg-amber-400 disabled:bg-amber-100 dark:disabled:bg-amber-800 focus:bg-amber-200 dark:focus:bg-amber-500",
     green:
-      "bg-green-400 dark:bg-green-600 text-slate-100 hover:bg-green-300 dark:hover:bg-green-600 disabled:bg-green-100 dark:disabled:bg-green-800 focus:bg-green-200 dark:focus:bg-green-500",
+      "bg-green-400 dark:bg-green-600 text-slate-100 hover:bg-green-300 dark:hover:bg-green-400 disabled:bg-green-100 dark:disabled:bg-green-800 focus:bg-green-200 dark:focus:bg-green-500",
     ceruleanLight:
-      "bg-cerulean-400 dark:bg-cerulean-400 text-slate-100 hover:bg-cerulean-300 dark:hover:bg-cerulean-500 disabled:bg-cerulean-100 dark:disabled:bg-cerulean-700 focus:bg-cerulean-150 dark:focus:bg-cerulean-400",
+      "bg-cerulean-400 dark:bg-cerulean-400 text-slate-100 hover:bg-cerulean-300 dark:hover:bg-cerulean-300 disabled:bg-cerulean-100 dark:disabled:bg-cerulean-700 focus:bg-cerulean-150 dark:focus:bg-cerulean-400",
   };
 
   let dynamicClass = className ? className : colorClasses[colorTheme];

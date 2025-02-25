@@ -128,7 +128,10 @@ export default async function Dashboard() {
                       </tr>
                     </thead>
                     <tbody>
-                      {attempts.slice(0, 5).map((attempt, i) => (
+                      {attempts
+                      .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+                      .slice(0, 5)
+                      .map((attempt, i) => (
                         <tr key={i} className="border-b border-slate-100 dark:border-slate-800">
                           <td className="py-3 text-slate-700 dark:text-slate-300">
                             {new Date(attempt.date).toLocaleDateString()}
