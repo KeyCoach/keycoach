@@ -4,6 +4,7 @@ import { Navbar } from "./navbar";
 import UserProvider from "./user-context";
 import { AuthenticateUser } from "@/utils/authenticate-user";
 import { HandTrackProvider } from "./hand-track-context";
+import CameraWarning from "./camera-warning";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,9 +34,14 @@ export default async function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} light:bg-slate-50 light:text-slate-950 flex max-h-screen min-h-screen flex-col dark:bg-slate-950 dark:text-slate-50`}
       >
         <Navbar />
-        <div className="h-page overflow-y-auto">
+        <div className="h-page relative overflow-y-auto">
           <HandTrackProvider>
-            <UserProvider user={user}>{children}</UserProvider>
+            <UserProvider user={user}>
+              <>
+                {children}
+                <CameraWarning />
+              </>
+            </UserProvider>
           </HandTrackProvider>
         </div>
       </body>

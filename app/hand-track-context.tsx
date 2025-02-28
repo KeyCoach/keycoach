@@ -54,9 +54,12 @@ export function HandTrackProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     const savedKeyPositions = sessionStorage.getItem("keyPositions");
+    const cameraActivated = sessionStorage.getItem("cameraActivated");
     if (savedKeyPositions) {
       setKeyPositions(JSON.parse(savedKeyPositions));
       setKeyPositionsSet(true);
+    }
+    if (cameraActivated) {
       setCameraActivated(true);
     }
   }, []);
@@ -152,7 +155,16 @@ function useSetupCamera(
     setup();
 
     return () => {
-      if (capture) capture.remove();
+      if (capture) {
+        if (capture.elt?.srcObject) {
+          capture.elt.srcObject.getTracks().forEach((track: any) => {
+            track.stop();
+            capture.elt.srcObject.removeTrack(track);
+          });
+        }
+        capture.elt.srcObject = null; // Clear media stream
+        capture.remove();
+      }
       if (p) p.remove();
     };
   }, [trackingActive, showVideo, drawFunction]);
