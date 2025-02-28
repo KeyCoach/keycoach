@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Button, Loading } from "@/components";
-import { KeyPosition, Letter, Test, Word } from "@/app/lib/types";
+import { Button, LoadingPage } from "@/components";
+import { KeyPosition, Letter, Mistake, Test, Word } from "@/app/lib/types";
 import { v4 as uuidv4 } from "uuid";
 import { normalKeys, UpdateFingerTechnique } from "@/app/hand-tracking";
 import { useHandTracking } from "@/app/hand-track-context";
@@ -17,25 +17,41 @@ export default function Type({
 }) {
   const { keyPositionsSet, modelReady, keyPositions, detectHands, cameraActivated } =
     useHandTracking();
-  const cameraSetup = keyPositionsSet && cameraActivated;
-
   const sentence = useMemo(() => test.textBody.split(" "), [test.textBody]);
   const router = useRouter();
-  const testId = test.id;
+
+  const [wpm, setWpm] = useState(0);
   const [testStart, setTestStart] = useState(0);
   const [userInput, setUserInput] = useState<Word[]>([{ word: sentence[0], inputs: [] }]);
+  const [mistakes, setMistakes] = useState<Mistake[]>([]);
+  const [accuracy, setAccuracy] = useState(100);
+
   const userInputRef = useRef(userInput);
-  const [mistakes, setMistakes] = useState(0);
   const correctChars = userInput.reduce((acc, word) => {
     return acc + word.inputs.filter((input) => input.status === Letter.Correct).length;
   }, 0);
-  const [wpm, setWpm] = useState(0);
-  const [accuracy, setAccuracy] = useState(100);
-  const [elapsedTime, setElapsedTime] = useState(0);
+  const testId = test.id;
   const testFinished = TestIsComplete(userInput, sentence);
+  const cameraSetup = keyPositionsSet && cameraActivated;
 
+  /** Logic to be executed on test completion */
+  const FinishTest = useCallback(() => {
+    const body = {
+      testId,
+      correctChars,
+      duration: Date.now() - testStart,
+      userInput,
+      mistakes,
+      cameraActivated,
+    };
+    axios.post("/api/attempt", body).then((res) => {
+      router.push(`/typing/result/${res.data.attemptId}`);
+    });
+  }, [router, userInput, cameraActivated, testId, testStart, mistakes, correctChars]);
+
+  /** handle key presses. Add, edit, and delete recorded keys */
   const onKeyPress = useCallback(
-    (key: string, ctrlKey: boolean, inputId: string) => {
+    (key: string, ctrlKey: boolean, inputId: string, timeSinceStart: number) => {
       if (testFinished) {
         return;
       }
@@ -49,12 +65,10 @@ export default function Type({
 
         if (key === " ") {
           if (currWord.inputs.length !== currWord.word.length) {
-            setMistakes(
-              (prev) => prev + Math.max(0, currWord.word.length - currWord.inputs.length),
-            );
+            setMistakes((prev) => [...prev, { key, time: timeSinceStart, status }]);
           }
         } else if (status === Letter.WrongLetter) {
-          setMistakes((prev) => prev + 1);
+          setMistakes((prev) => [...prev, { key, time: timeSinceStart, status }]);
         }
       }
 
@@ -69,12 +83,10 @@ export default function Type({
             result = HandleBackspace(userInput);
           }
         } else if (key === " ") {
-          result = HandleSpace(userInput, sentence, inputId);
+          result = HandleSpace(userInput, sentence, inputId, timeSinceStart);
         } else if (normalKeys.includes(key)) {
-          result = HandleNormalKey(userInput, key, inputId);
+          result = HandleNormalKey(userInput, key, inputId, timeSinceStart);
         }
-
-        //>>>>>>> main
 
         userInputRef.current = result;
         return result;
@@ -83,13 +95,9 @@ export default function Type({
     [sentence, testStart, userInputRef, testFinished],
   );
 
-  //
+  /** keep onscreen user metrics up to date */
   useEffect(() => {
     if (testStart === 0) return;
-
-    const timer = setInterval(() => {
-      setElapsedTime(Math.floor((Date.now() - testStart) / 1000));
-    }, 1000);
 
     const totalChars = userInput.reduce(
       (acc, word) => acc + word.inputs.filter((input) => input.status !== Letter.Missing).length,
@@ -98,16 +106,13 @@ export default function Type({
     const minutes = (Date.now() - testStart) / 60000;
     const newWpm = Math.round(totalChars / 5 / minutes);
     setWpm(minutes > 0 ? newWpm : 0);
-
     const totalAttempts = userInput.reduce(
       (acc, word) => acc + word.inputs.filter((input) => input.status !== Letter.Missing).length,
       0,
     );
     const newAccuracy =
-      totalAttempts > 0 ? ((totalAttempts - mistakes) / totalAttempts) * 100 : 100;
+      totalAttempts > 0 ? ((totalAttempts - mistakes.length) / totalAttempts) * 100 : 100;
     setAccuracy(Math.round(newAccuracy * 10) / 10);
-
-    return () => clearInterval(timer);
   }, [testStart, userInput, mistakes]);
 
   // Setup camera and key listeners. Runs once on mount
@@ -117,7 +122,8 @@ export default function Type({
         if (InvalidKey(e, keyPositions)) return;
         e.preventDefault();
         const id = uuidv4();
-        onKeyPress(e.key, e.ctrlKey, id);
+        const timeSinceStart = testStart ? Date.now() - testStart : 0;
+        onKeyPress(e.key, e.ctrlKey, id, timeSinceStart);
       });
 
       return () => {
@@ -136,11 +142,21 @@ export default function Type({
       if (InvalidKey(e, keyPositions)) return;
       e.preventDefault();
       const id = uuidv4();
-      onKeyPress(e.key, e.ctrlKey, id);
+      const timeSinceStart = testStart ? Date.now() - testStart : 0;
+      onKeyPress(e.key, e.ctrlKey, id, timeSinceStart);
 
       function HandDataHandler() {
         detectHands.current((hands) => {
-          UpdateFingerTechnique(e.code, id, hands, formattedKeyPositions, setUserInput);
+          UpdateFingerTechnique(
+            e.key,
+            e.code,
+            id,
+            hands,
+            formattedKeyPositions,
+            timeSinceStart,
+            setUserInput,
+            setMistakes,
+          );
         });
       }
       const cameraDelay = 120;
@@ -151,54 +167,25 @@ export default function Type({
     return () => {
       window.removeEventListener("keydown", keyPressListener);
     };
-  }, [cameraSetup, keyPositions, onKeyPress, detectHands]);
-
-  const FinishTest = useCallback(() => {
-    axios
-      .post("/api/attempt", { testId, correctChars, duration: Date.now() - testStart, mistakes })
-      .then((res) => {
-        router.push(`/typing/result/${res.data.attemptId}`);
-      });
-  }, [router, testId, testStart, mistakes, correctChars]);
+  }, [testStart, cameraSetup, keyPositions, onKeyPress, detectHands]);
 
   useEffect(() => {
     if (testFinished) {
+      console.log("Test Finished");
       FinishTest();
     }
   }, [testFinished, FinishTest]);
 
-  // <<<<<<< HEAD
   if (cameraSetup && !modelReady) {
-    return <Loading />;
+    return <LoadingPage />;
   }
-
-  // =======
 
   if (testFinished) {
-    return <Loading />;
+    return <LoadingPage />;
   }
 
-  // return (
-  //   <div className="h-page relative">
-  //     <Button onClick={() => setSettingUp((prev) => !prev)} className="absolute m-5">
-  //       {cameraSetup ? "Recalibrate Camera" : "Set up Camera"}
-  //     </Button>
-  //
-  //     <div className="bg-gray-50 h-page flex items-center justify-center">
-  //       <div className="border-gray-300 relative w-full max-w-6xl rounded-lg border-4 p-5">
-  //         {/* Background Image */}
-  //         <div className="pointer-events-none absolute inset-0 z-0 opacity-20">
-  //           <Image
-  //             src={`https://typing-background-images.s3.us-east-1.amazonaws.com/tests/${test.id}.jpg`}
-  //             alt="Background"
-  //             layout="fill"
-  //             objectFit="cover"
-  //             className="rounded-lg"
-  //           />
-  //         </div>
-
   return (
-    <div className="min-h-screen bg-white p-20 dark:bg-slate-950">
+    <div className="h-page bg-white p-20 dark:bg-slate-950">
       <div className="flex items-center justify-between gap-4">
         <Button onClick={() => setSettingUp((prev) => !prev)}>
           {cameraSetup ? "Recalibrate Camera" : "Set up Camera"}
@@ -282,7 +269,7 @@ export default function Type({
             </div>
 
             <div className="text-right text-sm italic text-slate-600 dark:text-slate-400">
-              <p>From &quot;{test.src}&quot;</p>
+              <p>From "{test.src}"</p>
             </div>
           </div>
         </div>
@@ -344,7 +331,7 @@ function HandleBackspace(userInput: Word[]) {
  *
  * Do nothing if they haven't typed anything yet.
  * */
-function HandleSpace(userInput: Word[], sentence: string[], inputId: string) {
+function HandleSpace(userInput: Word[], sentence: string[], inputId: string, timePressed: number) {
   const currWord = userInput.at(-1)!;
   if (currWord.inputs.length === 0) return userInput;
 
@@ -356,6 +343,7 @@ function HandleSpace(userInput: Word[], sentence: string[], inputId: string) {
         id: inputId,
         key: letter,
         status: Letter.Missing,
+        time: timePressed,
       }))
       .slice(currWord.inputs.length),
   );
@@ -371,7 +359,7 @@ function HandleSpace(userInput: Word[], sentence: string[], inputId: string) {
 /**
  * Add a letter to the last word. Determine if the letter is correct or not.
  * */
-function HandleNormalKey(userInput: Word[], key: string, inputId: string) {
+function HandleNormalKey(userInput: Word[], key: string, inputId: string, timePressed: number) {
   const currWord = userInput.at(-1)!;
 
   const currLetter = currWord.word[currWord.inputs.length];
@@ -381,6 +369,7 @@ function HandleNormalKey(userInput: Word[], key: string, inputId: string) {
     id: inputId,
     key: currLetter || key,
     status,
+    time: timePressed,
   });
   return userInput;
 }
@@ -390,7 +379,9 @@ function TestIsComplete(userInput: Word[], sentence: string[]) {
   if (userInput.length > sentence.length) return true;
   const lastWord = userInput.at(-1)!;
   if (lastWord.inputs.length < lastWord.word.length) return false;
-  return lastWord.inputs.every((input) => input.status === Letter.Correct);
+  return lastWord.inputs.every(
+    (input) => input.status === Letter.Correct || input.status === Letter.WrongFinger,
+  );
 }
 
 function InvalidKey(e: KeyboardEvent, keyPositions: KeyPosition[][]) {

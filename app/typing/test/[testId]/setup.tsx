@@ -1,5 +1,5 @@
 import { Dispatch, RefObject, SetStateAction, useEffect, useRef } from "react";
-import { Button, H1, Loading } from "@/components";
+import { Button, H1 } from "@/components";
 import { useHandTracking } from "@/app/hand-track-context";
 import { AddNewKey, defaultKeyPositions } from "@/app/hand-tracking";
 import { KeyPosition } from "@/app/lib/types";
@@ -14,7 +14,6 @@ export default function Setup({
 }) {
   const {
     canvasRef,
-    modelReady,
     detectHands,
     setKeyPositionsSet,
     setKeyPositions,
@@ -48,14 +47,12 @@ export default function Setup({
 
   useEffect(() => {
     const keyPressListener = (window.onkeydown = (e) => {
-      console.log("key pressed", e.code);
       if (invalidKey(e, keyPositionsRef)) return;
       e.preventDefault();
       const cameraDelay = 100;
 
       setTimeout(() => {
         detectHands.current((hands) => {
-          console.log("hands", hands);
           const newKeyPositions = AddNewKey(e.code, hands, rawKeyPositions.current);
           keyPositionsRef.current = newKeyPositions; // update this ref for the draw function
           setKeyPositions(newKeyPositions); // update the state for the parent component
@@ -74,8 +71,7 @@ export default function Setup({
   return (
     <div>
       <H1>Setup Camera</H1>
-      {!modelReady && <Loading />}
-      <div className={modelReady ? "block" : "hidden"}>
+      <div>
         <div ref={canvasRef}></div>
 
         <div>
