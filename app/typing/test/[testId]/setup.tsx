@@ -68,6 +68,7 @@ export default function Setup({
     };
   }, [detectHands, keyPositionsRef, rawKeyPositions, setKeyPositions, setKeyPositionsSet]);
 
+  // TODO: make this page not look like hot garbage
   return (
     <div>
       <H1>Setup Camera</H1>

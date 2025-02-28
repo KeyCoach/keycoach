@@ -8,3 +8,4 @@ export * from "./inputs";
 export * from "./loading";
 export * from "./modal";
 export * from "./progress-bar";
+export * from "./loading-page";
