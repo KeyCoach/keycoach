@@ -90,7 +90,7 @@ export function BufferScreen({
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center px-4">
+    <div className="h-page flex items-center justify-center px-4">
       <div className="grid w-full max-w-5xl auto-rows-auto gap-6">
         <FadeInSection delay={0}>
           <div className="relative flex min-h-[100px] flex-col items-center justify-center gap-4 rounded-2xl py-4 shadow-md dark:bg-slate-800 dark:shadow-slate-600">

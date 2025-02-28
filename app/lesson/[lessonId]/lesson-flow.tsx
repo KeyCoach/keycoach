@@ -46,7 +46,7 @@ export function LessonFlow({ lessonId }: { lessonId: string }) {
   );
 
   return (
-    <div className="relative flex h-screen w-full justify-center overflow-hidden">
+    <div className="h-page relative flex w-full justify-center overflow-hidden">
       <FadeInSection
         direction="right"
         duration="slow"

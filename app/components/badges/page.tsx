@@ -5,12 +5,12 @@ import { Card, Badge } from "@/components";
 export default function Components() {
   return (
     <div>
-      <div className="h-screen w-screen grid grid-cols-3 auto-rows-auto p-8 gap-6">
+      <div className="h-page grid w-screen auto-rows-auto grid-cols-3 gap-6 p-8">
         <div className="col-span-3">
           <h1 className="text-3xl font-bold">Badges</h1>
         </div>
 
-        <div className="flex flex-col gap-4 items-start">
+        <div className="flex flex-col items-start gap-4">
           <Badge icon="check" colorTheme="green" />
           <Badge icon="escape" colorTheme="red" />
           <Badge icon="more" colorTheme="cerulean" />
@@ -20,7 +20,7 @@ export default function Components() {
           <Badge icon="stop" colorTheme="red" />
         </div>
 
-        <div className="flex flex-col gap-4 items-start">
+        <div className="flex flex-col items-start gap-4">
           <Badge icon="check" colorTheme="green" label="Complete" />
           <Badge icon="escape" colorTheme="red" label="Wrong" />
           <Badge icon="more" colorTheme="cerulean" label="In Progress" />
@@ -30,10 +30,10 @@ export default function Components() {
           <Badge icon="stop" colorTheme="red" label="Help" />
         </div>
       </div>
-      <div className="h-screen w-screen flex flex-col gap-6 p-8">
+      <div className="h-page flex w-screen flex-col gap-6 p-8">
         <h1 className="text-3xl font-bold">Cards</h1>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 auto-rows-auto items-start">
+        <div className="grid auto-rows-auto grid-cols-1 items-start gap-4 md:grid-cols-2">
           <Card
             title="Home Row"
             subtitle="Begin learning the Home Row"

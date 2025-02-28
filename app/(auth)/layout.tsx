@@ -6,7 +6,7 @@ export default async function AuthLayout({
   return (
     <div className="flex justify-center">
       <div
-        className="mt-12 rounded-2xl bg-slate-100 shadow-slate-300 dark:bg-slate-900 dark:shadow-slate-700"
+        className="rounded-2xl bg-slate-100 shadow-slate-300 dark:bg-slate-900 dark:shadow-slate-700"
         style={{ width: "35rem" }}
       >
         {children}

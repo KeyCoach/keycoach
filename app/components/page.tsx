@@ -25,10 +25,10 @@ export default function Components() {
 
   return (
     <div>
-      <div className="h-fit grid grid-cols-3 auto-rows-auto">
+      <div className="grid h-fit auto-rows-auto grid-cols-3">
         <div id="centered-button" className="">
-          <h1 className="text-3xl mb-8 text-center">Buttons</h1>
-          <div className="flex flex-row h-1/2 flex-wrap items-start gap-4">
+          <h1 className="mb-8 text-center text-3xl">Buttons</h1>
+          <div className="flex h-1/2 flex-row flex-wrap items-start gap-4">
             <Button colorTheme="cerulean">cerulean button</Button>
             <Button colorTheme="obsidian">obsidian button</Button>
             <Button colorTheme="red">red button</Button>
@@ -118,9 +118,9 @@ export default function Components() {
           />
         </div>
         <div id="modals" className="">
-          <div id="centered-button" className="flex flex-col justify-center items-center">
-            <h1 className="text-3xl mb-8">Modals/Dialogues</h1>
-            <div className="flex flex-row h-1/2 gap-4 flex-wrap items-start">
+          <div id="centered-button" className="flex flex-col items-center justify-center">
+            <h1 className="mb-8 text-3xl">Modals/Dialogues</h1>
+            <div className="flex h-1/2 flex-row flex-wrap items-start gap-4">
               <Button onClick={() => setIsFormModalOpen(true)} colorTheme="cerulean">
                 Open Modal with Form
               </Button>
@@ -194,8 +194,8 @@ export default function Components() {
         </div>
       </div>
 
-      <div className="h-screen grid grid-cols-3 grid-rows-3 py-12">
-        <div id="icons" className="grid grid-cols-8 auto-rows-auto">
+      <div className="h-page grid grid-cols-3 grid-rows-3 py-12">
+        <div id="icons" className="grid auto-rows-auto grid-cols-8">
           <Icon src="icons/check.svg" alt="checkmark icon" w={24} h={24} />
           <Icon src="icons/bookmark.svg" alt="bookmark icon" w={24} h={24} />
           <Icon src="icons/error.svg" alt="error icon" w={24} h={24} />
