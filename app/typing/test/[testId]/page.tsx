@@ -6,7 +6,7 @@ import Type from "./type";
 import { useParams, useRouter } from "next/navigation";
 import { type Test } from "@/app/lib/types";
 import axios from "axios";
-import { Loading } from "@/components";
+import { LoadingPage } from "@/components";
 import { useHandTracking } from "@/app/hand-track-context";
 
 export default function Test() {
@@ -33,20 +33,28 @@ export default function Test() {
   useEffect(() => {
     if (settingUp || cameraSetup) {
       setCameraActivated(true);
+      localStorage.setItem("cameraActivated", "true");
     }
   }, [settingUp, cameraSetup, setCameraActivated]);
+
+  useEffect(() => {
+    return () => {
+      setCameraActivated(false);
+      localStorage.setItem("cameraActivated", "false");
+    };
+  }, [setCameraActivated]);
 
   return settingUp ? (
     <>
       {modelReady ? (
         <Setup setCameraSetup={setCameraSetup} setSettingUp={setSettingUp} />
       ) : (
-        <Loading />
+        <LoadingPage />
       )}
     </>
   ) : test ? (
     <Type test={test} setSettingUp={setSettingUp} cameraSetup={cameraSetup} />
   ) : (
-    <Loading />
+    <LoadingPage />
   );
 }

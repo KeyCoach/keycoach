@@ -2,7 +2,15 @@
 import { useState } from "react";
 
 import Image from "next/image";
-import { Icon, Modal, TextArea, TextInput, TextInputWithAddon, Button } from "@/components";
+import {
+  Icon,
+  Modal,
+  TextArea,
+  TextInput,
+  TextInputWithAddon,
+  Button,
+  LoadingSpinner,
+} from "@/components";
 
 export default function Components() {
   const [text, setText] = useState("");
@@ -32,6 +40,10 @@ export default function Components() {
             <Button variant="next-nav">
               <span className="mr-auto">next</span>
             </Button>
+          </div>
+          <div>
+            <LoadingSpinner />
+            <LoadingSpinner size="w-20 h-20" />
           </div>
         </div>
         <div id="inputs" className="flex flex-col items-center gap-8">

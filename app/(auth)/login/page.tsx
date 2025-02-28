@@ -2,11 +2,13 @@
 import axios from "axios";
 import { Link } from "@/components/link";
 import Cookies from "js-cookie";
-import { H1, TextInput, Button } from "@/components";
+import { H1, TextInput, Button, LoadingOverlay } from "@/components";
 import { useSearchParams } from "next/navigation";
+import { useState } from "react";
 
 export default function Login() {
   const params = useSearchParams();
+  const [loading, setLoading] = useState(false);
 
   async function LogIn(e: any) {
     e.preventDefault();
@@ -16,6 +18,7 @@ export default function Login() {
       email: formData.get("email"),
       password: formData.get("password"),
     };
+    setLoading(true);
 
     axios
       .post("/api/login", body)
@@ -32,18 +35,27 @@ export default function Login() {
       .catch((err) => {
         alert("There was an error logging in. Please try again.");
         console.error(err);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   }
 
   return (
-    <div className="min-h-screen w-full pt-20 bg-white dark:bg-slate-950">
-      <div className="mx-auto max-w-md w-full text-slate-900 dark:text-slate-50 p-1">
-        <div className="bg-slate-50 dark:bg-slate-800 rounded-xl p-8 shadow">
+    <div className="h-page w-full bg-white pt-20 dark:bg-slate-950">
+      <LoadingOverlay show={loading} message="Logging you in..." />
+      <div className="mx-auto w-full max-w-md p-1 text-slate-900 dark:text-slate-50">
+        <div className="rounded-xl bg-slate-50 p-8 shadow dark:bg-slate-800">
           <H1 className="mb-3 text-slate-900 dark:text-slate-50">Welcome Back!</H1>
           <div className="mb-6 text-slate-600 dark:text-slate-400">
-            <Link href="/register" className="text-cerulean-600 dark:text-cerulean-400 hover:underline">New to KeyCoach? Sign Up.</Link>
+            <Link
+              href="/register"
+              className="text-cerulean-600 hover:underline dark:text-cerulean-400"
+            >
+              New to KeyCoach? Sign Up.
+            </Link>
           </div>
-          
+
           <form onSubmit={LogIn}>
             <div className="mb-4">
               <TextInput
@@ -68,7 +80,12 @@ export default function Login() {
               />
             </div>
             <div className="mb-6">
-              <Link href="/forgot" className="text-cerulean-600 dark:text-cerulean-400 hover:underline">Forgot Password?</Link>
+              <Link
+                href="/forgot"
+                className="text-cerulean-600 hover:underline dark:text-cerulean-400"
+              >
+                Forgot Password?
+              </Link>
             </div>
             <div className="flex justify-end space-x-4">
               {/* TODO: logic for back button */}
