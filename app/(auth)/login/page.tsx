@@ -36,43 +36,48 @@ export default function Login() {
   }
 
   return (
-    <div>
-      <H1 className="">Welcome Back!</H1>
-      <div className="mt-1">
-        <Link href="/register">New to KeyCoach? Sign Up.</Link>
+    <div className="min-h-screen w-full pt-20 bg-white dark:bg-slate-950">
+      <div className="mx-auto max-w-md w-full text-slate-900 dark:text-slate-50 p-1">
+        <div className="bg-slate-50 dark:bg-slate-800 rounded-xl p-8 shadow">
+          <H1 className="mb-3 text-slate-900 dark:text-slate-50">Welcome Back!</H1>
+          <div className="mb-6 text-slate-600 dark:text-slate-400">
+            <Link href="/register" className="text-cerulean-600 dark:text-cerulean-400 hover:underline">New to KeyCoach? Sign Up.</Link>
+          </div>
+          
+          <form onSubmit={LogIn}>
+            <div className="mb-4">
+              <TextInput
+                label="Email"
+                type="email"
+                id="email"
+                name="email"
+                autoComplete="email"
+                placeholder="example@email.com"
+                required
+              />
+            </div>
+            <div className="mb-4">
+              <TextInput
+                label="Password"
+                type="password"
+                id="password"
+                name="password"
+                autoComplete="current-password"
+                placeholder="&bull;&bull;&bull;&bull;&bull;&bull;"
+                required
+              />
+            </div>
+            <div className="mb-6">
+              <Link href="/forgot" className="text-cerulean-600 dark:text-cerulean-400 hover:underline">Forgot Password?</Link>
+            </div>
+            <div className="flex justify-end space-x-4">
+              {/* TODO: logic for back button */}
+              <Button>Back</Button>
+              <Button colorTheme="cerulean">Log In</Button>
+            </div>
+          </form>
+        </div>
       </div>
-      <form onSubmit={LogIn}>
-        <div className="mt-5">
-          <TextInput
-            label="Email"
-            type="email"
-            id="email"
-            name="email"
-            autoComplete="email"
-            placeholder="example@email.com"
-            required
-          />
-        </div>
-        <div className="mt-3">
-          <TextInput
-            label="Password"
-            type="password"
-            id="password"
-            name="password"
-            autoComplete="current-password"
-            placeholder="&bull;&bull;&bull;&bull;&bull;&bull;"
-            required
-          />
-        </div>
-        <div className="mt-3">
-          <Link href="/forgot">Forgot Password?</Link>
-        </div>
-        <div className="mt-3 flex w-full justify-end">
-          {/* TODO: logic for back button */}
-          <Button className="mr-4">Back</Button>
-          <Button>Log In</Button>
-        </div>
-      </form>
     </div>
   );
 }
