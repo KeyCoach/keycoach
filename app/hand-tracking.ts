@@ -1,32 +1,5 @@
-import { Letter, Word } from "@/app/lib/types";
+import { Hands, KeyPosition, Letter, Word } from "@/app/lib/types";
 import { Dispatch, SetStateAction } from "react";
-
-type Finger = {
-  x: number;
-  y: number;
-};
-
-export type Hands = {
-  l_thumb: null | Finger;
-  l_index: null | Finger;
-  l_middle: null | Finger;
-  l_ring: null | Finger;
-  l_pinky: null | Finger;
-  r_thumb: null | Finger;
-  r_index: null | Finger;
-  r_middle: null | Finger;
-  r_ring: null | Finger;
-  r_pinky: null | Finger;
-};
-
-export type KeyPosition = {
-  key: string;
-  correctFingers: string[];
-  x: number;
-  y: number;
-  positionSet: boolean;
-  isLongKey?: boolean;
-};
 
 /** Reformats hand tracking results */
 export function HandsFromTrackingResults(results: any) {
@@ -103,14 +76,6 @@ function CalculateTrendLines(keyPositions: KeyPosition[][]) {
   }
   return regressionResults;
 }
-
-// NOTE: We might want to implement the following checks:
-// Throw an error if trend Lines aren't roughly parallel
-// Throw an eror if the horizonal key spacing (between keys) is inconsistent
-// Throw an eror if the vertical key spacing (between rows) is inconsistent
-// Throw an error if the sides of the keyboard are not roughly parallel
-// Throw an error if keys are out of order
-// Throw an error if their palm is visible?
 
 /** Fits key positions to trendline, and spaces keys evenly */
 function CalculateTunedKeyPositions(keyPositions: KeyPosition[][], trendLines: number[][]) {
@@ -268,11 +233,10 @@ export function UpdateFingerTechnique(
   keyPositions: Record<string, KeyPosition>,
   setUserInput: Dispatch<SetStateAction<Word[]>>,
 ) {
-  console.log(keyCode, hands, keyPositions, setUserInput);
   if (!keyPositions[keyCode]) return;
   if (!keyPositions[keyCode].positionSet) return;
 
-  const closestFinger = { fingerName: "", distance: Infinity };
+  const fingerDistances: Record<string, number> = {};
 
   Object.entries(hands).forEach(([finger_name, finger_coords]) => {
     if (!finger_coords) return;
@@ -280,17 +244,38 @@ export function UpdateFingerTechnique(
       (finger_coords.x - keyPositions[keyCode].x) ** 2 +
         (finger_coords.y - keyPositions[keyCode].y) ** 2,
     );
+    fingerDistances[finger_name] = distance;
+  });
+
+  const closestFinger = { fingerName: "", distance: Infinity };
+  Object.entries(fingerDistances).forEach(([fingerName, distance]) => {
     if (distance < closestFinger.distance) {
+      closestFinger.fingerName = fingerName;
       closestFinger.distance = distance;
-      closestFinger.fingerName = finger_name;
     }
   });
 
-  const usedIncorrectFinger =
-    !keyPositions[keyCode].correctFingers.includes(closestFinger.fingerName) &&
-    !keyPositions[keyCode].correctFingers.includes("*");
+  if (closestFinger.fingerName === "") {
+    console.error("No fingers detected");
+  }
+  const correctFingers = keyPositions[keyCode].correctFingers;
 
-  if (usedIncorrectFinger) {
+  const usedCorrectFinger = UsedCorrectFinger(fingerDistances, correctFingers, keyPositions);
+
+  if (!usedCorrectFinger) {
+    if (
+      correctFingers.some(
+        (fingerName) => fingerDistances[fingerName] < closestFinger.distance * 0.6,
+      )
+    ) {
+      return;
+    }
+    if (closestFinger.fingerName === "") {
+      console.log("No fingers detected");
+    } else {
+      console.log({ hands, key: keyPositions[keyCode], closestFinger });
+    }
+
     setUserInput((prev) => {
       const userInput: Word[] = JSON.parse(JSON.stringify(prev));
 
@@ -305,6 +290,21 @@ export function UpdateFingerTechnique(
       return userInput;
     });
   }
+}
+
+function UsedCorrectFinger(
+  fingerDistances: Record<string, number>,
+  correctFingers: string[],
+  keyPositions: Record<string, KeyPosition>,
+) {
+  const fCoords = keyPositions["KeyF"];
+  const gCoords = keyPositions["KeyG"];
+  const keyDistance = Math.sqrt((fCoords.x - gCoords.x) ** 2 + (fCoords.y - gCoords.y) ** 2);
+  console.log(keyDistance);
+  const usedCorrectFinger = correctFingers.some(
+    (fingerName) => fingerDistances[fingerName] < keyDistance * 1.2,
+  );
+  return usedCorrectFinger;
 }
 
 export const normalKeys = [

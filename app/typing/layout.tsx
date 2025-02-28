@@ -3,5 +3,5 @@ export default function TestLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return <div>{children}</div>;
+  return children;
 }

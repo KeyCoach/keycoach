@@ -1,30 +1,25 @@
 import { Dispatch, SetStateAction, useCallback, useEffect, useMemo, useRef, useState } from "react";
-import p5 from "p5";
-import {
-  KeyPosition,
-  normalKeys,
-  HandsFromTrackingResults,
-  UpdateFingerTechnique,
-} from "./hand-tracking";
 import { useRouter } from "next/navigation";
-import { startVideo } from "./p5";
 import { Button, Loading } from "@/components";
-import { Letter, Test, Word } from "@/app/lib/types";
+import { KeyPosition, Letter, Test, Word } from "@/app/lib/types";
 import axios from "axios";
 import Image from "next/image";
 import { v4 as uuidv4 } from "uuid";
+import { normalKeys, UpdateFingerTechnique } from "@/app/hand-tracking";
+import { useHandTracking } from "@/app/hand-track-context";
 
 export default function Type({
   test,
   setSettingUp,
-  cameraSetup,
-  keyPositions,
 }: {
   test: Test;
   setSettingUp: Dispatch<SetStateAction<boolean>>;
   cameraSetup: boolean;
-  keyPositions: KeyPosition[][];
 }) {
+  const { keyPositionsSet, modelReady, keyPositions, detectHands, cameraActivated } =
+    useHandTracking();
+  const cameraSetup = keyPositionsSet && cameraActivated;
+
   const sentence = useMemo(() => test.textBody.split(" "), [test.textBody]);
   const router = useRouter();
   const testId = test.id;
@@ -34,7 +29,6 @@ export default function Type({
   const [userInput, setUserInput] = useState<Word[]>([{ word: sentence[0], inputs: [] }]);
   const userInputRef = useRef(userInput);
   const [mistakes, setMistakes] = useState(0);
-  const [cameraReady, setCameraReady] = useState(false);
   const correctChars = userInput.reduce((acc, word) => {
     return acc + word.inputs.filter((input) => input.status === Letter.Correct).length;
   }, 0);
@@ -107,7 +101,6 @@ export default function Type({
 
   // Setup camera and key listeners. Runs once on mount
   useEffect(() => {
-    console.log("setting up camera and key listeners");
     if (!cameraSetup) {
       const keyPressListener = (window.onkeydown = (e) => {
         if (InvalidKey(e, keyPositions)) return;
@@ -127,81 +120,45 @@ export default function Type({
         formattedKeyPositions[key.key] = key;
       }
     }
-    let p: p5;
-    let capture: p5.MediaElement;
-    let keyPressListener: any;
 
     const cameraDelay = 120;
 
-    const mainSketch = (p: p5) => {
-      p.setup = async () => {
-        while (!window.ml5) {
-          await new Promise((resolve) => setTimeout(resolve, 1000));
-        }
-        const handPose = window.ml5.handPose();
-        capture = startVideo(p);
+    const keyPressListener = (window.onkeydown = (e) => {
+      if (InvalidKey(e, keyPositions)) return;
+      e.preventDefault();
+      const id = uuidv4();
+      onKeyPress(e.key, e.ctrlKey, id);
 
-        async function checkMl5() {
-          let success = false;
-          while (!success) {
-            handPose.detect(capture, () => {
-              success = true;
-            });
-            await new Promise((resolve) => setTimeout(resolve, 1000));
-          }
-          setCameraReady(true);
-        }
-        checkMl5();
+      function HandDataHandler() {
+        detectHands.current((hands) => {
+          UpdateFingerTechnique(e.code, id, hands, formattedKeyPositions, setUserInput);
+        });
+      }
 
-        keyPressListener = window.onkeydown = (e) => {
-          if (InvalidKey(e, keyPositions)) return;
-          e.preventDefault();
-          const id = uuidv4();
-          onKeyPress(e.key, e.ctrlKey, id);
-
-          function HandDataHandler() {
-            handPose.detect(capture, (results: any) => {
-              const hands = HandsFromTrackingResults(results);
-              UpdateFingerTechnique(e.code, id, hands, formattedKeyPositions, setUserInput);
-            });
-          }
-
-          setTimeout(HandDataHandler, cameraDelay);
-        };
-      };
-    };
-
-    async function initializeP5() {
-      console.log("importing p5");
-      const p5 = (await import("p5")).default;
-      p = new p5(mainSketch);
-    }
-
-    initializeP5();
+      setTimeout(HandDataHandler, cameraDelay);
+    });
 
     return () => {
       window.removeEventListener("keydown", keyPressListener);
-      if (capture) capture.remove();
-      if (p) p.remove();
     };
-  }, [cameraSetup, keyPositions, onKeyPress]);
+  }, [cameraSetup, keyPositions, onKeyPress, detectHands]);
 
   if (testFinished) {
     return <Loading />;
   }
 
-  if (cameraSetup && !cameraReady) {
+  if (cameraSetup && !modelReady) {
     return <Loading />;
   }
 
   return (
-    <div className="relative min-h-screen">
-      <Button onClick={() => setSettingUp((prev) => !prev)} className="absolute top-56">
+    <div className="h-page relative">
+      <Button onClick={() => setSettingUp((prev) => !prev)} className="absolute m-5">
         {cameraSetup ? "Recalibrate Camera" : "Set up Camera"}
       </Button>
 
-      <div className="bg-gray-50 flex min-h-screen items-center justify-center">
-        <div className="border-gray-300 relative w-full max-w-6xl rounded-lg border-4">
+      <div className="bg-gray-50 h-page flex items-center justify-center">
+        <div className="border-gray-300 relative w-full max-w-6xl rounded-lg border-4 p-5">
           {/* Background Image */}
           <div className="pointer-events-none absolute inset-0 z-0 opacity-20">
             <Image

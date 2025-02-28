@@ -73,7 +73,9 @@ body {
 }
 
 @keyframes key-bounce {
-  0%, 20%, 50% {
+  0%,
+  20%,
+  50% {
     transform: translateY(0) rotateZ(var(--start-rotation, -8deg));
   }
   35% {
@@ -90,4 +92,8 @@ body {
 .animate-bounce {
   animation: key-bounce var(--duration, 1s) infinite ease-in-out;
   animation-delay: var(--delay, 500ms);
+}
+
+.h-page {
+  height: calc(100vh - 4.5rem);
 }

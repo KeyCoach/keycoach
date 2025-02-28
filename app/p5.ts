@@ -2,7 +2,7 @@ import p5 from "p5";
 import { RefObject } from "react";
 
 export function startVideo(p: p5, width = 640, height = 480): p5.MediaElement {
-  const capture = p.createCapture("video") as p5.MediaElement; // NOTE: Type assertion because typescript definitions are incorrect
+  const capture = p.createCapture("video") as p5.MediaElement; // NOTE: Type assertion because typescript doesn't know about createCapture
   capture.size(width, height);
   capture.hide();
 

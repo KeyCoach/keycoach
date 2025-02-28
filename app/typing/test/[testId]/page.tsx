@@ -3,27 +3,22 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import Setup from "./setup";
 import Type from "./type";
-import { useLoadMl5 } from "./use-load-ml5";
-import { defaultKeyPositions } from "./hand-tracking";
 import { useParams, useRouter } from "next/navigation";
 import { type Test } from "@/app/lib/types";
 import axios from "axios";
 import { Loading } from "@/components";
+import { useHandTracking } from "@/app/hand-track-context";
 
 export default function Test() {
-  const [settingUp, setSettingUp] = useState(false);
-  const savedKeyPositions = sessionStorage.getItem("keyPositions");
-  const [cameraSetup, setCameraSetup] = useState(!!savedKeyPositions);
-  const [keyPositions, setKeyPositions] = useState(
-    JSON.parse(savedKeyPositions ?? JSON.stringify(defaultKeyPositions)),
-  );
-  const [test, setTest] = useState<Test | null>(null);
   const router = useRouter();
   const { testId } = useParams();
-
-  useLoadMl5();
+  const [settingUp, setSettingUp] = useState(false);
+  const [cameraSetup, setCameraSetup] = useState(false);
+  const [test, setTest] = useState<Test | null>(null);
+  const { modelReady, setCameraActivated } = useHandTracking();
 
   useEffect(() => {
+    console.log("fetching test");
     axios
       .get("/api/test", { params: { testId } })
       .then((res) => {
@@ -35,25 +30,23 @@ export default function Test() {
       });
   }, [testId, router]);
 
-  return (
-    <div>
-      {settingUp ? (
-        <Setup
-          setCameraSetup={setCameraSetup}
-          setSettingUp={setSettingUp}
-          setKeyPositions={setKeyPositions}
-          keyPositions={keyPositions}
-        />
-      ) : test ? (
-        <Type
-          test={test}
-          keyPositions={keyPositions}
-          setSettingUp={setSettingUp}
-          cameraSetup={cameraSetup}
-        />
+  useEffect(() => {
+    if (settingUp || cameraSetup) {
+      setCameraActivated(true);
+    }
+  }, [settingUp, cameraSetup, setCameraActivated]);
+
+  return settingUp ? (
+    <>
+      {modelReady ? (
+        <Setup setCameraSetup={setCameraSetup} setSettingUp={setSettingUp} />
       ) : (
         <Loading />
       )}
-    </div>
+    </>
+  ) : test ? (
+    <Type test={test} setSettingUp={setSettingUp} cameraSetup={cameraSetup} />
+  ) : (
+    <Loading />
   );
 }

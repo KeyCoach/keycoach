@@ -1,120 +1,81 @@
-import { Dispatch, RefObject, SetStateAction, useEffect, useRef, useState } from "react";
+import { Dispatch, RefObject, SetStateAction, useEffect, useRef } from "react";
+import { Button, H1, Loading } from "@/components";
+import { useHandTracking } from "@/app/hand-track-context";
+import { AddNewKey, defaultKeyPositions } from "@/app/hand-tracking";
+import { KeyPosition } from "@/app/lib/types";
 import p5 from "p5";
-import {
-  KeyPosition,
-  HandsFromTrackingResults,
-  AddNewKey,
-  defaultKeyPositions,
-} from "./hand-tracking";
-import { startVideo, showVideo } from "./p5";
-import { Button, H1 } from "@/components";
 
 export default function Setup({
   setCameraSetup,
   setSettingUp,
-  setKeyPositions,
-  keyPositions,
 }: {
   setCameraSetup: Dispatch<SetStateAction<boolean>>;
   setSettingUp: Dispatch<SetStateAction<boolean>>;
-  setKeyPositions: Dispatch<SetStateAction<KeyPosition[][]>>;
-  keyPositions: KeyPosition[][];
 }) {
-  const canvasRef = useRef<HTMLDivElement>(null);
-  const keyPositionRef = useRef(keyPositions);
-  const [cameraReady, setCameraReady] = useState(false);
-  const rawKeyPositions = useRef<KeyPosition[][]>(JSON.parse(JSON.stringify(defaultKeyPositions)));
+  const {
+    canvasRef,
+    modelReady,
+    detectHands,
+    setKeyPositionsSet,
+    setKeyPositions,
+    setDrawFunction,
+    keyPositions,
+    setShowVideo,
+    showVideo,
+  } = useHandTracking();
+
+  const keyPositionsRef = useRef(keyPositions);
+  const rawKeyPositions = useRef<KeyPosition[][]>(JSON.parse(JSON.stringify(keyPositions)));
 
   useEffect(() => {
-    let p: p5;
-    let capture: p5.Element;
-    let keyPressListener: any;
+    if (!showVideo) setShowVideo(true);
 
-    const mainSketch = (p: p5) => {
-      p.setup = async () => {
-        while (!window.ml5) {
-          await new Promise((resolve) => setTimeout(resolve, 1000));
+    setDrawFunction(() => (p: p5, capture: p5.Element) => {
+      p.scale(-1, 1);
+      p.image(capture, -capture.width, 0);
+
+      // Draw red dots for the key positions
+      for (const key of keyPositionsRef.current.flat()) {
+        if (key.positionSet) {
+          p.fill(255, 0, 0);
+          p.noStroke();
+
+          p.circle(-capture.width + key.x, key.y, 5);
         }
-        const handPose = window.ml5.handPose();
-        capture = startVideo(p);
-        showVideo(p, canvasRef, capture.width, capture.height);
-
-        async function checkMl5() {
-          let success = false;
-          while (!success) {
-            handPose.detect(capture, () => {
-              success = true;
-            });
-            await new Promise((resolve) => setTimeout(resolve, 1000));
-          }
-          setCameraReady(true);
-        }
-        checkMl5();
-
-        keyPressListener = window.onkeydown = (e) => {
-          if (invalidKey(e, keyPositionRef)) return;
-          e.preventDefault();
-          const cameraDelay = 100;
-
-          setTimeout(() => {
-            handPose.detect(capture, (results: any) => {
-              if (results.length === 0) return;
-              const hands = HandsFromTrackingResults(results);
-              const newKeyPositions = AddNewKey(e.code, hands, rawKeyPositions.current);
-              keyPositionRef.current = newKeyPositions; // update this ref for the draw function
-              setKeyPositions(newKeyPositions); // update the state for the parent component
-              sessionStorage.setItem("keyPositions", JSON.stringify(newKeyPositions));
-            });
-          }, cameraDelay);
-        };
-      };
-
-      p.draw = () => {
-        p.scale(-1, 1);
-        p.image(capture, -capture.width, 0);
-
-        // Draw red dots for the key positions
-        for (const key of keyPositionRef.current.flat()) {
-          if (key.positionSet) {
-            p.fill(255, 0, 0);
-            p.noStroke();
-
-            p.circle(-capture.width + key.x, key.y, 5);
-          }
-        }
-      };
-    };
-
-    // Initialize the p5 sketch
-    async function initializeP5() {
-      if (!window.ml5) {
-        setTimeout(initializeP5, 100);
-        return;
       }
-      const p5 = (await import("p5")).default;
-      p = new p5(mainSketch);
-    }
+    });
+  }, [setDrawFunction, showVideo, setShowVideo]);
 
-    initializeP5();
+  useEffect(() => {
+    const keyPressListener = (window.onkeydown = (e) => {
+      console.log("key pressed", e.code);
+      if (invalidKey(e, keyPositionsRef)) return;
+      e.preventDefault();
+      const cameraDelay = 100;
+
+      setTimeout(() => {
+        detectHands.current((hands) => {
+          console.log("hands", hands);
+          const newKeyPositions = AddNewKey(e.code, hands, rawKeyPositions.current);
+          keyPositionsRef.current = newKeyPositions; // update this ref for the draw function
+          setKeyPositions(newKeyPositions); // update the state for the parent component
+          sessionStorage.setItem("keyPositions", JSON.stringify(newKeyPositions));
+          setKeyPositionsSet(true);
+        });
+      }, cameraDelay);
+    });
 
     return () => {
       // Cleanup
       window.removeEventListener("keydown", keyPressListener);
-      if (capture) capture.remove();
-      if (p) p.remove();
     };
-  }, [setKeyPositions]);
+  }, [detectHands, keyPositionsRef, rawKeyPositions, setKeyPositions, setKeyPositionsSet]);
 
   return (
     <div>
       <H1>Setup Camera</H1>
-      {!cameraReady && (
-        <div>
-          <p>Setting up camera...</p>
-          <p>Preparing hand tracking...</p>
-        </div>
-      )}
-      <div className={cameraReady ? "block" : "hidden"}>
+      {!modelReady && <Loading />}
+      <div className={modelReady ? "block" : "hidden"}>
         <div ref={canvasRef}></div>
 
         <div>
@@ -122,8 +83,10 @@ export default function Setup({
             onClick={() => {
               const newKeyPositions = JSON.parse(JSON.stringify(defaultKeyPositions));
               setKeyPositions(newKeyPositions);
-              keyPositionRef.current = newKeyPositions;
+              keyPositionsRef.current = newKeyPositions;
               rawKeyPositions.current = newKeyPositions;
+              setKeyPositionsSet(false);
+              sessionStorage.removeItem("keyPositions");
             }}
           >
             Start Over

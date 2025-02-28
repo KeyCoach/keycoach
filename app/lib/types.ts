@@ -1,3 +1,6 @@
+import p5 from "p5";
+import { RefObject } from "react";
+
 export type Test = {
   id: string;
   src: string;
@@ -69,3 +72,47 @@ export type Errors = {
     status: number;
   };
 };
+
+type Finger = {
+  x: number;
+  y: number;
+};
+
+export type Hands = {
+  l_thumb: null | Finger;
+  l_index: null | Finger;
+  l_middle: null | Finger;
+  l_ring: null | Finger;
+  l_pinky: null | Finger;
+  r_thumb: null | Finger;
+  r_index: null | Finger;
+  r_middle: null | Finger;
+  r_ring: null | Finger;
+  r_pinky: null | Finger;
+};
+
+export type KeyPosition = {
+  key: string;
+  correctFingers: string[];
+  x: number;
+  y: number;
+  positionSet: boolean;
+  isLongKey?: boolean;
+};
+
+export type HandTrackContextType = {
+  showVideo: boolean;
+  cameraActivated: boolean;
+  keyPositionsSet: boolean;
+  setKeyPositionsSet: React.Dispatch<React.SetStateAction<boolean>>;
+  modelReady: boolean;
+  canvasRef: React.RefObject<HTMLDivElement | null>;
+  detectHands: RefObject<handposeCallback>;
+  setCameraActivated: React.Dispatch<React.SetStateAction<boolean>>;
+  setShowVideo: React.Dispatch<React.SetStateAction<boolean>>;
+  setDrawFunction: React.Dispatch<React.SetStateAction<(p: p5, capture: p5.Element) => void>>;
+  keyPositions: KeyPosition[][];
+  setKeyPositions: React.Dispatch<React.SetStateAction<KeyPosition[][]>>;
+};
+
+export type handposeCallback = (callback: (hands: Hands) => void) => void;

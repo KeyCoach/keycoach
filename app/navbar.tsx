@@ -6,7 +6,10 @@ import { AuthenticateUser } from "@/utils/authenticate-user";
 export async function Navbar() {
   const user = await AuthenticateUser();
   return (
-    <nav className="shadow-slate-300 dark:shadow-slate-800 fixed w-full top-0 z-50 py-1 bg-slate-50 shadow-md  dark:bg-slate-900">
+    <nav
+      style={{ height: "4.5rem" }}
+      className="top-0 z-50 w-full bg-slate-50 py-1 shadow-md shadow-slate-300 dark:bg-slate-900 dark:shadow-slate-800"
+    >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           <div className="relative flex flex-shrink-0 items-center pl-4">

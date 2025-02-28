@@ -5,7 +5,7 @@ import Image from "next/image";
 
 export default function Home() {
   return (
-    <div className="relative min-h-screen bg-gradient-to-b from-cerulean-800 to-cerulean-500">
+    <div className="h-page relative bg-gradient-to-b from-cerulean-800 to-cerulean-500">
       {/* Stars */}
       <div className="pointer-events-none absolute inset-0">
         {Array.from({ length: 30 }).map((_, i) => (

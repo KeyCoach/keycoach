@@ -7,7 +7,7 @@ const lessons = ["a", "s", "d", "f", "g", "h", "j", "k", "l"];
 
 export default function LessonDashboard() {
   return (
-    <div className="min-h-screen w-full flex items-center bg-white dark:bg-slate-950">
+    <div className="h-page flex w-full items-center bg-white dark:bg-slate-950">
       <div className="mx-auto max-w-7xl text-center text-slate-900 dark:text-slate-50">
         <H1 className="mb-10">Lesson Dashboard</H1>
         <H3 className="mb-10 text-lg">
@@ -31,3 +31,4 @@ export default function LessonDashboard() {
     </div>
   );
 }
+

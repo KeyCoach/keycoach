@@ -3,6 +3,7 @@ import "./globals.css";
 import { Navbar } from "./navbar";
 import UserProvider from "./user-context";
 import { AuthenticateUser } from "@/utils/authenticate-user";
+import { HandTrackProvider } from "./hand-track-context";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,10 +30,14 @@ export default async function RootLayout({
         <link rel="icon" href="/favicon.ico" sizes="any" />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} light:bg-slate-50 light:text-slate-950 min-h-screen dark:bg-slate-950 dark:text-slate-50`}
+        className={`${geistSans.variable} ${geistMono.variable} light:bg-slate-50 light:text-slate-950 flex max-h-screen min-h-screen flex-col dark:bg-slate-950 dark:text-slate-50`}
       >
         <Navbar />
-        <UserProvider user={user}>{children}</UserProvider>
+        <div className="h-page overflow-y-auto">
+          <HandTrackProvider>
+            <UserProvider user={user}>{children}</UserProvider>
+          </HandTrackProvider>
+        </div>
       </body>
     </html>
   );
