@@ -154,19 +154,7 @@ function useSetupCamera(
 
     setup();
 
-    return () => {
-      if (capture) {
-        if (capture.elt?.srcObject) {
-          capture.elt.srcObject.getTracks().forEach((track: any) => {
-            track.stop();
-            capture.elt.srcObject.removeTrack(track);
-          });
-        }
-        capture.elt.srcObject = null; // Clear media stream
-        capture.remove();
-      }
-      if (p) p.remove();
-    };
+    return () => {};
   }, [trackingActive, showVideo, drawFunction]);
 
   return { modelReady, canvasRef, detectHands };

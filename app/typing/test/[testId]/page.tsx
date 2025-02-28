@@ -37,13 +37,6 @@ export default function Test() {
     }
   }, [settingUp, cameraSetup, setCameraActivated]);
 
-  useEffect(() => {
-    return () => {
-      setCameraActivated(false);
-      localStorage.setItem("cameraActivated", "false");
-    };
-  }, [setCameraActivated]);
-
   return settingUp ? (
     <>
       {modelReady ? (
