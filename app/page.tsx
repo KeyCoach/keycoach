@@ -51,11 +51,11 @@ export default function Home() {
       {/* Skyline */}
       <div className="absolute bottom-0 left-0 w-full">
         <Image
-          src="https://typing-background-images.s3.us-east-1.amazonaws.com/home/skyline.jpg"
+          src="/img/skyline3.png"
           alt="Skyline"
           width={1920}
           height={600}
-          className="h-[500px] w-full object-cover"
+          className="h-[412px] w-full object-cover"
           priority
         />
       </div>
