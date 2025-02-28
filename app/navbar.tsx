@@ -18,7 +18,7 @@ export async function Navbar() {
                 src="/img/Mascot3.svg"
                 alt="KeyCoach Mascot"
                 fill
-                className="scale-[1.5] object-cover translate-y-[5%]"
+                className="translate-y-[5%] scale-[1.5] object-cover"
                 sizes="48px"
                 priority
               />
@@ -32,12 +32,17 @@ export async function Navbar() {
             <Link href="/dashboard" linkVariant="navbar-link">
               Dashboard
             </Link>
+
+            <Link href="/privacy" linkVariant="navbar-link">
+              Our Privacy Pledge
+            </Link>
             <Link href="/lesson" linkVariant="navbar-link">
               Lessons
             </Link>
             <Link href="/typing/test" linkVariant="navbar-link">
               Take a Test
             </Link>
+
             {user ? <LogoutButton /> : <LoginButton />}
           </div>
         </div>
