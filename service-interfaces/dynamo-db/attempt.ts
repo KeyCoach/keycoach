@@ -1,4 +1,4 @@
-import { Attempt, DbAttempt } from "@/app/lib/types";
+import { Attempt, DbAttempt, Mistake, Word } from "@/app/lib/types";
 import { v4 as uuidv4 } from "uuid";
 import { dynamo, ATTEMPT_TABLE_NAME } from "./client";
 import { GetCommand, PutCommand, QueryCommand } from "@aws-sdk/lib-dynamodb";
@@ -41,8 +41,10 @@ export async function CreateTestAttempt(
   accuracy: number,
   wpm: number,
   fingerAccuracy: number,
-  mistakesCount: number,
+  mistakes: Mistake[],
   duration: number,
+  userInput: Word[],
+  cameraActivated: boolean,
 ): Promise<DbAttempt> {
   const attempt: DbAttempt = {
     id: uuidv4(),
@@ -50,8 +52,10 @@ export async function CreateTestAttempt(
     testId,
     accuracy,
     wpm,
+    cameraActivated,
     fingerAccuracy,
-    mistakesCount,
+    mistakes,
+    userInput,
     duration,
     date: Date.now(),
   };

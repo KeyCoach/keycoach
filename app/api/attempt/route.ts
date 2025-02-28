@@ -2,6 +2,7 @@ import { CreateTestAttempt, GetAttemptById, GetTestById } from "@/service-interf
 import { AuthenticateUser } from "@/utils/authenticate-user";
 import { NextRequest } from "next/server";
 import { BackendErrors } from "../errors";
+import { Letter, Mistake } from "@/app/lib/types";
 
 /** Get attempt from DB. Reject if the attempt is associated with an account and creds don't match */
 export async function GET(request: NextRequest) {
@@ -23,8 +24,16 @@ export async function GET(request: NextRequest) {
 
 /** Add attempt to DB. */
 export async function POST(request: NextRequest) {
-  const { testId, correctChars, duration, mistakes } = await request.json();
-  if (!testId || !correctChars || !duration || !mistakes) {
+  const { cameraActivated, testId, correctChars, duration, mistakes, userInput } =
+    await request.json();
+  if (
+    !testId ||
+    !userInput ||
+    !mistakes ||
+    cameraActivated === undefined ||
+    correctChars === undefined ||
+    duration === undefined
+  ) {
     return Response.json(BackendErrors.MISSING_ARGUMENTS, { status: 422 });
   }
 
@@ -33,19 +42,23 @@ export async function POST(request: NextRequest) {
     return Response.json(BackendErrors.ENTITY_NOT_FOUND, { status: 404 });
   }
 
-  const accuracy = (test.charCount - mistakes) / test.charCount;
+  const wrongLetterMistakes = mistakes.filter(
+    (mistake: Mistake) => mistake.status === Letter.WrongLetter,
+  ).length;
+  const wrongFingerMistakes = mistakes.filter(
+    (mistake: Mistake) => mistake.status === Letter.WrongFinger,
+  ).length;
+
+  const accuracy = (test.charCount - wrongLetterMistakes) / test.charCount;
+  const fingerAccuracy = (test.charCount - wrongFingerMistakes) / test.charCount;
 
   const words = (correctChars + test.wordCount) / 5;
   const minutes = duration / 1000 / 60;
   const wpm = words / minutes;
 
-  // TODO: figure out how to calculate finger accuracy
-  const fingerAccuracy = 0.9;
-
   const user = await AuthenticateUser();
   const email = user?.email || null;
 
-  // TODO: Add keyStrokes to attempt
   const attempt = await CreateTestAttempt(
     email,
     testId,
@@ -54,6 +67,8 @@ export async function POST(request: NextRequest) {
     fingerAccuracy,
     mistakes,
     duration,
+    userInput,
+    cameraActivated,
   );
 
   return Response.json({ attemptId: attempt.id }, { status: 200 });

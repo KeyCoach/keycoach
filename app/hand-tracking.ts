@@ -1,4 +1,4 @@
-import { Hands, KeyPosition, Letter, Word } from "@/app/lib/types";
+import { Hands, KeyPosition, Letter, Mistake, Word } from "@/app/lib/types";
 import { Dispatch, SetStateAction } from "react";
 
 /** Reformats hand tracking results */
@@ -227,11 +227,14 @@ export const defaultKeyPositions: KeyPosition[][] = [
 ].map((row) => row.map((key) => ({ ...key, x: 0, y: 0, positionSet: false })));
 
 export function UpdateFingerTechnique(
+  key: string,
   keyCode: string,
   inputId: string,
   hands: Hands,
   keyPositions: Record<string, KeyPosition>,
+  timeSinceStart: number,
   setUserInput: Dispatch<SetStateAction<Word[]>>,
+  setMistakes: Dispatch<SetStateAction<Mistake[]>>,
 ) {
   if (!keyPositions[keyCode]) return;
   if (!keyPositions[keyCode].positionSet) return;
@@ -263,18 +266,10 @@ export function UpdateFingerTechnique(
   const usedCorrectFinger = UsedCorrectFinger(fingerDistances, correctFingers, keyPositions);
 
   if (!usedCorrectFinger) {
-    if (
-      correctFingers.some(
-        (fingerName) => fingerDistances[fingerName] < closestFinger.distance * 0.6,
-      )
-    ) {
-      return;
-    }
-    if (closestFinger.fingerName === "") {
-      console.log("No fingers detected");
-    } else {
+    if (closestFinger.fingerName !== "") {
       console.log({ hands, key: keyPositions[keyCode], closestFinger });
     }
+    setMistakes((prev) => [...prev, { key, time: timeSinceStart, status: Letter.WrongFinger }]);
 
     setUserInput((prev) => {
       const userInput: Word[] = JSON.parse(JSON.stringify(prev));

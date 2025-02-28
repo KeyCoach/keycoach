@@ -24,6 +24,7 @@ export type Word = {
     key: string;
     id: string;
     status: Letter;
+    time: number;
   }[];
 };
 
@@ -40,10 +41,12 @@ export type DbAttempt = {
   id: string;
   testId: string;
   email?: string;
+  cameraActivated: boolean;
   accuracy: number;
   fingerAccuracy: number;
   wpm: number;
-  mistakesCount: number;
+  userInput: Word[];
+  mistakes: Mistake[];
   duration: number;
   date: number;
   keyStrokes?: KeyStroke[];
@@ -116,3 +119,9 @@ export type HandTrackContextType = {
 };
 
 export type handposeCallback = (callback: (hands: Hands) => void) => void;
+
+export type Mistake = {
+  key: string;
+  time: number;
+  status: Letter;
+};

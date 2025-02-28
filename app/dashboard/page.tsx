@@ -8,7 +8,7 @@ export default async function Dashboard() {
   const user = await AuthenticateUser();
   if (!user) {
     return (
-      <div className="min-h-screen w-full bg-white pt-24 dark:bg-slate-950">
+      <div className="h-page w-full bg-white pt-24 dark:bg-slate-950">
         <div className="mx-auto max-w-3xl text-center text-slate-900 dark:text-slate-50">
           <H1 className="mb-6">Please log in to view your dashboard</H1>
           <Link
@@ -56,7 +56,7 @@ export default async function Dashboard() {
   const skillLevel = getSkillLevel(avgSpeed);
 
   return (
-    <div className="min-h-screen w-full bg-white pt-20 dark:bg-slate-950">
+    <div className="h-page w-full bg-white pt-20 dark:bg-slate-950">
       <div className="mx-auto w-full max-w-6xl p-6 text-slate-900 dark:text-slate-50">
         {/* Stats Row */}
         <div className="mb-6">
@@ -168,7 +168,7 @@ export default async function Dashboard() {
                           Date
                         </th>
                         <th className="py-2 text-left font-medium text-slate-500 dark:text-slate-400">
-                          FingerAccuracy
+                          Finger Accuracy
                         </th>
                         <th className="py-2 text-right font-medium text-slate-500 dark:text-slate-400">
                           WPM
@@ -188,7 +188,9 @@ export default async function Dashboard() {
                               {new Date(attempt.date).toLocaleDateString()}
                             </td>
                             <td className="py-3 text-slate-700 dark:text-slate-300">
-                              {attempt.fingerAccuracy}
+                              {attempt.cameraActivated
+                                ? `${(attempt.fingerAccuracy * 100).toFixed(1)}%`
+                                : "N/A"}
                             </td>
                             <td className="py-3 text-right font-medium text-slate-900 dark:text-slate-100">
                               {Math.round(attempt.wpm)}
@@ -268,4 +270,3 @@ export default async function Dashboard() {
     </div>
   );
 }
-
