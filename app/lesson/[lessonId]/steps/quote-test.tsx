@@ -51,7 +51,6 @@ export function QuoteTest({ testId }: { testId: string }) {
   return (
     <div className="h-page flex items-center justify-center">
       {/* TODO: add boxes that have realtime wpm and acc */}
-      {/* TODO: allow users to set up the camera  */}
       <div>
         <Button className="mb-3" onClick={() => setSettingUp(true)}>
           {cameraActivated ? "Recalibrate" : "Activate Camera"}

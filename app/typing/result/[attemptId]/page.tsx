@@ -4,7 +4,7 @@ import { Button } from "@/components";
 import { GetAttemptById } from "@/service-interfaces/dynamo-db";
 import { AuthenticateUser } from "@/utils/authenticate-user";
 import { type Attempt } from "@/app/lib/types";
-import { FingerPlacementAnalysis } from '@/components/finger-analysis';
+import { FingerPlacementAnalysis } from "@/components/finger-analysis";
 
 export default async function TestResult({ params }: { params: Promise<{ attemptId: string }> }) {
   const user = await AuthenticateUser();
@@ -12,7 +12,6 @@ export default async function TestResult({ params }: { params: Promise<{ attempt
   const attemptId = (await params).attemptId;
 
   const attempt = await GetAttemptById(attemptId, email);
-  console.log(attempt);
   return (
     <div className="h-page w-full bg-white p-6 dark:bg-slate-950">
       <div className="mx-auto max-w-4xl">
@@ -126,3 +125,4 @@ function Attempt({ attempt }: { attempt: Attempt }) {
     </div>
   );
 }
+

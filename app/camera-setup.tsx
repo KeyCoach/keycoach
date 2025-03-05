@@ -99,8 +99,9 @@ function Setup() {
             <div className="items-center, flex h-full min-h-[480px] w-full min-w-[640px] justify-center overflow-hidden rounded-lg">
               <div ref={canvasRef} className={modelReady ? "" : "hidden"}></div>
               {!modelReady && (
-                <div className="flex items-center justify-center">
+                <div className="flex flex-col items-center justify-center">
                   <LoadingSpinner />
+                  <div className="mt-3">Setting up camera... Please wait.</div>
                 </div>
               )}
             </div>
