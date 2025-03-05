@@ -1,5 +1,5 @@
 "use client";
-import { Icon } from "@/components";
+import { Divider, Icon, LoadingSpinner } from "@/components";
 
 type Variant =
   | "primary"
@@ -43,8 +43,7 @@ export function Button({
       "bg-obsidian-400 dark:bg-obsidian-500 text-slate-100 hover:bg-obsidian-300 dark:hover:bg-obsidian-400 disabled:bg-obsidian-100 dark:disabled:bg-obsidian-800 focus:bg-obsidian-200 dark:focus:bg-obsidian-500",
     cerulean:
       "bg-cerulean-400 dark:bg-cerulean-500 text-slate-100 hover:bg-cerulean-300 dark:hover:bg-cerulean-400 disabled:bg-cerulean-100 dark:disabled:bg-cerulean-800 focus:bg-cerulean-200 dark:focus:bg-cerulean-500",
-    red: 
-      "bg-red-400 dark:bg-red-500 text-slate-100 hover:bg-red-300 dark:hover:bg-red-300 disabled:bg-red-100 dark:disabled:bg-red-800 focus:bg-red-200 dark:focus:bg-red-500",
+    red: "bg-red-400 dark:bg-red-500 text-slate-100 hover:bg-red-300 dark:hover:bg-red-300 disabled:bg-red-100 dark:disabled:bg-red-800 focus:bg-red-200 dark:focus:bg-red-500",
     amber:
       "bg-amber-400 dark:bg-amber-600 text-slate-100 hover:bg-amber-300 dark:hover:bg-amber-400 disabled:bg-amber-100 dark:disabled:bg-amber-800 focus:bg-amber-200 dark:focus:bg-amber-500",
     green:
@@ -60,10 +59,9 @@ export function Button({
     ` ${variantClasses[variant]} px-4 py-2 rounded-lg transition-colors duration-200 font-medium shadow-button-shadow min-w-button-min-width`,
   );
 
-  // TODO: replace the children with a spinner
   if (loading) {
     dynamicClass += " bg-gray-300 dark:bg-gray-700 cursor-wait";
-    children = <span>Loading...</span>; // Replace with actual spinner if needed
+    children = <LoadingSpinner size="w-6 h-6" />; // Replace with actual spinner if needed
   }
 
   if (variant.includes("nav")) {

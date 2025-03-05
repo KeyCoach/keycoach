@@ -10,6 +10,10 @@ export default function Login() {
   const params = useSearchParams();
   const [loading, setLoading] = useState(false);
 
+  function GoBack() {
+    window.history.back();
+  }
+
   async function LogIn(e: any) {
     e.preventDefault();
     const formData = new FormData(e.target);
@@ -88,8 +92,7 @@ export default function Login() {
               </Link>
             </div>
             <div className="flex justify-end space-x-4">
-              {/* TODO: logic for back button */}
-              <Button>Back</Button>
+              <Button onClick={GoBack}>Back</Button>
               <Button colorTheme="cerulean">Log In</Button>
             </div>
           </form>

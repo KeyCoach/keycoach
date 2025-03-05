@@ -30,6 +30,9 @@ export default function Components() {
           <h1 className="mb-8 text-center text-3xl">Buttons</h1>
           <div className="flex h-1/2 flex-row flex-wrap items-start gap-4">
             <Button colorTheme="cerulean">cerulean button</Button>
+            <Button loading colorTheme="cerulean">
+              cerulean button
+            </Button>
             <Button colorTheme="obsidian">obsidian button</Button>
             <Button colorTheme="red">red button</Button>
             <Button colorTheme="amber">amber button</Button>

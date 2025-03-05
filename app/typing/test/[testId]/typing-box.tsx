@@ -1,53 +1,41 @@
-import { Dispatch, SetStateAction, useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { useRouter } from "next/navigation";
-import { Button, LoadingPage } from "@/components";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { LoadingPage } from "@/components";
 import { KeyPosition, Letter, Mistake, Test, Word } from "@/app/lib/types";
 import { v4 as uuidv4 } from "uuid";
 import { normalKeys, UpdateFingerTechnique } from "@/app/hand-tracking";
 import { useHandTracking } from "@/app/hand-track-context";
 import axios from "axios";
 
-export default function Type({
+export type OnTestCompleteCallback = (
+  userInput: Word[],
+  mistakes: Mistake[],
+  testStart: number,
+  testEnd: number,
+) => void;
+
+export default function TypingBox({
   test,
-  setSettingUp,
+  onTestComplete,
+  setWpm,
+  setAccuracy,
 }: {
   test: Test;
-  setSettingUp: Dispatch<SetStateAction<boolean>>;
-  cameraSetup: boolean;
+  onTestComplete: OnTestCompleteCallback;
+  setWpm?: React.Dispatch<React.SetStateAction<number>>;
+  setAccuracy?: React.Dispatch<React.SetStateAction<number>>;
 }) {
+  const testId = test.id;
   const { keyPositionsSet, modelReady, keyPositions, detectHands, cameraActivated } =
     useHandTracking();
   const sentence = useMemo(() => test.textBody.split(" "), [test.textBody]);
-  const router = useRouter();
 
-  const [wpm, setWpm] = useState(0);
   const [testStart, setTestStart] = useState(0);
   const [userInput, setUserInput] = useState<Word[]>([{ word: sentence[0], inputs: [] }]);
   const [mistakes, setMistakes] = useState<Mistake[]>([]);
-  const [accuracy, setAccuracy] = useState(100);
 
   const userInputRef = useRef(userInput);
-  const correctChars = userInput.reduce((acc, word) => {
-    return acc + word.inputs.filter((input) => input.status === Letter.Correct).length;
-  }, 0);
-  const testId = test.id;
   const testFinished = TestIsComplete(userInput, sentence);
   const cameraSetup = keyPositionsSet && cameraActivated;
-
-  /** Logic to be executed on test completion */
-  const FinishTest = useCallback(() => {
-    const body = {
-      testId,
-      correctChars,
-      duration: Date.now() - testStart,
-      userInput,
-      mistakes,
-      cameraActivated,
-    };
-    axios.post("/api/attempt", body).then((res) => {
-      router.push(`/typing/result/${res.data.attemptId}`);
-    });
-  }, [router, userInput, cameraActivated, testId, testStart, mistakes, correctChars]);
 
   /** handle key presses. Add, edit, and delete recorded keys */
   const onKeyPress = useCallback(
@@ -105,15 +93,15 @@ export default function Type({
     );
     const minutes = (Date.now() - testStart) / 60000;
     const newWpm = Math.round(totalChars / 5 / minutes);
-    setWpm(minutes > 0 ? newWpm : 0);
+    if (setWpm) setWpm(minutes > 0 ? newWpm : 0);
     const totalAttempts = userInput.reduce(
       (acc, word) => acc + word.inputs.filter((input) => input.status !== Letter.Missing).length,
       0,
     );
     const newAccuracy =
       totalAttempts > 0 ? ((totalAttempts - mistakes.length) / totalAttempts) * 100 : 100;
-    setAccuracy(Math.round(newAccuracy * 10) / 10);
-  }, [testStart, userInput, mistakes]);
+    if (setAccuracy) setAccuracy(Math.round(newAccuracy * 10) / 10);
+  }, [testStart, userInput, mistakes, setWpm, setAccuracy]);
 
   // Setup camera and key listeners. Runs once on mount
   useEffect(() => {
@@ -172,9 +160,22 @@ export default function Type({
   useEffect(() => {
     if (testFinished) {
       console.log("Test Finished");
-      FinishTest();
+      onTestComplete(userInput, mistakes, testStart, Date.now());
+
+      const correctChars = userInput.reduce((acc, word) => {
+        return acc + word.inputs.filter((input) => input.status === Letter.Correct).length;
+      }, 0);
+      const body = {
+        testId,
+        correctChars,
+        duration: Date.now() - testStart,
+        userInput,
+        mistakes,
+        cameraActivated,
+      };
+      axios.post("/api/attempt", body);
     }
-  }, [testFinished, FinishTest]);
+  }, [testFinished, onTestComplete, userInput, mistakes, testStart, testId, cameraActivated]);
 
   if (cameraSetup && !modelReady) {
     return <LoadingPage />;
@@ -185,93 +186,61 @@ export default function Type({
   }
 
   return (
-    <div className="h-page p-4 bg-white dark:bg-slate-950">
-      <div className="flex items-center justify-between gap-4">
-        <Button onClick={() => setSettingUp((prev) => !prev)}>
-          {cameraSetup ? "Recalibrate Camera" : "Set up Camera"}
-        </Button>
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-          <div className="flex-1 rounded-lg bg-green-200 p-4 text-center shadow-md dark:bg-green-800">
-            <h2 className="text-lg font-semibold text-green-700 dark:text-green-300">WPM</h2>
-            <p className="text-2xl font-bold text-green-800 dark:text-green-200">{wpm}</p>
-          </div>
-          <div className="flex-1 rounded-lg bg-cerulean-200 p-4 text-center shadow-md dark:bg-cerulean-800">
-            <h2 className="text-lg font-semibold text-cerulean-700 dark:text-cerulean-300">
-              Accuracy
-            </h2>
-            <p className="text-2xl font-bold text-cerulean-800 dark:text-cerulean-200">
-              {accuracy}%
-            </p>
-          </div>
+    <div className="relative h-fit max-w-5xl overflow-hidden rounded-lg bg-slate-200 dark:bg-slate-900">
+      <div className="p-8">
+        <div className="mb-6 flex justify-between text-sm text-slate-600 dark:text-slate-400">
+          <span>Words: {sentence.length}</span>
+          <span>Author: {test.author}</span>
         </div>
-      </div>
 
-      <div className="mx-auto mt-6 max-w-5xl">
-        <div className="relative overflow-hidden rounded-lg bg-slate-200 dark:bg-slate-900">
-          <div className="p-8">
-            <div className="mb-6 flex justify-between text-sm text-slate-600 dark:text-slate-400">
-              <span>Words: {sentence.length}</span>
-              <span>Author: {test.author}</span>
-            </div>
-
-            <div className="mb-8 min-h-[200px] rounded-lg p-6 font-mono text-3xl leading-relaxed">
-              <p className="whitespace-pre-wrap text-slate-900 dark:text-slate-50">
-                {userInput.map((word, i) => (
-                  <span key={i} className="inline-block">
-                    {word.inputs.map((input, j) => {
-                      const classes: Record<Letter, string> = {
-                        [Letter.Correct]: "text-slate-900 dark:text-slate-50",
-                        [Letter.WrongLetter]: "text-red-500 dark:text-red-400",
-                        [Letter.WrongFinger]: "text-orange-500 dark:text-orange-400",
-                        [Letter.Missing]: "text-slate-400 dark:text-slate-500",
-                      };
-                      const correctWord = word.inputs.every(
-                        (input) => input.status === Letter.Correct,
-                      );
-                      const wrongWordClass = correctWord ? "" : "underline decoration-red-400";
-                      return (
-                        <span
-                          key={"letter" + i + "," + j}
-                          kc-id="letter"
-                          className={`${classes[input.status]} ${wrongWordClass}`}
-                        >
-                          {input.key}
-                        </span>
-                      );
-                    })}
-                    {i === userInput.length - 1 && (
-                      <span className="blink absolute font-bold">⎸</span>
-                    )}
-                    {word.word
-                      ?.slice(word.inputs.length)
-                      .split("")
-                      .map((letter, j) => (
-                        <span
-                          key={"ghost-letter" + j}
-                          kc-id="ghost-letter"
-                          className="text-slate-400"
-                        >
-                          {letter}
-                        </span>
-                      ))}
-                    <span> </span>
-                  </span>
-                ))}
-                {sentence.slice(userInput.length).map((word, i) => (
-                  <span key={"ghost-word" + i}>
-                    <span kc-id="ghost-word" className="inline-block text-slate-400">
-                      {word}
+        <div className="mb-8 min-h-[200px] rounded-lg p-6 font-mono text-3xl leading-relaxed">
+          <p className="whitespace-pre-wrap text-slate-900 dark:text-slate-50">
+            {userInput.map((word, i) => (
+              <span key={i} className="inline-block">
+                {word.inputs.map((input, j) => {
+                  const classes: Record<Letter, string> = {
+                    [Letter.Correct]: "text-slate-900 dark:text-slate-50",
+                    [Letter.WrongLetter]: "text-red-500 dark:text-red-400",
+                    [Letter.WrongFinger]: "text-orange-500 dark:text-orange-400",
+                    [Letter.Missing]: "text-slate-400 dark:text-slate-500",
+                  };
+                  const correctWord = word.inputs.every((input) => input.status === Letter.Correct);
+                  const wrongWordClass = correctWord ? "" : "underline decoration-red-400";
+                  return (
+                    <span
+                      key={"letter" + i + "," + j}
+                      kc-id="letter"
+                      className={`${classes[input.status]} ${wrongWordClass}`}
+                    >
+                      {input.key}
                     </span>
-                    <span kc-id="space"> </span>
-                  </span>
-                ))}
-              </p>
-            </div>
+                  );
+                })}
+                {i === userInput.length - 1 && <span className="blink absolute font-bold">⎸</span>}
+                {word.word
+                  ?.slice(word.inputs.length)
+                  .split("")
+                  .map((letter, j) => (
+                    <span key={"ghost-letter" + j} kc-id="ghost-letter" className="text-slate-400">
+                      {letter}
+                    </span>
+                  ))}
+                <span> </span>
+              </span>
+            ))}
+            {sentence.slice(userInput.length).map((word, i) => (
+              <span key={"ghost-word" + i}>
+                <span kc-id="ghost-word" className="inline-block text-slate-400">
+                  {word}
+                </span>
+                <span kc-id="space"> </span>
+              </span>
+            ))}
+          </p>
+        </div>
 
-            <div className="text-right text-sm italic text-slate-600 dark:text-slate-400">
-              <p>From "{test.src}"</p>
-            </div>
-          </div>
+        <div className="text-right text-sm italic text-slate-600 dark:text-slate-400">
+          <p>From "{test.src}"</p>
         </div>
       </div>
     </div>
