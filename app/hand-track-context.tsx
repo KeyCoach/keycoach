@@ -4,6 +4,7 @@ import { showVideo as setVideoVisible, startVideo } from "./p5";
 import { defaultKeyPositions, HandsFromTrackingResults } from "./hand-tracking";
 import { handposeCallback, Hands, HandTrackContextType } from "./lib/types";
 import p5Types from "p5";
+import CameraSetupModal from "./camera-setup";
 
 // loads ml5 onto the Window Object
 declare global {
@@ -27,6 +28,7 @@ export function HandTrackProvider({ children }: { children: React.ReactNode }) {
   const [showVideo, setShowVideo] = useState(false);
   const [keyPositionsSet, setKeyPositionsSet] = useState(false);
   const [keyPositions, setKeyPositions] = useState(JSON.parse(JSON.stringify(defaultKeyPositions)));
+  const [settingUp, setSettingUp] = useState(false);
   const [drawFunction, setDrawFunction] = useState<(p: p5Types, capture: p5Types.Element) => void>(
     () => {},
   );
@@ -38,6 +40,8 @@ export function HandTrackProvider({ children }: { children: React.ReactNode }) {
   );
 
   const data: HandTrackContextType = {
+    settingUp,
+    setSettingUp,
     showVideo,
     keyPositionsSet,
     setKeyPositionsSet,
@@ -64,7 +68,12 @@ export function HandTrackProvider({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
-  return <HandTrackContext.Provider value={data}>{children}</HandTrackContext.Provider>;
+  return (
+    <HandTrackContext.Provider value={data}>
+      {children}
+      <CameraSetupModal />
+    </HandTrackContext.Provider>
+  );
 }
 
 function useSetupCamera(

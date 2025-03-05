@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { Mistake, Test, Word } from "@/app/lib/types";
 import { useRouter } from "next/navigation";
 import axios from "axios";
-import TypingBox, { OnTestCompleteCallback } from "@/app/typing/test/[testId]/typing-box";
+import TypingBox, { OnTestCompleteCallback } from "@/app/typing-box";
 import { LoadingPage } from "@/components";
 import { CalculateStats } from "@/utils/calculate-stats";
 

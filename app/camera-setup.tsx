@@ -1,18 +1,31 @@
-import { Dispatch, RefObject, SetStateAction, useEffect, useState, useRef } from "react";
-import { Button, H1 } from "@/components";
-import { useHandTracking } from "@/app/hand-track-context";
+import { Modal } from "@/components";
+import { RefObject, useEffect, useState, useRef } from "react";
+import { Button } from "@/components";
 import { AddNewKey, defaultKeyPositions } from "@/app/hand-tracking";
 import { KeyPosition } from "@/app/lib/types";
 import p5 from "p5";
+import { useHandTracking } from "./hand-track-context";
 
-export default function Setup({
-  setCameraSetup,
-  setSettingUp,
-}: {
-  setCameraSetup: Dispatch<SetStateAction<boolean>>;
-  setSettingUp: Dispatch<SetStateAction<boolean>>;
-}) {
+export default function CameraSetupModal() {
+  const { settingUp, setSettingUp } = useHandTracking();
+
+  return (
+    <Modal
+      modalTitle="Set Up Camera"
+      isOpen={settingUp}
+      onCloseAction={() => setSettingUp(false)}
+      confirmButtonAction={() => setSettingUp(false)}
+      showCloseButton={false}
+      maxWidth="max-w-screen-2xl"
+    >
+      <Setup />
+    </Modal>
+  );
+}
+
+function Setup() {
   const {
+    setSettingUp,
     canvasRef,
     detectHands,
     setKeyPositionsSet,
@@ -77,18 +90,19 @@ export default function Setup({
   }, [detectHands, keyPositionsRef, rawKeyPositions, setKeyPositions, setKeyPositionsSet]);
 
   return (
-    <div className="h-page w-full bg-white p-6 dark:bg-slate-950">
-      <div className="max-w-8xl max-h-6xl mx-auto">
-        <H1 className="mb-6 text-slate-900 dark:text-slate-50">Setup Camera</H1>
-
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
+    <div className="w-full bg-white p-6 dark:bg-slate-950">
+      <div className="max-h-6xl mx-auto">
+        <div className="flex gap-8">
           {/* Camera View Column */}
           <div className="flex h-full items-center justify-center rounded-xl border border-slate-200 bg-white p-6 shadow-lg dark:border-slate-700 dark:bg-slate-900">
-            <div ref={canvasRef} className="h-full w-full overflow-hidden rounded-lg"></div>
+            <div
+              ref={canvasRef}
+              className="h-full w-full min-w-[640px] overflow-hidden rounded-lg"
+            ></div>
           </div>
 
           {/* Instructions Column */}
-          <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-lg dark:border-slate-700 dark:bg-slate-900">
+          <div className="w-full max-w-[26rem] rounded-xl border border-slate-200 bg-white p-6 shadow-lg dark:border-slate-700 dark:bg-slate-900">
             <h2 className="mb-4 border-b border-slate-200 pb-2 text-xl font-semibold text-slate-900 dark:border-slate-700 dark:text-slate-50">
               Setup Instructions
             </h2>
@@ -279,7 +293,6 @@ export default function Setup({
           <Button
             colorTheme="cerulean"
             onClick={() => {
-              setCameraSetup(true);
               setSettingUp(false);
             }}
           >

@@ -199,39 +199,55 @@ export default function TypingBox({
 
         <div className="mb-8 min-h-[200px] rounded-lg p-6 font-mono text-3xl leading-relaxed">
           <p className="whitespace-pre-wrap text-slate-900 dark:text-slate-50">
+            {/*  words they have typed */}
             {userInput.map((word, i) => (
-              <span key={i} className="inline-block">
-                {word.inputs.map((input, j) => {
-                  const classes: Record<Letter, string> = {
-                    [Letter.Correct]: "text-slate-900 dark:text-slate-50",
-                    [Letter.WrongLetter]: "text-red-500 dark:text-red-400",
-                    [Letter.WrongFinger]: "text-orange-500 dark:text-orange-400",
-                    [Letter.Missing]: "text-slate-400 dark:text-slate-500",
-                  };
-                  const correctWord = word.inputs.every((input) => input.status === Letter.Correct);
-                  const wrongWordClass = correctWord ? "" : "underline decoration-red-400";
-                  return (
-                    <span
-                      key={"letter" + i + "," + j}
-                      kc-id="letter"
-                      className={`${classes[input.status]} ${wrongWordClass}`}
-                    >
-                      {input.key}
-                    </span>
-                  );
-                })}
-                {i === userInput.length - 1 && <span className="blink absolute font-bold">⎸</span>}
-                {word.word
-                  ?.slice(word.inputs.length)
-                  .split("")
-                  .map((letter, j) => (
-                    <span key={"ghost-letter" + j} kc-id="ghost-letter" className="text-slate-400">
-                      {letter}
-                    </span>
-                  ))}
+              <>
+                <span key={i} className="inline-block">
+                  {word.inputs.map((input, j) => {
+                    const classes: Record<Letter, string> = {
+                      [Letter.Correct]: "text-slate-900 dark:text-slate-50",
+                      [Letter.WrongLetter]: "text-red-500 dark:text-red-400",
+                      [Letter.WrongFinger]: "text-orange-500 dark:text-orange-400",
+                      [Letter.Missing]: "text-slate-400 dark:text-slate-500",
+                    };
+                    const correctWord = word.inputs.every(
+                      (input) => input.status === Letter.Correct,
+                    );
+                    const wrongWordClass = correctWord ? "" : "underline decoration-red-400";
+                    return (
+                      // letters they've typed so far
+                      <span
+                        key={"letter" + i + "," + j}
+                        kc-id="letter"
+                        className={`${classes[input.status]} ${wrongWordClass}`}
+                      >
+                        {input.key}
+                      </span>
+                    );
+                  })}
+                  {/* their cursor */}
+                  {i === userInput.length - 1 && (
+                    <span className="blink absolute font-bold">⎸</span>
+                  )}
+                  {/* the rest of the word */}
+                  {word.word
+                    ?.slice(word.inputs.length)
+                    .split("")
+                    .map((letter, j) => (
+                      <span
+                        key={"ghost-letter" + j}
+                        kc-id="ghost-letter"
+                        className="text-slate-400"
+                      >
+                        {letter}
+                      </span>
+                    ))}
+                </span>
                 <span> </span>
-              </span>
+              </>
             ))}
+
+            {/* the rest of the sentence */}
             {sentence.slice(userInput.length).map((word, i) => (
               <span key={"ghost-word" + i}>
                 <span kc-id="ghost-word" className="inline-block text-slate-400">

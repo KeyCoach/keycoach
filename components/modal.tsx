@@ -11,6 +11,8 @@ export function Modal({
   form = false,
   dialogue = false,
   children,
+  maxWidth = "max-w-md",
+  showCloseButton = true,
 }: {
   modalTitle?: string;
   modalDescription?: string;
@@ -20,6 +22,8 @@ export function Modal({
   form?: boolean;
   dialogue?: boolean;
   children?: React.ReactNode; // Dynamic content for modal body
+  maxWidth?: string;
+  showCloseButton?: boolean;
 }) {
   const modalRef = useRef<HTMLDivElement>(null);
 
@@ -44,14 +48,19 @@ export function Modal({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-500 bg-opacity-40 animate-modalBackground">
-      <div ref={modalRef} className="max-w-md bg-white rounded-lg shadow-lg animate-fadeInUp">
+    <div className="fixed inset-0 z-50 flex animate-modalBackground items-center justify-center bg-slate-500 bg-opacity-40">
+      <div
+        ref={modalRef}
+        className={`${maxWidth} animate-fadeInUp rounded-lg bg-white shadow-lg dark:bg-slate-950`}
+      >
         {modalTitle && (
-          <div className="bg-slate-200 pt-4 pb-2 px-6 rounded-t-lg shadow-button-shadow">
-            <h2 className="text-xl font-semibold text-slate-800">{modalTitle}</h2>
+          <div className="rounded-t-lg bg-slate-200 px-6 pb-2 pt-4 shadow-button-shadow dark:bg-slate-800">
+            <h2 className="text-xl font-semibold text-slate-800 dark:text-slate-200">
+              {modalTitle}
+            </h2>
           </div>
         )}
-        {modalDescription && <p className="mt-4 mx-6 text-md text-slate-600">{modalDescription}</p>}
+        {modalDescription && <p className="text-md mx-6 mt-4 text-slate-600">{modalDescription}</p>}
 
         {form && (
           <>
@@ -60,44 +69,50 @@ export function Modal({
                 e.preventDefault();
                 confirmButtonAction();
               }}
-              className="mt-4 mx-6"
+              className="mx-6 mt-4"
             >
               {children}
             </form>
 
-            <div className="flex justify-end my-6 mr-4">
-              <Button colorTheme="obsidian" onClick={onCloseAction} className="mr-2">
-                Cancel
-              </Button>
-              <Button colorTheme="cerulean" onClick={confirmButtonAction}>
-                Confirm
-              </Button>
-            </div>
+            {showCloseButton && (
+              <div className="my-6 mr-4 flex justify-end">
+                <Button colorTheme="obsidian" onClick={onCloseAction} className="mr-2">
+                  Cancel
+                </Button>
+                <Button colorTheme="cerulean" onClick={confirmButtonAction}>
+                  Confirm
+                </Button>
+              </div>
+            )}
           </>
         )}
 
         {!form && !dialogue && (
           <>
             <div className="mt-4 px-6">{children}</div>
-            <div className="flex justify-end my-6 mr-4">
-              <Button colorTheme="obsidian" onClick={onCloseAction}>
-                close
-              </Button>
-            </div>
+            {showCloseButton && (
+              <div className="my-6 mr-4 flex justify-end">
+                <Button colorTheme="obsidian" onClick={onCloseAction}>
+                  close
+                </Button>
+              </div>
+            )}
           </>
         )}
 
         {dialogue && (
           <>
             <div className="mt-4 px-6">{children}</div>
-            <div className="flex justify-end my-6 mr-4">
-              <Button colorTheme="obsidian" onClick={onCloseAction} className="mr-2">
-                Cancel
-              </Button>
-              <Button colorTheme="cerulean" onClick={confirmButtonAction}>
-                Confirm
-              </Button>
-            </div>
+            {showCloseButton && (
+              <div className="my-6 mr-4 flex justify-end">
+                <Button colorTheme="obsidian" onClick={onCloseAction} className="mr-2">
+                  Cancel
+                </Button>
+                <Button colorTheme="cerulean" onClick={confirmButtonAction}>
+                  Confirm
+                </Button>
+              </div>
+            )}
           </>
         )}
       </div>

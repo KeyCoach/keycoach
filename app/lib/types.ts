@@ -133,6 +133,9 @@ export type LessonContextType = {
 };
 
 export type HandTrackContextType = {
+  /** The hand tracking module is setting up */
+  settingUp: boolean;
+  setSettingUp: React.Dispatch<React.SetStateAction<boolean>>;
   /** The hand tracking module is active */
   cameraActivated: boolean;
   setCameraActivated: React.Dispatch<React.SetStateAction<boolean>>;
