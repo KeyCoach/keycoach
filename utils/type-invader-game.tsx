@@ -1,3 +1,4 @@
+"use client";
 import { Game, Types } from "phaser";
 import { ThemeManager } from "./ThemeManager";
 import { SoundManager } from "./SoundManager";
@@ -11,39 +12,39 @@ import { SettingsScene } from "../app/lesson/[lessonId]/steps/type-invader-scene
 import { GameSettings } from "@/constants/definitions";
 
 export const gameSettings: GameSettings = {
-	theme: "space",
-	musicVolume: 0.5,
-	sfxVolume: 0.5,
-	soundEnabled: true,
+  theme: "space",
+  musicVolume: 0.5,
+  sfxVolume: 0.5,
+  soundEnabled: true,
 };
 
 export const themeManager = new ThemeManager();
 export const soundManager = new SoundManager(themeManager);
 
 export const gameConfig: Types.Core.GameConfig = {
-	type: Phaser.AUTO,
-	parent: "game-container",
-	width: 800,
-	height: 600,
-	backgroundColor: "#292929",
-	physics: {
-		default: "arcade",
-		arcade: {
-			gravity: { x: 0, y: 0 },
-			debug: false,
-		},
-	},
-	scene: [
-		MainMenuScene,
-		ModeSelectScene,
-		LetterSelectScene,
-		GameScene,
-		GameOverScene,
-		PauseScene,
-		SettingsScene,
-	],
+  type: Phaser.AUTO,
+  parent: "game-container",
+  width: 800,
+  height: 600,
+  backgroundColor: "#292929",
+  physics: {
+    default: "arcade",
+    arcade: {
+      gravity: { x: 0, y: 0 },
+      debug: false,
+    },
+  },
+  scene: [
+    MainMenuScene,
+    ModeSelectScene,
+    LetterSelectScene,
+    GameScene,
+    GameOverScene,
+    PauseScene,
+    SettingsScene,
+  ],
 };
 
 export default function createGame() {
-	return new Game(gameConfig);
+  return new Game(gameConfig);
 }
