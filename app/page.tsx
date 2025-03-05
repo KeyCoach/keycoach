@@ -43,21 +43,32 @@ export default function Home() {
                   Try a Lesson
                 </Link>
               </Button>
+
+              <Button colorTheme="ceruleanLight">
+                <Link className="block w-40 text-slate-50 no-underline" href="/type-invader">
+                  Play Type Invaders
+                </Link>
+              </Button>
             </div>
           </div>
         </div>
       </div>
 
       {/* Skyline */}
-      <div className="absolute bottom-0 left-0 w-full">
+      <div className="absolute bottom-0 left-0 flex w-full flex-col">
         <Image
           src="/img/skyline3.png"
           alt="Skyline"
           width={1920}
           height={600}
-          className="h-[412px] w-full object-cover"
+          className="block h-[412px] w-full object-cover"
           priority
         />
+        <div className="flex justify-center bg-black pb-4">
+          <Link href="/privacy" linkVariant="navbar-link">
+            <span className="text-slate-50">View our Privacy Policy</span>
+          </Link>
+        </div>
       </div>
     </div>
   );

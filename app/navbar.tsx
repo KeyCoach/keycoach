@@ -32,17 +32,19 @@ export async function Navbar() {
             <Link href="/dashboard" linkVariant="navbar-link">
               Dashboard
             </Link>
-
-            <Link href="/privacy" linkVariant="navbar-link">
-              Our Privacy Pledge
-            </Link>
-            <Link href="/lesson" linkVariant="navbar-link">
-              Lessons
-            </Link>
+            
             <Link href="/typing/test" linkVariant="navbar-link">
               Take a Test
             </Link>
-
+            
+            <Link href="/type-invader" linkVariant="navbar-link">
+              Type Invaders
+            </Link>
+            
+            <Link href="/lesson" linkVariant="navbar-link">
+              Lessons
+            </Link>
+            
             {user ? <LogoutButton /> : <LoginButton />}
           </div>
         </div>
