@@ -1,4 +1,5 @@
 "use client";
+// TODO: figure out why it's throwing an error right here
 import { Game, Types } from "phaser";
 import { ThemeManager } from "./ThemeManager";
 import { SoundManager } from "./SoundManager";
