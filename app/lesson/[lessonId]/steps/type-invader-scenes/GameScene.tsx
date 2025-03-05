@@ -6,248 +6,274 @@ import { GameUI } from "@/utils/GameUI";
 import { MultiplierInfo } from "@/constants/definitions";
 
 export class GameScene extends Scene {
-	private mode: "free" | "letter" = "free";
-	private selectedLetter?: string;
-	private isPaused: boolean = false;
-	private isAdvancingLevel: boolean = false;
-	private timer: number = 30;
-	private spawnTimer?: Phaser.Time.TimerEvent;
-	private ship!: Phaser.GameObjects.Sprite;
+  public isPaused: boolean = false;
 
-	// Our two main components
-	private mechanics!: GameMechanics;
-	private ui!: GameUI;
+  private mode: "free" | "letter" = "free";
+  private selectedLetter?: string;
+  private isAdvancingLevel: boolean = false;
+  private timer: number = 30;
+  private spawnTimer?: Phaser.Time.TimerEvent;
+  private ship!: Phaser.GameObjects.Sprite;
 
-	constructor() {
-		super({ key: "GameScene" });
-	}
+  // Our two main components
+  private mechanics!: GameMechanics;
+  private ui!: GameUI;
 
-	async init(data: { mode: "free" | "letter"; letter?: string }) {
-		this.mode = data.mode;
-		this.selectedLetter = data.letter;
-		this.isPaused = false;
-		this.isAdvancingLevel = false;
-		this.timer = 30;
+  constructor() {
+    super({ key: "GameScene" });
+  }
 
-		// Clean up any existing objects from previous games
-		this.cleanupGameObjects();
-	}
+  async init(data: { mode: "free" | "letter"; letter?: string }) {
+    this.mode = data.mode;
+    this.selectedLetter = data.letter;
+    this.isPaused = false;
+    this.isAdvancingLevel = false;
+    this.timer = 30;
 
-	private cleanupGameObjects() {
-		// Stop the spawn timer if it exists
-		if (this.spawnTimer) {
-			this.spawnTimer.destroy();
-			this.spawnTimer = undefined;
-		}
+    // Clean up any existing objects from previous games
+    this.cleanupGameObjects();
+  }
 
-		// Clear any existing timers
-		this.time.removeAllEvents();
-	}
+  private cleanupGameObjects() {
+    // Stop the spawn timer if it exists
+    if (this.spawnTimer) {
+      this.spawnTimer.destroy();
+      this.spawnTimer = undefined;
+    }
 
-	async create() {
-		// Set up the theme and background
-		themeManager.setScene(this);
-		soundManager.setScene(this);
+    // Clear any existing timers
+    this.time.removeAllEvents();
+  }
 
-		// Switch from menu music to game music
-		soundManager.playMusic("game");
+  async create() {
+    // Set up the theme and background
+    themeManager.setScene(this);
+    soundManager.setScene(this);
 
-		themeManager.createBackground();
+    // Switch from menu music to game music
+    soundManager.playMusic("game");
 
-		// Create the ship sprite
-		const { width, height } = this.cameras.main;
-		this.ship = this.add.sprite(width / 2, height - 50, "ship").setScale(0.75);
+    themeManager.createBackground();
 
-		// Initialize core systems
-		this.mechanics = new GameMechanics(this);
-		await this.mechanics.init(this.mode, this.selectedLetter);
+    // Create the ship sprite
+    const { width, height } = this.cameras.main;
+    this.ship = this.add.sprite(width / 2, height - 50, "ship").setScale(0.75);
 
-		this.ui = new GameUI(this, this.togglePause.bind(this));
+    // Initialize core systems
+    this.mechanics = new GameMechanics(this);
+    await this.mechanics.init(this.mode, this.selectedLetter);
 
-		// Set up keyboard input
-		this.input.keyboard?.on("keydown", this.handleKeyInput, this);
-		this.input.keyboard?.on("keydown-ESC", this.togglePause, this);
+    this.ui = new GameUI(this, this.togglePause.bind(this));
 
-		// Show level text and start the game
-		this.ui.showLevelText(1);
-		this.startLevelTimer();
-		this.startAsteroidSpawning();
-	}
+    // Set up keyboard input
+    this.input.keyboard?.on("keydown", this.handleKeyInput, this);
+    this.input.keyboard?.on("keydown-ESC", this.togglePause, this);
 
-	update() {
-		if (this.isPaused || this.isAdvancingLevel) return;
+    // Show level text and start the game
+    this.ui.showLevelText(1);
+    this.startLevelTimer();
+    this.startAsteroidSpawning();
+  }
 
-		// Update game mechanics
-		const gameStatus = this.mechanics.update();
+  update() {
+    if (this.isPaused || this.isAdvancingLevel) return;
 
-		// Check for game over condition
-		if (!gameStatus) {
-			this.gameOver();
-		}
-	}
+    // Update game mechanics
+    const gameStatus = this.mechanics.update();
 
-	private handleKeyInput = (event: KeyboardEvent) => {
-		if (this.isPaused || this.isAdvancingLevel) return;
+    // Check for game over condition
+    if (!gameStatus) {
+      this.gameOver();
+    }
+  }
 
-		// Get result of key press
-		const result = this.mechanics.handleKeyInput(event);
+  private handleKeyInput = (event: KeyboardEvent) => {
+    if (this.isPaused || this.isAdvancingLevel) return;
 
-		if (result.isCorrect) {
-			// Fire a missile at the asteroid
-			if (result.asteroidX !== undefined && result.asteroidY !== undefined) {
-				this.ui.createMissile(
-					this.ship.x,
-					this.ship.y,
-					result.asteroidX,
-					result.asteroidY
-				);
+    // Get result of key press
+    const result = this.mechanics.handleKeyInput(event);
 
-				// TODO: Play missile fire sound
-				// soundManager.playMissileFire();
-			}
+    if (result.isCorrect) {
+      // Fire a missile at the asteroid
+      if (result.asteroidX !== undefined && result.asteroidY !== undefined) {
+        this.ui.createMissile(this.ship.x, this.ship.y, result.asteroidX, result.asteroidY);
 
-			// If an asteroid was destroyed, update score display and play explosion
-			if (result.destroyedAsteroid) {
-				soundManager.playExplosion();
+        // TODO: Play missile fire sound
+        // soundManager.playMissileFire();
+      }
 
-				const scoreResult = this.mechanics.getScore();
-				this.ui.updateScore(scoreResult);
-			}
-		}
+      // If an asteroid was destroyed, update score display and play explosion
+      if (result.destroyedAsteroid) {
+        soundManager.playExplosion();
 
-		// Update multiplier and progress bar display
-		const multiplierInfo: MultiplierInfo = result.isCorrect
-			? this.mechanics.updateMultiplier()
-			: this.mechanics.resetMultiplierProgress();
+        const scoreResult = this.mechanics.getScore();
+        this.ui.updateScore(scoreResult);
+      }
+    }
 
-		// Check if multiplierChanged exists and is true, or if we're resetting the multiplier
-		if (multiplierInfo.multiplierChanged || !result.isCorrect) {
-			this.ui.updateMultiplier(multiplierInfo.multiplier, true);
-		}
+    // Update multiplier and progress bar display
+    const multiplierInfo: MultiplierInfo = result.isCorrect
+      ? this.mechanics.updateMultiplier()
+      : this.mechanics.resetMultiplierProgress();
 
-		this.ui.updateProgressBar(multiplierInfo.progress);
-	};
+    // Check if multiplierChanged exists and is true, or if we're resetting the multiplier
+    if (multiplierInfo.multiplierChanged || !result.isCorrect) {
+      this.ui.updateMultiplier(multiplierInfo.multiplier, true);
+    }
 
-	private startLevelTimer() {
-		this.time.removeAllEvents(); // Clear previous timers
+    this.ui.updateProgressBar(multiplierInfo.progress);
+  };
 
-		this.timer = 30;
-		this.ui.updateTimer(this.timer);
+  private startLevelTimer() {
+    this.time.removeAllEvents(); // Clear previous timers
 
-		this.time.addEvent({
-			delay: 1000,
-			callback: () => {
-				if (!this.isPaused && this.timer > 0) {
-					this.timer -= 1;
-					this.ui.updateTimer(this.timer);
+    this.timer = 30;
+    this.ui.updateTimer(this.timer);
 
-					if (this.timer === 0) {
-						this.advanceToNextLevel();
-					}
-				}
-			},
-			repeat: 29, // Runs for 30 seconds
-		});
-	}
+    this.time.addEvent({
+      delay: 1000,
+      callback: () => {
+        if (!this.isPaused && this.timer > 0) {
+          this.timer -= 1;
+          this.ui.updateTimer(this.timer);
 
-	private startAsteroidSpawning() {
-		if (this.spawnTimer) {
-			this.spawnTimer.destroy();
-		}
+          if (this.timer === 0) {
+            this.advanceToNextLevel();
+          }
+        }
+      },
+      repeat: 29, // Runs for 30 seconds
+    });
+  }
 
-		// Calculate spawn rate based on level
-		const level = this.mechanics.getLevel();
-		const spawnRate = Math.max(800, 2000 - level * 100);
+  private startAsteroidSpawning() {
+    if (this.spawnTimer) {
+      this.spawnTimer.destroy();
+    }
 
-		this.spawnTimer = this.time.addEvent({
-			delay: spawnRate,
-			callback: () => {
-				if (!this.isPaused && !this.isAdvancingLevel) {
-					this.mechanics.spawnAsteroid();
-				}
-			},
-			callbackScope: this,
-			loop: true,
-		});
-	}
+    // Calculate spawn rate based on level
+    const level = this.mechanics.getLevel();
+    const spawnRate = Math.max(800, 2000 - level * 100);
 
-	private advanceToNextLevel() {
-		if (this.isAdvancingLevel) return;
-		this.isAdvancingLevel = true;
+    this.spawnTimer = this.time.addEvent({
+      delay: spawnRate,
+      callback: () => {
+        if (!this.isPaused && !this.isAdvancingLevel) {
+          this.mechanics.spawnAsteroid();
+        }
+      },
+      callbackScope: this,
+      loop: true,
+    });
+  }
 
-		// Show typing stats between levels
-		const stats = this.mechanics.getTypingStats();
-		const statsUI = this.ui.showStats(stats);
+  private advanceToNextLevel() {
+    if (this.isAdvancingLevel) return;
+    this.isAdvancingLevel = true;
 
-		statsUI.continueButton.on("pointerdown", () => {
-			statsUI.destroy();
+    // Show typing stats between levels
+    const stats = this.mechanics.getTypingStats();
+    const statsUI = this.ui.showStats(stats);
 
-			// Clear asteroids and advance to the next level
-			this.mechanics.clearAsteroids();
+    statsUI.continueButton.on("pointerdown", () => {
+      statsUI.destroy();
 
-			// Update the level
-			const newLevel = this.mechanics.advanceToNextLevel();
-			this.ui.showLevelText(newLevel);
+      // Clear asteroids and advance to the next level
+      this.mechanics.clearAsteroids();
 
-			this.time.delayedCall(2000, () => {
-				this.isAdvancingLevel = false;
-				this.startLevelTimer();
-				this.startAsteroidSpawning();
-			});
-		});
-	}
+      // Update the level
+      const newLevel = this.mechanics.advanceToNextLevel();
+      this.ui.showLevelText(newLevel);
 
-	togglePause = () => {
-		this.isPaused = !this.isPaused;
+      this.time.delayedCall(2000, () => {
+        this.isAdvancingLevel = false;
+        this.startLevelTimer();
+        this.startAsteroidSpawning();
+      });
+    });
+  }
 
-		if (this.isPaused) {
-			// Pause game systems
-			this.physics.world.isPaused = true;
-			if (this.spawnTimer) this.spawnTimer.paused = true;
-			this.time.paused = true;
-			this.tweens.pauseAll();
-			this.anims.pauseAll();
-			this.scene.launch("PauseScene", { mainScene: this.scene.key });
+  togglePause = () => {
+    this.isPaused = !this.isPaused;
 
-			// Pause the sound
-			this.sound.pauseAll();
-		} else {
-			// Resume game systems
-			this.physics.world.isPaused = false;
-			if (this.spawnTimer) this.spawnTimer.paused = false;
-			this.time.paused = false;
-			this.tweens.resumeAll();
-			this.anims.resumeAll();
-			this.scene.stop("PauseScene");
+    if (this.isPaused) {
+      // Pause game systems
+      this.physics.world.isPaused = true;
+      if (this.spawnTimer) this.spawnTimer.paused = true;
+      this.time.paused = true;
+      this.tweens.pauseAll();
+      this.anims.pauseAll();
+      this.scene.launch("PauseScene", { mainScene: this.scene.key });
 
-			// Resume sound
-			this.sound.resumeAll();
-		}
-	};
+      // Pause the sound
+      this.sound.pauseAll();
+    } else {
+      // Resume game systems
+      this.physics.world.isPaused = false;
+      if (this.spawnTimer) this.spawnTimer.paused = false;
+      this.time.paused = false;
+      this.tweens.resumeAll();
+      this.anims.resumeAll();
+      this.scene.stop("PauseScene");
 
-	gameOver() {
-		// Get final stats before game over
-		const finalStats = this.mechanics.getTypingStats();
+      // Resume sound
+      this.sound.resumeAll();
+    }
+  };
 
-		// Start game over scene with score and stats
-		this.scene.start("GameOverScene", {
-			score: this.mechanics.getScore(),
-			stats: finalStats,
-		});
-	}
+  gameOver() {
+    // Get final stats before game over
+    const finalStats = this.mechanics.getTypingStats();
 
-	shutdown() {
-		// Clean up
-		this.input.keyboard?.off("keydown", this.handleKeyInput, this);
-		this.input.keyboard?.off("keydown-ESC", this.togglePause, this);
-		this.scene.stop("PauseScene");
+    // Start game over scene with score and stats
+    this.scene.start("GameOverScene", {
+      score: this.mechanics.getScore(),
+      stats: finalStats,
+    });
+  }
 
-		this.isPaused = false;
+  public reset() {
+    // Clean up resources
+    this.isPaused = false;
+    this.isAdvancingLevel = false;
 
-		if (this.spawnTimer) {
-			this.spawnTimer.destroy();
-			this.spawnTimer = undefined;
-		}
-		this.time.removeAllEvents();
-	}
+    // Clear all timers
+    if (this.spawnTimer) {
+      this.spawnTimer.destroy();
+      this.spawnTimer = undefined;
+    }
+    this.time.removeAllEvents();
+
+    // Reset physics
+    this.physics.world.isPaused = false;
+
+    // Reset animation and tweens
+    this.tweens.killAll();
+    this.anims.resumeAll();
+
+    // Reset sound
+    this.sound.stopAll();
+
+    // Remove all game objects
+    this.children.each((child) => {
+      child.destroy();
+    });
+  }
+
+  shutdown() {
+    // Clean up
+    this.input.keyboard?.off("keydown", this.handleKeyInput, this);
+    this.input.keyboard?.off("keydown-ESC", this.togglePause, this);
+    this.scene.stop("PauseScene");
+
+    // Reset state
+    this.isPaused = false;
+
+    // Kill all timers
+    if (this.spawnTimer) {
+      this.spawnTimer.destroy();
+      this.spawnTimer = undefined;
+    }
+    this.time.removeAllEvents();
+  }
 }

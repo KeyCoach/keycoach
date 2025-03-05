@@ -2,6 +2,7 @@
 import { Scene } from "phaser";
 import { colors } from "@/constants/colors";
 import { GameScene } from "./GameScene";
+import { soundManager } from "@/utils/type-invader-game";
 
 export class PauseScene extends Scene {
   private mainScene!: string;
@@ -136,15 +137,29 @@ export class PauseScene extends Scene {
     const gameScene = this.scene.get(this.mainScene) as GameScene;
 
     if (gameScene && typeof gameScene.togglePause === "function") {
-      gameScene.togglePause(); // ✅ Properly unpauses everything
+      gameScene.togglePause();
     }
 
     this.scene.stop();
   }
 
   returnToMainMenu() {
+    const gameScene = this.scene.get(this.mainScene) as GameScene;
+
+    if (gameScene.togglePause && gameScene.isPaused) {
+      gameScene.togglePause();
+    }
+
+    gameScene.reset();
+
+    if (soundManager) {
+      soundManager.stopAll();
+    }
+
     this.scene.stop(this.mainScene);
+
     this.scene.start("MainMenuScene");
+
     this.scene.stop();
   }
 }
