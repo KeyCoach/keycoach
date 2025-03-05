@@ -15,6 +15,7 @@ declare global {
 
 export function useHandTracking() {
   const context = useContext(HandTrackContext);
+
   if (!context) {
     throw new Error("useHandTrack must be used within a HandTrackProvider");
   }
@@ -38,6 +39,13 @@ export function HandTrackProvider({ children }: { children: React.ReactNode }) {
     showVideo,
     drawFunction,
   );
+
+  useEffect(() => {
+    if (settingUp || cameraActivated) {
+      setCameraActivated(true);
+      localStorage.setItem("cameraActivated", "true");
+    }
+  }, [settingUp, cameraActivated, setCameraActivated]);
 
   const data: HandTrackContextType = {
     settingUp,

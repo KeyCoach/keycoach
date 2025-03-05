@@ -1,5 +1,5 @@
 "use client";
-import { Divider, Icon, LoadingSpinner } from "@/components";
+import { Icon, LoadingSpinner } from "@/components";
 
 type Variant =
   | "primary"
@@ -52,7 +52,8 @@ export function Button({
       "bg-cerulean-400 dark:bg-cerulean-400 text-slate-100 hover:bg-cerulean-300 dark:hover:bg-cerulean-300 disabled:bg-cerulean-100 dark:disabled:bg-cerulean-700 focus:bg-cerulean-150 dark:focus:bg-cerulean-400",
   };
 
-  let dynamicClass = className ? className : colorClasses[colorTheme];
+  let dynamicClass = colorClasses[colorTheme];
+  dynamicClass += ` ${className} `;
   dynamicClass += ` ${variantClasses[variant]} px-4 py-2 rounded-lg transition-colors duration-200 font-medium shadow-button-shadow min-w-button-min-width`;
 
   dynamicClass = dynamicClass.concat(

@@ -12,7 +12,7 @@ export default function Test() {
   const router = useRouter();
   const { testId } = useParams();
   const [test, setTest] = useState<Test | null>(null);
-  const { cameraActivated, setCameraActivated, settingUp, setSettingUp } = useHandTracking();
+  const { cameraActivated, setSettingUp } = useHandTracking();
   const [wpm, setWpm] = useState(0);
   const [accuracy, setAccuracy] = useState(0);
 
@@ -28,13 +28,6 @@ export default function Test() {
         router.push("/404");
       });
   }, [testId, router]);
-
-  useEffect(() => {
-    if (settingUp || cameraActivated) {
-      setCameraActivated(true);
-      localStorage.setItem("cameraActivated", "true");
-    }
-  }, [settingUp, cameraActivated, setCameraActivated]);
 
   const onTestComplete: OnTestCompleteCallback = (
     userInput: Word[],

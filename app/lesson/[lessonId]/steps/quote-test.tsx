@@ -5,8 +5,9 @@ import { Mistake, Test, Word } from "@/app/lib/types";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import TypingBox, { OnTestCompleteCallback } from "@/app/typing-box";
-import { LoadingPage } from "@/components";
+import { Button, LoadingPage } from "@/components";
 import { CalculateStats } from "@/utils/calculate-stats";
+import { useHandTracking } from "@/app/hand-track-context";
 
 // app/lesson/[lessonId]/QuoteTest.tsx
 export function QuoteTest({ testId }: { testId: string }) {
@@ -14,6 +15,7 @@ export function QuoteTest({ testId }: { testId: string }) {
   const { currentStep, addStat } = useLessonContext();
   const [testCompleted, setTestCompleted] = useState(false);
   const router = useRouter();
+  const { cameraActivated, setSettingUp } = useHandTracking();
 
   useEffect(() => {
     console.log("fetching test");
@@ -50,7 +52,12 @@ export function QuoteTest({ testId }: { testId: string }) {
     <div className="h-page flex items-center justify-center">
       {/* TODO: add boxes that have realtime wpm and acc */}
       {/* TODO: allow users to set up the camera  */}
-      <TypingBox test={test} onTestComplete={onTestComplete} />
+      <div>
+        <Button className="mb-3" onClick={() => setSettingUp(true)}>
+          {cameraActivated ? "Recalibrate" : "Activate Camera"}
+        </Button>
+        <TypingBox test={test} onTestComplete={onTestComplete} />
+      </div>
     </div>
   );
 }

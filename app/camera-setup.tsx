@@ -1,4 +1,4 @@
-import { Modal } from "@/components";
+import { LoadingSpinner, Modal } from "@/components";
 import { RefObject, useEffect, useState, useRef } from "react";
 import { Button } from "@/components";
 import { AddNewKey, defaultKeyPositions } from "@/app/hand-tracking";
@@ -34,6 +34,7 @@ function Setup() {
     keyPositions,
     setShowVideo,
     showVideo,
+    modelReady,
   } = useHandTracking();
 
   const keyPositionsRef = useRef(keyPositions);
@@ -95,10 +96,14 @@ function Setup() {
         <div className="flex gap-8">
           {/* Camera View Column */}
           <div className="flex h-full items-center justify-center rounded-xl border border-slate-200 bg-white p-6 shadow-lg dark:border-slate-700 dark:bg-slate-900">
-            <div
-              ref={canvasRef}
-              className="h-full w-full min-w-[640px] overflow-hidden rounded-lg"
-            ></div>
+            <div className="items-center, flex h-full min-h-[480px] w-full min-w-[640px] justify-center overflow-hidden rounded-lg">
+              <div ref={canvasRef} className={modelReady ? "" : "hidden"}></div>
+              {!modelReady && (
+                <div className="flex items-center justify-center">
+                  <LoadingSpinner />
+                </div>
+              )}
+            </div>
           </div>
 
           {/* Instructions Column */}
