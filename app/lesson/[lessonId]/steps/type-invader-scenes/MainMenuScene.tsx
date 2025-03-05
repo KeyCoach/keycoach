@@ -14,40 +14,40 @@ export class MainMenuScene extends Scene {
   }
 
   preload() {
-    this.load.image("particle", "/assets/img/sprite/particle.png");
-    this.load.image("ship", "/assets/img/sprite/ship.png");
+    this.load.image("particle", "/type-invader/assets/img/sprite/particle.png");
+    this.load.image("ship", "/type-invader/assets/img/sprite/ship.png");
 
     // space
-    this.load.image("blue-galaxy", "/assets/img/space/blue-galaxy.png");
-    this.load.image("asteroid", "/assets/img/space/asteroid.png");
-    this.load.audio("space-theme", "/assets/audio/space/theme.mp3");
-    this.load.audio("space-explosion", "/assets/audio/space/explosion.m4a");
+    this.load.image("blue-galaxy", "/type-invader/assets/img/space/blue-galaxy.png");
+    this.load.image("asteroid", "/type-invader/assets/img/space/asteroid.png");
+    this.load.audio("space-theme", "/type-invader/assets/audio/space/theme.mp3");
+    this.load.audio("space-explosion", "/type-invader/assets/audio/space/explosion.m4a");
 
     // birthday party
-    this.load.image("party-background", "/assets/img/party/party-bg.png");
-    this.load.image("balloon", "/assets/img/party/white-balloon.png");
-    // this.load.audio("party-theme", "/assets/audio/party/theme.mp3");
-    this.load.audio("birthday-explosion", "/assets/audio/party/explosion.mp3");
+    this.load.image("party-background", "/type-invader/assets/img/party/party-bg.png");
+    this.load.image("balloon", "/type-invader/assets/img/party/white-balloon.png");
+    // this.load.audio("party-theme", "/type-invader/assets/audio/party/theme.mp3");
+    this.load.audio("birthday-explosion", "/type-invader/assets/audio/party/explosion.mp3");
 
     // soccer
-    this.load.image("soccer-field", "/assets/img/soccer/soccer-field.png");
-    this.load.image("soccer-ball", "/assets/img/soccer/soccer-ball.png");
-    this.load.audio("soccer-theme", "/assets/audio/soccer/theme.mp3");
-    this.load.audio("soccer-explosion", "/assets/audio/soccer/explosion.mp3");
+    this.load.image("soccer-field", "/type-invader/assets/img/soccer/soccer-field.png");
+    this.load.image("soccer-ball", "/type-invader/assets/img/soccer/soccer-ball.png");
+    this.load.audio("soccer-theme", "/type-invader/assets/audio/soccer/theme.mp3");
+    this.load.audio("soccer-explosion", "/type-invader/assets/audio/soccer/explosion.mp3");
 
     // beach
-    this.load.image("beach-background", "/assets/img/beach/beach-bg.png");
-    this.load.image("coconut", "/assets/img/beach/coconut.png");
-    this.load.audio("beach-theme", "/assets/audio/beach/theme.mp3");
-    this.load.audio("beach-explosion", "/assets/audio/beach/explosion.m4a");
+    this.load.image("beach-background", "/type-invader/assets/img/beach/beach-bg.png");
+    this.load.image("coconut", "/type-invader/assets/img/beach/coconut.png");
+    this.load.audio("beach-theme", "/type-invader/assets/audio/beach/theme.mp3");
+    this.load.audio("beach-explosion", "/type-invader/assets/audio/beach/explosion.m4a");
 
     // TODO: Add game music for the menu screens
-    this.load.audio("menu-music-1", "/assets/audio/menu-1.mp3");
-    this.load.audio("menu-music-2", "/assets/audio/menu-2.mp3");
-    this.load.audio("menu-music-3", "/assets/audio/menu-3.mp3");
+    this.load.audio("menu-music-1", "/type-invader/assets/audio/menu-1.mp3");
+    this.load.audio("menu-music-2", "/type-invader/assets/audio/menu-2.mp3");
+    this.load.audio("menu-music-3", "/type-invader/assets/audio/menu-3.mp3");
 
     // TOD: Add missile sound effects by theme
-    // this.load.audio("{theme}-missile", "/assets/audio/theme/missile.mp3");
+    // this.load.audio("{theme}-missile", "/type-invader/assets/audio/theme/missile.mp3");
   }
 
   create() {
