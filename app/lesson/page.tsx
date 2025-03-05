@@ -1,7 +1,7 @@
 "use client";
 
 import { Link } from "@/components/link";
-import { Button, Card, Badge, H1, H3 } from "@/components";
+import { Card, H1, H3 } from "@/components";
 
 const lessons = ["a", "s", "d", "f", "g", "h", "j", "k", "l"];
 
@@ -22,7 +22,6 @@ export default function LessonDashboard() {
                 badgeIcon="remove"
                 badgeTheme="amber"
                 buttonText="Start Lesson"
-                onButtonClick={() => {}}
               />
             </Link>
           ))}
@@ -31,4 +30,3 @@ export default function LessonDashboard() {
     </div>
   );
 }
-

@@ -41,7 +41,7 @@ export class MainMenuScene extends Scene {
     this.load.audio("beach-theme", "/type-invader/assets/audio/beach/theme.mp3");
     this.load.audio("beach-explosion", "/type-invader/assets/audio/beach/explosion.m4a");
 
-    // TODO: Add game music for the menu screens
+    // menu
     this.load.audio("menu-music-1", "/type-invader/assets/audio/menu-1.mp3");
     this.load.audio("menu-music-2", "/type-invader/assets/audio/menu-2.mp3");
     this.load.audio("menu-music-3", "/type-invader/assets/audio/menu-3.mp3");
