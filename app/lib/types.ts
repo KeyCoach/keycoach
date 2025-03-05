@@ -104,18 +104,26 @@ export type KeyPosition = {
 };
 
 export type HandTrackContextType = {
-  showVideo: boolean;
-  cameraActivated: boolean;
+  /** Key positions have been set */
   keyPositionsSet: boolean;
   setKeyPositionsSet: React.Dispatch<React.SetStateAction<boolean>>;
-  modelReady: boolean;
-  canvasRef: React.RefObject<HTMLDivElement | null>;
-  detectHands: RefObject<handposeCallback>;
-  setCameraActivated: React.Dispatch<React.SetStateAction<boolean>>;
+  /** show the video in the canvas Ref (must assign canvasRef) */
+  showVideo: boolean;
   setShowVideo: React.Dispatch<React.SetStateAction<boolean>>;
-  setDrawFunction: React.Dispatch<React.SetStateAction<(p: p5, capture: p5.Element) => void>>;
+  /** The hand tracking module is active */
+  cameraActivated: boolean;
+  setCameraActivated: React.Dispatch<React.SetStateAction<boolean>>;
+  /** The positions of the keys */
   keyPositions: KeyPosition[][];
   setKeyPositions: React.Dispatch<React.SetStateAction<KeyPosition[][]>>;
+  /** The model is ready to run (model active, modules loaded) */
+  modelReady: boolean;
+  /** assign this ref to the window where you want the video shown  */
+  canvasRef: React.RefObject<HTMLDivElement | null>;
+  /** Function that exposes hand positions */
+  detectHands: RefObject<handposeCallback>;
+  /** Set function that you want to run with the p5 draw function */
+  setDrawFunction: React.Dispatch<React.SetStateAction<(p: p5, capture: p5.Element) => void>>;
 };
 
 export type handposeCallback = (callback: (hands: Hands) => void) => void;
