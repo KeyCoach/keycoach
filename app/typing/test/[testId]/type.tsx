@@ -185,7 +185,7 @@ export default function Type({
   }
 
   return (
-    <div className="h-page bg-white p-20 dark:bg-slate-950">
+    <div className="h-page p-4 bg-white dark:bg-slate-950">
       <div className="flex items-center justify-between gap-4">
         <Button onClick={() => setSettingUp((prev) => !prev)}>
           {cameraSetup ? "Recalibrate Camera" : "Set up Camera"}

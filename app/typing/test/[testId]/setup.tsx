@@ -1,4 +1,4 @@
-import { Dispatch, RefObject, SetStateAction, useEffect, useRef } from "react";
+import { Dispatch, RefObject, SetStateAction, useEffect, useState, useRef } from "react";
 import { Button, H1 } from "@/components";
 import { useHandTracking } from "@/app/hand-track-context";
 import { AddNewKey, defaultKeyPositions } from "@/app/hand-tracking";
@@ -25,6 +25,13 @@ export default function Setup({
 
   const keyPositionsRef = useRef(keyPositions);
   const rawKeyPositions = useRef<KeyPosition[][]>(JSON.parse(JSON.stringify(keyPositions)));
+
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+
+  const toggleDropdown = (section: string) => {
+    setOpenDropdown(openDropdown === section ? null : section);
+  };
+
 
   useEffect(() => {
     if (!showVideo) setShowVideo(true);
@@ -70,13 +77,150 @@ export default function Setup({
 
   // TODO: make this page not look like hot garbage
   return (
-    <div>
-      <H1>Setup Camera</H1>
-      <div>
-        <div ref={canvasRef}></div>
+    <div className="h-page w-full bg-white p-6 dark:bg-slate-950">
+      <div className="mx-auto max-w-8xl max-h-6xl">
+        <H1 className="mb-6 text-slate-900 dark:text-slate-50">Setup Camera</H1>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {/* Camera View Column */}
+          <div className="bg-white dark:bg-slate-900 rounded-xl p-6 shadow-lg border border-slate-200 dark:border-slate-700 flex justify-center items-center h-full">
+            <div ref={canvasRef} className="w-full h-full rounded-lg overflow-hidden"></div>
+          </div>
+          
+          {/* Instructions Column */}
+          <div className="bg-white dark:bg-slate-900 rounded-xl p-6 shadow-lg border border-slate-200 dark:border-slate-700">
+            <h2 className="mb-4 text-xl font-semibold text-slate-900 dark:text-slate-50 border-b pb-2 border-slate-200 dark:border-slate-700">
+              Setup Instructions
+            </h2>
+            <div className="text-slate-700 dark:text-slate-300 space-y-4">
+              {/* Dropdown sections */}
+              <div className="border-b border-slate-200 dark:border-slate-700 pb-2">
+                <button 
+                  onClick={() => toggleDropdown('mirror')}
+                  className="w-full flex justify-between items-center text-left font-medium"
+                >
+                  Mirror Placement
+                  <svg 
+                    className={`w-5 h-5 transition-transform ${openDropdown === 'mirror' ? 'rotate-90' : ''}`}
+                    fill="none" 
+                    stroke="currentColor" 
+                    viewBox="0 0 24 24" 
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </button>
+                {openDropdown === 'mirror' && (
+                  <p className="text-md text-slate-600 dark:text-slate-400 mt-2">
+                    Place adjustable mirror on your computer camera to capture your keyboard fully.
+                  </p>
+                )}
+              </div>
 
-        <div>
+              <div className="border-b border-slate-200 dark:border-slate-700 pb-2">
+                <button 
+                  onClick={() => toggleDropdown('camera')}
+                  className="w-full flex justify-between items-center text-left font-medium"
+                >
+                  Adjust Camera View
+                  <svg 
+                    className={`w-5 h-5 transition-transform ${openDropdown === 'camera' ? 'rotate-90' : ''}`}
+                    fill="none" 
+                    stroke="currentColor" 
+                    viewBox="0 0 24 24" 
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </button>
+                {openDropdown === 'camera' && (
+                  <p className="text-md text-slate-600 dark:text-slate-400 mt-2">
+                    Ensure you can see all letters and punctuation on the keyboard. Line up the top of your keyboard with the top of the camera view.
+                  </p>
+                )}
+              </div>
+
+              <div className="border-b border-slate-200 dark:border-slate-700 pb-2">
+                <button 
+                  onClick={() => toggleDropdown('keys')}
+                  className="w-full flex justify-between items-center text-left font-medium"
+                >
+                  Set Key Positions (Keep hand open while doing this)
+                  <svg 
+                    className={`w-5 h-5 transition-transform ${openDropdown === 'keys' ? 'rotate-90' : ''}`}
+                    fill="none" 
+                    stroke="currentColor" 
+                    viewBox="0 0 24 24" 
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </button>
+                {openDropdown === 'keys' && (
+                  <ul className="list-disc pl-4 space-y-1 text-md text-slate-600 dark:text-slate-400 mt-2">
+                    <li>With your right hand (pointer finger): Press <kbd className="bg-slate-200 dark:bg-slate-700 px-1 rounded">Q</kbd></li>
+                    <li>With your left hand (pointer finger): Press <kbd className="bg-slate-200 dark:bg-slate-700 px-1 rounded">P</kbd></li>
+                    <li>With your right hand (pointer finger): Press <kbd className="bg-slate-200 dark:bg-slate-700 px-1 rounded">A</kbd></li>
+                    <li>With your left hand (pointer finger): Press <kbd className="bg-slate-200 dark:bg-slate-700 px-1 rounded">L</kbd></li>
+                    <li>With your right hand (pointer finger): Press <kbd className="bg-slate-200 dark:bg-slate-700 px-1 rounded">Z</kbd></li>
+                    <li>With your left hand (pointer finger): Press <kbd className="bg-slate-200 dark:bg-slate-700 px-1 rounded">.</kbd></li>
+                  </ul>
+                )}
+              </div>
+
+              <div className="border-b border-slate-200 dark:border-slate-700 pb-2">
+                <button 
+                  onClick={() => toggleDropdown('verify')}
+                  className="w-full flex justify-between items-center text-left font-medium"
+                >
+                  Verify Positioning
+                  <svg 
+                    className={`w-5 h-5 transition-transform ${openDropdown === 'verify' ? 'rotate-90' : ''}`}
+                    fill="none" 
+                    stroke="currentColor" 
+                    viewBox="0 0 24 24" 
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </button>
+                {openDropdown === 'verify' && (
+                  <p className="text-md text-slate-600 dark:text-slate-400 mt-2">
+                    Check that red dots for each key look straight and centered.
+                  </p>
+                )}
+              </div>
+
+              <div>
+                <button 
+                  onClick={() => toggleDropdown('restart')}
+                  className="w-full flex justify-between items-center text-left font-medium"
+                >
+                  Restart if Needed
+                  <svg 
+                    className={`w-5 h-5 transition-transform ${openDropdown === 'restart' ? 'rotate-90' : ''}`}
+                    fill="none" 
+                    stroke="currentColor" 
+                    viewBox="0 0 24 24" 
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </button>
+                {openDropdown === 'restart' && (
+                  <p className="text-md text-slate-600 dark:text-slate-400 mt-2">
+                    If you make a mistake, use the "Start Over" button.
+                  </p>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Buttons */}
+        <div className="mt-6 flex justify-center gap-4">
           <Button
+            colorTheme="amber"
             onClick={() => {
               const newKeyPositions = JSON.parse(JSON.stringify(defaultKeyPositions));
               setKeyPositions(newKeyPositions);
@@ -88,18 +232,16 @@ export default function Setup({
           >
             Start Over
           </Button>
+          <Button
+            colorTheme="cerulean"
+            onClick={() => {
+              setCameraSetup(true);
+              setSettingUp(false);
+            }}
+          >
+            Done
+          </Button>
         </div>
-      </div>
-
-      <div>
-        <Button
-          onClick={() => {
-            setCameraSetup(true);
-            setSettingUp(false);
-          }}
-        >
-          Done Setting Up
-        </Button>
       </div>
     </div>
   );

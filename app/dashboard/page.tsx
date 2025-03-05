@@ -56,7 +56,7 @@ export default async function Dashboard() {
   const skillLevel = getSkillLevel(avgSpeed);
 
   return (
-    <div className="h-page w-full bg-white pt-20 dark:bg-slate-950">
+    <div className="h-page w-full bg-white dark:bg-slate-950">
       <div className="mx-auto w-full max-w-6xl p-6 text-slate-900 dark:text-slate-50">
         {/* Stats Row */}
         <div className="mb-6">
@@ -136,14 +136,14 @@ export default async function Dashboard() {
                   </p>
                 </div>
               </div>
-              <div className="mt-4 border-t border-slate-200 pt-4 dark:border-slate-700">
+              {/* <div className="mt-4 border-t border-slate-200 pt-4 dark:border-slate-700">
                 <Link
                   href="/profile/edit"
                   className="text-sm text-cerulean-600 hover:underline dark:text-cerulean-400"
                 >
                   Edit profile settings
                 </Link>
-              </div>
+              </div> */}
             </div>
 
             {/* Recent Activity */}
