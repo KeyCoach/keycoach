@@ -63,7 +63,7 @@ const tests: Test[] = [
     src: "Middlemarch",
     author: "George Eliot",
     textBody:
-      "For years after Lydgate remembered the impression produced in him by this involuntary appeal—this cry from soul to soul, without other consciousness than their moving with kindred natures in the same embroiled medium, the same troublous fitfully-illuminated life.",
+      "For years after Lydgate remembered the impression produced in him by this involuntary appeal-this cry from soul to soul, without other consciousness than their moving with kindred natures in the same embroiled medium, the same troublous fitfully-illuminated life.",
     charCount: 263,
     wordCount: 38,
     difficulty: 3,

@@ -4,6 +4,7 @@ import { Button } from "@/components";
 import { GetAttemptById } from "@/service-interfaces/dynamo-db";
 import { AuthenticateUser } from "@/utils/authenticate-user";
 import { type Attempt } from "@/app/lib/types";
+import { FingerPlacementAnalysis } from '@/components/finger-analysis';
 
 export default async function TestResult({ params }: { params: Promise<{ attemptId: string }> }) {
   const user = await AuthenticateUser();
@@ -13,7 +14,7 @@ export default async function TestResult({ params }: { params: Promise<{ attempt
   const attempt = await GetAttemptById(attemptId, email);
   console.log(attempt);
   return (
-    <div className="h-page flex w-full items-center bg-white p-6 dark:bg-slate-950">
+    <div className="h-page w-full bg-white p-6 dark:bg-slate-950">
       <div className="mx-auto max-w-4xl">
         <H1 className="mb-6 text-slate-900 dark:text-slate-50">Typing Results</H1>
 
@@ -81,6 +82,9 @@ function Attempt({ attempt }: { attempt: Attempt }) {
         </div>
       </div>
 
+      {/* Finger Placement Analysis */}
+      <FingerPlacementAnalysis attempt={attempt} />
+
       {/* Test Details */}
       <div className="rounded-xl bg-slate-50 p-6 shadow-lg dark:bg-slate-800">
         <h2 className="mb-4 text-xl font-semibold text-slate-900 dark:text-slate-50">
@@ -119,20 +123,6 @@ function Attempt({ attempt }: { attempt: Attempt }) {
           {attempt.test.textBody}
         </p>
       </div>
-
-      {attempt.keyStrokes && (
-        <div>
-          <p>Key Strokes</p>
-          <ul>
-            {attempt.keyStrokes.map((stroke) => (
-              <li key={stroke.time}>
-                {stroke.correctFinger} {stroke.pressedFinger} {stroke.correctLetter}{" "}
-                {stroke.pressedLetter} {stroke.modelConfidence}
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
     </div>
   );
 }
