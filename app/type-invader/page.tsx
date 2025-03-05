@@ -1,7 +1,6 @@
-'use client'
-import TypeInvader from "@/components/type-invader/TypeInvader";
 import { Link } from "@/components/link";
 import Image from "next/image";
+import TypeInvaderWrapper from "./type-invader-container";
 
 export default function TypeInvaderPage() {
   return (
@@ -10,7 +9,7 @@ export default function TypeInvaderPage() {
         {Array.from({ length: 30 }).map((_, i) => (
           <div
             key={i}
-            className="absolute rounded-full bg-white opacity-80 -z-10"
+            className="absolute -z-10 rounded-full bg-white opacity-80"
             style={{
               width: `${Math.random() * 4 + 2}px`,
               height: `${Math.random() * 4 + 2}px`,
@@ -23,7 +22,7 @@ export default function TypeInvaderPage() {
 
       {/* type invader */}
       <div className="overflow-hidden rounded-lg shadow">
-        <TypeInvader />
+        <TypeInvaderWrapper />
       </div>
 
       {/* skyline */}

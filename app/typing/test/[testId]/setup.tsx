@@ -52,7 +52,7 @@ export default function Setup({
   }, [setDrawFunction, showVideo, setShowVideo]);
 
   useEffect(() => {
-    const keyPressListener = (window.onkeydown = (e) => {
+    const keyPressListener = (e: KeyboardEvent) => {
       if (invalidKey(e, keyPositionsRef)) return;
       e.preventDefault();
       const cameraDelay = 100;
@@ -66,7 +66,9 @@ export default function Setup({
           setKeyPositionsSet(true);
         });
       }, cameraDelay);
-    });
+    };
+
+    window.addEventListener("keydown", keyPressListener);
 
     return () => {
       // Cleanup

@@ -1,7 +1,12 @@
 import { Button } from "@/components/button";
-import TypeInvader from "@/components/type-invader/TypeInvader";
 import { useState } from "react";
 import { BufferScreen } from "./buffer-screen";
+import dynamic from "next/dynamic";
+
+const TypeInvader = dynamic(() => import("@/components/type-invader/TypeInvader"), {
+  loading: () => <p>Loading...</p>,
+  ssr: false,
+});
 
 export function TypingGame() {
   const [testCompleted, setTestCompleted] = useState(false);

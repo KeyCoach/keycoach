@@ -12,10 +12,11 @@ export default function TypeInvader() {
     }
 
     return () => {
+      if (!gameRef.current) return;
       gameRef.current?.destroy(true);
       gameRef.current = null;
     };
   }, []);
 
-  return <div id="game-container" className="z-10"/>;
+  return <div id="game-container" className="z-10" />;
 }

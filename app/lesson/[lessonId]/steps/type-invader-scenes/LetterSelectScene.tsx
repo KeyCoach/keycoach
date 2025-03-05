@@ -1,7 +1,8 @@
 import { Scene } from "phaser";
 import { colors, hexadecimalColors } from "@/constants/colors";
-import { KeyboardNavigation, NavigationItem } from "@/utils/NavigationUtils";
+import { KeyboardNavigation } from "@/utils/NavigationUtils";
 import { themeManager } from "@/utils/type-invader-game";
+import { NavigationItem } from "@/constants/definitions";
 
 export class LetterSelectScene extends Scene {
   private navigation!: KeyboardNavigation;

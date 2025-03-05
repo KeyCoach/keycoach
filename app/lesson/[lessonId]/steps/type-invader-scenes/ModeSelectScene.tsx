@@ -1,6 +1,6 @@
 import { Scene } from "phaser";
-import { alphaValues, colors, hexadecimalColors } from "@/constants/colors";
-import { KeyboardNavigation, NavigationItem } from "@/utils/NavigationUtils";
+import { colors } from "@/constants/colors";
+import { KeyboardNavigation } from "@/utils/NavigationUtils";
 import { themeManager } from "@/utils/type-invader-game";
 
 export class ModeSelectScene extends Scene {

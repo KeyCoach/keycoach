@@ -106,13 +106,15 @@ export default function TypingBox({
   // Setup camera and key listeners. Runs once on mount
   useEffect(() => {
     if (!cameraSetup) {
-      const keyPressListener = (window.onkeydown = (e) => {
+      const keyPressListener = (e: KeyboardEvent) => {
         if (InvalidKey(e, keyPositions)) return;
         e.preventDefault();
         const id = uuidv4();
         const timeSinceStart = testStart ? Date.now() - testStart : 0;
         onKeyPress(e.key, e.ctrlKey, id, timeSinceStart);
-      });
+      };
+
+      window.addEventListener("keydown", keyPressListener);
 
       return () => {
         window.removeEventListener("keydown", keyPressListener);
@@ -126,7 +128,7 @@ export default function TypingBox({
       }
     }
 
-    const keyPressListener = (window.onkeydown = (e) => {
+    const keyPressListener = (e: KeyboardEvent) => {
       if (InvalidKey(e, keyPositions)) return;
       e.preventDefault();
       const id = uuidv4();
@@ -150,7 +152,9 @@ export default function TypingBox({
       const cameraDelay = 120;
 
       setTimeout(HandDataHandler, cameraDelay);
-    });
+    };
+
+    window.addEventListener("keydown", keyPressListener);
 
     return () => {
       window.removeEventListener("keydown", keyPressListener);
