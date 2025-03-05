@@ -7,8 +7,9 @@ import { BounceAnimation } from "@/components/bounce-animation";
 import ProgressBar from "./buffer-screen/progress-bar";
 import Accordion from "./buffer-screen/key-accuracy-accordion";
 import Image from "next/image";
+import { useLessonContext } from "../lesson-context";
 
-enum activityEnum {
+export enum activityEnum {
   conceptExplanation = "concept-explanation",
   quoteTest = "quote-test",
   typingGame = "typing-game",
@@ -16,24 +17,14 @@ enum activityEnum {
 }
 
 export function BufferScreen({
-  lessonStep,
-  // TODO: pass a real number from lesson flow, calculated based on previous level performance
-  // TODO: reset confettiAmount to 0 when the user goes back to the previous step
   confettiAmount = 0,
-  activityType = activityEnum.conceptExplanation,
-  handleNextStep,
-  handlePreviousStep,
 }: {
-  lessonStep: number;
   confettiAmount?: number;
   activityType?: activityEnum;
-  handleNextStep: () => void;
-  handlePreviousStep: () => void;
 }) {
-  // random wpm between 40-80
-  const wpm = Math.round(Math.random() * 40 + 40);
-  // random accuracy between 90-100
-  const accuracy: number = Math.random() * 10 + 90;
+  const { handleNextStep, handlePreviousStep, currentStepIndex, currentStep, wpm, acc } =
+    useLessonContext();
+  const lessonStepDescription = currentStep.cheer;
 
   // adjust confetti number based on performance
   if (wpm > 50) {
@@ -44,11 +35,11 @@ export function BufferScreen({
     confettiAmount += 18;
   }
 
-  if (accuracy > 92) {
+  if (acc > 92) {
     confettiAmount += 18;
-  } else if (accuracy > 95) {
+  } else if (acc > 95) {
     confettiAmount += 18;
-  } else if (accuracy > 98) {
+  } else if (acc > 98) {
     confettiAmount += 18;
   }
 
@@ -62,27 +53,16 @@ export function BufferScreen({
     return () => clearTimeout(timer);
   }, [triggerConfetti, confettiAmount]);
 
-  const lessonStepMap: Record<number, string> = {
-    1: "concept-explanation",
-    2: "Nice job! You've completed the concept explanation.",
-    3: "Great work in that last typing test.",
-    4: "Woah, speedy fingers! You're doing great.",
-    5: "You're on fire! Keep up the good work.",
-    6: "It seems like you're getting the hang of this.",
-    7: "Another great typing test. Keep it up!",
-    8: "You blasted those asteroids!",
-    9: "Get ready for the final challenge!",
-  };
-
-  const lessonStepDescription = lessonStepMap[lessonStep] || "Invalid lesson step";
   const lessonPerformanceSummary = (): React.ReactNode => {
     return (
       <p className="text-xl">
         In that last level, you typed at{" "}
-        <span className="font-semibold text-cerulean-700 dark:text-cerulean-300">{wpm} WPM</span>,
-        with a typing accuracy of{" "}
         <span className="font-semibold text-cerulean-700 dark:text-cerulean-300">
-          {accuracy.toFixed(1)}%
+          {wpm.toFixed(0)} WPM
+        </span>
+        , with a typing accuracy of{" "}
+        <span className="font-semibold text-cerulean-700 dark:text-cerulean-300">
+          {acc.toFixed(0)}%
         </span>
         .
       </p>
@@ -201,7 +181,7 @@ export function BufferScreen({
 
         <FadeInSection delay={800}>
           <div className="flex w-full items-center justify-center">
-            <ProgressBar currentLevel={lessonStep} />
+            <ProgressBar currentLevel={currentStepIndex} />
           </div>
         </FadeInSection>
       </div>

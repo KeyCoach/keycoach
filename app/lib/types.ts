@@ -56,6 +56,16 @@ export type Attempt = DbAttempt & {
   test: Test;
 };
 
+export type LessonStats = {
+  [stepId: string]: Stat;
+};
+
+export type Stat = {
+  wpm: number;
+  accuracy: number;
+  fingerAccuracy: number;
+};
+
 export type User = {
   id: string;
   email: string;
@@ -103,6 +113,25 @@ export type KeyPosition = {
   isLongKey?: boolean;
 };
 
+export type LessonContextType = {
+  lessonPlan: LessonPlan;
+  lessonId: string;
+  currentStep: Step;
+  avgWpm: number;
+  avgAcc: number;
+  fingerAcc: number;
+  avgFingerAcc: number;
+  wpm: number;
+  acc: number;
+  stats: LessonStats;
+  addStat: (stepId: string, stat: Stat) => void;
+  resetStats: () => void;
+  goToStep: (step: number) => void;
+  currentStepIndex: number;
+  handleNextStep: () => void;
+  handlePreviousStep: () => void;
+};
+
 export type HandTrackContextType = {
   /** The hand tracking module is active */
   cameraActivated: boolean;
@@ -132,4 +161,19 @@ export type Mistake = {
   key: string;
   time: number;
   status: Letter;
+};
+
+export type LessonPlans = {
+  [key: string]: LessonPlan;
+};
+
+export type Step = {
+  id: string;
+  node: React.ReactNode;
+  name: string;
+  cheer?: string;
+};
+
+export type LessonPlan = {
+  steps: Step[];
 };

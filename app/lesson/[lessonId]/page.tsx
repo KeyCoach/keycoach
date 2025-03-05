@@ -1,3 +1,4 @@
+import { LessonContextProvider } from "./lesson-context";
 import { LessonFlow } from "./lesson-flow";
 
 export default async function LessonPage({ params }: { params: Promise<{ lessonId: string }> }) {
@@ -5,7 +6,9 @@ export default async function LessonPage({ params }: { params: Promise<{ lessonI
 
   return (
     <div className="">
-      <LessonFlow lessonId={lessonId} />
+      <LessonContextProvider lessonId={lessonId}>
+        <LessonFlow />
+      </LessonContextProvider>
     </div>
   );
 }
