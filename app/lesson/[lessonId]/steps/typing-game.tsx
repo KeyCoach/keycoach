@@ -6,9 +6,8 @@ export function TypingGame({ handleNextStep }: { handleNextStep: () => void }) {
     <>
       <div className="flex min-h-screen flex-col items-center justify-center">
         <TypingAsteroids />
+        <Button onClick={handleNextStep}>Next Step</Button>
       </div>
-      <Button onClick={handleNextStep}>Next Step</Button>
     </>
   );
 }
-
