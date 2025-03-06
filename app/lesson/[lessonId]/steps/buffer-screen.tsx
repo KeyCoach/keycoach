@@ -69,9 +69,71 @@ export function BufferScreen({
     );
   };
 
+    // Get mascot image and quote based on performance
+    const getMascotFeedback = () => {
+      // For low accuracy
+      if (acc < 70) {
+        return {
+          image: "/img/Tired-Mascot.png",
+          quote: "Good try! Slow down and focus on accuracy. It's better to type correctly than quickly."
+        };
+      }
+      // For low WPM but decent accuracy
+      else if (wpm < 30 && acc >= 80) {
+        return {
+          image: "/img/Tired-Mascot.png",
+          quote: "Nice accuracy! Let's work on building up your speed now. Keep practicing!"
+        };
+      }
+      // For medium performance
+      else if ((wpm >= 30 && wpm < 70) && (acc >= 50 && acc < 90)) {
+        return {
+          image: "/img/Excited-Mascot.png",
+          quote: "You're making good progress! Keep practicing to improve both speed and accuracy."
+        };
+      }
+      // For good WPM but needs accuracy work
+      else if (wpm >= 60 && acc < 85) {
+        return {
+          image: "/img/Amazing-Mascot.png",
+          quote: "Great speed! Try slowing down just a bit to improve your accuracy."
+        };
+      }
+      // For good accuracy but needs WPM work
+      else if (wpm < 50 && acc >= 90) {
+        return {
+          image: "/img/Excited-Mascot.png",
+          quote: "Excellent accuracy! Now challenge yourself to type a little faster."
+        };
+      }
+      // For excellent performance
+      else if (wpm >= 60 && acc >= 90 && acc < 98) {
+        return {
+          image: "/img/Strong-Mascot.png",
+          quote: "Looking STRONG! You're showing great balance between speed and accuracy!"
+        };
+      }
+      // For outstanding performance
+      else if (wpm >= 70 && acc >= 98) {
+        return {
+          image: "/img/LookingGood-Mascot.png",
+          quote: "LOOKING Good! Your typing skills are outstanding! You're mastering both speed and accuracy!"
+        };
+      }
+      // Default feedback
+      else {
+        return {
+          image: "/img/Mascot3.svg",
+          quote: "Keep practicing! Consistent practice is the key to improving your typing skills."
+        };
+      }
+    };
+  
+    const { image, quote } = getMascotFeedback();
+
   return (
     <div className="h-page flex items-center justify-center px-4">
-      <div className="grid w-full max-w-5xl auto-rows-auto gap-6">
+      <div className="grid w-full max-w-5xl auto-rows-auto gap-16">
         <FadeInSection delay={0}>
           <div className="relative flex min-h-[100px] flex-col items-center justify-center gap-4 rounded-2xl py-4 shadow-md dark:bg-slate-800 dark:shadow-slate-600">
             <BounceAnimation
@@ -149,25 +211,33 @@ export function BufferScreen({
 
         <FadeInSection delay={200}>
           <div className="flex h-56 w-full items-center justify-center gap-12 py-4">
-            <div id="buffer-screen-character" className="w-2/5 text-center">
-              where the fox mascot will go
+            <div id="buffer-screen-character" className="w-1/3 objects-center">
+              <div>
+                <Image
+                  src={image}
+                  alt="KeyCoach Mascot"
+                  width={275}
+                  height={275}
+                  priority
+                />
+              </div>
             </div>
             <div
               id="character-quote"
-              className="grid h-full w-2/5 place-items-center rounded-3xl bg-slate-50 shadow-md shadow-slate-200 dark:bg-slate-800 dark:shadow-slate-600"
+              className="flex items-center justify-center w-1/2 h-40 rounded-2xl bg-slate-800 p-6 shadow-md"
             >
-              the quote the fox mascot will say
+              {quote}
             </div>
           </div>
         </FadeInSection>
 
-        <FadeInSection delay={400}>
+        {/* <FadeInSection delay={400}>
           <div className="flex w-full items-center justify-center">
             <div className="w-full">
               <Accordion />
             </div>
           </div>
-        </FadeInSection>
+        </FadeInSection> */}
 
         <FadeInSection delay={600}>
           <div className="flex w-full items-center justify-between gap-12">
@@ -178,12 +248,12 @@ export function BufferScreen({
             </div>
           </div>
         </FadeInSection>
-
+{/* 
         <FadeInSection delay={800}>
           <div className="flex w-full items-center justify-center">
             <ProgressBar currentLevel={currentStepIndex} />
           </div>
-        </FadeInSection>
+        </FadeInSection> */}
       </div>
     </div>
   );
