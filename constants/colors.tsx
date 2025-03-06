@@ -8,6 +8,7 @@ export const colors: { [key: string]: string } = {
 	teal: "#42E9F4",
 	black: "#2D2D2D",
 	whiteText: "#FFFFFF",
+	redText: "#FF000D"
 };
 
 export const hexadecimalColors: { [key: string]: number } = {

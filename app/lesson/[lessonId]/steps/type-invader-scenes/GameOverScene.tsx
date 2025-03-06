@@ -3,6 +3,7 @@ import { Scene } from "phaser";
 import { colors, hexadecimalColors } from "@/constants/colors";
 import { KeyboardNavigation } from "@/utils/NavigationUtils";
 import { themeManager } from "@/utils/type-invader-game";
+import { MenuTitle } from "@/components/type-invader/MenuTitle";
 
 export class GameOverScene extends Scene {
   private score: number = 0;
@@ -10,7 +11,7 @@ export class GameOverScene extends Scene {
   private nextStarTime: number = 0;
   private stats: {
     wpm: number;
-    accuracy: string;
+    accuracy: number;
     wordsCompleted: number;
     mostProblematicChars: [string, number][];
   } | null = null;
@@ -23,7 +24,7 @@ export class GameOverScene extends Scene {
     score: number;
     stats?: {
       wpm: number;
-      accuracy: string;
+      accuracy: number;
       wordsCompleted: number;
       mostProblematicChars: [string, number][];
     } | null;
@@ -46,7 +47,7 @@ export class GameOverScene extends Scene {
     this.add
       .text(width / 2, height / 5, "GAME OVER", {
         fontSize: "42px",
-        color: colors.whiteText,
+        color: colors.redText,
       })
       .setOrigin(0.5)
       .setDepth(1);
@@ -73,7 +74,7 @@ export class GameOverScene extends Scene {
 
       // Typing Accuracy
       this.add
-        .text(width / 2, height / 3 + 70, `Accuracy: ${this.stats.accuracy}`, {
+        .text(width / 2, height / 3 + 70, `Accuracy: ${Math.round(this.stats.accuracy)}%`, {
           fontSize: "20px",
           color: colors.whiteText,
         })
