@@ -96,6 +96,7 @@ body {
 
 .h-page {
   height: calc(100vh - 4.5rem);
+  max-height: calc(100vh - 4.5rem);
 }
 
 main > canvas.p5Canvas {
