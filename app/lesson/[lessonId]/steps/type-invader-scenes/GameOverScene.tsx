@@ -46,7 +46,7 @@ export class GameOverScene extends Scene {
     this.add
       .text(width / 2, height / 5, "GAME OVER", {
         fontSize: "42px",
-        color: colors.whiteText,
+        color: colors.redText,
       })
       .setOrigin(0.5)
       .setDepth(1);
