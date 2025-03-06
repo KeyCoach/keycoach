@@ -7,6 +7,7 @@ import { BackendErrors } from "../errors";
 /** Register a new user. */
 export async function POST(request: NextRequest) {
   const { email, password, fname, lname } = await request.json();
+  console.log(email, password, fname, lname);
 
   if (!email || !password || !fname || !lname) {
     return Response.json(BackendErrors.MISSING_ARGUMENTS, { status: 422 });
@@ -15,7 +16,7 @@ export async function POST(request: NextRequest) {
   const newDbUser = await CreateDbUser(email, password, fname, lname);
 
   if (!newDbUser) {
-    return Response.json(BackendErrors.ENTITY_EXISTS, { status: 401 });
+    return Response.json(BackendErrors.ENTITY_EXISTS, { status: 409 });
   }
 
   const newUser: User = {

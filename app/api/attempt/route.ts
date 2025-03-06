@@ -2,7 +2,6 @@ import { CreateTestAttempt, GetAttemptById, GetTestById } from "@/service-interf
 import { AuthenticateUser } from "@/utils/authenticate-user";
 import { NextRequest } from "next/server";
 import { BackendErrors } from "../errors";
-import { Letter, Mistake } from "@/app/lib/types";
 import { CalculateStats } from "@/utils/calculate-stats";
 
 /** Get attempt from DB. Reject if the attempt is associated with an account and creds don't match */

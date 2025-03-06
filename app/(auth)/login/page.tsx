@@ -2,20 +2,18 @@
 import axios from "axios";
 import { Link } from "@/components/link";
 import Cookies from "js-cookie";
-import { H1, TextInput, Button, LoadingOverlay } from "@/components";
+import { H1, TextInput, Button, LoadingOverlay, Modal } from "@/components";
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 
 export default function Login() {
   const params = useSearchParams();
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  function GoBack() {
-    window.history.back();
-  }
-
-  async function LogIn(e: any) {
+  async function HandleLogin(e: any) {
     e.preventDefault();
+    console.log("Logging in...");
     const formData = new FormData(e.target);
 
     const body = {
@@ -27,6 +25,7 @@ export default function Login() {
     axios
       .post("/api/login", body)
       .then((res) => {
+        console.log(res.data);
         Cookies.set("token", res.data.token);
         const redirect = params.get("redirect");
 
@@ -37,10 +36,17 @@ export default function Login() {
         }
       })
       .catch((err) => {
-        alert("There was an error logging in. Please try again.");
-        console.error(err);
-      })
-      .finally(() => {
+        if (err.response.status === 401) {
+          setError("Invalid email or password.");
+        } else if (err.response.status === 422) {
+          setError("Please enter an email and password.");
+        } else if (err.response.status >= 500) {
+          setError("It's not you, it's us. Please try again later.");
+        } else {
+          setError("An unknown error occurred. Please try again.");
+          console.error(err);
+        }
+
         setLoading(false);
       });
   }
@@ -48,7 +54,7 @@ export default function Login() {
   return (
     <div className="h-page w-full bg-white pt-20 dark:bg-slate-950">
       <LoadingOverlay show={loading} message="Logging you in..." />
-      <div className="mx-auto w-full max-w-md p-1 text-slate-900 dark:text-slate-50">
+      <div className="mx-auto w-full max-w-lg p-1 text-slate-900 dark:text-slate-50">
         <div className="rounded-xl bg-slate-50 p-8 shadow dark:bg-slate-800">
           <H1 className="mb-3 text-slate-900 dark:text-slate-50">Welcome Back!</H1>
           <div className="mb-6 text-slate-600 dark:text-slate-400">
@@ -60,7 +66,7 @@ export default function Login() {
             </Link>
           </div>
 
-          <form onSubmit={LogIn}>
+          <form onSubmit={HandleLogin}>
             <div className="mb-4">
               <TextInput
                 label="Email"
@@ -83,18 +89,11 @@ export default function Login() {
                 required
               />
             </div>
-            <div className="mb-6">
-              <Link
-                href="/forgot"
-                className="text-cerulean-600 hover:underline dark:text-cerulean-400"
-              >
-                Forgot Password?
-              </Link>
-            </div>
+
             <div className="flex justify-end space-x-4">
-              <Button onClick={GoBack}>Back</Button>
               <Button colorTheme="cerulean">Log In</Button>
             </div>
+            {error && <p className="mt-3 text-red-600 dark:text-red-400">{error}</p>}
           </form>
         </div>
       </div>
