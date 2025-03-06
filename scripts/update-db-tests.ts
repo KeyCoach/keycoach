@@ -5,28 +5,28 @@ import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 
 export const dynamo = DynamoDBDocumentClient.from(new DynamoDBClient({ region: "us-east-1" }));
 
-//const TEST_TABLE_NAME = "test";
-const TEST_TABLE_NAME = "test-dev";
-
 async function AddTestsToDb(tests: Test[]): Promise<void> {
   const testCommands = [];
+  const tables = ["test", "test-dev"];
   for (const test of tests) {
-    const updateCommand = new UpdateCommand({
-      TableName: TEST_TABLE_NAME,
-      Key: {
-        id: test.id,
-      },
-      UpdateExpression: `SET src = :src, author = :author, textBody = :textBody, charCount = :charCount, wordCount = :wordCount, difficulty = :difficulty`,
-      ExpressionAttributeValues: {
-        ":src": test.src,
-        ":author": test.author,
-        ":textBody": test.textBody,
-        ":charCount": test.charCount,
-        ":wordCount": test.wordCount,
-        ":difficulty": test.difficulty,
-      },
-    });
-    testCommands.push(updateCommand);
+    for (const table of tables) {
+      const updateCommand = new UpdateCommand({
+        TableName: table,
+        Key: {
+          id: test.id,
+        },
+        UpdateExpression: `SET src = :src, author = :author, textBody = :textBody, charCount = :charCount, wordCount = :wordCount, difficulty = :difficulty`,
+        ExpressionAttributeValues: {
+          ":src": test.src,
+          ":author": test.author,
+          ":textBody": test.textBody,
+          ":charCount": test.charCount,
+          ":wordCount": test.wordCount,
+          ":difficulty": test.difficulty,
+        },
+      });
+      testCommands.push(updateCommand);
+    }
   }
   await Promise.all(testCommands.map((command) => dynamo.send(command)))
     .then(() => {
@@ -83,9 +83,29 @@ const tests: Test[] = [
     src: "The Book of Mormon",
     author: "Nephi",
     textBody: "And my father dwelt in a tent.",
-    charCount: 23,
+    charCount: 30,
     wordCount: 7,
     difficulty: 5,
+  },
+  {
+    id: "8cc8728f-f8e3-4c1e-b74c-cb2c7fd0a100",
+    textBody:
+      "As daylight fades, a wanderer navigates vast landscapes, marveling at radiant cascades and sprawling savannas, grasping at fleeting fragments of paradise. Against all adversities, passion and perseverance carve pathways across ancient archways, allowing aspirations to manifest amidst an ever-changing panorama of dazzling realities.",
+    charCount: 333,
+    wordCount: 43,
+    difficulty: 5,
+    author: null,
+    src: null,
+  },
+  {
+    id: "e364a9c6-49d1-4569-8f2d-424f138a50d8",
+    textBody:
+      "Amidst the vast expanse of dazzling galaxies and sprawling landscapes, a passionate adventurer navigates labyrinthine pathways, marveling at cascading waterfalls, radiant auroras, and ancient artifacts. Against all adversities, they embrace the art of adaptation, grasping at fleeting moments of magic, allowing aspirations to ascend beyond all apparent limitations, always awaiting the arrival of another astonishing awakening.",
+    charCount: 428,
+    wordCount: 56,
+    difficulty: 5,
+    author: null,
+    src: null,
   },
 ];
 

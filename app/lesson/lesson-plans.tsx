@@ -15,8 +15,7 @@ export const lessonPlans: LessonPlans = {
       },
       {
         id: "b92e36e6-00b1-4bf5-86f9-d6e05483cbb3",
-        // TODO: get a better quote
-        node: <QuoteTest testId="2f075fa3-b932-4b6d-91bf-41523670d1bb" />,
+        node: <QuoteTest testId="e364a9c6-49d1-4569-8f2d-424f138a50d8" />,
         name: "Quote Test",
         cheer: "Great work in that last typing test.",
       },
@@ -33,8 +32,7 @@ export const lessonPlans: LessonPlans = {
       },
       {
         id: "19ca01b4-bf0d-438f-bdaa-3ce663449294",
-        // TODO: get a better quote
-        node: <QuoteTest testId="2f075fa3-b932-4b6d-91bf-41523670d1bb" />,
+        node: <QuoteTest testId="8cc8728f-f8e3-4c1e-b74c-cb2c7fd0a100" />,
         name: "Quote Test",
         cheer: "You're on fire! Keep up the good work.",
       },
@@ -52,3 +50,4 @@ export const lessonPlans: LessonPlans = {
     ],
   },
 };
+
