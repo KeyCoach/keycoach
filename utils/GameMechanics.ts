@@ -1,7 +1,7 @@
 // GameMechanics.ts
 import { Scene } from "phaser";
 import { themeManager, soundManager } from "@/utils/type-invader-game";
-import { fetchWords } from "@/constants/wordsApi";
+import { fetchWords } from "@/utils/wordsApi";
 import { Asteroid } from "@/constants/definitions";
 
 const MULTIPLIER_THRESHOLDS = {
@@ -92,8 +92,6 @@ export class GameMechanics {
     }
   }
 
-  // TODO; Figure out why E, U, and others have so few words with different starting letters
-  // method to prepare the word pool by organizing by first letter
   private prepareWordPool(words: string[]) {
     this.wordsByFirstLetter.clear();
 

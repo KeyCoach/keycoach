@@ -89,7 +89,7 @@ export class PauseScene extends Scene {
     this.input.keyboard?.on("keydown-S", this.navigateDown, this);
     this.input.keyboard?.on("keydown-ENTER", this.selectOption, this);
     this.input.keyboard?.on("keydown-SPACE", this.selectOption, this);
-    this.input.keyboard?.on("keydown-ESC", this.resumeGame, this);
+    // this.input.keyboard?.on("keydown-ESC", this.resumeGame, this);
   }
 
   navigateUp() {
