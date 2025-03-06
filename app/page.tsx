@@ -113,6 +113,7 @@ export default function Home(): React.ReactNode {
         <Image
           src="/img/skyline3.png"
           alt="Skyline"
+          unoptimized={true}
           width={1920}
           height={600}
           className="block h-[412px] w-full object-cover"
