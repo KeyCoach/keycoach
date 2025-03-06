@@ -277,7 +277,7 @@ export class GameUI {
 
 		// Create stats text
 		const title = this.scene.add
-			.text(width / 2, height / 2 - 100, "YOUR TYPING STATS", {
+			.text(width / 2, height / 2 - 100, "LEVEL COMPLETED", { // Was "YOUR TYPING STATS"
 				fontSize: "28px",
 				fontFamily: "Monospace",
 				color: colors.yellow,
@@ -290,7 +290,7 @@ export class GameUI {
 			.text(
 				width / 2,
 				height / 2 - 50,
-				`WPM: ${stats.wpm}  |  Accuracy: ${stats.accuracy}`,
+				`WPM: ${stats.wpm}  |  Accuracy: ${Math.round(stats.accuracy)}%`,
 				{
 					fontSize: "22px",
 					fontFamily: "Monospace",
