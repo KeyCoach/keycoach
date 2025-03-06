@@ -1,41 +1,87 @@
+"use client";
 import { Link } from "@/components/link";
 import { H1 } from "@/components";
 import { Button } from "@/components";
 import Image from "next/image";
+import { useState, useEffect, useRef, useMemo } from "react";
+import { FC } from "react";
+import { Stars } from "@/components/stars-background";
 
-export default function Home() {
-  const numDots = Math.floor(Math.random() * 25) + 45;
+interface TypingEffectProps {
+  titles: string[];
+}
+
+const TypingEffect: FC<TypingEffectProps> = ({ titles }) => {
+  const [displayText, setDisplayText] = useState(titles[0]);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [titleIndex, setTitleIndex] = useState(0);
+  const [delta, setDelta] = useState(200);
+
+  const currentTitleRef = useRef(titles[0]);
+
+  useEffect(() => {
+    const ticker = () => {
+      const currentTitle = isDeleting ? currentTitleRef.current : titles[titleIndex];
+
+      if (isDeleting) {
+        setDisplayText((prev) => prev.substring(0, prev.length - 1));
+        setDelta(50);
+      } else {
+        setDisplayText(currentTitle.substring(0, displayText.length + 1));
+        setDelta(150);
+      }
+
+      const randomDeletionDelay = Math.random() * 1000 + 2000;
+
+      if (!isDeleting && displayText === currentTitle) {
+        setTimeout(() => setIsDeleting(true), randomDeletionDelay);
+      } else if (isDeleting && displayText === "") {
+        setTimeout(() => {
+          setIsDeleting(false);
+          currentTitleRef.current = titles[titleIndex];
+          setTitleIndex((titleIndex + 1) % titles.length);
+        }, randomDeletionDelay);
+      }
+    };
+
+    const timer = setTimeout(ticker, delta);
+    return () => clearTimeout(timer);
+  }, [displayText, delta, isDeleting, titleIndex, titles]);
+
+  return (
+    <>
+      <span className="inline-block">{displayText}</span>
+      <span className="blink inline-block align-text-top">|</span>
+    </>
+  );
+};
+
+export default function Home(): React.ReactNode {
+  const numDots = useMemo(() => Math.floor(Math.random() * 25) + 45, []);
+
+  const homePageTitle = "Learn to type with KeyCoach!";
+  const alternateTitles = [
+    "Type faster with KeyCoach!",
+    "Improve your technique with KeyCoach!",
+    "Improve your WPM with KeyCoach!",
+    "Impress your friends with KeyCoach!",
+    "Master keyboard skills with KeyCoach!",
+  ];
+
+  const allTitles = [homePageTitle, ...alternateTitles];
+
   return (
     <div className="h-page relative bg-gradient-to-b from-cerulean-800 to-cerulean-500">
       {/* Stars */}
-
       <div className="pointer-events-none absolute inset-0">
-        {Array.from({ length: numDots }).map((_, i) => {
-          const starSize = (Math.random() * 4 + 2).toFixed(2);
-
-          return (
-            <div
-              key={i}
-              className={`blink absolute animate-pulse rounded-full bg-white opacity-80`}
-              style={{
-                animationDuration: `${(Math.random() * 2 + 1).toFixed(2)}s`,
-                animationDelay: `${(Math.random() * 8).toFixed(2)}s`,
-                width: `${starSize}px`,
-                height: `${starSize}px`,
-                top: `${(Math.random() * 100).toFixed(2)}%`,
-                left: `${(Math.random() * 100).toFixed(2)}%`,
-              }}
-            ></div>
-          );
-        })}
+        <Stars numDots={numDots} />
       </div>
 
       {/* Content */}
       <div className="relative z-10 flex flex-col items-center px-4 pt-52 text-center">
-        <div className="w-full max-w-3xl">
+        <div className="w-full">
           <H1 className="relative mb-20 text-5xl font-bold text-slate-50">
-            <span className="inline-block">Learn to Type with KeyCoach!</span>
-            <span className="center blink inline-block align-text-top">|</span>
+            <TypingEffect titles={allTitles} />
           </H1>
 
           <div className="space-y-8">

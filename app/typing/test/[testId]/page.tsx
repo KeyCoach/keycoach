@@ -7,6 +7,7 @@ import { Letter, Mistake, Word, type Test } from "@/app/lib/types";
 import axios from "axios";
 import { Button, LoadingPage } from "@/components";
 import { useHandTracking } from "@/app/hand-track-context";
+import { FeedbackInterpretModal } from "@/components/feedback-interpret-modal";
 
 export default function Test() {
   const router = useRouter();
@@ -15,6 +16,7 @@ export default function Test() {
   const { cameraActivated, setSettingUp } = useHandTracking();
   const [wpm, setWpm] = useState(0);
   const [accuracy, setAccuracy] = useState(0);
+  const [feedbackModalOpen, setFeedbackModalOpen] = useState(false);
 
   useEffect(() => {
     console.log("fetching test");
@@ -57,10 +59,19 @@ export default function Test() {
 
   return (
     <div className="h-page bg-white p-4 dark:bg-slate-950">
+      <FeedbackInterpretModal
+        isOpen={feedbackModalOpen}
+        onClose={() => setFeedbackModalOpen(false)}
+      />
       <div className="flex items-center justify-between gap-4">
-        <Button onClick={() => setSettingUp((prev) => !prev)}>
-          {cameraActivated ? "Recalibrate Camera" : "Set up Camera"}
-        </Button>
+        <div className="flex gap-4">
+          <Button onClick={() => setSettingUp((prev) => !prev)}>
+            {cameraActivated ? "Recalibrate Camera" : "Set up Camera"}
+          </Button>
+          {cameraActivated && (
+            <Button onClick={() => setFeedbackModalOpen(true)}>Interpret Feedback</Button>
+          )}
+        </div>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <div className="flex-1 rounded-lg bg-green-200 p-4 text-center shadow-md dark:bg-green-800">
             <h2 className="text-lg font-semibold text-green-700 dark:text-green-300">WPM</h2>
