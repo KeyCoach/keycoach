@@ -27,9 +27,10 @@ export async function Navbar() {
                 src="/img/Mascot3.svg"
                 alt="KeyCoach Mascot"
                 fill
-                className="translate-y-[5%] scale-[1.5] object-cover"
+                className="object-cover"
                 sizes="48px"
                 priority
+                style={{ translate: "0% 5%", scale: "1.5" }}
               />
             </div>
             <Link href="/" linkVariant="navbar-link-home">
