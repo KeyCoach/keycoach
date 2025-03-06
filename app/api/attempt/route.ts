@@ -24,14 +24,14 @@ export async function GET(request: NextRequest) {
 
 /** Add attempt to DB. */
 export async function POST(request: NextRequest) {
-  const { cameraActivated, testId, correctChars, duration, mistakes, userInput } =
+  const { cameraActivated, testId, attemptId, duration, mistakes, userInput } =
     await request.json();
   if (
     !testId ||
     !userInput ||
     !mistakes ||
+    !attemptId ||
     cameraActivated === undefined ||
-    correctChars === undefined ||
     duration === undefined
   ) {
     return Response.json(BackendErrors.MISSING_ARGUMENTS, { status: 422 });
@@ -53,6 +53,7 @@ export async function POST(request: NextRequest) {
 
   const attempt = await CreateTestAttempt(
     email,
+    attemptId,
     testId,
     accuracy,
     grossWpm,

@@ -37,6 +37,7 @@ export function QuoteTest({ testId }: { testId: string }) {
   }
 
   const onTestComplete: OnTestCompleteCallback = (
+    _attemptId: string,
     userInput: Word[],
     mistakes: Mistake[],
     testStart: number,

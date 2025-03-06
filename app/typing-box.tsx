@@ -8,6 +8,7 @@ import axios from "axios";
 import { CalculateStats } from "@/utils/calculate-stats";
 
 export type OnTestCompleteCallback = (
+  attemptId: string,
   userInput: Word[],
   mistakes: Mistake[],
   testStart: number,
@@ -34,6 +35,7 @@ export default function TypingBox({
     useHandTracking();
   const sentence = useMemo(() => test.textBody.split(" "), [test.textBody]);
 
+  const [sendingRequest, setSendingRequest] = useState(false);
   const [testStart, setTestStart] = useState(0);
   const [userInput, setUserInput] = useState<Word[]>([{ word: sentence[0], inputs: [] }]);
   const [mistakes, setMistakes] = useState<Mistake[]>([]);
@@ -173,26 +175,38 @@ export default function TypingBox({
   }, [testStart, cameraSetup, keyPositions, onKeyPress, detectHands, settingUp]);
 
   useEffect(() => {
-    if (testFinished) {
-      console.log("Test Finished");
-      onTestComplete(userInput, mistakes, testStart, Date.now());
+    async function completeTest() {
+      console.log("test finished");
+      const attemptId = uuidv4();
+      setSendingRequest(true);
 
-      const correctChars = userInput.reduce((acc, word) => {
-        return acc + word.inputs.filter((input) => input.status === Letter.Correct).length;
-      }, 0);
       const body = {
         testId,
-        correctChars,
+        attemptId,
         duration: Date.now() - testStart,
         userInput,
         mistakes,
         cameraActivated,
       };
-      axios.post("/api/attempt", body);
-    }
-  }, [testFinished, onTestComplete, userInput, mistakes, testStart, testId, cameraActivated]);
+      await axios.post("/api/attempt", body);
 
-  if (cameraSetup && !modelReady) {
+      onTestComplete(attemptId, userInput, mistakes, testStart, Date.now());
+    }
+    if (testFinished && !sendingRequest) {
+      completeTest();
+    }
+  }, [
+    testFinished,
+    onTestComplete,
+    userInput,
+    sendingRequest,
+    mistakes,
+    testStart,
+    testId,
+    cameraActivated,
+  ]);
+
+  if ((cameraSetup && !modelReady) || sendingRequest) {
     return <LoadingPage />;
   }
 

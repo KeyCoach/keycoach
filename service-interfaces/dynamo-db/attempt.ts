@@ -37,6 +37,7 @@ export async function GetAttemptById(
 /** Inserts attempt into DB. */
 export async function CreateTestAttempt(
   email: string | null,
+  attemptId: string,
   testId: string,
   accuracy: number,
   grossWpm: number,
@@ -48,7 +49,7 @@ export async function CreateTestAttempt(
   cameraActivated: boolean,
 ): Promise<DbAttempt> {
   const attempt: DbAttempt = {
-    id: uuidv4(),
+    id: attemptId,
     email: email ?? "unknown",
     testId,
     accuracy,

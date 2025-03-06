@@ -32,26 +32,13 @@ export default function Test() {
   }, [testId, router]);
 
   const onTestComplete: OnTestCompleteCallback = (
-    userInput: Word[],
-    mistakes: Mistake[],
-    testStart: number,
-    testEnd: number,
+    attemptId: string,
+    _userInput: Word[],
+    _mistakes: Mistake[],
+    _testStart: number,
+    _testEnd: number,
   ) => {
-    const correctChars = userInput.reduce((acc, word) => {
-      return acc + word.inputs.filter((input) => input.status === Letter.Correct).length;
-    }, 0);
-    const body = {
-      testId,
-      correctChars,
-      duration: testEnd - testStart,
-      userInput,
-      mistakes,
-      cameraActivated,
-    };
-    // TODO: figure out why it's sending this request a bunch of times. Maybe generate id on client side?
-    axios.post("/api/attempt", body).then((res) => {
-      router.push(`/typing/result/${res.data.attemptId}`);
-    });
+    router.push(`/typing/result/${attemptId}`);
   };
 
   if (!test) {
