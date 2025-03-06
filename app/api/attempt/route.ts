@@ -42,7 +42,7 @@ export async function POST(request: NextRequest) {
     return Response.json(BackendErrors.ENTITY_NOT_FOUND, { status: 404 });
   }
 
-  const { wpm, accuracy, fingerAccuracy } = CalculateStats(test, userInput, mistakes, duration);
+  const { wpm, accuracy, fingerAccuracy } = CalculateStats(userInput, mistakes, duration);
 
   const user = await AuthenticateUser();
   const email = user?.email || null;

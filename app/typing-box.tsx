@@ -56,7 +56,7 @@ export default function TypingBox({
 
         if (key === " ") {
           if (currWord.inputs.length !== currWord.word.length) {
-            setMistakes((prev) => [...prev, { key, time: timeSinceStart, status }]);
+            setMistakes((prev) => [...prev, { key, time: timeSinceStart, status: Letter.Missing }]);
           }
         } else if (status === Letter.WrongLetter) {
           setMistakes((prev) => [...prev, { key, time: timeSinceStart, status }]);
@@ -91,7 +91,6 @@ export default function TypingBox({
     if (testStart === 0) return;
 
     const { wpm, accuracy, fingerAccuracy } = CalculateStats(
-      test,
       userInput,
       mistakes,
       Date.now() - testStart,

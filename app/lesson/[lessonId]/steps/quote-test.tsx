@@ -43,7 +43,7 @@ export function QuoteTest({ testId }: { testId: string }) {
     testEnd: number,
   ) => {
     setTestCompleted(true);
-    const stats = CalculateStats(test, userInput, mistakes, testEnd - testStart);
+    const stats = CalculateStats(userInput, mistakes, testEnd - testStart);
     addStat(currentStep.id, stats);
   };
 
