@@ -29,7 +29,7 @@ export default async function Dashboard() {
       return {
         totalTests: acc.totalTests + 1,
         totalTime: acc.totalTime + attempt.duration,
-        avgSpeed: acc.avgSpeed + attempt.wpm,
+        avgSpeed: acc.avgSpeed + attempt.netWpm,
         avgAcc: acc.avgAcc + attempt.accuracy,
         avgFingerAccuracy: acc.avgFingerAccuracy + attempt.fingerAccuracy,
       };
@@ -193,7 +193,7 @@ export default async function Dashboard() {
                                 : "N/A"}
                             </td>
                             <td className="py-3 text-right font-medium text-slate-900 dark:text-slate-100">
-                              {Math.round(attempt.wpm)}
+                              {Math.round(attempt.netWpm)}
                             </td>
                             <td className="py-3 text-right text-slate-700 dark:text-slate-300">
                               {attempt.accuracy.toFixed(0)}%

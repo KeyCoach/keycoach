@@ -79,7 +79,7 @@ async function History({ user }: { user: TUser }) {
                   <div className="px-3 text-center">
                     <p className="text-xs font-medium text-green-700 dark:text-green-400">WPM</p>
                     <p className="text-2xl font-bold text-green-800 dark:text-green-300">
-                      {Math.round(attempt.wpm)}
+                      {Math.round(attempt.netWpm)}
                     </p>
                   </div>
                   <div className="px-3 text-center">

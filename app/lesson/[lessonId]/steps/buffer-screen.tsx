@@ -4,8 +4,6 @@ import { Button } from "@/components/button";
 import { Confetti } from "@/components/confetti";
 import { FadeInSection } from "@/components/fade-in-section";
 import { BounceAnimation } from "@/components/bounce-animation";
-import ProgressBar from "./buffer-screen/progress-bar";
-import Accordion from "./buffer-screen/key-accuracy-accordion";
 import Image from "next/image";
 import { useLessonContext } from "../lesson-context";
 
@@ -22,16 +20,15 @@ export function BufferScreen({
   confettiAmount?: number;
   activityType?: activityEnum;
 }) {
-  const { handleNextStep, handlePreviousStep, currentStepIndex, currentStep, wpm, acc } =
-    useLessonContext();
+  const { handleNextStep, handlePreviousStep, currentStep, netWpm, acc } = useLessonContext();
   const lessonStepDescription = currentStep.cheer;
 
   // adjust confetti number based on performance
-  if (wpm > 50) {
+  if (netWpm > 50) {
     confettiAmount += 18;
-  } else if (wpm > 70) {
+  } else if (netWpm > 70) {
     confettiAmount += 18;
-  } else if (wpm > 80) {
+  } else if (netWpm > 80) {
     confettiAmount += 18;
   }
 
@@ -58,7 +55,7 @@ export function BufferScreen({
       <p className="text-xl">
         In that last level, you typed at{" "}
         <span className="font-semibold text-cerulean-700 dark:text-cerulean-300">
-          {wpm.toFixed(0)} WPM
+          {netWpm.toFixed(0)} WPM
         </span>
         , with a typing accuracy of{" "}
         <span className="font-semibold text-cerulean-700 dark:text-cerulean-300">
@@ -69,67 +66,69 @@ export function BufferScreen({
     );
   };
 
-    // Get mascot image and quote based on performance
-    const getMascotFeedback = () => {
-      // For low accuracy
-      if (acc < 70) {
-        return {
-          image: "/img/Tired-Mascot.png",
-          quote: "Good try! Slow down and focus on accuracy. It's better to type correctly than quickly."
-        };
-      }
-      // For low WPM but decent accuracy
-      else if (wpm < 30 && acc >= 80) {
-        return {
-          image: "/img/Tired-Mascot.png",
-          quote: "Nice accuracy! Let's work on building up your speed now. Keep practicing!"
-        };
-      }
-      // For medium performance
-      else if ((wpm >= 30 && wpm < 70) && (acc >= 50 && acc < 90)) {
-        return {
-          image: "/img/Excited-Mascot.png",
-          quote: "You're making good progress! Keep practicing to improve both speed and accuracy."
-        };
-      }
-      // For good WPM but needs accuracy work
-      else if (wpm >= 60 && acc < 85) {
-        return {
-          image: "/img/Amazing-Mascot.png",
-          quote: "Great speed! Try slowing down just a bit to improve your accuracy."
-        };
-      }
-      // For good accuracy but needs WPM work
-      else if (wpm < 50 && acc >= 90) {
-        return {
-          image: "/img/Excited-Mascot.png",
-          quote: "Excellent accuracy! Now challenge yourself to type a little faster."
-        };
-      }
-      // For excellent performance
-      else if (wpm >= 60 && acc >= 90 && acc < 98) {
-        return {
-          image: "/img/Strong-Mascot.png",
-          quote: "Looking STRONG! You're showing great balance between speed and accuracy!"
-        };
-      }
-      // For outstanding performance
-      else if (wpm >= 70 && acc >= 98) {
-        return {
-          image: "/img/LookingGood-Mascot.png",
-          quote: "LOOKING Good! Your typing skills are outstanding! You're mastering both speed and accuracy!"
-        };
-      }
-      // Default feedback
-      else {
-        return {
-          image: "/img/Mascot3.svg",
-          quote: "Keep practicing! Consistent practice is the key to improving your typing skills."
-        };
-      }
-    };
-  
-    const { image, quote } = getMascotFeedback();
+  // Get mascot image and quote based on performance
+  const getMascotFeedback = () => {
+    // For low accuracy
+    if (acc < 70) {
+      return {
+        image: "/img/Tired-Mascot.png",
+        quote:
+          "Good try! Slow down and focus on accuracy. It's better to type correctly than quickly.",
+      };
+    }
+    // For low WPM but decent accuracy
+    else if (netWpm < 30 && acc >= 80) {
+      return {
+        image: "/img/Tired-Mascot.png",
+        quote: "Nice accuracy! Let's work on building up your speed now. Keep practicing!",
+      };
+    }
+    // For medium performance
+    else if (netWpm >= 30 && netWpm < 70 && acc >= 50 && acc < 90) {
+      return {
+        image: "/img/Excited-Mascot.png",
+        quote: "You're making good progress! Keep practicing to improve both speed and accuracy.",
+      };
+    }
+    // For good WPM but needs accuracy work
+    else if (netWpm >= 60 && acc < 85) {
+      return {
+        image: "/img/Amazing-Mascot.png",
+        quote: "Great speed! Try slowing down just a bit to improve your accuracy.",
+      };
+    }
+    // For good accuracy but needs WPM work
+    else if (netWpm < 50 && acc >= 90) {
+      return {
+        image: "/img/Excited-Mascot.png",
+        quote: "Excellent accuracy! Now challenge yourself to type a little faster.",
+      };
+    }
+    // For excellent performance
+    else if (netWpm >= 60 && acc >= 90 && acc < 98) {
+      return {
+        image: "/img/Strong-Mascot.png",
+        quote: "Looking STRONG! You're showing great balance between speed and accuracy!",
+      };
+    }
+    // For outstanding performance
+    else if (netWpm >= 70 && acc >= 98) {
+      return {
+        image: "/img/LookingGood-Mascot.png",
+        quote:
+          "LOOKING Good! Your typing skills are outstanding! You're mastering both speed and accuracy!",
+      };
+    }
+    // Default feedback
+    else {
+      return {
+        image: "/img/Mascot3.svg",
+        quote: "Keep practicing! Consistent practice is the key to improving your typing skills.",
+      };
+    }
+  };
+
+  const { image, quote } = getMascotFeedback();
 
   return (
     <div className="h-page flex items-center justify-center px-4">
@@ -211,20 +210,14 @@ export function BufferScreen({
 
         <FadeInSection delay={200}>
           <div className="flex h-56 w-full items-center justify-center gap-12 py-4">
-            <div id="buffer-screen-character" className="w-1/3 objects-center">
+            <div id="buffer-screen-character" className="objects-center w-1/3">
               <div>
-                <Image
-                  src={image}
-                  alt="KeyCoach Mascot"
-                  width={275}
-                  height={275}
-                  priority
-                />
+                <Image src={image} alt="KeyCoach Mascot" width={275} height={275} priority />
               </div>
             </div>
             <div
               id="character-quote"
-              className="flex items-center justify-center w-1/2 h-40 rounded-2xl bg-slate-800 p-6 shadow-md"
+              className="flex h-40 w-1/2 items-center justify-center rounded-2xl bg-slate-800 p-6 shadow-md"
             >
               {quote}
             </div>
@@ -248,7 +241,7 @@ export function BufferScreen({
             </div>
           </div>
         </FadeInSection>
-{/* 
+        {/* 
         <FadeInSection delay={800}>
           <div className="flex w-full items-center justify-center">
             <ProgressBar currentLevel={currentStepIndex} />

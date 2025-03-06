@@ -42,7 +42,11 @@ export async function POST(request: NextRequest) {
     return Response.json(BackendErrors.ENTITY_NOT_FOUND, { status: 404 });
   }
 
-  const { wpm, accuracy, fingerAccuracy } = CalculateStats(userInput, mistakes, duration);
+  const { netWpm, grossWpm, accuracy, fingerAccuracy } = CalculateStats(
+    userInput,
+    mistakes,
+    duration,
+  );
 
   const user = await AuthenticateUser();
   const email = user?.email || null;
@@ -51,7 +55,8 @@ export async function POST(request: NextRequest) {
     email,
     testId,
     accuracy,
-    wpm,
+    grossWpm,
+    netWpm,
     fingerAccuracy,
     mistakes,
     duration,

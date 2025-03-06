@@ -56,7 +56,7 @@ function Attempt({ attempt }: { attempt: Attempt }) {
         <div className="rounded-xl bg-green-200 p-6 shadow-lg dark:bg-green-800">
           <h2 className="mb-1 text-sm font-medium text-green-700 dark:text-green-300">WPM</h2>
           <p className="text-4xl font-bold text-green-800 dark:text-green-200">
-            {Math.round(attempt.wpm)}
+            {Math.round(attempt.netWpm)}
           </p>
         </div>
         <div className="rounded-xl bg-cerulean-200 p-6 shadow-lg dark:bg-cerulean-800">

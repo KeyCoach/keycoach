@@ -2,7 +2,7 @@ import { Mistake, Word, Stat, Letter } from "@/app/lib/types";
 
 export function CalculateStats(userInput: Word[], mistakes: Mistake[], duration: number): Stat {
   if (userInput.length < 3) {
-    return { wpm: 0, accuracy: 0, fingerAccuracy: 0 };
+    return { netWpm: 0, grossWpm: 0, accuracy: 0, fingerAccuracy: 0 };
   }
   const minutes = duration / 1000 / 60;
   const numSpaces = userInput.filter((word) => word.inputs.length > 0).length - 1;
@@ -41,7 +41,8 @@ export function CalculateStats(userInput: Word[], mistakes: Mistake[], duration:
   const fingerAccuracy = ((correctChars - wrongFingerMistakes) / typedChars) * 100;
 
   return {
-    wpm: netWpm,
+    netWpm,
+    grossWpm,
     accuracy: Math.max(0, accuracy),
     fingerAccuracy: Math.max(0, fingerAccuracy),
   };

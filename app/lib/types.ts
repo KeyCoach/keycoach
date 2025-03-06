@@ -44,8 +44,9 @@ export type DbAttempt = {
   cameraActivated: boolean;
   accuracy: number;
   fingerAccuracy: number;
-  wpm: number;
   userInput: Word[];
+  netWpm: number;
+  grossWpm: number;
   mistakes: Mistake[];
   duration: number;
   date: number;
@@ -61,7 +62,8 @@ export type LessonStats = {
 };
 
 export type Stat = {
-  wpm: number;
+  grossWpm: number;
+  netWpm: number;
   accuracy: number;
   fingerAccuracy: number;
 };
@@ -117,12 +119,14 @@ export type LessonContextType = {
   lessonPlan: LessonPlan;
   lessonId: string;
   currentStep: Step;
-  avgWpm: number;
-  avgAcc: number;
-  fingerAcc: number;
-  avgFingerAcc: number;
-  wpm: number;
+  grossWpm: number;
+  netWpm: number;
   acc: number;
+  fingerAcc: number;
+  avgGrossWpm: number;
+  avgNetWpm: number;
+  avgAcc: number;
+  avgFingerAcc: number;
   stats: LessonStats;
   addStat: (stepId: string, stat: Stat) => void;
   resetStats: () => void;

@@ -14,7 +14,7 @@ export default function Test() {
   const { testId } = useParams();
   const [test, setTest] = useState<Test | null>(null);
   const { cameraActivated, setSettingUp } = useHandTracking();
-  const [wpm, setWpm] = useState(0);
+  const [netWpm, setNetWpm] = useState(0);
   const [accuracy, setAccuracy] = useState(0);
   const [feedbackModalOpen, setFeedbackModalOpen] = useState(false);
 
@@ -76,7 +76,9 @@ export default function Test() {
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <div className="flex-1 rounded-lg bg-green-200 p-4 text-center shadow-md dark:bg-green-800">
             <h2 className="text-lg font-semibold text-green-700 dark:text-green-300">WPM</h2>
-            <p className="text-2xl font-bold text-green-800 dark:text-green-200">{wpm.toFixed()}</p>
+            <p className="text-2xl font-bold text-green-800 dark:text-green-200">
+              {netWpm.toFixed()}
+            </p>
           </div>
           <div className="flex-1 rounded-lg bg-cerulean-200 p-4 text-center shadow-md dark:bg-cerulean-800">
             <h2 className="text-lg font-semibold text-cerulean-700 dark:text-cerulean-300">
@@ -90,7 +92,7 @@ export default function Test() {
       </div>
       <div className="mt-6 flex justify-center">
         <TypingBox
-          setWpm={setWpm}
+          setNetWpm={setNetWpm}
           setAccuracy={setAccuracy}
           test={test}
           onTestComplete={onTestComplete}

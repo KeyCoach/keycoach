@@ -17,13 +17,15 @@ export type OnTestCompleteCallback = (
 export default function TypingBox({
   test,
   onTestComplete,
-  setWpm,
+  setNetWpm,
+  setGrossWpm,
   setAccuracy,
   setFingerAccuracy,
 }: {
   test: Test;
   onTestComplete: OnTestCompleteCallback;
-  setWpm?: React.Dispatch<React.SetStateAction<number>>;
+  setNetWpm?: React.Dispatch<React.SetStateAction<number>>;
+  setGrossWpm?: React.Dispatch<React.SetStateAction<number>>;
   setAccuracy?: React.Dispatch<React.SetStateAction<number>>;
   setFingerAccuracy?: React.Dispatch<React.SetStateAction<number>>;
 }) {
@@ -90,15 +92,25 @@ export default function TypingBox({
   useEffect(() => {
     if (testStart === 0) return;
 
-    const { wpm, accuracy, fingerAccuracy } = CalculateStats(
+    const { grossWpm, netWpm, accuracy, fingerAccuracy } = CalculateStats(
       userInput,
       mistakes,
       Date.now() - testStart,
     );
-    setWpm?.(wpm);
+    setNetWpm?.(netWpm);
+    setGrossWpm?.(grossWpm);
     setAccuracy?.(accuracy);
     setFingerAccuracy?.(fingerAccuracy);
-  }, [test, testStart, userInput, mistakes, setWpm, setAccuracy, setFingerAccuracy]);
+  }, [
+    test,
+    testStart,
+    userInput,
+    setGrossWpm,
+    mistakes,
+    setNetWpm,
+    setAccuracy,
+    setFingerAccuracy,
+  ]);
 
   // Setup camera and key listeners. Runs once on mount
   useEffect(() => {
