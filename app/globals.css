@@ -5,6 +5,9 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --white: #f8fafc;
+  --gray: #333333;
+  --black: #000;
 }
 
 /*@media (prefers-color-scheme: dark) {*/
@@ -19,11 +22,18 @@ a {
   text-decoration: underline;
 }
 
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body {
   color: var(--foreground);
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
   min-height: 100vh;
+  overflow-x: hidden;
 }
 
 .blink {
@@ -31,8 +41,6 @@ body {
 }
 
 @keyframes blink {
-
-
   20% {
     opacity: 1;
   }
@@ -44,8 +52,72 @@ body {
   80% {
     opacity: 1;
   }
+}
 
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translate(var(--translate-x, 0), var(--translate-y, 0));
+  }
+  to {
+    opacity: 1;
+    transform: translate(0, 0);
+  }
+}
 
+.animate-fade-in {
+  opacity: 0;
+  animation: fade-in var(--duration, 0.7s) ease-out;
+  animation-delay: var(--delay, 0);
+  animation-fill-mode: forwards;
+}
 
+@keyframes key-bounce {
+  0%,
+  20%,
+  50% {
+    transform: translateY(0) rotateZ(var(--start-rotation, -8deg));
+  }
+  35% {
+    transform: translateY(var(--middle-translate, -5px)) rotateZ(var(--middle-rotation, 12deg));
+  }
+  65% {
+    transform: translateY(var(--end-translate, -2px)) rotateZ(var(--end-rotation, 2deg));
+  }
+  100% {
+    transform: translateY(0) rotateZ(var(--start-rotation, -8deg));
+  }
+}
 
+.animate-bounce {
+  animation: key-bounce var(--duration, 1s) infinite ease-in-out;
+  animation-delay: var(--delay, 500ms);
+}
+
+.h-page {
+  height: calc(100vh - 4.5rem);
+}
+
+main > canvas.p5Canvas {
+  display: none;
+}
+
+.pulse-red {
+  animation: pulse-red 5s infinite;
+}
+
+@keyframes pulse-red {
+  0% {
+    box-shadow: 0 0 5px 2px rgba(255, 0, 0);
+  }
+  50% {
+    box-shadow: 0 0 5px 4px rgba(255, 0, 0);
+  }
+  100% {
+    box-shadow: 0 0 5px 2px rgba(255, 0, 0);
+  }
+}
+
+.w-text {
+  max-width: 800px;
 }

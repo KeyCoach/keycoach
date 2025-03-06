@@ -1,31 +1,25 @@
-import Link from "next/link";
-import { H1, H3, Button } from "@/design-lib";
+import { Link } from "@/components/link";
+import { Button, H1, H3 } from "@/components";
+import { GetAllTests } from "@/service-interfaces/dynamo-db";
 
-export default function Test() {
+export default async function Test() {
+  const tests = await GetAllTests();
   return (
-    <div>
-      <H1>Typing Test</H1>
-      <br />
-      <H3>Select your test:</H3>
-      <div style={{ display: "flex", gap: "10px" }}>
-        <Link href="/typing/test/1">
-          <Button>Take Test 1</Button>
-        </Link>
-        <Link href="/typing/test/2">
-          <Button>Take Test 2</Button>
-        </Link>
-        <Link href="/typing/test/3">
-          <Button>Take Test 3</Button>
-        </Link>
-        <Link href="/typing/test/4">
-          <Button>Take Test 4</Button>
-        </Link>
+    <div className="h-page flex w-full items-center bg-white dark:bg-slate-950">
+      <div className="mx-auto max-w-3xl pb-24 text-center text-slate-900 dark:text-slate-50">
+        <H1 className="mb-10">Test Your Typing Speed!</H1>
+        <H3 className="mb-10 text-lg">
+          Test your speed and accuracy using our typing tests. Use your results to see how far a
+          proper typing method could take you! Choose an option below.
+        </H3>
+        <div className="flex flex-wrap justify-center gap-4">
+          {tests.map((test, i) => (
+            <Link key={test.id} className="no-underline" href={`/typing/test/${test.id}`}>
+              <Button colorTheme="cerulean">Take Test {i + 1}</Button>
+            </Link>
+          ))}
+        </div>
       </div>
-      {/* <br />
-      <br />
-      {/* <div>
-        <Link href="/typing/result/1">Get Test Feedback</Link>
-      </div> */}
     </div>
   );
 }

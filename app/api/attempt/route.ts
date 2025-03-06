@@ -1,59 +1,63 @@
-import { CreateTestAttempt, GetAttemptById } from "@/service-interfaces/dynamo-db";
-import { VerifyToken } from "@/service-interfaces/json-web-token";
-import { GetToken } from "@/utils/get-token";
+import { CreateTestAttempt, GetAttemptById, GetTestById } from "@/service-interfaces/dynamo-db";
+import { AuthenticateUser } from "@/utils/authenticate-user";
 import { NextRequest } from "next/server";
+import { BackendErrors } from "../errors";
+import { CalculateStats } from "@/utils/calculate-stats";
 
+/** Get attempt from DB. Reject if the attempt is associated with an account and creds don't match */
 export async function GET(request: NextRequest) {
   const attemptId = request.nextUrl.searchParams.get("attemptId");
+  const user = await AuthenticateUser();
+  const email = user?.email || null;
+
   if (!attemptId) {
-    return Response.json({ message: "attemptId is required" }, { status: 400 });
+    return Response.json(BackendErrors.MISSING_ARGUMENTS, { status: 422 });
   }
 
-  const token = await GetToken();
-  if (!token) {
-    return Response.json({ message: "Unauthorized" }, { status: 401 });
-  }
-
-  const user = VerifyToken(token);
-  if (!user) {
-    return Response.json({ message: "Unauthorized" }, { status: 401 });
-  }
-
-  const attempt = await GetAttemptById(attemptId);
+  const attempt = await GetAttemptById(attemptId, email);
   if (!attempt) {
-    return Response.json({ message: "Attempt not found" }, { status: 404 });
-  }
-
-  if (attempt.userId !== user.email) {
-    return Response.json({ message: "Unauthorized" }, { status: 401 });
+    return Response.json(BackendErrors.ENTITY_NOT_FOUND, { status: 404 });
   }
 
   return Response.json({ attempt });
 }
 
+/** Add attempt to DB. */
 export async function POST(request: NextRequest) {
-  const { userId, testId, accuracy, wpm } = await request.json();
-  if (!userId || !testId || !accuracy || !wpm) {
-    return Response.json(
-      { message: "userId, testId, accuracy, and wpm are required" },
-      { status: 400 },
-    );
+  const { cameraActivated, testId, correctChars, duration, mistakes, userInput } =
+    await request.json();
+  if (
+    !testId ||
+    !userInput ||
+    !mistakes ||
+    cameraActivated === undefined ||
+    correctChars === undefined ||
+    duration === undefined
+  ) {
+    return Response.json(BackendErrors.MISSING_ARGUMENTS, { status: 422 });
   }
 
-  const token = await GetToken();
-  if (!token) {
-    return Response.json({ message: "Unauthorized" }, { status: 401 });
+  const test = await GetTestById(testId);
+  if (!test) {
+    return Response.json(BackendErrors.ENTITY_NOT_FOUND, { status: 404 });
   }
 
-  const user = VerifyToken(token);
-  if (!user) {
-    return Response.json({ message: "Unauthorized" }, { status: 401 });
-  }
+  const { wpm, accuracy, fingerAccuracy } = CalculateStats(test, userInput, mistakes, duration);
 
-  if (userId !== user.email) {
-    return Response.json({ message: "Unauthorized" }, { status: 401 });
-  }
+  const user = await AuthenticateUser();
+  const email = user?.email || null;
 
-  await CreateTestAttempt(userId, testId, accuracy, wpm);
-  return Response.json({ message: "Success" }, { status: 200 });
+  const attempt = await CreateTestAttempt(
+    email,
+    testId,
+    accuracy,
+    wpm,
+    fingerAccuracy,
+    mistakes,
+    duration,
+    userInput,
+    cameraActivated,
+  );
+
+  return Response.json({ attemptId: attempt.id }, { status: 200 });
 }

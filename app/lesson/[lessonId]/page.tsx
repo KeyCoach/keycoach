@@ -1,15 +1,14 @@
-import Link from "next/link";
-import { H1 } from "@/design-lib";
+import { LessonContextProvider } from "./lesson-context";
+import { LessonFlow } from "./lesson-flow";
 
-export default async function Test({ params }: { params: Promise<{ lessonId: string }> }) {
-  const lessonId = (await params).lessonId;
+export default async function LessonPage({ params }: { params: Promise<{ lessonId: string }> }) {
+  const { lessonId } = await params;
+
   return (
-    <div>
-      <H1>Typing Lesson</H1>
-      <div>id: {lessonId}</div>
-      <div>
-        <Link href="/lesson">Back to Lesson Dashboard</Link>
-      </div>
+    <div className="">
+      <LessonContextProvider lessonId={lessonId}>
+        <LessonFlow />
+      </LessonContextProvider>
     </div>
   );
 }

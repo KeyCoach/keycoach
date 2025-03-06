@@ -27,6 +27,12 @@ npm run build
 npm start
 ```
 
+### Test Before Deployment
+
+```bash
+npm run test:deploy
+```
+
 ## Testing
 
 I haven't written any tests, but we're all set up to write them with jest when we want to. If you write some code that you think needs a test, put it in the `/test` directory. Make sure it follows the `**.test.ts` pattern. You can run the tests with:
