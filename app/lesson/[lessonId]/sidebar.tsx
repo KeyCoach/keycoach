@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useLessonContext } from "./lesson-context";
 
 export default function Sidebar() {
-  const { lessonPlan, currentStepIndex, lessonId } = useLessonContext();
+  const { goToStep, lessonPlan, currentStepIndex, lessonId } = useLessonContext();
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   const levels = lessonPlan.steps;
@@ -30,7 +30,8 @@ export default function Sidebar() {
           return (
             <li
               key={level.id}
-              className={`${isCollapsed && "text-center"} ${isLastLevel ? "rounded-lg" : ""} p-4 ${isCurrentLevel ? "bg-cerulean-600 font-bold text-slate-50 dark:bg-cerulean-300 dark:text-slate-950" : "hover:bg-gray-700 dark:bg-slate-900"} border border-slate-50 dark:border-slate-950`}
+              className={`${isCollapsed && "text-center"} ${isLastLevel ? "rounded-lg" : ""} p-4 ${isCurrentLevel ? "bg-cerulean-600 font-bold text-slate-50 dark:bg-cerulean-300 dark:text-slate-950" : "hover:bg-gray-700 cursor-pointer hover:bg-slate-700 dark:bg-slate-900"} border border-slate-50 dark:border-slate-950`}
+              onClick={() => goToStep(i)}
             >
               {i + 1}
               {!isCollapsed && ` - ${level.name}`}
