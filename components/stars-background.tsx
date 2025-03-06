@@ -22,8 +22,8 @@ export const Stars: React.FC<{ numDots: number }> = ({ numDots }) => {
         animationDelay: `${(Math.random() * 8).toFixed(2)}s`,
         width: `${starSize}px`,
         height: `${starSize}px`,
-        top: `${(Math.random() * 100).toFixed(2)}%`,
-        left: `${(Math.random() * 100).toFixed(2)}%`,
+        top: `${(Math.random() * 96 + 2).toFixed(2)}%`,
+        left: `${(Math.random() * 96 + 2).toFixed(2)}%`,
       };
     });
 

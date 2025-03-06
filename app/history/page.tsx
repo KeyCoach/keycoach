@@ -87,7 +87,7 @@ async function History({ user }: { user: TUser }) {
                       Accuracy
                     </p>
                     <p className="text-2xl font-bold text-cerulean-800 dark:text-cerulean-300">
-                      {(attempt.accuracy * 100).toFixed(1)}%
+                      {attempt.accuracy.toFixed(0)}%
                     </p>
                   </div>
                   <div className="px-3 text-center">
@@ -95,7 +95,7 @@ async function History({ user }: { user: TUser }) {
                       Finger Accuracy
                     </p>
                     <p className="text-2xl font-bold text-amber-800 dark:text-amber-300">
-                      {(attempt.fingerAccuracy * 100).toFixed(1)}%
+                      {attempt.fingerAccuracy.toFixed(0)}%
                     </p>
                   </div>
                 </div>

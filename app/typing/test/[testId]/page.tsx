@@ -48,6 +48,7 @@ export default function Test() {
       mistakes,
       cameraActivated,
     };
+    // TODO: figure out why it's sending this request a bunch of times. Maybe generate id on client side?
     axios.post("/api/attempt", body).then((res) => {
       router.push(`/typing/result/${res.data.attemptId}`);
     });

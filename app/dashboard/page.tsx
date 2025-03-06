@@ -30,8 +30,8 @@ export default async function Dashboard() {
         totalTests: acc.totalTests + 1,
         totalTime: acc.totalTime + attempt.duration,
         avgSpeed: acc.avgSpeed + attempt.wpm,
-        avgAcc: acc.avgAcc + attempt.accuracy * 100,
-        avgFingerAccuracy: acc.avgFingerAccuracy + attempt.fingerAccuracy * 100,
+        avgAcc: acc.avgAcc + attempt.accuracy,
+        avgFingerAccuracy: acc.avgFingerAccuracy + attempt.fingerAccuracy,
       };
     },
     { totalTests: 0, totalTime: 0, avgSpeed: 0, avgAcc: 0, avgFingerAccuracy: 0 },
@@ -189,14 +189,14 @@ export default async function Dashboard() {
                             </td>
                             <td className="py-3 text-slate-700 dark:text-slate-300">
                               {attempt.cameraActivated
-                                ? `${(attempt.fingerAccuracy * 100).toFixed(1)}%`
+                                ? `${attempt.fingerAccuracy.toFixed(0)}%`
                                 : "N/A"}
                             </td>
                             <td className="py-3 text-right font-medium text-slate-900 dark:text-slate-100">
                               {Math.round(attempt.wpm)}
                             </td>
                             <td className="py-3 text-right text-slate-700 dark:text-slate-300">
-                              {(attempt.accuracy * 100).toFixed(1)}%
+                              {attempt.accuracy.toFixed(0)}%
                             </td>
                           </tr>
                         ))}
