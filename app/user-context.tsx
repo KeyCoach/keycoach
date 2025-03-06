@@ -1,25 +1,17 @@
 "use client";
 import { createContext, useContext } from "react";
-
-export type TUser = {
-  email: string;
-  firstName: string;
-  lastName: string;
-};
+import { User } from "./lib/types";
 
 const UserContext = createContext({});
 
 export default function UserProvider({
   children,
-  data,
+  user,
 }: {
   children: React.ReactNode;
-  data: {
-    user: TUser | null;
-    loggedIn: boolean;
-  };
+  user: User | null;
 }) {
-  return <UserContext.Provider value={data}>{children}</UserContext.Provider>;
+  return <UserContext.Provider value={{ user }}>{children}</UserContext.Provider>;
 }
 
 export function useUser() {
