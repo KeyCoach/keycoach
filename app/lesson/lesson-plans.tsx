@@ -1,5 +1,6 @@
 import { LessonPlans } from "../lib/types";
 import { ConceptExplanation } from "./[lessonId]/steps/concept-explanation";
+import { ReminderExplanation } from "./[lessonId]/steps/reminder-explanation";
 import { LessonComplete } from "./[lessonId]/steps/lesson-complete";
 import { QuoteTest } from "./[lessonId]/steps/quote-test";
 import { TypingGame } from "./[lessonId]/steps/typing-game";
@@ -27,8 +28,8 @@ export const lessonPlans: LessonPlans = {
       },
       {
         id: "cfcaa52a-ab4a-48a6-b254-99a493ff89eb",
-        node: <ConceptExplanation />,
-        name: "Concept Explanation",
+        node: <ReminderExplanation />,
+        name: "Quick Reminder",
       },
       {
         id: "19ca01b4-bf0d-438f-bdaa-3ce663449294",

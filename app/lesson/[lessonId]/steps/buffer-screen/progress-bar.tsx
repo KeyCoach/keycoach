@@ -3,7 +3,7 @@ interface ProgressBarProps {
   currentLevel: number;
 }
 
-const ProgressBar: React.FC<ProgressBarProps> = ({ totalLevels = 9, currentLevel }) => {
+const ProgressBar: React.FC<ProgressBarProps> = ({ totalLevels = 7, currentLevel }) => {
   return (
     <div className="mt-4 flex w-full flex-col items-center justify-between shadow-md">
       {/* TODO: implement shadow-bottom-md, defined in tailwind.config.ts */}
@@ -11,7 +11,7 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ totalLevels = 9, currentLevel
         <h2 className="text-lg font-semibold">Lesson Progress</h2>
 
         <p className="text-md font-medium">
-          {currentLevel} / {totalLevels} Screens Completed
+          Part {currentLevel} of {totalLevels}
         </p>
       </div>
 
