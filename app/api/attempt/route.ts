@@ -3,6 +3,7 @@ import { AuthenticateUser } from "@/utils/authenticate-user";
 import { NextRequest } from "next/server";
 import { BackendErrors } from "../errors";
 import { Letter, Mistake } from "@/app/lib/types";
+import { CalculateStats } from "@/utils/calculate-stats";
 
 /** Get attempt from DB. Reject if the attempt is associated with an account and creds don't match */
 export async function GET(request: NextRequest) {
@@ -42,19 +43,7 @@ export async function POST(request: NextRequest) {
     return Response.json(BackendErrors.ENTITY_NOT_FOUND, { status: 404 });
   }
 
-  const wrongLetterMistakes = mistakes.filter(
-    (mistake: Mistake) => mistake.status === Letter.WrongLetter,
-  ).length;
-  const wrongFingerMistakes = mistakes.filter(
-    (mistake: Mistake) => mistake.status === Letter.WrongFinger,
-  ).length;
-
-  const accuracy = (test.charCount - wrongLetterMistakes) / test.charCount;
-  const fingerAccuracy = (test.charCount - wrongFingerMistakes) / test.charCount;
-
-  const words = (correctChars + test.wordCount) / 5;
-  const minutes = duration / 1000 / 60;
-  const wpm = words / minutes;
+  const { wpm, accuracy, fingerAccuracy } = CalculateStats(test, userInput, mistakes, duration);
 
   const user = await AuthenticateUser();
   const email = user?.email || null;

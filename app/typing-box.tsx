@@ -5,6 +5,7 @@ import { v4 as uuidv4 } from "uuid";
 import { normalKeys, UpdateFingerTechnique } from "@/app/hand-tracking";
 import { useHandTracking } from "@/app/hand-track-context";
 import axios from "axios";
+import { CalculateStats } from "@/utils/calculate-stats";
 
 export type OnTestCompleteCallback = (
   userInput: Word[],
@@ -18,14 +19,16 @@ export default function TypingBox({
   onTestComplete,
   setWpm,
   setAccuracy,
+  setFingerAccuracy,
 }: {
   test: Test;
   onTestComplete: OnTestCompleteCallback;
   setWpm?: React.Dispatch<React.SetStateAction<number>>;
   setAccuracy?: React.Dispatch<React.SetStateAction<number>>;
+  setFingerAccuracy?: React.Dispatch<React.SetStateAction<number>>;
 }) {
   const testId = test.id;
-  const { keyPositionsSet, modelReady, keyPositions, detectHands, cameraActivated } =
+  const { keyPositionsSet, settingUp, modelReady, keyPositions, detectHands, cameraActivated } =
     useHandTracking();
   const sentence = useMemo(() => test.textBody.split(" "), [test.textBody]);
 
@@ -87,26 +90,22 @@ export default function TypingBox({
   useEffect(() => {
     if (testStart === 0) return;
 
-    const totalChars = userInput.reduce(
-      (acc, word) => acc + word.inputs.filter((input) => input.status !== Letter.Missing).length,
-      0,
+    const { wpm, accuracy, fingerAccuracy } = CalculateStats(
+      test,
+      userInput,
+      mistakes,
+      Date.now() - testStart,
     );
-    const minutes = (Date.now() - testStart) / 60000;
-    const newWpm = Math.round(totalChars / 5 / minutes);
-    if (setWpm) setWpm(minutes > 0 ? newWpm : 0);
-    const totalAttempts = userInput.reduce(
-      (acc, word) => acc + word.inputs.filter((input) => input.status !== Letter.Missing).length,
-      0,
-    );
-    const newAccuracy =
-      totalAttempts > 0 ? ((totalAttempts - mistakes.length) / totalAttempts) * 100 : 100;
-    if (setAccuracy) setAccuracy(Math.round(newAccuracy * 10) / 10);
-  }, [testStart, userInput, mistakes, setWpm, setAccuracy]);
+    setWpm?.(wpm);
+    setAccuracy?.(accuracy);
+    setFingerAccuracy?.(fingerAccuracy);
+  }, [test, testStart, userInput, mistakes, setWpm, setAccuracy, setFingerAccuracy]);
 
   // Setup camera and key listeners. Runs once on mount
   useEffect(() => {
     if (!cameraSetup) {
       const keyPressListener = (e: KeyboardEvent) => {
+        if (settingUp) return;
         if (InvalidKey(e, keyPositions)) return;
         e.preventDefault();
         const id = uuidv4();
@@ -129,6 +128,7 @@ export default function TypingBox({
     }
 
     const keyPressListener = (e: KeyboardEvent) => {
+      if (settingUp) return;
       if (InvalidKey(e, keyPositions)) return;
       e.preventDefault();
       const id = uuidv4();
@@ -159,7 +159,7 @@ export default function TypingBox({
     return () => {
       window.removeEventListener("keydown", keyPressListener);
     };
-  }, [testStart, cameraSetup, keyPositions, onKeyPress, detectHands]);
+  }, [testStart, cameraSetup, keyPositions, onKeyPress, detectHands, settingUp]);
 
   useEffect(() => {
     if (testFinished) {
@@ -190,19 +190,19 @@ export default function TypingBox({
   }
 
   return (
-    <div className="relative h-fit max-w-5xl overflow-hidden rounded-lg bg-slate-200 dark:bg-slate-900">
+    <div className="relative h-fit max-w-7xl overflow-hidden rounded-lg bg-slate-200 dark:bg-slate-900">
       <div className="p-8">
         <div className="mb-6 flex justify-between text-sm text-slate-600 dark:text-slate-400">
           <span>Words: {sentence.length}</span>
-          <span>Author: {test.author}</span>
+          {test.author && <span>Author: {test.author}</span>}
         </div>
 
         <div className="mb-8 min-h-[200px] rounded-lg p-6 font-mono text-3xl leading-relaxed">
           <p className="whitespace-pre-wrap text-slate-900 dark:text-slate-50">
             {/*  words they have typed */}
             {userInput.map((word, i) => (
-              <>
-                <span key={i} className="inline-block">
+              <span key={i}>
+                <span className="inline-block">
                   {word.inputs.map((input, j) => {
                     const classes: Record<Letter, string> = {
                       [Letter.Correct]: "text-slate-900 dark:text-slate-50",
@@ -244,7 +244,7 @@ export default function TypingBox({
                     ))}
                 </span>
                 <span> </span>
-              </>
+              </span>
             ))}
 
             {/* the rest of the sentence */}
@@ -259,9 +259,11 @@ export default function TypingBox({
           </p>
         </div>
 
-        <div className="text-right text-sm italic text-slate-600 dark:text-slate-400">
-          <p>From "{test.src}"</p>
-        </div>
+        {test.src && (
+          <div className="text-right text-sm italic text-slate-600 dark:text-slate-400">
+            <p>From "{test.src}"</p>
+          </div>
+        )}
       </div>
     </div>
   );

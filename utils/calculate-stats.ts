@@ -6,6 +6,9 @@ export function CalculateStats(
   mistakes: Mistake[],
   duration: number,
 ): Stat {
+  if (userInput.length < 3) {
+    return { wpm: 0, accuracy: 0, fingerAccuracy: 0 };
+  }
   const correctChars = userInput.reduce((acc, word) => {
     return acc + word.inputs.filter((input) => input.status === Letter.Correct).length;
   }, 0);
@@ -20,11 +23,11 @@ export function CalculateStats(
   const accuracy = ((test.charCount - wrongLetterMistakes) / test.charCount) * 100;
   const fingerAccuracy = ((test.charCount - wrongFingerMistakes) / test.charCount) * 100;
 
-  const words = (correctChars + test.wordCount) / 5;
+  const words = (correctChars + userInput.length) / 5;
   const minutes = duration / 1000 / 60;
   const wpm = words / minutes;
 
-  console.log({ wpm, accuracy, fingerAccuracy });
+  console.log(wpm, accuracy, fingerAccuracy);
 
   return { wpm, accuracy, fingerAccuracy };
 }
