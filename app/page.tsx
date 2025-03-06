@@ -59,13 +59,13 @@ const TypingEffect: FC<TypingEffectProps> = ({ titles }) => {
 export default function Home(): React.ReactNode {
   const numDots = useMemo(() => Math.floor(Math.random() * 25) + 45, []);
 
-  const homePageTitle = "Learn to Type with KeyCoach!";
+  const homePageTitle = "Learn to type with KeyCoach!";
   const alternateTitles = [
-    "Type Faster with KeyCoach!",
-    "Improve Your Technique with KeyCoach!",
+    "Type faster with KeyCoach!",
+    "Improve your technique with KeyCoach!",
     "Improve your WPM with KeyCoach!",
-    "Impress Your Friends with KeyCoach!",
-    "Master Keyboard Skills with KeyCoach!",
+    "Impress your friends with KeyCoach!",
+    "Master keyboard skills with KeyCoach!",
   ];
 
   const allTitles = [homePageTitle, ...alternateTitles];
