@@ -2,6 +2,7 @@
 
 import { Link } from "@/components/link";
 import { Card, H1, H3 } from "@/components";
+import { lessonPlans } from "./lesson-plans";
 
 const lessons = ["a", "s", "d", "f", "g", "h", "j", "k", "l"];
 
@@ -14,17 +15,21 @@ export default function LessonDashboard() {
           Choose from our typing lessons below to improve your skills:
         </H3>
         <div className="grid grid-cols-1 gap-4 px-4 sm:grid-cols-2 lg:grid-cols-4">
-          {lessons.map((lesson) => (
-            <Link key={lesson} className="text-slate-900 no-underline" href={`/lesson/${lesson}`}>
-              <Card
-                title={`Lesson ${lesson}`}
-                subtitle={`Learn essential typing skills about the ${lesson} key`}
-                badgeIcon="remove"
-                badgeTheme="amber"
-                buttonText="Start Lesson"
-              />
-            </Link>
-          ))}
+          {lessons.map((lesson) => {
+            const lessonPlan = lessonPlans[lesson];
+            const link = lessonPlan ? `/lesson/${lesson}` : "/lesson";
+            return (
+              <Link key={lesson} className="text-slate-900 no-underline" href={link}>
+                <Card
+                  title={`Lesson ${lesson}`}
+                  subtitle={`Learn essential typing skills about the ${lesson} key`}
+                  badgeIcon="remove"
+                  badgeTheme="amber"
+                  buttonText="Start Lesson"
+                />
+              </Link>
+            );
+          })}
         </div>
       </div>
     </div>
