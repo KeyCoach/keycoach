@@ -2,6 +2,7 @@
 import { LessonContextType, LessonStats, Stat } from "@/app/lib/types";
 import { createContext, useContext, useState } from "react";
 import { lessonPlans } from "../lesson-plans";
+import { useHandTracking } from "@/app/hand-track-context";
 
 const LessonContext = createContext({});
 export function useLessonContext() {
@@ -19,6 +20,7 @@ export function LessonContextProvider({
   children: React.ReactNode;
   lessonId: string;
 }) {
+  const { cameraActivated } = useHandTracking();
   const [currentStepIndex, setLessonStep] = useState(0);
   const [stats, setStats] = useState<LessonStats>({});
   const lessonPlan = lessonPlans[lessonId];
@@ -35,7 +37,7 @@ export function LessonContextProvider({
   function addStat(stepId: string, newStats: Stat) {
     setStats((prevStats) => ({
       ...prevStats,
-      [stepId]: newStats,
+      [stepId]: { ...newStats, cameraActivated },
     }));
   }
   function resetStats() {

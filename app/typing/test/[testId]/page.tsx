@@ -64,14 +64,14 @@ export default function Test() {
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <div className="flex-1 rounded-lg bg-green-200 p-4 text-center shadow-md dark:bg-green-800">
             <h2 className="text-lg font-semibold text-green-700 dark:text-green-300">WPM</h2>
-            <p className="text-2xl font-bold text-green-800 dark:text-green-200">{wpm}</p>
+            <p className="text-2xl font-bold text-green-800 dark:text-green-200">{wpm.toFixed()}</p>
           </div>
           <div className="flex-1 rounded-lg bg-cerulean-200 p-4 text-center shadow-md dark:bg-cerulean-800">
             <h2 className="text-lg font-semibold text-cerulean-700 dark:text-cerulean-300">
               Accuracy
             </h2>
             <p className="text-2xl font-bold text-cerulean-800 dark:text-cerulean-200">
-              {accuracy}%
+              {accuracy.toFixed()}%
             </p>
           </div>
         </div>

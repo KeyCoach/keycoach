@@ -50,7 +50,7 @@ function Attempt({ attempt }: { attempt: Attempt }) {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 pb-16">
       {/* Main Stats Card */}
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
         <div className="rounded-xl bg-green-200 p-6 shadow-lg dark:bg-green-800">
@@ -64,7 +64,7 @@ function Attempt({ attempt }: { attempt: Attempt }) {
             Accuracy
           </h2>
           <p className="text-4xl font-bold text-cerulean-800 dark:text-cerulean-200">
-            {(attempt.accuracy * 100).toFixed(1)}%
+            {attempt.accuracy.toFixed(0)}%
           </p>
         </div>
         <div className="rounded-xl bg-amber-200 p-6 shadow-lg dark:bg-amber-800">
@@ -73,7 +73,7 @@ function Attempt({ attempt }: { attempt: Attempt }) {
           </h2>
           {attempt.cameraActivated ? (
             <p className="text-4xl font-bold text-amber-800 dark:text-amber-200">
-              {(attempt.fingerAccuracy * 100).toFixed(1)}%
+              {attempt.fingerAccuracy.toFixed(0)}%
             </p>
           ) : (
             <p className="text-4xl font-bold text-amber-800 dark:text-amber-200">N/A</p>
@@ -125,4 +125,3 @@ function Attempt({ attempt }: { attempt: Attempt }) {
     </div>
   );
 }
-

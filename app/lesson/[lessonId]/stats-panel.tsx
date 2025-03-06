@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Icon } from "@/components/icon";
 import { useLessonContext } from "./lesson-context";
+import { useHandTracking } from "@/app/hand-track-context";
 
 function formatNumber(num: number, percentage = false) {
   if (Number.isNaN(num)) return "-";
@@ -10,11 +11,12 @@ function formatNumber(num: number, percentage = false) {
 }
 
 export default function StatsPanel() {
-  const [isExpanded, setIsExpanded] = useState(true);
-  const { avgWpm, avgFingerAcc, avgAcc } = useLessonContext();
+  const { avgWpm, avgFingerAcc, avgAcc, stats } = useLessonContext();
+  const [isExpanded, setIsExpanded] = useState(Object.keys(stats).length > 0);
   const wpm = formatNumber(avgWpm);
   const fingerAcc = formatNumber(avgFingerAcc, true);
   const acc = formatNumber(avgAcc, true);
+  const { cameraActivated } = useHandTracking();
 
   return (
     <section className="w-contain max-w-md flex-1 -translate-y-3/4 text-nowrap rounded-lg border border-slate-950 bg-slate-100 p-4 text-slate-950 shadow-md shadow-slate-200 dark:bg-slate-800 dark:text-slate-50 dark:shadow-slate-600">
@@ -46,7 +48,9 @@ export default function StatsPanel() {
             </div>
             <div className="mb-2">
               <p className="text-gray-700">Finger Accuracy:</p>
-              <p className="text-gray-900 text-2xl font-bold">{fingerAcc}</p>
+              <p className="text-gray-900 text-2xl font-bold">
+                {cameraActivated ? fingerAcc : "-"}
+              </p>
             </div>
           </div>
         )}

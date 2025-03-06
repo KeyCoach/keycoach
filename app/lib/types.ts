@@ -3,8 +3,8 @@ import { RefObject } from "react";
 
 export type Test = {
   id: string;
-  src: string;
-  author: string;
+  src: string | null;
+  author: string | null;
   textBody: string;
   charCount: number;
   wordCount: number;
@@ -57,7 +57,7 @@ export type Attempt = DbAttempt & {
 };
 
 export type LessonStats = {
-  [stepId: string]: Stat;
+  [stepId: string]: Stat & { cameraActivated: boolean };
 };
 
 export type Stat = {
