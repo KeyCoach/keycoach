@@ -1,8 +1,9 @@
 "use client";
+import { LoadingPage } from "@/components";
 import dynamic from "next/dynamic";
 
 const TypeInvader = dynamic(() => import("@/components/type-invader/TypeInvader"), {
-  loading: () => <p>Loading...</p>,
+  loading: () => <LoadingPage />,
   ssr: false,
 });
 

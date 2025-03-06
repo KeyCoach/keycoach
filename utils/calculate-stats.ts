@@ -13,6 +13,7 @@ export function CalculateStats(
     return acc + word.inputs.filter((input) => input.status === Letter.Correct).length;
   }, 0);
 
+  // BUG: this does not properly take missing words into account
   const wrongLetterMistakes = mistakes.filter(
     (mistake: Mistake) => mistake.status === Letter.WrongLetter,
   ).length;
