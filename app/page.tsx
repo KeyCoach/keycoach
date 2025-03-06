@@ -4,22 +4,30 @@ import { Button } from "@/components";
 import Image from "next/image";
 
 export default function Home() {
+  const numDots = Math.floor(Math.random() * 25) + 45;
   return (
     <div className="h-page relative bg-gradient-to-b from-cerulean-800 to-cerulean-500">
       {/* Stars */}
+
       <div className="pointer-events-none absolute inset-0">
-        {Array.from({ length: 30 }).map((_, i) => (
-          <div
-            key={i}
-            className="absolute rounded-full bg-white opacity-80"
-            style={{
-              width: `${Math.random() * 4 + 2}px`,
-              height: `${Math.random() * 4 + 2}px`,
-              top: `${Math.random() * 100}%`,
-              left: `${Math.random() * 100}%`,
-            }}
-          ></div>
-        ))}
+        {Array.from({ length: numDots }).map((_, i) => {
+          const starSize = (Math.random() * 4 + 2).toFixed(2);
+
+          return (
+            <div
+              key={i}
+              className={`blink absolute animate-pulse rounded-full bg-white opacity-80`}
+              style={{
+                animationDuration: `${(Math.random() * 2 + 1).toFixed(2)}s`,
+                animationDelay: `${(Math.random() * 8).toFixed(2)}s`,
+                width: `${starSize}px`,
+                height: `${starSize}px`,
+                top: `${(Math.random() * 100).toFixed(2)}%`,
+                left: `${(Math.random() * 100).toFixed(2)}%`,
+              }}
+            ></div>
+          );
+        })}
       </div>
 
       {/* Content */}
@@ -32,23 +40,23 @@ export default function Home() {
 
           <div className="space-y-8">
             <div className="flex justify-center space-x-8">
-              <Button colorTheme="ceruleanLight">
-                <Link className="block w-40 text-slate-50 no-underline" href="/typing/test">
+              <Link className="text-slate-50 no-underline" href="/typing/test">
+                <Button className="w-56" colorTheme="ceruleanLight">
                   Test my Speed
-                </Link>
-              </Button>
+                </Button>
+              </Link>
 
-              <Button colorTheme="ceruleanLight">
-                <Link className="block w-40 text-slate-50 no-underline" href="/lesson">
+              <Link className="text-slate-50 no-underline" href="/lesson">
+                <Button className="w-56" colorTheme="ceruleanLight">
                   Try a Lesson
-                </Link>
-              </Button>
+                </Button>
+              </Link>
 
-              <Button colorTheme="ceruleanLight">
-                <Link className="block w-40 text-slate-50 no-underline" href="/type-invader">
+              <Link className="text-slate-50 no-underline" href="/type-invader">
+                <Button className="w-56" colorTheme="ceruleanLight">
                   Play Type Invaders
-                </Link>
-              </Button>
+                </Button>
+              </Link>
             </div>
           </div>
         </div>
