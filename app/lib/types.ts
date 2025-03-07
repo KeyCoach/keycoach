@@ -13,8 +13,7 @@ export type Test = {
 
 export enum Letter {
   Correct = "Correct",
-  WrongLetter = "WrongLetter",
-  WrongFinger = "WrongFinger",
+  Wrong = "Wrong",
   Missing = "Missing",
 }
 
@@ -23,6 +22,7 @@ export type Word = {
   inputs: {
     key: string;
     id: string;
+    correctFinger: boolean | null;
     status: Letter;
     time: number;
   }[];
@@ -73,6 +73,7 @@ export type User = {
   email: string;
   fname: string;
   lname: string;
+  wpmGoal?: number;
 };
 
 export type DbUser = User & {
@@ -164,10 +165,16 @@ export type HandTrackContextType = {
 
 export type handposeCallback = (callback: (hands: Hands) => void) => void;
 
+export enum MistakeType {
+  Wrong = "Wrong",
+  Missing = "Missing",
+  Technique = "Technique",
+}
+
 export type Mistake = {
   key: string;
   time: number;
-  status: Letter;
+  type: MistakeType;
 };
 
 export type LessonPlans = {
@@ -183,4 +190,9 @@ export type Step = {
 
 export type LessonPlan = {
   steps: Step[];
+};
+
+export type UserContextType = {
+  user: User | null;
+  setUser: React.Dispatch<React.SetStateAction<User | null>>;
 };

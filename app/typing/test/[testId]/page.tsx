@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import TypingBox, { OnTestCompleteCallback } from "@/app/typing-box";
 import { useParams, useRouter } from "next/navigation";
-import { Letter, Mistake, Word, type Test } from "@/app/lib/types";
+import { Mistake, Word, type Test } from "@/app/lib/types";
 import axios from "axios";
 import { Button, LoadingPage } from "@/components";
 import { useHandTracking } from "@/app/hand-track-context";

@@ -1,4 +1,4 @@
-import { Mistake, Word, Stat, Letter } from "@/app/lib/types";
+import { Mistake, Word, Stat, Letter, MistakeType } from "@/app/lib/types";
 
 export function CalculateStats(userInput: Word[], mistakes: Mistake[], duration: number): Stat {
   if (userInput.length < 3) {
@@ -7,7 +7,7 @@ export function CalculateStats(userInput: Word[], mistakes: Mistake[], duration:
   const minutes = duration / 1000 / 60;
   const numSpaces = userInput.filter((word) => word.inputs.length > 0).length - 1;
 
-  const typedChars = userInput.reduce((acc, word) => {
+  const totalTypedLetters = userInput.reduce((acc, word) => {
     return acc + word.inputs.length;
   }, 0);
 
@@ -15,30 +15,28 @@ export function CalculateStats(userInput: Word[], mistakes: Mistake[], duration:
     return (
       acc +
       word.inputs.filter(
-        (input) => input.status === Letter.Correct || input.status === Letter.WrongFinger,
+        (input) => input.status === Letter.Correct || input.status === Letter.Wrong,
       ).length
     );
   }, 0);
-
-  const wrongLetters = mistakes.filter(
-    (mistake: Mistake) => mistake.status === Letter.WrongLetter,
-  ).length;
 
   const missingLetters = userInput.reduce((acc, word) => {
     return acc + word.inputs.filter((input) => input.status === Letter.Missing).length;
   }, 0);
 
-  const wrongFingerMistakes = mistakes.filter(
-    (mistake: Mistake) => mistake.status === Letter.WrongFinger,
+  const wrongLetters = mistakes.filter(
+    (mistake: Mistake) => mistake.type === MistakeType.Wrong,
   ).length;
 
-  // TODO: add gross wpm to stats
-  // TODO: change Letter.WrongFinger to a flag instead of being in the enum
+  const wrongFingerLetters = mistakes.filter(
+    (mistake: Mistake) => mistake.type === MistakeType.Technique,
+  ).length;
+
   const letterMistakes = wrongLetters + missingLetters;
-  const grossWpm = (typedChars + numSpaces) / 5 / minutes;
+  const grossWpm = (totalTypedLetters + numSpaces) / 5 / minutes;
   const netWpm = (correctChars + numSpaces) / 5 / minutes;
-  const accuracy = ((typedChars - letterMistakes) / typedChars) * 100;
-  const fingerAccuracy = ((correctChars - wrongFingerMistakes) / typedChars) * 100;
+  const accuracy = ((totalTypedLetters - letterMistakes) / totalTypedLetters) * 100;
+  const fingerAccuracy = ((correctChars - wrongFingerLetters) / totalTypedLetters) * 100;
 
   return {
     netWpm,
