@@ -2,7 +2,7 @@ import { Link } from "@/components/link";
 import { H1 } from "@/components";
 import { Button } from "@/components";
 import { GetAttemptById } from "@/service-interfaces/dynamo-db";
-import { AuthenticateUser } from "@/utils/authenticate-user";
+import { AuthenticateUser } from "@/app/actions";
 import { type Attempt } from "@/app/lib/types";
 import { FingerPlacementAnalysis } from "@/components/finger-analysis";
 
@@ -18,16 +18,14 @@ export default async function TestResult({ params }: { params: Promise<{ attempt
         <H1 className="mb-6 text-slate-900 dark:text-slate-50">Typing Results</H1>
 
         <div className="mb-8 flex gap-4">
-          <Button colorTheme="cerulean" variant="previous-nav">
-            <Link className="block w-40 text-slate-50 no-underline" href="/typing/test">
+          <Link className="text-slate-50 no-underline" href="/typing/test">
+            <Button colorTheme="cerulean" variant="previous-nav">
               Take another Test
-            </Link>
-          </Button>
-          <Button colorTheme="cerulean">
-            <Link className="block w-40 text-slate-50 no-underline" href="/lesson">
-              Continue Learning
-            </Link>
-          </Button>
+            </Button>
+          </Link>
+          <Link className="text-slate-50 no-underline" href="/lesson">
+            <Button colorTheme="cerulean">Continue Learning</Button>
+          </Link>
         </div>
 
         {attempt ? <Attempt attempt={attempt} /> : <p>No test found</p>}

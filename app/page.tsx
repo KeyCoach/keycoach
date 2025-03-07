@@ -71,7 +71,7 @@ export default function Home(): React.ReactNode {
   const allTitles = [homePageTitle, ...alternateTitles];
 
   return (
-    <div className="h-page relative -z-50 bg-gradient-to-b from-cerulean-800 to-cerulean-500">
+    <div className="h-page relative bg-gradient-to-b from-cerulean-800 to-cerulean-500">
       {/* Content */}
       <Stars numDots={numDots} />
       <div className="relative z-10 flex flex-col items-center px-4 pt-52 text-center">

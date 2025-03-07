@@ -8,5 +8,9 @@ const TypeInvader = dynamic(() => import("@/components/type-invader/TypeInvader"
 });
 
 export default function TypeInvaderWrapper() {
-  return <TypeInvader />;
+  return (
+    <div className="relative">
+      <TypeInvader />;
+    </div>
+  );
 }

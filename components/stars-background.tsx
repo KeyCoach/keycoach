@@ -31,11 +31,11 @@ export function Stars({ numDots }: { numDots: number }) {
   }, [numDots]);
 
   return (
-    <div className="pointer-events-none absolute inset-0">
+    <div id="stars" className="z-0">
       {stars.map((style, i) => (
         <div
           key={i}
-          className="blink absolute -z-10 animate-pulse rounded-full bg-white opacity-80"
+          className="blink absolute animate-pulse rounded-full bg-white opacity-80"
           style={style}
         />
       ))}
