@@ -1,16 +1,9 @@
 name: Unit Tests
 
 on:
-  pull_request:
-    branches:
-      - main
-      - staging
-      - production
   push:
     branches:
       - main
-      - staging
-      - production
 
 jobs:
   unit_tests:
