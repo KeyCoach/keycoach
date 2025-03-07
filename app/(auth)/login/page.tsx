@@ -73,6 +73,7 @@ export default function Login() {
                 autoComplete="email"
                 placeholder="example@email.com"
                 required
+                autoFocus
               />
             </div>
             <div className="mb-4">

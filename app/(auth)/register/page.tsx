@@ -77,6 +77,7 @@ export default function Register() {
                 name="first-name"
                 placeholder="John"
                 autoComplete="given-name"
+                autoFocus
                 required
               />
             </div>
