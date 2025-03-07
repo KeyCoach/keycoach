@@ -1,6 +1,6 @@
 "use client";
 
-import { HasPasswordError } from "@/app/(auth)/register/page";
+import { HasPasswordError } from "@/utils/has-password-error";
 import { useUser } from "@/app/user-context";
 import { Button, LoadingOverlay, Modal, TextInput } from "@/components";
 import axios from "axios";

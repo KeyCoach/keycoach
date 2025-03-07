@@ -5,6 +5,7 @@ import { Button, H1, LoadingOverlay, TextInput } from "@/components";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useUser } from "@/app/user-context";
+import { HasPasswordError } from "@/utils/has-password-error";
 
 export default function Register() {
   const [loading, setLoading] = useState(false);
@@ -133,23 +134,4 @@ export default function Register() {
       </div>
     </div>
   );
-}
-
-export function HasPasswordError(password: string) {
-  if (!password) {
-    return "Password is required.";
-  }
-  if (password.length < 8) {
-    return "Password must be at least 8 characters long.";
-  }
-  // if (!/[a-z]/.test(password)) {
-  //   return "Password must contain at least one lowercase letter.";
-  // }
-  // if (!/[A-Z]/.test(password)) {
-  //   return "Password must contain at least one uppercase letter.";
-  // }
-  // if (!/[0-9]/.test(password)) {
-  //   return "Password must contain at least one number.";
-  // }
-  return "";
 }
