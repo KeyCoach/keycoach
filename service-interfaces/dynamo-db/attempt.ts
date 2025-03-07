@@ -1,14 +1,13 @@
 import { Attempt, DbAttempt, Mistake, Word } from "@/app/lib/types";
-import { v4 as uuidv4 } from "uuid";
 import { dynamo, ATTEMPT_TABLE_NAME } from "./client";
-import { GetCommand, PutCommand, QueryCommand } from "@aws-sdk/lib-dynamodb";
+import { BatchWriteCommand, GetCommand, PutCommand, QueryCommand } from "@aws-sdk/lib-dynamodb";
 import { GetTestById } from "./test";
 
 /** Gets attempt from DB by id. Returns null if there is no result */
 export async function GetAttemptById(
   id: string,
   email: string | null = "unknown",
-): Promise<Attempt | null> {
+): Promise<Attempt | false> {
   const getCommand = new GetCommand({
     TableName: ATTEMPT_TABLE_NAME,
     Key: {
@@ -23,13 +22,12 @@ export async function GetAttemptById(
       if (!res.Item) return null;
       return res.Item as DbAttempt;
     })
-
     .catch((err) => {
       console.error(err);
       return null;
     });
 
-  if (!item) return null;
+  if (!item) return false;
 
   return HydrateAttempt(item);
 }
@@ -47,7 +45,7 @@ export async function CreateTestAttempt(
   duration: number,
   userInput: Word[],
   cameraActivated: boolean,
-): Promise<DbAttempt> {
+): Promise<DbAttempt | false> {
   const attempt: DbAttempt = {
     id: attemptId,
     email: email ?? "unknown",
@@ -68,13 +66,19 @@ export async function CreateTestAttempt(
     Item: attempt,
   });
 
-  await dynamo.send(putCommand);
-
-  return attempt;
+  return await dynamo
+    .send(putCommand)
+    .then(() => {
+      return attempt;
+    })
+    .catch((err) => {
+      console.error(err);
+      return false;
+    });
 }
 
 /** Gets all test attempts from DB by email. */
-export async function GetAttemptsByEmail(email: string): Promise<Attempt[] | null> {
+export async function GetAttemptsByEmail(email: string): Promise<Attempt[] | false> {
   const query = new QueryCommand({
     TableName: ATTEMPT_TABLE_NAME,
     KeyConditionExpression: "email = :email",
@@ -85,7 +89,7 @@ export async function GetAttemptsByEmail(email: string): Promise<Attempt[] | nul
 
   const res = await dynamo.send(query);
 
-  if (!res?.Items) return null;
+  if (!res?.Items) return false;
   const attempts = res.Items as DbAttempt[];
 
   return HydrateAttempts(attempts);
@@ -122,4 +126,43 @@ async function HydrateAttempt(attempt: DbAttempt): Promise<Attempt> {
     ...attempt,
     test: test!,
   };
+}
+
+export async function DeleteUserAttempts(email: string): Promise<boolean> {
+  const query = new QueryCommand({
+    TableName: ATTEMPT_TABLE_NAME,
+    KeyConditionExpression: "email = :email",
+    ExpressionAttributeValues: {
+      ":email": email,
+    },
+    ProjectionExpression: "id",
+  });
+
+  const res = await dynamo.send(query);
+
+  if (!res?.Items) return false;
+
+  const attempts = res.Items as { id: string }[];
+
+  const deleteRequests = attempts.map((attempt) => ({
+    DeleteRequest: { Key: { id: attempt.id, email } },
+  }));
+
+  while (deleteRequests.length > 0) {
+    const res = await dynamo
+      .send(
+        new BatchWriteCommand({
+          RequestItems: {
+            [ATTEMPT_TABLE_NAME]: deleteRequests.splice(0, 25),
+          },
+        }),
+      )
+      .catch((err) => {
+        console.error(err);
+        return false;
+      });
+    if (!res) return false;
+  }
+
+  return true;
 }

@@ -2,10 +2,13 @@
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 import { Link } from "@/components/link";
+import { useUser } from "./user-context";
 
 export function LogoutButton() {
+  const { setUser } = useUser();
   function removeCookie(e: React.MouseEvent<HTMLAnchorElement>) {
     e.preventDefault();
+    setUser(null);
     Cookies.remove("token");
     window.location.href = "/login"; // Use window.location.href because it rerenders the entire tree.
   }

@@ -1,5 +1,5 @@
 import { CreateTestAttempt, GetAttemptById, GetTestById } from "@/service-interfaces/dynamo-db";
-import { AuthenticateUser } from "@/utils/authenticate-user";
+import { AuthenticateUser } from "@/app/actions";
 import { NextRequest } from "next/server";
 import { BackendErrors } from "../errors";
 import { CalculateStats } from "@/utils/calculate-stats";
@@ -64,6 +64,10 @@ export async function POST(request: NextRequest) {
     userInput,
     cameraActivated,
   );
+
+  if (!attempt) {
+    return Response.json(BackendErrors.SERVER_ERROR, { status: 500 });
+  }
 
   return Response.json({ attemptId: attempt.id }, { status: 200 });
 }

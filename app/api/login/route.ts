@@ -4,6 +4,7 @@ import { GetUserByEmail } from "@/service-interfaces/dynamo-db";
 import { CreateUserToken } from "@/service-interfaces/json-web-token";
 import { NextRequest } from "next/server";
 import { BackendErrors } from "../errors";
+import { cookies } from "next/headers";
 
 /** Login a user. */
 export async function POST(request: NextRequest) {
@@ -21,7 +22,9 @@ export async function POST(request: NextRequest) {
 
   const token = CreateUserToken(user);
 
-  return Response.json({ message: "Success", token }, { status: 200 });
+  (await cookies()).set("token", token, { httpOnly: true });
+
+  return Response.json({ message: "Success", user }, { status: 200 });
 }
 
 /** Validate the login credentials. Return the user if valid */
@@ -36,10 +39,7 @@ async function LoginValid(email: string, password: string): Promise<User | null>
     return null;
   }
 
-  return {
-    id: dbUser.id,
-    fname: dbUser.fname,
-    lname: dbUser.lname,
-    email: dbUser.email,
-  };
+  const { passwordHash, ...user } = dbUser;
+
+  return user;
 }
