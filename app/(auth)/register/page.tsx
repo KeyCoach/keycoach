@@ -1,13 +1,17 @@
 "use client";
 import axios from "axios";
 import { Link } from "@/components/link";
-import Cookies from "js-cookie";
 import { Button, H1, LoadingOverlay, TextInput } from "@/components";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useUser } from "@/app/user-context";
+import { HasPasswordError } from "@/utils/has-password-error";
 
 export default function Register() {
   const [loading, setLoading] = useState(false);
+  const { setUser } = useUser();
   const [error, setError] = useState("");
+  const router = useRouter();
   async function HandleRegister(e: any) {
     e.preventDefault();
     const formData = new FormData(e.target);
@@ -35,8 +39,8 @@ export default function Register() {
     axios
       .post("/api/register", body)
       .then((res) => {
-        Cookies.set("token", res.data.token);
-        window.location.href = "/dashboard"; // Use window.location.href instead of router because it rerenders the entire tree. This time with the user data available to all components.
+        setUser(res.data.user);
+        router.push("/dashboard");
       })
       .catch((err) => {
         if (err.response.status === 401) {
@@ -59,11 +63,8 @@ export default function Register() {
         <div className="rounded-xl bg-slate-50 p-8 shadow dark:bg-slate-800">
           <H1 className="mb-3 text-slate-900 dark:text-slate-50">Welcome to KeyCoach!</H1>
           <div className="mb-6 text-slate-600 dark:text-slate-400">
-            <Link
-              href="/login"
-              className="text-cerulean-600 hover:underline dark:text-cerulean-400"
-            >
-              Already have an account? Sign in
+            <Link href="/login" className="text-cerulean-600 underline dark:text-cerulean-400">
+              Already have an account? Sign in.
             </Link>
           </div>
 
@@ -133,23 +134,4 @@ export default function Register() {
       </div>
     </div>
   );
-}
-
-function HasPasswordError(password: string) {
-  if (!password) {
-    return "Password is required.";
-  }
-  if (password.length < 8) {
-    return "Password must be at least 8 characters long.";
-  }
-  // if (!/[a-z]/.test(password)) {
-  //   return "Password must contain at least one lowercase letter.";
-  // }
-  // if (!/[A-Z]/.test(password)) {
-  //   return "Password must contain at least one uppercase letter.";
-  // }
-  // if (!/[0-9]/.test(password)) {
-  //   return "Password must contain at least one number.";
-  // }
-  return "";
 }

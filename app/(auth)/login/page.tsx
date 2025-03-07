@@ -1,15 +1,17 @@
 "use client";
 import axios from "axios";
 import { Link } from "@/components/link";
-import Cookies from "js-cookie";
-import { H1, TextInput, Button, LoadingOverlay, Modal } from "@/components";
-import { useSearchParams } from "next/navigation";
+import { H1, TextInput, Button, LoadingOverlay } from "@/components";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
+import { useUser } from "@/app/user-context";
 
 export default function Login() {
   const params = useSearchParams();
+  const { setUser } = useUser();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const router = useRouter();
 
   async function HandleLogin(e: any) {
     e.preventDefault();
@@ -25,14 +27,12 @@ export default function Login() {
     axios
       .post("/api/login", body)
       .then((res) => {
-        console.log(res.data);
-        Cookies.set("token", res.data.token);
         const redirect = params.get("redirect");
-
+        setUser(res.data.user);
         if (redirect) {
-          window.location.href = redirect;
+          router.push(redirect);
         } else {
-          window.location.href = "/dashboard"; // Use window.location.href instead of router because it rerenders the entire tree. This time with the user data available to all components.
+          router.push("/dashboard");
         }
       })
       .catch((err) => {
@@ -58,10 +58,7 @@ export default function Login() {
         <div className="rounded-xl bg-slate-50 p-8 shadow dark:bg-slate-800">
           <H1 className="mb-3 text-slate-900 dark:text-slate-50">Welcome Back!</H1>
           <div className="mb-6 text-slate-600 dark:text-slate-400">
-            <Link
-              href="/register"
-              className="text-cerulean-600 hover:underline dark:text-cerulean-400"
-            >
+            <Link href="/register" className="text-cerulean-600 dark:text-cerulean-400">
               New to KeyCoach? Sign Up.
             </Link>
           </div>

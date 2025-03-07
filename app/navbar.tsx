@@ -1,13 +1,14 @@
+"use client";
 import { Link } from "@/components/link";
 import Image from "next/image";
 import { LoginButton, LogoutButton } from "./nav-buttons";
-import { AuthenticateUser } from "@/utils/authenticate-user";
-import { retrievePathName } from "@/utils/path-name";
+import { useUser } from "./user-context";
+import { usePathname } from "next/navigation";
 
-export async function Navbar() {
-  const user = await AuthenticateUser();
-  const pathname = retrievePathName();
-  const isHomePage = (await pathname) === "/";
+export function Navbar() {
+  const { user } = useUser();
+  const pathName = usePathname();
+  const isHomePage = pathName === "/";
 
   return (
     <nav

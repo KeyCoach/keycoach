@@ -22,6 +22,7 @@
     "p5": "^1.11.2",
     "phaser": "^3.88.2",
     "react": "^19.0.0",
+    "react-bootstrap-icons": "^1.11.5",
     "react-dom": "^19.0.0",
     "uuid": "^11.0.5"
   },

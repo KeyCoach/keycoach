@@ -3,7 +3,7 @@ import "./globals.css";
 import favicon from "@/public/whistle.png";
 import { Navbar } from "./navbar";
 import UserProvider from "./user-context";
-import { AuthenticateUser } from "@/utils/authenticate-user";
+import { AuthenticateUser } from "@/app/actions";
 import { HandTrackProvider } from "./hand-track-context";
 import CameraWarning from "./camera-warning";
 
@@ -37,17 +37,17 @@ export default async function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} light:bg-slate-50 light:text-slate-950 flex max-h-screen min-h-screen flex-col dark:bg-slate-950 dark:text-slate-50`}
       >
-        <Navbar />
-        <div className="h-page relative overflow-y-auto">
-          <HandTrackProvider>
-            <UserProvider user={user}>
+        <UserProvider user={user}>
+          <Navbar />
+          <div className="h-page relative overflow-y-auto">
+            <HandTrackProvider>
               <>
                 {children}
                 <CameraWarning />
               </>
-            </UserProvider>
-          </HandTrackProvider>
-        </div>
+            </HandTrackProvider>
+          </div>
+        </UserProvider>
       </body>
     </html>
   );

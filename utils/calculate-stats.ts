@@ -1,33 +1,47 @@
-import { Mistake, Word, Stat, Letter, Test } from "@/app/lib/types";
+import { Mistake, Word, Stat, Letter, MistakeType } from "@/app/lib/types";
 
-export function CalculateStats(
-  test: Test,
-  userInput: Word[],
-  mistakes: Mistake[],
-  duration: number,
-): Stat {
+export function CalculateStats(userInput: Word[], mistakes: Mistake[], duration: number): Stat {
   if (userInput.length < 3) {
-    return { wpm: 0, accuracy: 0, fingerAccuracy: 0 };
+    return { netWpm: 0, grossWpm: 0, accuracy: 0, fingerAccuracy: 0 };
   }
-  const correctChars = userInput.reduce((acc, word) => {
-    return acc + word.inputs.filter((input) => input.status === Letter.Correct).length;
+  const minutes = duration / 1000 / 60;
+  const numSpaces = userInput.filter((word) => word.inputs.length > 0).length - 1;
+
+  const totalTypedLetters = userInput.reduce((acc, word) => {
+    return acc + word.inputs.length;
   }, 0);
 
-  const wrongLetterMistakes = mistakes.filter(
-    (mistake: Mistake) => mistake.status === Letter.WrongLetter,
+  const correctChars = userInput.reduce((acc, word) => {
+    return (
+      acc +
+      word.inputs.filter(
+        (input) => input.status === Letter.Correct || input.status === Letter.Wrong,
+      ).length
+    );
+  }, 0);
+
+  const missingLetters = userInput.reduce((acc, word) => {
+    return acc + word.inputs.filter((input) => input.status === Letter.Missing).length;
+  }, 0);
+
+  const wrongLetters = mistakes.filter(
+    (mistake: Mistake) => mistake.type === MistakeType.Wrong,
   ).length;
-  const wrongFingerMistakes = mistakes.filter(
-    (mistake: Mistake) => mistake.status === Letter.WrongFinger,
+
+  const wrongFingerLetters = mistakes.filter(
+    (mistake: Mistake) => mistake.type === MistakeType.Technique,
   ).length;
 
-  const accuracy = ((test.charCount - wrongLetterMistakes) / test.charCount) * 100;
-  const fingerAccuracy = ((test.charCount - wrongFingerMistakes) / test.charCount) * 100;
+  const letterMistakes = wrongLetters + missingLetters;
+  const grossWpm = (totalTypedLetters + numSpaces) / 5 / minutes;
+  const netWpm = (correctChars + numSpaces) / 5 / minutes;
+  const accuracy = ((totalTypedLetters - letterMistakes) / totalTypedLetters) * 100;
+  const fingerAccuracy = ((correctChars - wrongFingerLetters) / totalTypedLetters) * 100;
 
-  const words = (correctChars + userInput.length) / 5;
-  const minutes = duration / 1000 / 60;
-  const wpm = words / minutes;
-
-  console.log(wpm, accuracy, fingerAccuracy);
-
-  return { wpm, accuracy, fingerAccuracy };
+  return {
+    netWpm,
+    grossWpm,
+    accuracy: Math.max(0, accuracy),
+    fingerAccuracy: Math.max(0, fingerAccuracy),
+  };
 }

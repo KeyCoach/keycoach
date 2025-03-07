@@ -11,9 +11,9 @@ function formatNumber(num: number, percentage = false) {
 }
 
 export default function StatsPanel() {
-  const { avgWpm, avgFingerAcc, avgAcc, stats } = useLessonContext();
+  const { avgNetWpm, avgFingerAcc, avgAcc, stats } = useLessonContext();
   const [isExpanded, setIsExpanded] = useState(Object.keys(stats).length > 0);
-  const wpm = formatNumber(avgWpm);
+  const wpm = formatNumber(avgNetWpm);
   const fingerAcc = formatNumber(avgFingerAcc, true);
   const acc = formatNumber(avgAcc, true);
   const { cameraActivated } = useHandTracking();

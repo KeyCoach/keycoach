@@ -60,7 +60,7 @@ export function Modal({
             </h2>
           </div>
         )}
-        {modalDescription && <p className="text-md mx-6 mt-4 text-slate-600">{modalDescription}</p>}
+        {modalDescription && <p className="text-md mx-6 mt-4 text-slate-300">{modalDescription}</p>}
 
         {form && (
           <>
