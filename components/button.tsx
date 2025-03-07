@@ -10,7 +10,7 @@ type Variant =
   | "previous-nav"
   | "next-nav"
   | "icon";
-type ColorTheme = "obsidian" | "cerulean" | "ceruleanLight" | "red" | "amber" | "green";
+type ColorTheme = "obsidian" | "cerulean" | "ceruleanLight" | "red" | "amber" | "green" | "gray";
 
 type ButtonProps = React.ComponentProps<"button"> & {
   variant?: Variant;
@@ -50,6 +50,7 @@ export function Button({
       "bg-green-400 dark:bg-green-600 text-slate-100 hover:bg-green-300 dark:hover:bg-green-400 disabled:bg-green-100 dark:disabled:bg-green-800 focus:bg-green-200 dark:focus:bg-green-500",
     ceruleanLight:
       "bg-cerulean-400 dark:bg-cerulean-400 text-slate-100 hover:bg-cerulean-300 dark:hover:bg-cerulean-300 disabled:bg-cerulean-100 dark:disabled:bg-cerulean-700 focus:bg-cerulean-150 dark:focus:bg-cerulean-400",
+    gray: "bg-slate-400 dark:bg-slate-500 text-slate-100 hover:bg-slate-300 dark:hover:bg-slate-400 disabled:bg-slate-100 dark:disabled:bg-slate-800 focus:bg-slate-200 dark:focus:bg-slate-500",
   };
 
   let dynamicClass = colorClasses[colorTheme];
@@ -62,7 +63,7 @@ export function Button({
 
   if (loading) {
     dynamicClass += " bg-gray-300 dark:bg-gray-700 cursor-wait";
-    children = <LoadingSpinner size="w-6 h-6" />; // Replace with actual spinner if needed
+    children = <LoadingSpinner size="w-6 h-6" />;
   }
 
   if (variant.includes("nav")) {

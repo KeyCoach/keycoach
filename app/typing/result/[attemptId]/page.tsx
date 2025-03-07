@@ -2,7 +2,7 @@ import { Link } from "@/components/link";
 import { H1 } from "@/components";
 import { Button } from "@/components";
 import { GetAttemptById } from "@/service-interfaces/dynamo-db";
-import { AuthenticateUser } from "@/utils/authenticate-user";
+import { AuthenticateUser } from "@/app/actions";
 import { type Attempt } from "@/app/lib/types";
 import { FingerPlacementAnalysis } from "@/components/finger-analysis";
 
@@ -18,16 +18,14 @@ export default async function TestResult({ params }: { params: Promise<{ attempt
         <H1 className="mb-6 text-slate-900 dark:text-slate-50">Typing Results</H1>
 
         <div className="mb-8 flex gap-4">
-          <Button colorTheme="cerulean" variant="previous-nav">
-            <Link className="block w-40 text-slate-50 no-underline" href="/typing/test">
+          <Link className="text-slate-50 no-underline" href="/typing/test">
+            <Button colorTheme="cerulean" variant="previous-nav">
               Take another Test
-            </Link>
-          </Button>
-          <Button colorTheme="cerulean">
-            <Link className="block w-40 text-slate-50 no-underline" href="/lesson">
-              Continue Learning
-            </Link>
-          </Button>
+            </Button>
+          </Link>
+          <Link className="text-slate-50 no-underline" href="/lesson">
+            <Button colorTheme="cerulean">Continue Learning</Button>
+          </Link>
         </div>
 
         {attempt ? <Attempt attempt={attempt} /> : <p>No test found</p>}
@@ -56,7 +54,7 @@ function Attempt({ attempt }: { attempt: Attempt }) {
         <div className="rounded-xl bg-green-200 p-6 shadow-lg dark:bg-green-800">
           <h2 className="mb-1 text-sm font-medium text-green-700 dark:text-green-300">WPM</h2>
           <p className="text-4xl font-bold text-green-800 dark:text-green-200">
-            {Math.round(attempt.wpm)}
+            {Math.round(attempt.netWpm)}
           </p>
         </div>
         <div className="rounded-xl bg-cerulean-200 p-6 shadow-lg dark:bg-cerulean-800">

@@ -1,13 +1,14 @@
+"use client";
 import { Link } from "@/components/link";
 import Image from "next/image";
 import { LoginButton, LogoutButton } from "./nav-buttons";
-import { AuthenticateUser } from "@/utils/authenticate-user";
-import { retrievePathName } from "@/utils/path-name";
+import { useUser } from "./user-context";
+import { usePathname } from "next/navigation";
 
-export async function Navbar() {
-  const user = await AuthenticateUser();
-  const pathname = retrievePathName();
-  const isHomePage = (await pathname) === "/";
+export function Navbar() {
+  const { user } = useUser();
+  const pathName = usePathname();
+  const isHomePage = pathName === "/";
 
   return (
     <nav
@@ -21,16 +22,15 @@ export async function Navbar() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Rest of your navigation content */}
         <div className="flex h-16 items-center justify-between">
-          <div className="relative flex flex-shrink-0 items-center pl-4">
-            <div className="absolute left-[-50] h-14 w-14 overflow-hidden">
+          <div className="flex flex-shrink-0 items-center pl-4">
+            <div className="relative flex h-16 w-16 justify-center overflow-hidden">
               <Image
                 src="/img/Mascot3.svg"
+                className="absolute object-center"
                 alt="KeyCoach Mascot"
-                fill
-                className="object-cover"
                 sizes="48px"
+                fill
                 priority
-                style={{ translate: "0% 5%", scale: "1.5" }}
               />
             </div>
             <Link href="/" linkVariant="navbar-link-home">

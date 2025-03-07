@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { LoadingPage } from "@/components";
-import { KeyPosition, Letter, Mistake, Test, Word } from "@/app/lib/types";
+import { KeyPosition, Letter, Mistake, MistakeType, Test, Word } from "@/app/lib/types";
 import { v4 as uuidv4 } from "uuid";
 import { normalKeys, UpdateFingerTechnique } from "@/app/hand-tracking";
 import { useHandTracking } from "@/app/hand-track-context";
@@ -8,6 +8,7 @@ import axios from "axios";
 import { CalculateStats } from "@/utils/calculate-stats";
 
 export type OnTestCompleteCallback = (
+  attemptId: string,
   userInput: Word[],
   mistakes: Mistake[],
   testStart: number,
@@ -17,13 +18,15 @@ export type OnTestCompleteCallback = (
 export default function TypingBox({
   test,
   onTestComplete,
-  setWpm,
+  setNetWpm,
+  setGrossWpm,
   setAccuracy,
   setFingerAccuracy,
 }: {
   test: Test;
   onTestComplete: OnTestCompleteCallback;
-  setWpm?: React.Dispatch<React.SetStateAction<number>>;
+  setNetWpm?: React.Dispatch<React.SetStateAction<number>>;
+  setGrossWpm?: React.Dispatch<React.SetStateAction<number>>;
   setAccuracy?: React.Dispatch<React.SetStateAction<number>>;
   setFingerAccuracy?: React.Dispatch<React.SetStateAction<number>>;
 }) {
@@ -32,6 +35,7 @@ export default function TypingBox({
     useHandTracking();
   const sentence = useMemo(() => test.textBody.split(" "), [test.textBody]);
 
+  const [sendingRequest, setSendingRequest] = useState(false);
   const [testStart, setTestStart] = useState(0);
   const [userInput, setUserInput] = useState<Word[]>([{ word: sentence[0], inputs: [] }]);
   const [mistakes, setMistakes] = useState<Mistake[]>([]);
@@ -52,14 +56,17 @@ export default function TypingBox({
         }
         const currWord = userInputRef.current.at(-1)!;
         const currLetter = currWord.word[currWord.inputs.length];
-        const status = currLetter !== key ? Letter.WrongLetter : Letter.Correct;
+        const status = currLetter !== key ? Letter.Wrong : Letter.Correct;
 
         if (key === " ") {
           if (currWord.inputs.length !== currWord.word.length) {
-            setMistakes((prev) => [...prev, { key, time: timeSinceStart, status }]);
+            setMistakes((prev) => [
+              ...prev,
+              { key, time: timeSinceStart, type: MistakeType.Missing },
+            ]);
           }
-        } else if (status === Letter.WrongLetter) {
-          setMistakes((prev) => [...prev, { key, time: timeSinceStart, status }]);
+        } else if (status === Letter.Wrong) {
+          setMistakes((prev) => [...prev, { key, time: timeSinceStart, type: MistakeType.Wrong }]);
         }
       }
 
@@ -90,16 +97,25 @@ export default function TypingBox({
   useEffect(() => {
     if (testStart === 0) return;
 
-    const { wpm, accuracy, fingerAccuracy } = CalculateStats(
-      test,
+    const { grossWpm, netWpm, accuracy, fingerAccuracy } = CalculateStats(
       userInput,
       mistakes,
       Date.now() - testStart,
     );
-    setWpm?.(wpm);
+    setNetWpm?.(netWpm);
+    setGrossWpm?.(grossWpm);
     setAccuracy?.(accuracy);
     setFingerAccuracy?.(fingerAccuracy);
-  }, [test, testStart, userInput, mistakes, setWpm, setAccuracy, setFingerAccuracy]);
+  }, [
+    test,
+    testStart,
+    userInput,
+    setGrossWpm,
+    mistakes,
+    setNetWpm,
+    setAccuracy,
+    setFingerAccuracy,
+  ]);
 
   // Setup camera and key listeners. Runs once on mount
   useEffect(() => {
@@ -162,26 +178,38 @@ export default function TypingBox({
   }, [testStart, cameraSetup, keyPositions, onKeyPress, detectHands, settingUp]);
 
   useEffect(() => {
-    if (testFinished) {
-      console.log("Test Finished");
-      onTestComplete(userInput, mistakes, testStart, Date.now());
+    async function completeTest() {
+      console.log("test finished");
+      const attemptId = uuidv4();
+      setSendingRequest(true);
 
-      const correctChars = userInput.reduce((acc, word) => {
-        return acc + word.inputs.filter((input) => input.status === Letter.Correct).length;
-      }, 0);
       const body = {
         testId,
-        correctChars,
+        attemptId,
         duration: Date.now() - testStart,
         userInput,
         mistakes,
         cameraActivated,
       };
-      axios.post("/api/attempt", body);
-    }
-  }, [testFinished, onTestComplete, userInput, mistakes, testStart, testId, cameraActivated]);
+      await axios.post("/api/attempt", body);
 
-  if (cameraSetup && !modelReady) {
+      onTestComplete(attemptId, userInput, mistakes, testStart, Date.now());
+    }
+    if (testFinished && !sendingRequest) {
+      completeTest();
+    }
+  }, [
+    testFinished,
+    onTestComplete,
+    userInput,
+    sendingRequest,
+    mistakes,
+    testStart,
+    testId,
+    cameraActivated,
+  ]);
+
+  if ((cameraSetup && !modelReady) || sendingRequest) {
     return <LoadingPage />;
   }
 
@@ -204,22 +232,30 @@ export default function TypingBox({
               <span key={i}>
                 <span className="inline-block">
                   {word.inputs.map((input, j) => {
-                    const classes: Record<Letter, string> = {
+                    const letterClasses: Record<Letter, string> = {
                       [Letter.Correct]: "text-slate-900 dark:text-slate-50",
-                      [Letter.WrongLetter]: "text-red-500 dark:text-red-400",
-                      [Letter.WrongFinger]: "text-orange-500 dark:text-orange-400",
+                      [Letter.Wrong]: "text-red-500 dark:text-red-400",
                       [Letter.Missing]: "text-slate-400 dark:text-slate-500",
                     };
+
+                    const wrongFingerClass = "text-orange-500 dark:text-orange-400";
+
+                    let letterClass = letterClasses[input.status];
+                    if (input.status === Letter.Correct && !input.correctFinger) {
+                      letterClass = wrongFingerClass;
+                    }
+
                     const correctWord = word.inputs.every(
                       (input) => input.status === Letter.Correct,
                     );
+
                     const wrongWordClass = correctWord ? "" : "underline decoration-red-400";
                     return (
                       // letters they've typed so far
                       <span
                         key={"letter" + i + "," + j}
                         kc-id="letter"
-                        className={`${classes[input.status]} ${wrongWordClass}`}
+                        className={`${letterClasses[input.status]} ${wrongWordClass}`}
                       >
                         {input.key}
                       </span>
@@ -334,6 +370,7 @@ function HandleSpace(userInput: Word[], sentence: string[], inputId: string, tim
         id: inputId,
         key: letter,
         status: Letter.Missing,
+        correctFinger: null,
         time: timePressed,
       }))
       .slice(currWord.inputs.length),
@@ -354,11 +391,12 @@ function HandleNormalKey(userInput: Word[], key: string, inputId: string, timePr
   const currWord = userInput.at(-1)!;
 
   const currLetter = currWord.word[currWord.inputs.length];
-  const status = currLetter !== key ? Letter.WrongLetter : Letter.Correct;
+  const status = currLetter !== key ? Letter.Wrong : Letter.Correct;
 
   currWord.inputs.push({
     id: inputId,
     key: currLetter || key,
+    correctFinger: null,
     status,
     time: timePressed,
   });
@@ -371,7 +409,7 @@ function TestIsComplete(userInput: Word[], sentence: string[]) {
   const lastWord = userInput.at(-1)!;
   if (lastWord.inputs.length < lastWord.word.length) return false;
   return lastWord.inputs.every(
-    (input) => input.status === Letter.Correct || input.status === Letter.WrongFinger,
+    (input) => input.status === Letter.Correct || input.status === Letter.Wrong,
   );
 }
 

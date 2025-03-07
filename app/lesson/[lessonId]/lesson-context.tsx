@@ -43,13 +43,16 @@ export function LessonContextProvider({
   function resetStats() {
     setStats({});
   }
-  const wpm = stats[currentStep.id]?.wpm ?? 0;
+  const netWpm = stats[currentStep.id]?.netWpm ?? 0;
+  const grossWpm = stats[currentStep.id]?.grossWpm ?? 0;
   const acc = stats[currentStep.id]?.accuracy ?? 0;
   const fingerAcc = stats[currentStep.id]?.fingerAccuracy ?? 0;
 
   const statsArr = Object.values(stats);
 
-  const avgWpm = statsArr.reduce((acc, curr) => acc + curr.wpm, 0) / statsArr.length;
+  const avgNetWpm = statsArr.reduce((acc, curr) => acc + curr.netWpm, 0) / statsArr.length;
+  const avgGrossWpm = statsArr.reduce((acc, curr) => acc + curr.grossWpm, 0) / statsArr.length;
+
   const avgAcc = statsArr.reduce((acc, curr) => acc + curr.accuracy, 0) / statsArr.length;
   const avgFingerAcc =
     statsArr.reduce((acc, curr) => acc + curr.fingerAccuracy, 0) / statsArr.length;
@@ -65,10 +68,12 @@ export function LessonContextProvider({
     resetStats,
     stats,
     goToStep,
-    wpm,
+    netWpm,
+    grossWpm,
     acc,
     fingerAcc,
-    avgWpm,
+    avgNetWpm,
+    avgGrossWpm,
     avgAcc,
     avgFingerAcc,
   };

@@ -13,8 +13,7 @@ export type Test = {
 
 export enum Letter {
   Correct = "Correct",
-  WrongLetter = "WrongLetter",
-  WrongFinger = "WrongFinger",
+  Wrong = "Wrong",
   Missing = "Missing",
 }
 
@@ -23,6 +22,7 @@ export type Word = {
   inputs: {
     key: string;
     id: string;
+    correctFinger: boolean | null;
     status: Letter;
     time: number;
   }[];
@@ -44,8 +44,9 @@ export type DbAttempt = {
   cameraActivated: boolean;
   accuracy: number;
   fingerAccuracy: number;
-  wpm: number;
   userInput: Word[];
+  netWpm: number;
+  grossWpm: number;
   mistakes: Mistake[];
   duration: number;
   date: number;
@@ -61,7 +62,8 @@ export type LessonStats = {
 };
 
 export type Stat = {
-  wpm: number;
+  grossWpm: number;
+  netWpm: number;
   accuracy: number;
   fingerAccuracy: number;
 };
@@ -71,6 +73,7 @@ export type User = {
   email: string;
   fname: string;
   lname: string;
+  wpmGoal?: number;
 };
 
 export type DbUser = User & {
@@ -117,12 +120,14 @@ export type LessonContextType = {
   lessonPlan: LessonPlan;
   lessonId: string;
   currentStep: Step;
-  avgWpm: number;
-  avgAcc: number;
-  fingerAcc: number;
-  avgFingerAcc: number;
-  wpm: number;
+  grossWpm: number;
+  netWpm: number;
   acc: number;
+  fingerAcc: number;
+  avgGrossWpm: number;
+  avgNetWpm: number;
+  avgAcc: number;
+  avgFingerAcc: number;
   stats: LessonStats;
   addStat: (stepId: string, stat: Stat) => void;
   resetStats: () => void;
@@ -160,10 +165,16 @@ export type HandTrackContextType = {
 
 export type handposeCallback = (callback: (hands: Hands) => void) => void;
 
+export enum MistakeType {
+  Wrong = "Wrong",
+  Missing = "Missing",
+  Technique = "Technique",
+}
+
 export type Mistake = {
   key: string;
   time: number;
-  status: Letter;
+  type: MistakeType;
 };
 
 export type LessonPlans = {
@@ -179,4 +190,9 @@ export type Step = {
 
 export type LessonPlan = {
   steps: Step[];
+};
+
+export type UserContextType = {
+  user: User | null;
+  setUser: React.Dispatch<React.SetStateAction<User | null>>;
 };

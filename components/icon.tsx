@@ -1,7 +1,7 @@
 import Image from "next/image";
 
 export function Icon({
-  src = "public/icons/check.svg",
+  src = "/icons/check.svg",
   alt = "checkmark icon",
   w = 18,
   h = 18,

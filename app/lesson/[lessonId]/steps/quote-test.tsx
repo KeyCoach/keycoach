@@ -37,13 +37,14 @@ export function QuoteTest({ testId }: { testId: string }) {
   }
 
   const onTestComplete: OnTestCompleteCallback = (
+    _attemptId: string,
     userInput: Word[],
     mistakes: Mistake[],
     testStart: number,
     testEnd: number,
   ) => {
     setTestCompleted(true);
-    const stats = CalculateStats(test, userInput, mistakes, testEnd - testStart);
+    const stats = CalculateStats(userInput, mistakes, testEnd - testStart);
     addStat(currentStep.id, stats);
   };
 
