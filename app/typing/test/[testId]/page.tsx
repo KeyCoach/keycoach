@@ -49,7 +49,7 @@ export default function Test() {
     <div className="h-page bg-white p-4 dark:bg-slate-950">
       <FeedbackInterpretModal
         isOpen={feedbackModalOpen}
-        onClose={() => setFeedbackModalOpen(false)}
+        onCloseAction={() => setFeedbackModalOpen(false)}
       />
       <div className="flex items-center justify-between gap-4">
         <div className="flex gap-4">

@@ -55,7 +55,7 @@ export function QuoteTest({ testId }: { testId: string }) {
     <div className="h-page flex items-center justify-center">
       <FeedbackInterpretModal
         isOpen={feedbackModalOpen}
-        onClose={() => setFeedbackModalOpen(false)}
+        onCloseAction={() => setFeedbackModalOpen(false)}
       />
 
       {/* TODO: add boxes that have realtime wpm and acc */}
