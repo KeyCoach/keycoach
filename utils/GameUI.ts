@@ -29,6 +29,11 @@ export class GameUI {
       color: colors.red,
     });
 
+	// Create background for the Score section 
+	const scoreBg = this.scene.add.rectangle(110, height - 80, 170, 75, 0x000000, 0.5)
+	.setOrigin(0.5)
+	.setDepth(0);
+
     this.scoreText = this.scene.add.text(scoreLabel.x + scoreLabel.width - 2, 520, "0", {
       fontSize: "32px",
       fontFamily: "Monospace",
