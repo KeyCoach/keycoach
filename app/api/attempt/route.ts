@@ -20,7 +20,10 @@ export async function GET(request: NextRequest) {
     return Response.json(BackendErrors.ENTITY_NOT_FOUND, { status: 404 });
   }
 
-  return Response.json({ attempt });
+  return Response.json(
+    { attempt },
+    { headers: { "Cache-Control": "public, max-age=600, s-maxage=600" } },
+  );
 }
 
 /** Add attempt to DB. */

@@ -59,7 +59,7 @@ export function QuoteTest({ testId }: { testId: string }) {
       />
 
       {/* TODO: add boxes that have realtime wpm and acc */}
-      <div>
+      <div className="w-full">
         <div className="mb-4 flex gap-6">
           <Button onClick={() => setSettingUp(true)}>
             {cameraActivated ? "Recalibrate" : "Activate Camera"}
