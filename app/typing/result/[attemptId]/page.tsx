@@ -1,9 +1,9 @@
-import { Link } from "@/components/link";
 import { H1 } from "@/components";
 import { Button } from "@/components";
 import { GetAttemptById } from "@/service-interfaces/dynamo-db";
+import { TestTextReview } from "@/app/test-text-review";
 import { AuthenticateUser } from "@/app/actions";
-import { Letter, type Attempt } from "@/app/lib/types";
+import { type Attempt } from "@/app/lib/types";
 import { FingerPlacementAnalysis } from "@/components/finger-analysis";
 import { MistakesAnalysis } from "@/components/mistakes-analysis";
 
@@ -19,14 +19,12 @@ export default async function TestResult({ params }: { params: Promise<{ attempt
         <H1 className="mb-6 text-slate-900 dark:text-slate-50">Typing Results</H1>
 
         <div className="mb-8 flex gap-4">
-          <Link className="text-slate-50 no-underline" href="/typing/test">
-            <Button colorTheme="cerulean" variant="previous-nav">
-              Take another Test
-            </Button>
-          </Link>
-          <Link className="text-slate-50 no-underline" href="/lesson">
-            <Button colorTheme="cerulean">Continue Learning</Button>
-          </Link>
+          <Button colorTheme="cerulean" variant="previous-nav" href="/typing/test">
+            Take another Test
+          </Button>
+          <Button colorTheme="cerulean" href="/lesson">
+            Continue Learning
+          </Button>
         </div>
 
         {attempt ? <Attempt attempt={attempt} /> : <p>No test found</p>}
@@ -123,75 +121,7 @@ function Attempt({ attempt }: { attempt: Attempt }) {
       <div className="rounded-xl bg-slate-50 p-6 shadow-lg dark:bg-slate-800">
         <h2 className="mb-4 text-xl font-semibold text-slate-900 dark:text-slate-50">Test Text</h2>
         <p className="leading-relaxed text-slate-700 dark:text-slate-300">
-          {attempt.userInput.map((word, wordIndex) => (
-            <span key={wordIndex}>
-              <span className="inline-block">
-                {word.inputs.map((input, letterIndex) => {
-                  const letterClasses = {
-                    correct: "text-slate-900 dark:text-slate-50",
-                    wrong: "text-red-500 dark:text-red-400",
-                    missing: "text-slate-400 dark:text-slate-500",
-                    wrongFinger: "text-orange-500 dark:text-orange-400",
-                  };
-
-                  let letterClass = "";
-                  if (input.status === Letter.Wrong) {
-                    letterClass = letterClasses.wrong;
-                  } else if (input.status === Letter.Missing) {
-                    letterClass = letterClasses.missing;
-                  } else if (input.correctFinger === false) {
-                    // uses "=== false" to exclude null (null means no finger data)
-                    letterClass = letterClasses.wrongFinger;
-                  } else if (
-                    attempt.mistakes.some(
-                      (mistake) =>
-                        mistake.letterIndex === letterIndex && mistake.wordIndex === wordIndex,
-                    )
-                  ) {
-                    letterClass = letterClasses.wrong;
-                  } else {
-                    letterClass = letterClasses.correct;
-                  }
-
-                  const correctWord = word.inputs.every(
-                    (input, letterIndex) =>
-                      input.status === Letter.Correct &&
-                      input.correctFinger !== false &&
-                      !attempt.mistakes.some(
-                        (mistake) =>
-                          mistake.letterIndex === letterIndex && mistake.wordIndex === wordIndex,
-                      ),
-                  );
-
-                  const wrongWordClass = correctWord ? "" : "underline decoration-red-400";
-                  return (
-                    // letters they've typed so far
-                    <span
-                      key={"letter" + wordIndex + "," + letterIndex}
-                      kc-id="letter"
-                      className={` ${letterClass} ${wrongWordClass}`}
-                    >
-                      {input.key}
-                    </span>
-                  );
-                })}
-                {/* their cursor */}
-                {wordIndex === attempt.userInput.length - 1 && (
-                  <span className="blink absolute font-bold">⎸</span>
-                )}
-                {/* the rest of the word */}
-                {word.word
-                  ?.slice(word.inputs.length)
-                  .split("")
-                  .map((letter, j) => (
-                    <span key={"ghost-letter" + j} kc-id="ghost-letter" className="text-slate-400">
-                      {letter}
-                    </span>
-                  ))}
-              </span>
-              <span> </span>
-            </span>
-          ))}
+          <TestTextReview attempt={attempt} />
         </p>
       </div>
     </div>

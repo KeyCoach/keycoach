@@ -70,7 +70,6 @@ export async function GetAttemptsByEmail(email: string): Promise<Attempt[] | fal
 
 /** Adds Test data to many attempt objects. Concurrently requests test data from DB */
 async function AddTestToAttempts(attempts: DbAttempt[]): Promise<Attempt[]> {
-  console.log(attempts);
   const completeAttempts: Attempt[] = [];
 
   async function addTest(attempt: DbAttempt) {

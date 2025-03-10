@@ -34,7 +34,7 @@ export default async function RootLayout({
         <link rel="apple-touch-icon" href="/favicon.ico" />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} light:bg-slate-50 light:text-slate-950 flex max-h-screen min-h-screen flex-col dark:bg-slate-950 dark:text-slate-50`}
+        className={`${geistSans.variable} ${geistMono.variable} flex max-h-screen min-h-screen flex-col bg-slate-50 text-slate-950 dark:bg-slate-950 dark:text-slate-50`}
       >
         <UserProvider user={user}>
           <Navbar />

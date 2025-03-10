@@ -1,4 +1,3 @@
-"use client";
 import { H3 } from "./headers";
 
 export function LoadingSpinner({ size = "w-10 h-10", className = "" }) {
@@ -9,11 +8,11 @@ export function LoadingSpinner({ size = "w-10 h-10", className = "" }) {
   );
 }
 
-export function LoadingOverlay({ show = true, message = "Loading" }) {
+export function LoadingOverlay({ show = true, message = "Loading..." }) {
   if (!show) return null;
   return (
     <div className="fixed inset-0 z-50 flex animate-modalBackground items-center justify-center bg-slate-500 bg-opacity-40">
-      <div className="min-w-80 max-w-md animate-fadeInUp rounded-lg bg-[#556c] p-10 shadow-lg">
+      <div className="min-w-80 max-w-md animate-fadeInUp rounded-lg bg-white p-10 shadow-lg dark:bg-slate-600">
         <div className="text-center">
           <H3 className="pb-5">{message}</H3>
           <div>

@@ -54,10 +54,10 @@ export default function Login() {
   }
 
   return (
-    <div className="h-page w-full bg-white pt-20 dark:bg-slate-950">
+    <div className="h-page w-full bg-slate-50 pt-20 dark:bg-slate-950">
       <LoadingOverlay show={loading} message="Logging you in..." />
-      <div className="mx-auto w-full max-w-lg p-1 text-slate-900 dark:text-slate-50">
-        <div className="rounded-xl bg-slate-50 p-8 shadow dark:bg-slate-800">
+      <div className="mx-auto w-full max-w-lg bg-slate-50 p-1 text-slate-900 dark:text-slate-50">
+        <div className="rounded-xl bg-white p-8 shadow dark:bg-slate-800">
           <H1 className="mb-3 text-slate-900 dark:text-slate-50">Welcome Back!</H1>
           <div className="mb-6 text-slate-600 dark:text-slate-400">
             <Link href="/register" className="text-cerulean-600 dark:text-cerulean-400">
