@@ -1,4 +1,4 @@
-import { Test } from "../app/lib/types";
+import { Test, TestType } from "../app/lib/types";
 import { UpdateCommand } from "@aws-sdk/lib-dynamodb";
 import { DynamoDBDocumentClient } from "@aws-sdk/lib-dynamodb";
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
@@ -47,6 +47,8 @@ const tests: Test[] = [
     charCount: 220,
     wordCount: 44,
     difficulty: 1,
+    type: TestType.Quote,
+    duration: null,
   },
   {
     id: "f8a22df2-38bc-4692-a6da-cdd526b673e6",
@@ -57,6 +59,8 @@ const tests: Test[] = [
     charCount: 356,
     wordCount: 65,
     difficulty: 2,
+    type: TestType.Quote,
+    duration: null,
   },
   {
     id: "919c2a12-38f2-48a9-bf1b-e510ac689379",
@@ -67,6 +71,8 @@ const tests: Test[] = [
     charCount: 263,
     wordCount: 38,
     difficulty: 3,
+    type: TestType.Quote,
+    duration: null,
   },
   {
     id: "2f075fa3-b932-4b6d-91bf-41523670d1bb",
@@ -77,6 +83,8 @@ const tests: Test[] = [
     charCount: 242,
     wordCount: 44,
     difficulty: 4,
+    type: TestType.Quote,
+    duration: null,
   },
   {
     id: "8c12b751-a1cc-410f-9ee6-71813d391f54",
@@ -86,6 +94,8 @@ const tests: Test[] = [
     charCount: 30,
     wordCount: 7,
     difficulty: 5,
+    type: TestType.Quote,
+    duration: null,
   },
   {
     id: "8cc8728f-f8e3-4c1e-b74c-cb2c7fd0a100",
@@ -96,6 +106,8 @@ const tests: Test[] = [
     difficulty: 5,
     author: null,
     src: null,
+    type: TestType.Quote,
+    duration: null,
   },
   {
     id: "e364a9c6-49d1-4569-8f2d-424f138a50d8",
@@ -106,6 +118,8 @@ const tests: Test[] = [
     difficulty: 5,
     author: null,
     src: null,
+    type: TestType.Quote,
+    duration: null,
   },
   {
     id: "7d23f810-a5cc-4e91-b0d7-9f8a54c16e29",
@@ -116,6 +130,8 @@ const tests: Test[] = [
     difficulty: 5,
     author: null,
     src: null,
+    type: TestType.Quote,
+    duration: null,
   },
   {
     id: "93e56a22-fd78-42b3-8aad-75c99eb41083",
@@ -126,6 +142,8 @@ const tests: Test[] = [
     difficulty: 5,
     author: null,
     src: null,
+    type: TestType.Quote,
+    duration: null,
   },
   {
     id: "6b4c2d67-8935-48de-b1f0-36ad45c98d3a",
@@ -136,6 +154,8 @@ const tests: Test[] = [
     difficulty: 5,
     author: null,
     src: null,
+    type: TestType.Quote,
+    duration: null,
   },
   {
     id: "a4f7e3d1-b980-4c25-9d76-2e58fc013d41",
@@ -146,6 +166,8 @@ const tests: Test[] = [
     difficulty: 5,
     author: null,
     src: null,
+    type: TestType.Quote,
+    duration: null,
   },
   {
     id: "9c5b3f8a-2d17-4e06-b4f5-7a29c80f61e5",
@@ -156,6 +178,8 @@ const tests: Test[] = [
     difficulty: 5,
     author: null,
     src: null,
+    type: TestType.Quote,
+    duration: null,
   },
   {
     id: "1d8e7f65-4b32-49af-a0f6-5c92e47f8b9d",
@@ -166,6 +190,8 @@ const tests: Test[] = [
     difficulty: 5,
     author: null,
     src: null,
+    type: TestType.Quote,
+    duration: null,
   },
   {
     id: "2e8c9g76-5ad3-47bg-91fe-83d4g219c05",
@@ -176,6 +202,8 @@ const tests: Test[] = [
     difficulty: 5,
     author: null,
     src: null,
+    type: TestType.Quote,
+    duration: null,
   },
   {
     id: "7f1d4g23-9eb8-40g5-a6c2-1b9d8g354f0",
@@ -186,6 +214,8 @@ const tests: Test[] = [
     difficulty: 5,
     author: null,
     src: null,
+    type: TestType.Quote,
+    duration: null,
   },
   {
     id: "3f9e2h87-6bc4-48ch-a2gd-94e5h320d16",
@@ -196,6 +226,8 @@ const tests: Test[] = [
     difficulty: 5,
     author: null,
     src: null,
+    type: TestType.Quote,
+    duration: null,
   },
   {
     id: "8g4d6h34-0fc9-41dh-b3e7-2h509f76ae1",
@@ -206,6 +238,8 @@ const tests: Test[] = [
     difficulty: 5,
     author: null,
     src: null,
+    type: TestType.Quote,
+    duration: null,
   },
   {
     id: "4g0f3j98-7cd5-49dj-b3he-05f6j431e27",
@@ -216,6 +250,8 @@ const tests: Test[] = [
     difficulty: 5,
     author: null,
     src: null,
+    type: TestType.Quote,
+    duration: null,
   },
   {
     id: "9h5e7j45-1gd0-42ej-c4f8-3j610g87bf2",
@@ -226,6 +262,8 @@ const tests: Test[] = [
     difficulty: 5,
     author: null,
     src: null,
+    type: TestType.Quote,
+    duration: null,
   },
   {
     id: "5h1g4k09-8de6-40ek-c5gf-16g7k542f38",
@@ -236,6 +274,8 @@ const tests: Test[] = [
     difficulty: 5,
     author: null,
     src: null,
+    type: TestType.Quote,
+    duration: null,
   },
   {
     id: "0i6f8k56-2he1-43fk-d5g9-4k721h98cg3",
@@ -246,6 +286,8 @@ const tests: Test[] = [
     difficulty: 5,
     author: null,
     src: null,
+    type: TestType.Quote,
+    duration: null,
   },
   {
     id: "6i2h5l10-9ef7-41fl-d6hg-27h8l653g49",
@@ -256,6 +298,8 @@ const tests: Test[] = [
     difficulty: 5,
     author: null,
     src: null,
+    type: TestType.Quote,
+    duration: null,
   },
   {
     id: "1j7g9l67-3if2-44gl-e6h0-5l832i09dh4",
@@ -266,6 +310,8 @@ const tests: Test[] = [
     difficulty: 5,
     author: null,
     src: null,
+    type: TestType.Quote,
+    duration: null,
   },
 ];
 
