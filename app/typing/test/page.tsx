@@ -46,7 +46,7 @@ export default function Test() {
     if (testType === "Quote") {
       setLoading(true);
       axios
-        .get("/api/test")
+        .get("/api/random-test")
         .then((res) => {
           setTest(res.data.test);
         })
