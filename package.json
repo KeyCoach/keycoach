@@ -6,9 +6,11 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
+    "prod": "next build && next start",
     "lint": "next lint",
     "test": "jest",
-    "test:deploy": "npm ci && jest && next build && next start"
+    "test:deploy": "npm ci && jest && next build && next start",
+    "update:db:attempts": "tsx ./scripts/update-db-tests.ts"
   },
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.731.1",
