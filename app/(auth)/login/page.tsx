@@ -1,16 +1,18 @@
 "use client";
 import axios from "axios";
 import { Link } from "@/components/link";
-import { H1, TextInput, Button, LoadingOverlay } from "@/components";
+import { H1, TextInput, Button, LoadingOverlay, TextInputWithAddon } from "@/components";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { useUser } from "@/app/user-context";
+import { Eye, EyeSlash } from "react-bootstrap-icons";
 
 export default function Login() {
   const params = useSearchParams();
   const { setUser } = useUser();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [passwordVisible, setPasswordVisible] = useState(false);
   const router = useRouter();
 
   async function HandleLogin(e: any) {
@@ -76,15 +78,20 @@ export default function Login() {
                 autoFocus
               />
             </div>
+
             <div className="mb-4">
-              <TextInput
+              <TextInputWithAddon
                 label="Password"
-                type="password"
+                type={passwordVisible ? "text" : "password"}
                 id="password"
                 name="password"
                 autoComplete="current-password"
                 placeholder="&bull;&bull;&bull;&bull;&bull;&bull;"
                 required
+                addon={passwordVisible ? <Eye /> : <EyeSlash />}
+                addonPosition="right"
+                addonOnClickAction={() => setPasswordVisible((prev) => !prev)}
+                addonClassName="cursor-pointer"
               />
             </div>
 

@@ -5,6 +5,7 @@ import { LoginButton, LogoutButton } from "./nav-buttons";
 import { useUser } from "./user-context";
 import { usePathname } from "next/navigation";
 
+// TODO: collapse nav bar on small screens?
 export function Navbar() {
   const { user } = useUser();
   const pathName = usePathname();

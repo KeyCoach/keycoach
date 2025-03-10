@@ -29,8 +29,6 @@ export async function GetAttemptById(
 
   if (!item) return false;
 
-  if (item.test) return item as Attempt;
-
   return AddTestToAttempt(item);
 }
 
@@ -67,34 +65,39 @@ export async function GetAttemptsByEmail(email: string): Promise<Attempt[] | fal
   if (!res?.Items) return false;
   const attempts = res.Items as DbAttempt[];
 
-  return HydrateAttempts(attempts);
+  return AddTestToAttempts(attempts);
 }
 
 /** Adds Test data to many attempt objects. Concurrently requests test data from DB */
-async function HydrateAttempts(attempts: DbAttempt[]): Promise<Attempt[]> {
-  const hydratedAttempts: Attempt[] = [];
-  const testIds = new Set(attempts.map((attempt) => attempt.testId));
+async function AddTestToAttempts(attempts: DbAttempt[]): Promise<Attempt[]> {
+  console.log(attempts);
+  const completeAttempts: Attempt[] = [];
 
-  const testFetches = [];
+  async function addTest(attempt: DbAttempt) {
+    if (attempt.test) return attempt;
 
-  for (const testId of testIds) {
-    testFetches.push(GetTestById(testId));
-  }
-
-  const tests = await Promise.all(testFetches);
-
-  for (const attempt of attempts) {
-    hydratedAttempts.push({
+    const test = await GetTestById(attempt.testId);
+    if (!test) return false;
+    return {
       ...attempt,
-      test: tests.find((test) => test?.id === attempt.testId)!,
-    });
+      test,
+    };
   }
 
-  return hydratedAttempts;
+  await Promise.all(attempts.map(addTest)).then((hydratedAttempts) => {
+    hydratedAttempts.forEach((attempt) => {
+      if (attempt) completeAttempts.push(attempt as Attempt);
+      else console.error("Failed to hydrate attempt");
+    });
+  });
+
+  return completeAttempts;
 }
 
 /** Adds Test data to the attempt object */
 async function AddTestToAttempt(attempt: DbAttempt): Promise<Attempt> {
+  if (attempt.test) return attempt as Attempt;
+
   const test = await GetTestById(attempt.testId);
 
   return {

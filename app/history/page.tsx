@@ -95,7 +95,7 @@ async function History({ user }: { user: TUser }) {
                       Finger Accuracy
                     </p>
                     <p className="text-2xl font-bold text-amber-800 dark:text-amber-300">
-                      {attempt.fingerAccuracy.toFixed(0)}%
+                      {attempt.cameraActivated ? `${attempt.fingerAccuracy.toFixed(0)}%` : "N/A"}
                     </p>
                   </div>
                 </div>
