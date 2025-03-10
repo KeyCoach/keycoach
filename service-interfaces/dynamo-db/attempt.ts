@@ -1,4 +1,4 @@
-import { Attempt, DbAttempt, Mistake, Word } from "@/app/lib/types";
+import { Attempt, DbAttempt } from "@/app/lib/types";
 import { dynamo, ATTEMPT_TABLE_NAME } from "./client";
 import { BatchWriteCommand, GetCommand, PutCommand, QueryCommand } from "@aws-sdk/lib-dynamodb";
 import { GetTestById } from "./test";
@@ -26,41 +26,17 @@ export async function GetAttemptById(
       console.error(err);
       return null;
     });
+  console.log(item);
 
   if (!item) return false;
 
-  return HydrateAttempt(item);
+  if (item.test) return item as Attempt;
+
+  return AddTestToAttempt(item);
 }
 
 /** Inserts attempt into DB. */
-export async function CreateTestAttempt(
-  email: string | null,
-  attemptId: string,
-  testId: string,
-  accuracy: number,
-  grossWpm: number,
-  netWpm: number,
-  fingerAccuracy: number,
-  mistakes: Mistake[],
-  duration: number,
-  userInput: Word[],
-  cameraActivated: boolean,
-): Promise<DbAttempt | false> {
-  const attempt: DbAttempt = {
-    id: attemptId,
-    email: email ?? "unknown",
-    testId,
-    accuracy,
-    netWpm,
-    grossWpm,
-    cameraActivated,
-    fingerAccuracy,
-    mistakes,
-    userInput,
-    duration,
-    date: Date.now(),
-  };
-
+export async function CreateTestAttempt(attempt: DbAttempt): Promise<DbAttempt | false> {
   const putCommand = new PutCommand({
     TableName: ATTEMPT_TABLE_NAME,
     Item: attempt,
@@ -119,7 +95,7 @@ async function HydrateAttempts(attempts: DbAttempt[]): Promise<Attempt[]> {
 }
 
 /** Adds Test data to the attempt object */
-async function HydrateAttempt(attempt: DbAttempt): Promise<Attempt> {
+async function AddTestToAttempt(attempt: DbAttempt): Promise<Attempt> {
   const test = await GetTestById(attempt.testId);
 
   return {

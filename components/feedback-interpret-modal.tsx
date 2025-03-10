@@ -67,7 +67,6 @@ export function FeedbackInterpretModal({
     }
   };
 
-  // TODO: fix interpret feedback modal
   return (
     <Modal
       modalTitle="How to Interpret Feedback"
