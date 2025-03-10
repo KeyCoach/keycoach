@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
 
   const token = CreateUserToken(user);
 
-  (await cookies()).set("token", token, { httpOnly: true });
+  (await cookies()).set("token", token);
 
   return Response.json({ message: "Success", user }, { status: 200 });
 }
