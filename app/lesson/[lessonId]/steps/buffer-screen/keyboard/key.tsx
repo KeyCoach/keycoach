@@ -2,11 +2,6 @@ import { KEYS } from "./constants/constants";
 import { KeyProps } from "./types/types";
 
 const Key: React.FC<KeyProps> = ({ keyName, width = 1, isPressed, hasBeenPressed }) => {
-  const getWidthClass = (w: number): string => {
-    const pixelWidth = Math.round(w * 16);
-    return `w-[${pixelWidth}px]`;
-  };
-
   const specialKeys = ["backspace", "tab", "caps lock", "enter", "left shift", "right shift"];
 
   let baseStyles = specialKeys.includes(keyName) ? "w-min-content " : "w-8 ";
@@ -24,7 +19,7 @@ const Key: React.FC<KeyProps> = ({ keyName, width = 1, isPressed, hasBeenPressed
   }
 
   return (
-    <div className={`${baseStyles} ${getWidthClass(width)} ${stateStyles}`}>
+    <div className={`${baseStyles} ${stateStyles}`} style={{ width: `${width}px` }}>
       {KEYS[keyName]?.name || keyName}
     </div>
   );
