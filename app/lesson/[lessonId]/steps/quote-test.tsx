@@ -1,7 +1,7 @@
 import { useLessonContext } from "../lesson-context";
 import { BufferScreen } from "./buffer-screen";
 import { useEffect, useState } from "react";
-import { Mistake, Test, Word } from "@/app/lib/types";
+import { Mistake, Test, TestType, Word } from "@/app/lib/types";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import TypingBox, { OnTestCompleteCallback } from "@/app/typing-box";
@@ -55,7 +55,7 @@ export function QuoteTest({ testId }: { testId: string }) {
     <div className="h-page flex items-center justify-center">
       <FeedbackInterpretModal
         isOpen={feedbackModalOpen}
-        onClose={() => setFeedbackModalOpen(false)}
+        onCloseAction={() => setFeedbackModalOpen(false)}
       />
 
       {/* TODO: add boxes that have realtime wpm and acc */}
@@ -68,7 +68,12 @@ export function QuoteTest({ testId }: { testId: string }) {
             <Button onClick={() => setFeedbackModalOpen(true)}>Interpret Feedback</Button>
           )}
         </div>
-        <TypingBox test={test} onTestComplete={onTestComplete} />
+        <TypingBox
+          test={test}
+          onTestComplete={onTestComplete}
+          testType={TestType.Quote}
+          duration={Infinity}
+        />
       </div>
     </div>
   );

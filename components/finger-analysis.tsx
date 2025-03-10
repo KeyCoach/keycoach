@@ -27,7 +27,7 @@ export function FingerPlacementAnalysis({ attempt }: { attempt: Attempt }) {
             To receive detailed finger placement accuracy, you need to set up your camera.
           </p>
           <p className="text-slate-600 dark:text-slate-300">
-            Setup your camera when taking your next test.
+            Set up your camera when taking your next test.
           </p>
         </div>
       </div>

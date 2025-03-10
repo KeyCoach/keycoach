@@ -9,6 +9,8 @@ export type Test = {
   charCount: number;
   wordCount: number;
   difficulty: number;
+  type: TestType;
+  duration: number | null;
 };
 
 export enum Letter {
@@ -51,6 +53,7 @@ export type DbAttempt = {
   duration: number;
   date: number;
   keyStrokes?: KeyStroke[];
+  test?: Test;
 };
 
 export type Attempt = DbAttempt & {
@@ -173,6 +176,8 @@ export enum MistakeType {
 
 export type Mistake = {
   key: string;
+  wordIndex: number;
+  letterIndex: number;
   time: number;
   type: MistakeType;
 };
@@ -196,3 +201,22 @@ export type UserContextType = {
   user: User | null;
   setUser: React.Dispatch<React.SetStateAction<User | null>>;
 };
+
+export enum TestType {
+  Words = "Words",
+  Quote = "Quote",
+  Timed = "Timed",
+}
+
+export function ToTestType(testType: string | null): TestType {
+  switch (testType) {
+    case "Words":
+      return TestType.Words;
+    case "Quote":
+      return TestType.Quote;
+    case "Timed":
+      return TestType.Timed;
+    default:
+      return TestType.Words;
+  }
+}

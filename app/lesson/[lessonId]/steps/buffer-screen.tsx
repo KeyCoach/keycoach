@@ -217,7 +217,7 @@ export function BufferScreen({
             </div>
             <div
               id="character-quote"
-              className="flex h-40 w-1/2 items-center justify-center rounded-2xl bg-slate-800 p-6 shadow-md"
+              className="flex h-40 w-1/2 items-center justify-center rounded-2xl bg-slate-200 dark:bg-slate-800 p-6 shadow-md"
             >
               {quote}
             </div>

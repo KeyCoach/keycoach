@@ -3,6 +3,7 @@ import { AuthenticateUser } from "@/app/actions";
 import { NextRequest } from "next/server";
 import { BackendErrors } from "../errors";
 import { CalculateStats } from "@/utils/calculate-stats";
+import { DbAttempt } from "@/app/lib/types";
 
 /** Get attempt from DB. Reject if the attempt is associated with an account and creds don't match */
 export async function GET(request: NextRequest) {
@@ -24,8 +25,16 @@ export async function GET(request: NextRequest) {
 
 /** Add attempt to DB. */
 export async function POST(request: NextRequest) {
-  const { cameraActivated, testId, attemptId, duration, mistakes, userInput } =
-    await request.json();
+  const {
+    test: randTest,
+    cameraActivated,
+    testId,
+    attemptId,
+    duration,
+    mistakes,
+    userInput,
+  } = await request.json();
+
   if (
     !testId ||
     !userInput ||
@@ -37,9 +46,11 @@ export async function POST(request: NextRequest) {
     return Response.json(BackendErrors.MISSING_ARGUMENTS, { status: 422 });
   }
 
-  const test = await GetTestById(testId);
-  if (!test) {
-    return Response.json(BackendErrors.ENTITY_NOT_FOUND, { status: 404 });
+  if (!randTest) {
+    const test = await GetTestById(testId);
+    if (!test) {
+      return Response.json(BackendErrors.ENTITY_NOT_FOUND, { status: 404 });
+    }
   }
 
   const { netWpm, grossWpm, accuracy, fingerAccuracy } = CalculateStats(
@@ -51,19 +62,26 @@ export async function POST(request: NextRequest) {
   const user = await AuthenticateUser();
   const email = user?.email || null;
 
-  const attempt = await CreateTestAttempt(
-    email,
-    attemptId,
+  const attempt: DbAttempt = {
+    id: attemptId,
+    email: email ?? "unknown",
     testId,
     accuracy,
-    grossWpm,
     netWpm,
+    grossWpm,
+    cameraActivated,
     fingerAccuracy,
     mistakes,
-    duration,
     userInput,
-    cameraActivated,
-  );
+    duration,
+    date: Date.now(),
+  };
+
+  if (randTest) {
+    attempt.test = randTest;
+  }
+
+  await CreateTestAttempt(attempt);
 
   if (!attempt) {
     return Response.json(BackendErrors.SERVER_ERROR, { status: 500 });

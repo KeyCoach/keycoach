@@ -12,7 +12,7 @@ export default function CameraWarning() {
     window.location.reload();
   }
   return (
-    <div className="absolute bottom-0 end-0 text-black">
+    <div className="fixed bottom-0 end-0 text-black">
       <div className="p-5">
         <div
           className="flex h-[4rem] w-[4rem] cursor-pointer items-center overflow-hidden rounded-lg bg-stone-50 transition-all duration-1000 hover:w-[24rem]"
@@ -21,7 +21,7 @@ export default function CameraWarning() {
           <div className="relative">
             <Image
               className="inline-block min-h-[4rem] min-w-[4rem] p-2"
-              src="/camera.png"
+              src="/img/camera.png"
               alt="camera icon"
               width={100}
               height={100}

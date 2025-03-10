@@ -30,7 +30,7 @@ export function LoadingPage({ sillyMessageIndex }: { sillyMessageIndex?: number 
   }, []);
 
   return (
-    <div className="h-page flex w-full flex-col items-center justify-center">
+    <div className="h-page-50 flex w-full flex-col items-center justify-end">
       <div>
         <LoadingSpinner size="w-20 h-20" />
       </div>

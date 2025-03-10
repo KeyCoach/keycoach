@@ -101,7 +101,7 @@ function Setup() {
               {!modelReady && (
                 <div className="flex flex-col items-center justify-center">
                   <LoadingSpinner />
-                  <div className="mt-3">Setting up camera... Please wait.</div>
+                  <div className="mt-3">Setting up camera... This may take a minute.</div>
                 </div>
               )}
             </div>
