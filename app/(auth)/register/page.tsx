@@ -1,17 +1,21 @@
 "use client";
 import axios from "axios";
 import { Link } from "@/components/link";
-import { Button, H1, LoadingOverlay, TextInput } from "@/components";
+import { Button, H1, LoadingOverlay, TextInput, TextInputWithAddon } from "@/components";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useUser } from "@/app/user-context";
 import { HasPasswordError } from "@/utils/has-password-error";
+import { Eye, EyeSlash } from "react-bootstrap-icons";
 
 export default function Register() {
   const [loading, setLoading] = useState(false);
   const { setUser } = useUser();
   const [error, setError] = useState("");
   const router = useRouter();
+  const [passwordVisible, setPasswordVisible] = useState(false);
+  const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
+
   async function HandleRegister(e: any) {
     e.preventDefault();
     const formData = new FormData(e.target);
@@ -56,6 +60,16 @@ export default function Register() {
         setLoading(false);
       });
   }
+
+  function TogglePasswordVisibility(id: string) {
+    const passwordField = document.getElementById(id) as HTMLInputElement;
+    if (passwordField.type === "password") {
+      passwordField.type = "text";
+    } else {
+      passwordField.type = "password";
+    }
+  }
+
   return (
     <div className="h-page w-full bg-white pt-20 dark:bg-slate-950">
       <LoadingOverlay show={loading} message="Registering..." />
@@ -104,25 +118,33 @@ export default function Register() {
               />
             </div>
             <div className="mb-4">
-              <TextInput
+              <TextInputWithAddon
                 label="Password"
-                type="password"
+                type={passwordVisible ? "text" : "password"}
                 id="password"
                 name="password"
                 autoComplete="new-password"
                 placeholder="&bull;&bull;&bull;&bull;&bull;&bull;"
                 required
+                addon={passwordVisible ? <Eye /> : <EyeSlash />}
+                addonPosition="right"
+                addonOnClickAction={() => setPasswordVisible((prev) => !prev)}
+                addonClassName="cursor-pointer"
               />
             </div>
             <div className="mb-4">
-              <TextInput
+              <TextInputWithAddon
                 label="Confirm Password"
-                type="password"
+                type={confirmPasswordVisible ? "text" : "password"}
                 id="confirm-password"
                 name="confirm-password"
                 autoComplete="new-password"
                 placeholder="&bull;&bull;&bull;&bull;&bull;&bull;"
                 required
+                addon={confirmPasswordVisible ? <Eye /> : <EyeSlash />}
+                addonPosition="right"
+                addonOnClickAction={() => setConfirmPasswordVisible((prev) => !prev)}
+                addonClassName="cursor-pointer"
               />
             </div>
 
