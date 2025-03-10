@@ -265,8 +265,14 @@ export function UpdateFingerTechnique(
 
   const usedCorrectFinger = UsedCorrectFinger(fingerDistances, correctFingers, keyPositions);
 
+  let wordIndex: number;
+  let letterIndex: number;
+
   setUserInput((prev) => {
     const userInput: Word[] = JSON.parse(JSON.stringify(prev));
+
+    wordIndex = userInput.length - 1;
+    letterIndex = userInput.at(-1)!.inputs.length;
 
     for (const word of userInput) {
       for (const letter of word.inputs) {
@@ -280,7 +286,16 @@ export function UpdateFingerTechnique(
   });
 
   if (!usedCorrectFinger) {
-    setMistakes((prev) => [...prev, { key, time: timeSinceStart, type: MistakeType.Technique }]);
+    setMistakes((prev) => [
+      ...prev,
+      {
+        wordIndex,
+        letterIndex,
+        key,
+        time: timeSinceStart,
+        type: MistakeType.Technique,
+      },
+    ]);
   }
 }
 

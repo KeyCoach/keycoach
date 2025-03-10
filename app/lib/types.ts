@@ -176,6 +176,8 @@ export enum MistakeType {
 
 export type Mistake = {
   key: string;
+  wordIndex: number;
+  letterIndex: number;
   time: number;
   type: MistakeType;
 };

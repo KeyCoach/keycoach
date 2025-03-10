@@ -26,7 +26,6 @@ export async function GetAttemptById(
       console.error(err);
       return null;
     });
-  console.log(item);
 
   if (!item) return false;
 

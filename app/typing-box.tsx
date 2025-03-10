@@ -77,11 +77,26 @@ export default function TypingBox({
           if (currWord.inputs.length !== currWord.word.length) {
             setMistakes((prev) => [
               ...prev,
-              { key, time: timeSinceStart, type: MistakeType.Missing },
+              {
+                wordIndex: userInput.length - 1,
+                letterIndex: currWord.inputs.length,
+                key,
+                time: timeSinceStart,
+                type: MistakeType.Missing,
+              },
             ]);
           }
         } else if (status === Letter.Wrong) {
-          setMistakes((prev) => [...prev, { key, time: timeSinceStart, type: MistakeType.Wrong }]);
+          setMistakes((prev) => [
+            ...prev,
+            {
+              wordIndex: userInput.length - 1,
+              letterIndex: currWord.inputs.length,
+              key,
+              time: timeSinceStart,
+              type: MistakeType.Wrong,
+            },
+          ]);
         }
       }
 
@@ -105,7 +120,7 @@ export default function TypingBox({
         return result;
       });
     },
-    [sentence, testStart, userInputRef, testFinished],
+    [sentence, testStart, userInputRef, testFinished, userInput],
   );
 
   useEffect(() => {
