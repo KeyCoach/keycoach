@@ -25,9 +25,9 @@ export default function Test() {
 
   // set Test parameters from local storage
   useEffect(() => {
-    const storedTestType = localStorage.getItem("testType");
-    const storedWordCount = localStorage.getItem("wordCount");
-    const storedDuration = localStorage.getItem("duration");
+    const storedTestType = localStorage.getItem("testType") ?? "Words";
+    const storedWordCount = localStorage.getItem("wordCount") ?? "50";
+    const storedDuration = localStorage.getItem("duration") ?? "30";
     if (storedTestType) setTestType(ToTestType(storedTestType));
     if (storedWordCount) setWordCount(parseInt(storedWordCount));
     if (storedDuration) setDuration(parseInt(storedDuration));
