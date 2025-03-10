@@ -110,6 +110,11 @@ export class LetterSelectScene extends Scene {
       });
     });
 
+    // Create background for the Back button
+    const backButtonBg = this.add.rectangle(75, height - 30, 100, 50, 0x000000, 0.5) // Adjust size & opacity
+    .setOrigin(0.5)
+    .setDepth(0);
+
     // Back button
     const backButton = this.add
       .text(32, height - 40, "← Back", {
