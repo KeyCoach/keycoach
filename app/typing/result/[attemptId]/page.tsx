@@ -5,6 +5,7 @@ import { GetAttemptById } from "@/service-interfaces/dynamo-db";
 import { AuthenticateUser } from "@/app/actions";
 import { Letter, type Attempt } from "@/app/lib/types";
 import { FingerPlacementAnalysis } from "@/components/finger-analysis";
+import { MistakesAnalysis } from "@/components/mistakes-analysis";
 
 export default async function TestResult({ params }: { params: Promise<{ attemptId: string }> }) {
   const user = await AuthenticateUser();
@@ -79,9 +80,6 @@ function Attempt({ attempt }: { attempt: Attempt }) {
         </div>
       </div>
 
-      {/* Finger Placement Analysis */}
-      <FingerPlacementAnalysis attempt={attempt} />
-
       {/* Test Details */}
       <div className="rounded-xl bg-slate-50 p-6 shadow-lg dark:bg-slate-800">
         <h2 className="mb-4 text-xl font-semibold text-slate-900 dark:text-slate-50">
@@ -100,9 +98,11 @@ function Attempt({ attempt }: { attempt: Attempt }) {
             </p>
           </div>
           <div>
-            <p className="mb-2">
-              <span className="font-medium">Author:</span> {attempt.test.author}
-            </p>
+            {attempt.test.author && (
+              <p className="mb-2">
+                <span className="font-medium">Author:</span> {attempt.test.author}
+              </p>
+            )}
             <p className="mb-2">
               <span className="font-medium">Difficulty:</span> {attempt.test.difficulty}
             </p>
@@ -112,6 +112,12 @@ function Attempt({ attempt }: { attempt: Attempt }) {
           </div>
         </div>
       </div>
+
+      {/* Finger Placement Analysis */}
+      <FingerPlacementAnalysis attempt={attempt} />
+
+      {/* Finger Placement Analysis */}
+      <MistakesAnalysis attempt={attempt} />
 
       {/* Test Text */}
       <div className="rounded-xl bg-slate-50 p-6 shadow-lg dark:bg-slate-800">

@@ -70,7 +70,7 @@ export default function TypingBox({
           setTestStart(Date.now());
         }
         const currWord = userInputRef.current.at(-1)!;
-        const currLetter = currWord.word[currWord.inputs.length];
+        const currLetter = currWord.word[currWord.inputs.length] ?? " ";
         const status = currLetter !== key ? Letter.Wrong : Letter.Correct;
 
         if (key === " ") {
@@ -80,7 +80,7 @@ export default function TypingBox({
               {
                 wordIndex: userInput.length - 1,
                 letterIndex: currWord.inputs.length,
-                key,
+                key: currLetter,
                 time: timeSinceStart,
                 type: MistakeType.Missing,
               },
@@ -92,7 +92,7 @@ export default function TypingBox({
             {
               wordIndex: userInput.length - 1,
               letterIndex: currWord.inputs.length,
-              key,
+              key: currLetter,
               time: timeSinceStart,
               type: MistakeType.Wrong,
             },
