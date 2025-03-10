@@ -9,7 +9,7 @@ export async function GenerateWordsTest(wordCount: number): Promise<Test> {
     src: null,
     author: null,
     textBody: words.join(" "),
-    charCount: words.length,
+    charCount: words.join(" ").split("").length,
     wordCount: wordCount,
     difficulty: 1,
     type: TestType.Words,

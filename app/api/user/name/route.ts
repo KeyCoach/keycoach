@@ -24,7 +24,7 @@ export async function PATCH(request: NextRequest) {
 
   const token = CreateUserToken(updatedUser);
 
-  (await cookies()).set("token", token, { httpOnly: true });
+  (await cookies()).set("token", token);
 
   return Response.json({ message: "Success", user: updatedUser }, { status: 200 });
 }

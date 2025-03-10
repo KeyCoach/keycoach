@@ -16,7 +16,7 @@ export function Navbar() {
       style={{ height: "4.5rem" }}
       className={`top-0 z-50 w-full py-1 shadow-slate-300 ${
         isHomePage
-          ? "bg-cerulean-800 dark:bg-cerulean-800"
+          ? "bg-cerulean-800 dark:bg-cerulean-800 dark:text-slate-100"
           : "bg-slate-50 shadow-md shadow-slate-600 dark:bg-slate-950"
       }`}
     >

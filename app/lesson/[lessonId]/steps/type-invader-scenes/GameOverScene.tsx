@@ -3,7 +3,6 @@ import { Scene } from "phaser";
 import { colors, hexadecimalColors } from "@/constants/colors";
 import { KeyboardNavigation } from "@/utils/NavigationUtils";
 import { themeManager } from "@/utils/type-invader-game";
-import { MenuTitle } from "@/components/type-invader/MenuTitle";
 
 export class GameOverScene extends Scene {
   private score: number = 0;

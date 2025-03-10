@@ -19,7 +19,11 @@ export default function LessonDashboard() {
             const lessonPlan = lessonPlans[lesson];
             const link = lessonPlan ? `/lesson/${lesson}` : "/lesson";
             return (
-              <Link key={lesson} className="text-slate-900 no-underline" href={link}>
+              <Link
+                key={lesson}
+                className="text-slate-900 no-underline hover:no-underline"
+                href={link}
+              >
                 <Card
                   title={`Lesson ${lesson}`}
                   subtitle={`Learn essential typing skills about the ${lesson} key`}

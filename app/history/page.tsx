@@ -2,8 +2,8 @@ import { type User as TUser } from "@/app/lib/types";
 import { H1 } from "@/components";
 import { GetAttemptsByEmail } from "@/service-interfaces/dynamo-db";
 import { AuthenticateUser } from "@/app/actions";
-import { Link } from "@/components/link";
 import { Button } from "@/components";
+import { TestTextReview } from "../test-text-review";
 
 export default async function Results() {
   const user = await AuthenticateUser();
@@ -12,10 +12,8 @@ export default async function Results() {
       <div className="mx-auto w-full max-w-6xl p-6 text-slate-900 dark:text-slate-50">
         <div className="mb-6 flex items-center justify-between">
           <H1>Test History</H1>
-          <Button colorTheme="cerulean">
-            <Link className="block w-40 text-slate-50 no-underline" href="/dashboard">
-              Back to Dashboard
-            </Link>
+          <Button href="/dashboard" colorTheme="cerulean">
+            Back to Dashboard
           </Button>
         </div>
         {user ? (
@@ -25,10 +23,8 @@ export default async function Results() {
             <p className="mb-4 text-lg text-slate-700 dark:text-slate-300">
               Please log in to view your test history
             </p>
-            <Button colorTheme="cerulean">
-              <Link className="block w-40 text-slate-50 no-underline" href="/login">
-                Login
-              </Link>
+            <Button colorTheme="cerulean" href="/login">
+              Login
             </Button>
           </div>
         )}
@@ -45,10 +41,8 @@ async function History({ user }: { user: TUser }) {
         <p className="mb-4 text-lg text-slate-700 dark:text-slate-300">
           You haven't completed any tests yet
         </p>
-        <Button colorTheme="cerulean">
-          <Link className="block w-40 text-slate-50 no-underline" href="/typing/test">
-            Take your first test
-          </Link>
+        <Button colorTheme="cerulean" href="/typing/test">
+          Take your first test
         </Button>
       </div>
     );
@@ -129,10 +123,6 @@ async function History({ user }: { user: TUser }) {
                   </h3>
                   <div className="space-y-2 text-sm">
                     <p className="flex justify-between">
-                      <span className="text-slate-500 dark:text-slate-400">Test ID:</span>
-                      <span className="font-mono">{attempt.testId}</span>
-                    </p>
-                    <p className="flex justify-between">
                       <span className="text-slate-500 dark:text-slate-400">Difficulty:</span>
                       <span className="capitalize">{attempt.test.difficulty}</span>
                     </p>
@@ -159,7 +149,7 @@ async function History({ user }: { user: TUser }) {
                 <div className="rounded-lg bg-white p-4 dark:bg-slate-900">
                   <h3 className="mb-3 font-medium text-slate-900 dark:text-slate-100">Test Text</h3>
                   <div className="max-h-40 overflow-y-auto rounded border border-slate-200 bg-slate-50 p-3 text-sm text-slate-700 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300">
-                    {attempt.test.textBody}
+                    <TestTextReview attempt={attempt} />
                   </div>
                 </div>
 

@@ -12,10 +12,10 @@ export default function CameraWarning() {
     window.location.reload();
   }
   return (
-    <div className="fixed bottom-0 end-0 text-black">
+    <div className="fixed bottom-0 end-0">
       <div className="p-5">
         <div
-          className="flex h-[4rem] w-[4rem] cursor-pointer items-center overflow-hidden rounded-lg bg-stone-50 transition-all duration-1000 hover:w-[24rem]"
+          className="flex h-[4rem] w-[4rem] cursor-pointer items-center overflow-hidden rounded-lg bg-slate-100 shadow transition-all duration-1000 hover:w-[24rem] dark:bg-slate-900"
           onClick={ShutOffCamera}
         >
           <div className="relative">
@@ -31,7 +31,7 @@ export default function CameraWarning() {
             </div>
           </div>
 
-          <div className="min-w-[20rem] pe-2 text-sm leading-tight">
+          <div className="min-w-[20rem] px-2 text-sm leading-tight">
             Your privacy is important to us! You can turn off the camera at any time by clicking
             here.
           </div>

@@ -102,7 +102,7 @@ export default function Test() {
         <div>
           <div className="flex rounded-lg bg-slate-200 px-5 py-1 dark:bg-slate-900">
             <div
-              className={`mx-2 flex cursor-pointer items-center ${testType === TestType.Timed ? "text-amber-400" : "text-slate-500"}`}
+              className={`mx-2 flex cursor-pointer items-center ${testType === TestType.Timed ? "text-amber-600 dark:text-amber-400" : "dark:text-slate-500"}`}
               onClick={() => setTestType(TestType.Timed)}
             >
               <div className="inline-block pe-1">
@@ -111,14 +111,14 @@ export default function Test() {
               time
             </div>
             <div
-              className={`mx-2 flex cursor-pointer items-center ${testType === TestType.Words ? "text-amber-400" : "text-slate-500"}`}
+              className={`mx-2 flex cursor-pointer items-center ${testType === TestType.Words ? "text-amber-600 dark:text-amber-400" : "dark:text-slate-500"}`}
               onClick={() => setTestType(TestType.Words)}
             >
               <span className="pe-2 font-serif">A</span>
               words
             </div>
             <div
-              className={`mx-2 flex cursor-pointer items-center ${testType === TestType.Quote ? "text-amber-400" : "text-slate-500"}`}
+              className={`mx-2 flex cursor-pointer items-center ${testType === TestType.Quote ? "text-amber-600 dark:text-amber-400" : "dark:text-slate-500"}`}
               onClick={() => setTestType(TestType.Quote)}
             >
               <div className="inline-block pe-1 pt-[0.1rem]">
@@ -138,25 +138,25 @@ export default function Test() {
               }}
             >
               <div
-                className={`flex cursor-pointer items-center ${wordCount === 10 ? "text-amber-400" : "text-slate-500"}`}
+                className={`flex cursor-pointer items-center ${wordCount === 10 ? "text-amber-600 dark:text-amber-400" : "dark:text-slate-500"}`}
                 onClick={() => setWordCount(10)}
               >
                 10
               </div>
               <div
-                className={`cursor-pointer ${wordCount === 25 ? "text-amber-400" : "text-slate-500"}`}
+                className={`cursor-pointer ${wordCount === 25 ? "text-amber-600 dark:text-amber-400" : "dark:text-slate-500"}`}
                 onClick={() => setWordCount(25)}
               >
                 25
               </div>
               <div
-                className={`cursor-pointer ${wordCount === 50 ? "text-amber-400" : "text-slate-500"}`}
+                className={`cursor-pointer ${wordCount === 50 ? "text-amber-600 dark:text-amber-400" : "dark:text-slate-500"}`}
                 onClick={() => setWordCount(50)}
               >
                 50
               </div>
               <div
-                className={`cursor-pointer ${wordCount === 100 ? "text-amber-400" : "text-slate-500"}`}
+                className={`cursor-pointer ${wordCount === 100 ? "text-amber-600 dark:text-amber-400" : "dark:text-slate-500"}`}
                 onClick={() => setWordCount(100)}
               >
                 100
@@ -172,25 +172,25 @@ export default function Test() {
               }}
             >
               <div
-                className={`cursor-pointer ${duration === 15 ? "text-amber-400" : "text-slate-500"}`}
+                className={`cursor-pointer ${duration === 15 ? "text-amber-600 dark:text-amber-400" : "dark:text-slate-500"}`}
                 onClick={() => setDuration(15)}
               >
                 15
               </div>
               <div
-                className={`cursor-pointer ${duration === 30 ? "text-amber-400" : "text-slate-500"}`}
+                className={`cursor-pointer ${duration === 30 ? "text-amber-600 dark:text-amber-400" : "dark:text-slate-500"}`}
                 onClick={() => setDuration(30)}
               >
                 30
               </div>
               <div
-                className={`cursor-pointer ${duration === 60 ? "text-amber-400" : "text-slate-500"}`}
+                className={`cursor-pointer ${duration === 60 ? "text-amber-600 dark:text-amber-400" : "dark:text-slate-500"}`}
                 onClick={() => setDuration(60)}
               >
                 60
               </div>
               <div
-                className={`cursor-pointer ${duration === 120 ? "text-amber-400" : "text-slate-500"}`}
+                className={`cursor-pointer ${duration === 120 ? "text-amber-600 dark:text-amber-400" : "dark:text-slate-500"}`}
                 onClick={() => setDuration(120)}
               >
                 120
