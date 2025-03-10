@@ -61,15 +61,6 @@ export default function Register() {
       });
   }
 
-  function TogglePasswordVisibility(id: string) {
-    const passwordField = document.getElementById(id) as HTMLInputElement;
-    if (passwordField.type === "password") {
-      passwordField.type = "text";
-    } else {
-      passwordField.type = "password";
-    }
-  }
-
   return (
     <div className="h-page w-full bg-white pt-20 dark:bg-slate-950">
       <LoadingOverlay show={loading} message="Registering..." />

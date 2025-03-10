@@ -1,7 +1,6 @@
 "use client";
 import { useEffect } from "react";
 import { Button } from "@/components/button";
-import { Link } from "@/components/link";
 import { Confetti } from "@/components/confetti";
 import { FadeInSection } from "@/components/fade-in-section";
 import Image from "next/image";

@@ -1,4 +1,3 @@
-import { Link } from "@/components/link";
 import { Button, H1 } from "@/components";
 import { AuthenticateUser } from "@/app/actions";
 import { GetAttemptsByEmail } from "@/service-interfaces/dynamo-db";
