@@ -321,7 +321,7 @@ export default function TypingBox({
           {testType === TestType.Timed && <span>Time Left: {timeRemaining} s</span>}
         </div>
 
-        <div className="relative mb-8 max-h-[320px] min-h-[320px] overflow-hidden rounded-lg p-6 font-mono text-3xl leading-relaxed">
+        <div className="relative mb-2 max-h-[280px] min-h-[280px] overflow-hidden rounded-lg font-mono text-3xl leading-relaxed">
           <p
             className="absolute whitespace-pre-wrap text-slate-900 dark:text-slate-50"
             style={{ transform: `translateY(${scrollTranslate}px)` }}
