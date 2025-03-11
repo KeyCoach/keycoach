@@ -68,7 +68,7 @@ export default function Register() {
         <div className="rounded-xl bg-slate-50 p-8 shadow dark:bg-slate-800">
           <H1 className="mb-3 text-slate-900 dark:text-slate-50">Welcome to KeyCoach!</H1>
           <div className="mb-6 text-slate-600 dark:text-slate-400">
-            <Link href="/login" className="text-cerulean-600 underline dark:text-cerulean-400">
+            <Link href="/login" className="!text-cerulean-600 dark:!text-cerulean-400">
               Already have an account? Sign in.
             </Link>
           </div>

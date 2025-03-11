@@ -60,7 +60,7 @@ export default function Login() {
         <div className="rounded-xl bg-white p-8 shadow dark:bg-slate-800">
           <H1 className="mb-3 text-slate-900 dark:text-slate-50">Welcome Back!</H1>
           <div className="mb-6 text-slate-600 dark:text-slate-400">
-            <Link href="/register" className="text-cerulean-600 dark:text-cerulean-400">
+            <Link href="/register" className="!text-cerulean-600 dark:!text-cerulean-400">
               New to KeyCoach? Sign Up.
             </Link>
           </div>

@@ -279,6 +279,14 @@ export default function TypingBox({
     return <LoadingPage />;
   }
 
+  const letterClasses = {
+    correct: "text-slate-900 dark:text-slate-50",
+    wrong: "text-red-500 dark:text-red-400",
+    missing: "text-slate-400",
+    wrongFinger: "text-yellow-600 dark:text-yellow-400",
+  };
+  const wrongWordClass = "underline decoration-red-400";
+
   // TODO: make the typing box scroll with the cursor
   return (
     <div className="relative h-fit w-full max-w-7xl overflow-hidden rounded-lg bg-slate-200 dark:bg-slate-900">
@@ -296,13 +304,6 @@ export default function TypingBox({
               <span key={i}>
                 <span className="inline-block">
                   {word.inputs.map((input, j) => {
-                    const letterClasses = {
-                      correct: "text-slate-900 dark:text-slate-50",
-                      wrong: "text-red-500 dark:text-red-400",
-                      missing: "text-slate-400 dark:text-slate-500",
-                      wrongFinger: "text-orange-500 dark:text-orange-400",
-                    };
-
                     let letterClass = "";
                     if (input.status === Letter.Wrong) {
                       letterClass = letterClasses.wrong;
@@ -319,13 +320,13 @@ export default function TypingBox({
                       (input) => input.status === Letter.Correct && input.correctFinger !== false,
                     );
 
-                    const wrongWordClass = correctWord ? "" : "underline decoration-red-400";
+                    const wrongWord = correctWord ? "" : wrongWordClass;
                     return (
                       // letters they've typed so far
                       <span
                         key={"letter" + i + "," + j}
                         kc-id="letter"
-                        className={` ${letterClass} ${wrongWordClass}`}
+                        className={` ${letterClass} ${wrongWord}`}
                       >
                         {input.key}
                       </span>

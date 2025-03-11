@@ -9,7 +9,7 @@ export function TestTextReview({ attempt }: { attempt: Attempt }) {
             correct: "text-slate-900 dark:text-slate-50",
             wrong: "text-red-500 dark:text-red-400",
             missing: "text-slate-400 dark:text-slate-500",
-            wrongFinger: "text-orange-500 dark:text-orange-400",
+            wrongFinger: "text-yellow-500 dark:text-yellow-400",
           };
 
           let letterClass = "";

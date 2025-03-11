@@ -40,15 +40,15 @@ export default async function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} flex max-h-screen min-h-screen flex-col bg-slate-50 text-slate-950 dark:bg-slate-950 dark:text-slate-50`}
       >
         <UserProvider user={user}>
-          <Navbar />
-          <div className="h-page relative overflow-y-auto">
-            <HandTrackProvider>
+          <HandTrackProvider>
+            <Navbar />
+            <div className="h-page relative overflow-y-auto">
               <>
                 {children}
                 <CameraWarning />
               </>
-            </HandTrackProvider>
-          </div>
+            </div>
+          </HandTrackProvider>
         </UserProvider>
       </body>
     </html>
