@@ -59,11 +59,6 @@ export default function Login() {
       <div className="mx-auto w-full max-w-lg bg-slate-50 p-1 text-slate-900 dark:text-slate-50">
         <div className="rounded-xl bg-white p-8 shadow dark:bg-slate-800">
           <H1 className="mb-3 text-slate-900 dark:text-slate-50">Welcome Back!</H1>
-          <div className="mb-6 text-slate-600 dark:text-slate-400">
-            <Link href="/register" className="!text-cerulean-600 dark:!text-cerulean-400">
-              New to KeyCoach? Sign Up.
-            </Link>
-          </div>
 
           <form onSubmit={HandleLogin}>
             <div className="mb-4">
@@ -95,7 +90,13 @@ export default function Login() {
               />
             </div>
 
-            <div className="flex justify-end space-x-4">
+            {/* <div className="mb-6 text-slate-600 dark:text-slate-400">
+            </div> */}
+
+            <div className="flex justify-between items-center space-x-4">
+              <Link href="/register" className="!text-cerulean-600 dark:!text-cerulean-400">
+                New to KeyCoach? Sign Up.
+              </Link>
               <Button colorTheme="cerulean">Log In</Button>
             </div>
             {error && <p className="mt-3 text-red-600 dark:text-red-400">{error}</p>}

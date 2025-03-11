@@ -67,11 +67,6 @@ export default function Register() {
       <div className="mx-auto w-full max-w-lg p-1 text-slate-900 dark:text-slate-50">
         <div className="rounded-xl bg-slate-50 p-8 shadow dark:bg-slate-800">
           <H1 className="mb-3 text-slate-900 dark:text-slate-50">Welcome to KeyCoach!</H1>
-          <div className="mb-6 text-slate-600 dark:text-slate-400">
-            <Link href="/login" className="!text-cerulean-600 dark:!text-cerulean-400">
-              Already have an account? Sign in.
-            </Link>
-          </div>
 
           <form onSubmit={HandleRegister}>
             <div className="mb-4">
@@ -139,7 +134,10 @@ export default function Register() {
               />
             </div>
 
-            <div className="flex justify-end space-x-4">
+            <div className="flex justify-between items-center space-x-4">
+              <Link href="/login" className="!text-cerulean-600 dark:!text-cerulean-400">
+                Already have an account? Sign in.
+              </Link>
               <Button colorTheme="cerulean">Register</Button>
             </div>
             {error && <p className="mt-3 text-red-600 dark:text-red-400">{error}</p>}
