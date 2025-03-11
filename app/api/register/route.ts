@@ -7,7 +7,6 @@ import { cookies } from "next/headers";
 /** Register a new user. */
 export async function POST(request: NextRequest) {
   const { email, password, fname, lname } = await request.json();
-  console.log(email, password, fname, lname);
 
   if (!email || !password || !fname || !lname) {
     return BackendErrors.MISSING_ARGUMENTS;

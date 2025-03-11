@@ -312,7 +312,6 @@ export default function TypingBox({
   };
   const wrongWordClass = "underline decoration-red-400";
 
-  // TODO: make the typing box scroll with the cursor
   return (
     <div className="h-fit w-full max-w-7xl overflow-hidden rounded-lg bg-slate-100 p-8 dark:bg-slate-900">
       <div className="relative" ref={scrollAnchorRef}>

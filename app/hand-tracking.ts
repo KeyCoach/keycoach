@@ -307,7 +307,6 @@ function UsedCorrectFinger(
   const fCoords = keyPositions["KeyF"];
   const gCoords = keyPositions["KeyG"];
   const keyDistance = Math.sqrt((fCoords.x - gCoords.x) ** 2 + (fCoords.y - gCoords.y) ** 2);
-  console.log(keyDistance);
   const usedCorrectFinger = correctFingers.some(
     (fingerName) => fingerDistances[fingerName] < keyDistance * 1.2,
   );

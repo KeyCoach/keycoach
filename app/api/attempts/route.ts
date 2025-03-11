@@ -7,7 +7,6 @@ export async function GET() {
   const user = await AuthenticateUser();
 
   if (!user) {
-    // TODO: fix all these
     return BackendErrors.UNAUTHORIZED;
   }
 
