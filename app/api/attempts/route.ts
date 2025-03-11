@@ -7,13 +7,13 @@ export async function GET() {
   const user = await AuthenticateUser();
 
   if (!user) {
-    return Response.json(BackendErrors.INVALID_CREDENTIALS, { status: 401 });
+    return BackendErrors.UNAUTHORIZED;
   }
 
   const attempts = await GetAttemptsByEmail(user.email);
 
   if (!attempts) {
-    return Response.json(BackendErrors.ENTITY_NOT_FOUND, { status: 404 });
+    return BackendErrors.ENTITY_NOT_FOUND;
   }
 
   return Response.json({ attempts });

@@ -13,7 +13,7 @@ import {
   UpdateFingerTechnique,
 } from "@/app/hand-tracking";
 import { useHandTracking } from "@/app/hand-track-context";
-import axios from "axios";
+import axios from "@/app/axios-client";
 import { CalculateStats } from "@/utils/calculate-stats";
 
 export type OnTestCompleteCallback = (
@@ -43,7 +43,11 @@ export default function TypingBox({
   testType: TestType;
   duration: number;
 }) {
+  const [scrollTranslate, setScrollTranslate] = useState(0);
+  const cursorRef = useRef<HTMLSpanElement>(null);
+  const scrollAnchorRef = useRef<HTMLDivElement>(null);
   const testId = test.id;
+
   const { keyPositionsSet, settingUp, modelReady, keyPositions, detectHands, cameraActivated } =
     useHandTracking();
   const sentence = useMemo(() => test.textBody.split(" "), [test.textBody]);
@@ -128,6 +132,7 @@ export default function TypingBox({
     setUserInput([{ word: sentence[0], inputs: [] }]);
     setMistakes([]);
     setTimeRemaining(duration);
+    setScrollTranslate(0);
   }, [duration, sentence, testType]);
 
   useEffect(() => {
@@ -271,6 +276,26 @@ export default function TypingBox({
     cameraActivated,
   ]);
 
+  useEffect(() => {
+    if (!cursorRef.current || !scrollAnchorRef.current) {
+      return;
+    }
+
+    const scrollAnchorHeight =
+      scrollAnchorRef.current.getBoundingClientRect().bottom -
+      scrollAnchorRef.current.getBoundingClientRect().top;
+
+    const scrollAreaMidY =
+      scrollAnchorRef.current.getBoundingClientRect().top + scrollAnchorHeight / 2;
+
+    const cursorScrollDist = cursorRef.current.getBoundingClientRect().top - scrollAreaMidY;
+    console.log(cursorScrollDist);
+
+    if (cursorScrollDist > 0) {
+      setScrollTranslate((prev) => prev - cursorScrollDist);
+    }
+  }, [userInput]);
+
   if ((cameraSetup && !modelReady) || sendingRequest) {
     return <LoadingPage />;
   }
@@ -279,30 +304,33 @@ export default function TypingBox({
     return <LoadingPage />;
   }
 
-  // TODO: make the typing box scroll with the cursor
+  const letterClasses = {
+    correct: "text-slate-900 dark:text-slate-50",
+    wrong: "text-red-500 dark:text-red-400",
+    missing: "text-slate-400",
+    wrongFinger: "text-yellow-600 dark:text-yellow-400",
+  };
+  const wrongWordClass = "underline decoration-red-400";
+
   return (
-    <div className="relative h-fit w-full max-w-7xl overflow-hidden rounded-lg bg-slate-200 dark:bg-slate-900">
-      <div className="p-8">
+    <div className="h-fit w-full max-w-7xl overflow-hidden rounded-lg bg-slate-100 p-8 dark:bg-slate-900">
+      <div className="relative" ref={scrollAnchorRef}>
         <div className="mb-6 flex justify-between text-sm text-slate-600 dark:text-slate-400">
           <span>Words: {sentence.length}</span>
           {test.author && <span>Author: {test.author}</span>}
           {testType === TestType.Timed && <span>Time Left: {timeRemaining} s</span>}
         </div>
 
-        <div className="mb-8 min-h-[200px] rounded-lg p-6 font-mono text-3xl leading-relaxed">
-          <p className="whitespace-pre-wrap text-slate-900 dark:text-slate-50">
+        <div className="relative mb-8 max-h-[320px] min-h-[320px] overflow-hidden rounded-lg p-6 font-mono text-3xl leading-relaxed">
+          <p
+            className="absolute whitespace-pre-wrap text-slate-900 dark:text-slate-50"
+            style={{ transform: `translateY(${scrollTranslate}px)` }}
+          >
             {/*  words they have typed */}
             {userInput.map((word, i) => (
               <span key={i}>
                 <span className="inline-block">
                   {word.inputs.map((input, j) => {
-                    const letterClasses = {
-                      correct: "text-slate-900 dark:text-slate-50",
-                      wrong: "text-red-500 dark:text-red-400",
-                      missing: "text-slate-400 dark:text-slate-500",
-                      wrongFinger: "text-orange-500 dark:text-orange-400",
-                    };
-
                     let letterClass = "";
                     if (input.status === Letter.Wrong) {
                       letterClass = letterClasses.wrong;
@@ -319,22 +347,26 @@ export default function TypingBox({
                       (input) => input.status === Letter.Correct && input.correctFinger !== false,
                     );
 
-                    const wrongWordClass = correctWord ? "" : "underline decoration-red-400";
+                    const wrongWord = correctWord ? "" : wrongWordClass;
                     return (
                       // letters they've typed so far
                       <span
                         key={"letter" + i + "," + j}
                         kc-id="letter"
-                        className={` ${letterClass} ${wrongWordClass}`}
+                        className={` ${letterClass} ${wrongWord}`}
                       >
                         {input.key}
                       </span>
                     );
                   })}
                   {/* their cursor */}
+                  <span ref={cursorRef}>
+                    {/* ref for cursor that doesn't animate and do weird stuff */}
+                  </span>
                   {i === userInput.length - 1 && (
                     <span className="blink absolute font-bold">⎸</span>
                   )}
+
                   {/* the rest of the word */}
                   {word.word
                     ?.slice(word.inputs.length)

@@ -6,7 +6,7 @@ export async function GET() {
   const test = await GetRandomTest();
 
   if (!test) {
-    return Response.json(BackendErrors.SERVER_ERROR, { status: 500 });
+    return BackendErrors.SERVER_ERROR;
   }
 
   return Response.json({ test }, { headers: { "Cache-Control": "no-store" } });

@@ -7,19 +7,19 @@ export async function DELETE() {
   const user = await AuthenticateUser();
 
   if (!user) {
-    return Response.json(BackendErrors.INVALID_CREDENTIALS, { status: 401 });
+    return BackendErrors.UNAUTHORIZED;
   }
 
   const deleteAttemptsSuccess = await DeleteUserAttempts(user.email);
 
   if (!deleteAttemptsSuccess) {
-    return Response.json(BackendErrors.SERVER_ERROR, { status: 500 });
+    return BackendErrors.SERVER_ERROR;
   }
 
   const deleteUserSuccess = await DeleteUser(user.email);
 
   if (!deleteUserSuccess) {
-    return Response.json(BackendErrors.ENTITY_NOT_FOUND, { status: 404 });
+    return BackendErrors.ENTITY_NOT_FOUND;
   }
 
   (await cookies()).delete("token");

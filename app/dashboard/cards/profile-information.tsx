@@ -3,7 +3,7 @@
 import { HasPasswordError } from "@/utils/has-password-error";
 import { useUser } from "@/app/user-context";
 import { Button, LoadingOverlay, Modal, TextInput } from "@/components";
-import axios from "axios";
+import axios from "@/app/axios-client";
 import { useState } from "react";
 import { TrashFill } from "react-bootstrap-icons";
 

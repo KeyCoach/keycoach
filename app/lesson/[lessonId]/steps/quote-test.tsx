@@ -3,7 +3,7 @@ import { BufferScreen } from "./buffer-screen";
 import { useEffect, useState } from "react";
 import { Mistake, Test, TestType, Word } from "@/app/lib/types";
 import { useRouter } from "next/navigation";
-import axios from "axios";
+import axios from "@/app/axios-client";
 import TypingBox, { OnTestCompleteCallback } from "@/app/typing-box";
 import { Button, LoadingPage } from "@/components";
 import { CalculateStats } from "@/utils/calculate-stats";

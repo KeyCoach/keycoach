@@ -84,12 +84,7 @@ export type DbUser = User & {
 };
 
 export type Errors = {
-  [key: string]: {
-    code: string;
-    message: string;
-    details?: string;
-    status: number;
-  };
+  [key: string]: Response;
 };
 
 type Finger = {
