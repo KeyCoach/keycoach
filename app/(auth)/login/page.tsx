@@ -1,5 +1,5 @@
 "use client";
-import axios from "axios";
+import axios from "@/app/axios-client";
 import { Link } from "@/components/link";
 import { H1, TextInput, Button, LoadingOverlay, TextInputWithAddon } from "@/components";
 import { useRouter, useSearchParams } from "next/navigation";

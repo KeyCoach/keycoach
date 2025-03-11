@@ -1,7 +1,7 @@
 "use client";
 import { useUser } from "@/app/user-context";
 import { Button, LoadingSpinner, TextInput } from "@/components";
-import axios from "axios";
+import axios from "@/app/axios-client";
 import { useState } from "react";
 
 export default function GoalsCard({ avgSpeed }: { avgSpeed: number }) {

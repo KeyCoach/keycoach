@@ -1,5 +1,5 @@
 "use client";
-import axios from "axios";
+import axios from "@/app/axios-client";
 import { Link } from "@/components/link";
 import { Button, H1, LoadingOverlay, TextInput, TextInputWithAddon } from "@/components";
 import { useState } from "react";

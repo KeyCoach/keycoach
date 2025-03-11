@@ -13,7 +13,7 @@ import {
   UpdateFingerTechnique,
 } from "@/app/hand-tracking";
 import { useHandTracking } from "@/app/hand-track-context";
-import axios from "axios";
+import axios from "@/app/axios-client";
 import { CalculateStats } from "@/utils/calculate-stats";
 
 export type OnTestCompleteCallback = (
