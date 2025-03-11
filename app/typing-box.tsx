@@ -314,7 +314,7 @@ export default function TypingBox({
 
   // TODO: make the typing box scroll with the cursor
   return (
-    <div className="h-fit w-full max-w-7xl overflow-hidden rounded-lg bg-slate-200 p-8 dark:bg-slate-900">
+    <div className="h-fit w-full max-w-7xl overflow-hidden rounded-lg bg-slate-100 p-8 dark:bg-slate-900">
       <div className="relative" ref={scrollAnchorRef}>
         <div className="mb-6 flex justify-between text-sm text-slate-600 dark:text-slate-400">
           <span>Words: {sentence.length}</span>

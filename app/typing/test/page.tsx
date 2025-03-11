@@ -75,7 +75,7 @@ export default function Test() {
             {cameraActivated ? "Recalibrate Camera" : "Set up Camera"}
           </Button>
         </div>
-        <div className="m-8 h-fit rounded-lg shadow-md">
+        <div className="m-8 h-fit rounded-lg shadow-md p-6">
           <H2 className="">Color Key</H2>
           <hr className="my-3" />
           <div className="text-xl text-amber-800 dark:text-amber-200">
@@ -97,7 +97,7 @@ export default function Test() {
           <div className="mt-12">
             <div className="flex justify-center">
               <div>
-                <div className="flex rounded-lg bg-slate-200 px-12 py-2 dark:bg-slate-900">
+                <div className="flex rounded-lg bg-slate-100 px-12 py-2 dark:bg-slate-900">
                   <div
                     className={`mx-2 flex cursor-pointer items-center ${testType === TestType.Timed ? "text-orange-600 dark:text-yellow-400" : "text-slate-400 hover:text-slate-900 dark:text-slate-500 dark:hover:text-slate-50"}`}
                     onClick={() => setTestType(TestType.Timed)}
