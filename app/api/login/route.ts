@@ -11,13 +11,13 @@ export async function POST(request: NextRequest) {
   const { email, password } = await request.json();
 
   if (!email || !password) {
-    return Response.json(BackendErrors.MISSING_ARGUMENTS, { status: 422 });
+    return BackendErrors.MISSING_ARGUMENTS;
   }
 
   const user = await LoginValid(email, password);
 
   if (!user) {
-    return Response.json(BackendErrors.INVALID_CREDENTIALS, { status: 401 });
+    return BackendErrors.UNAUTHORIZED;
   }
 
   const token = CreateUserToken(user);

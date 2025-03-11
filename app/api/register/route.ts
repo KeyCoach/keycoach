@@ -10,13 +10,13 @@ export async function POST(request: NextRequest) {
   console.log(email, password, fname, lname);
 
   if (!email || !password || !fname || !lname) {
-    return Response.json(BackendErrors.MISSING_ARGUMENTS, { status: 422 });
+    return BackendErrors.MISSING_ARGUMENTS;
   }
 
   const newUser = await CreateDbUser(email, password, fname, lname);
 
   if (!newUser) {
-    return Response.json(BackendErrors.ENTITY_EXISTS, { status: 409 });
+    return BackendErrors.ENTITY_EXISTS;
   }
 
   const token = CreateUserToken(newUser);

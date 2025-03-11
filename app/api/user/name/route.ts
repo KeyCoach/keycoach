@@ -10,14 +10,18 @@ export async function PATCH(request: NextRequest) {
   const { fname, lname } = await request.json();
   const user = await AuthenticateUser();
 
-  if (!user || !fname || !lname) {
-    return Response.json(BackendErrors.MISSING_ARGUMENTS, { status: 422 });
+  if (!user) {
+    return BackendErrors.UNAUTHORIZED;
+  }
+
+  if (!fname || !lname) {
+    return BackendErrors.MISSING_ARGUMENTS;
   }
 
   const updatedDbUser = await UpdateUserProfile(user.email, fname, lname);
 
   if (!updatedDbUser) {
-    return Response.json(BackendErrors.SERVER_ERROR, { status: 500 });
+    return BackendErrors.SERVER_ERROR;
   }
 
   const { passwordHash, ...updatedUser } = updatedDbUser;

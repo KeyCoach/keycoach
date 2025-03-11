@@ -9,15 +9,20 @@ import { DbAttempt } from "@/app/lib/types";
 export async function GET(request: NextRequest) {
   const attemptId = request.nextUrl.searchParams.get("attemptId");
   const user = await AuthenticateUser();
-  const email = user?.email || null;
+
+  if (!user) {
+    return BackendErrors.UNAUTHORIZED;
+  }
+
+  const email = user.email;
 
   if (!attemptId) {
-    return Response.json(BackendErrors.MISSING_ARGUMENTS, { status: 422 });
+    return BackendErrors.MISSING_ARGUMENTS;
   }
 
   const attempt = await GetAttemptById(attemptId, email);
   if (!attempt) {
-    return Response.json(BackendErrors.ENTITY_NOT_FOUND, { status: 404 });
+    return BackendErrors.ENTITY_NOT_FOUND;
   }
 
   return Response.json(
@@ -46,13 +51,13 @@ export async function POST(request: NextRequest) {
     cameraActivated === undefined ||
     duration === undefined
   ) {
-    return Response.json(BackendErrors.MISSING_ARGUMENTS, { status: 422 });
+    return BackendErrors.MISSING_ARGUMENTS;
   }
 
   if (!randTest) {
     const test = await GetTestById(testId);
     if (!test) {
-      return Response.json(BackendErrors.ENTITY_NOT_FOUND, { status: 404 });
+      return BackendErrors.ENTITY_NOT_FOUND;
     }
   }
 
@@ -63,11 +68,11 @@ export async function POST(request: NextRequest) {
   );
 
   const user = await AuthenticateUser();
-  const email = user?.email || null;
+  const email = user?.email || "unknown";
 
   const attempt: DbAttempt = {
     id: attemptId,
-    email: email ?? "unknown",
+    email: email,
     testId,
     accuracy,
     netWpm,
@@ -87,7 +92,7 @@ export async function POST(request: NextRequest) {
   await CreateTestAttempt(attempt);
 
   if (!attempt) {
-    return Response.json(BackendErrors.SERVER_ERROR, { status: 500 });
+    return BackendErrors.SERVER_ERROR;
   }
 
   return Response.json({ attemptId: attempt.id }, { status: 200 });
