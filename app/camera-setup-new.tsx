@@ -1,4 +1,4 @@
-import { Divider, H2, H3, H4, LoadingSpinner, Modal } from "@/components";
+import { H2, LoadingSpinner, Modal } from "@/components";
 import { RefObject, useEffect, useRef, useState } from "react";
 import { Button } from "@/components";
 import { AddNewKey, defaultKeyPositions } from "@/app/hand-tracking";
@@ -171,7 +171,7 @@ function SetupInstructions() {
         <div>
           <p className="mb-3">
             Press on the keys to calibrate them. Follow the pattern in this video to calibrate your
-            keys. Make sure your whole hand is visible in the camera.
+            keys. Make sure your whole hand is visible in the video.
           </p>
           <p>
             With your right hand, type:
