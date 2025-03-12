@@ -7,6 +7,8 @@ export const INAPPROPRIATE_WORDS: Set<string> = new Set([
     "cum", "blowjob", "nipple", "orgasm", "rape", "molest", "incest", "hooker", 
     "prostitute", "nudity", "masturbate", "masturbation", "ejaculate", "ejaculation", "anal", "fetish", 
     "bikini", "topless", "stripper", "nude", "xxx", "pornography", "porno", "porn", "erotic", "twank", 
-    "gay", "transgender", "negro", "nigger", "woodcock", "cuckquean", "cuckold", "brassiere"
-  ]);
+    "gay", "transgender", "negro", "nigger", "woodcock", "cuckquean", "cuckold", "brassiere",
+    "transsexual", "transgender", "lesbians", "prostate", "breasts", "pregnancy", 
+    "explicit", "affair", "nuke"
+]);
   
