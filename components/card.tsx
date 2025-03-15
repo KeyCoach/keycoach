@@ -24,7 +24,7 @@ export function Card({
   imageAlt,
 }: CardProps) {
   return (
-    <div className="w-full max-w-xs transform overflow-hidden rounded-lg shadow-md transition-transform hover:scale-105 hover:shadow-lg">
+    <div className="w-full max-w-xs rounded-lg shadow-md dark:shadow-slate-600 shadow-slate-200 overflow-hidden transition-transform transform hover:scale-105 hover:shadow-lg">
       {imageUrl ? (
         <>
           <div className="relative h-40 w-full">

@@ -393,5 +393,735 @@ export const lessonPlans: LessonPlans = {
       },
     ],
   },
+  q: {
+    steps: [
+      {
+        id: "d6eec6a7-80c3-49ae-b7aa-1a950e5c423a",
+        node: <ConceptExplanation />,
+        name: "Concept Explanation",
+      },
+      {
+        id: "1e525e4d-c768-4554-b21a-b012f7d71c0d",
+        node: <QuoteTest testId="2k8h7q32-4if9-45qk-f7i1-6q743j10ei5" />,
+        name: "Quote Test",
+        cheer: "Great work in that last typing test.",
+      },
+      {
+        id: "a676a39e-2afc-4bde-ad15-f7d8e8545072",
+        node: <TypingGame />,
+        name: "Typing Game",
+        cheer: "Woah, speedy finders! You're doing great.",
+      },
+      {
+        id: "112f9a68-c8d3-4e89-8957-20e9812a9d7d",
+        node: <ReminderExplanation />,
+        name: "Quick Reminder",
+      },
+      {
+        id: "7f3b97ac-0057-4db6-994b-0acf1cc01b80",
+        node: <QuoteTest testId="3l9i8q43-5jg0-46ql-g8j2-7q854k21fj6" />,
+        name: "Quote Test",
+        cheer: "You're on fire! Keep up the good work.",
+      },
+      {
+        id: "a6c6a973-38f1-4fdb-8d59-8fc740392edc",
+        node: <TypingGame />,
+        name: "Typing Game",
+        cheer: "You blasted those asteroids!",
+      },
+      {
+        id: "b1e78373-f133-405d-a981-c7f50b560fb0",
+        node: <LessonComplete />,
+        name: "Lesson Complete",
+      },
+    ],
+  },
+  w: {
+    steps: [
+      {
+        id: "9c802b56-e986-4cdf-a847-ada2127655f4",
+        node: <ConceptExplanation />,
+        name: "Concept Explanation",
+      },
+      {
+        id: "66982f68-337c-4ea7-b763-a9e517f36fb2",
+        node: <QuoteTest testId="4m0j9w54-6kh1-47wm-h9k3-8w965l32gk7" />,
+        name: "Quote Test",
+        cheer: "Great work in that last typing test.",
+      },
+      {
+        id: "e7378098-ec1c-4d55-949f-f3db537848ed",
+        node: <TypingGame />,
+        name: "Typing Game",
+        cheer: "Woah, speedy finders! You're doing great.",
+      },
+      {
+        id: "8e72eb66-db4b-4766-ad35-7825c3cca121",
+        node: <ReminderExplanation />,
+        name: "Quick Reminder",
+      },
+      {
+        id: "c87401f9-9f7a-4978-862d-0a31f55fc074",
+        node: <QuoteTest testId="5n1k0w65-7li2-48wn-i0l4-9w076m43hl8" />,
+        name: "Quote Test",
+        cheer: "You're on fire! Keep up the good work.",
+      },
+      {
+        id: "88d0d7de-15eb-4327-a570-d6a801af1e23",
+        node: <TypingGame />,
+        name: "Typing Game",
+        cheer: "You blasted those asteroids!",
+      },
+      {
+        id: "65f50129-df1d-43c8-9c19-bc15c7c11eb0",
+        node: <LessonComplete />,
+        name: "Lesson Complete",
+      },
+    ],
+  },
+  e: {
+    steps: [
+      {
+        id: "969169ea-38a9-4dc9-9067-b11f6c2055ab",
+        node: <ConceptExplanation />,
+        name: "Concept Explanation",
+      },
+      {
+        id: "33ab7931-a21f-4942-840b-9287de8d389b",
+        node: <QuoteTest testId="6o2l1e76-8mj3-49eo-j1m5-0e187n54im9" />,
+        name: "Quote Test",
+        cheer: "Great work in that last typing test.",
+      },
+      {
+        id: "bb55f9eb-b7cb-45e4-b914-b305aa9e5e8c",
+        node: <TypingGame />,
+        name: "Typing Game",
+        cheer: "Woah, speedy finders! You're doing great.",
+      },
+      {
+        id: "dc88d010-65e1-4a2d-a008-846d3d4a4b1f",
+        node: <ReminderExplanation />,
+        name: "Quick Reminder",
+      },
+      {
+        id: "93ecb5ee-90c8-43e1-b3ae-37774be695e7",
+        node: <QuoteTest testId="7p3m2e87-9nk4-50ep-k2n6-1e298o65jn0" />,
+        name: "Quote Test",
+        cheer: "You're on fire! Keep up the good work.",
+      },
+      {
+        id: "ee99cf9e-ba30-4549-b61b-4bff51ff6a72",
+        node: <TypingGame />,
+        name: "Typing Game",
+        cheer: "You blasted those asteroids!",
+      },
+      {
+        id: "e861ab59-402b-4dad-9238-ec8a97a3fbed",
+        node: <LessonComplete />,
+        name: "Lesson Complete",
+      },
+    ],
+  },
+  r: {
+    steps: [
+      {
+        id: "b0b4838b-59c2-4b64-8341-661ff4faf16a",
+        node: <ConceptExplanation />,
+        name: "Concept Explanation",
+      },
+      {
+        id: "7dd64b9d-24e8-4888-ba8f-49080e76a5f7",
+        node: <QuoteTest testId="8q4n3r98-0ol5-51rq-l3o7-2r309p76ko1" />,
+        name: "Quote Test",
+        cheer: "Great work in that last typing test.",
+      },
+      {
+        id: "5f53f29d-5b2c-446d-9d57-7ebb7691f5f9",
+        node: <TypingGame />,
+        name: "Typing Game",
+        cheer: "Woah, speedy finders! You're doing great.",
+      },
+      {
+        id: "4f867077-4b18-4551-aad4-b20d9e94ca86",
+        node: <ReminderExplanation />,
+        name: "Quick Reminder",
+      },
+      {
+        id: "db89c0f9-b68d-4f2f-8a78-1727b492b961",
+        node: <QuoteTest testId="9r5o4r09-1pm6-52rr-m4p8-3r410q87lp2" />,
+        name: "Quote Test",
+        cheer: "You're on fire! Keep up the good work.",
+      },
+      {
+        id: "c03e7c18-a9cc-4dca-9a64-6e8d3efc99e0",
+        node: <TypingGame />,
+        name: "Typing Game",
+        cheer: "You blasted those asteroids!",
+      },
+      {
+        id: "178f202e-5043-4b29-a7f3-7f6e93515d5e",
+        node: <LessonComplete />,
+        name: "Lesson Complete",
+      },
+    ],
+  },
+  t: {
+    steps: [
+      {
+        id: "52d99367-9136-4c42-8413-0bd87d3df45f",
+        node: <ConceptExplanation />,
+        name: "Concept Explanation",
+      },
+      {
+        id: "32c3aae1-8b42-4e38-a1d0-ad20fbecd2f1",
+        node: <QuoteTest testId="0s6p5t10-2qn7-53ts-n5q9-4t521r98mq3" />,
+        name: "Quote Test",
+        cheer: "Great work in that last typing test.",
+      },
+      {
+        id: "a8f2790d-1572-463d-b7e0-223bed8b5aa3",
+        node: <TypingGame />,
+        name: "Typing Game",
+        cheer: "Woah, speedy finders! You're doing great.",
+      },
+      {
+        id: "3e665f68-754c-4c17-91ab-08ee06fb235a",
+        node: <ReminderExplanation />,
+        name: "Quick Reminder",
+      },
+      {
+        id: "5f8c6ad0-928f-4fa0-864a-2e8d11972392",
+        node: <QuoteTest testId="1t7q6t21-3ro8-54tt-o6r0-5t632s09nr4" />,
+        name: "Quote Test",
+        cheer: "You're on fire! Keep up the good work.",
+      },
+      {
+        id: "6a9dc7b6-9043-4894-b657-663bb34ea396",
+        node: <TypingGame />,
+        name: "Typing Game",
+        cheer: "You blasted those asteroids!",
+      },
+      {
+        id: "d500cd8e-3d87-4252-a6c8-73e36c787d33",
+        node: <LessonComplete />,
+        name: "Lesson Complete",
+      },
+    ],
+  },
+  y: {
+    steps: [
+      {
+        id: "89732c3d-7496-44d1-bfda-e3b0dc819d1f",
+        node: <ConceptExplanation />,
+        name: "Concept Explanation",
+      },
+      {
+        id: "c5827bf6-845e-492d-92a4-cdb0247a61a3",
+        node: <QuoteTest testId="2u8r7y32-4sp9-55yu-p7s1-6y743t10os5" />,
+        name: "Quote Test",
+        cheer: "Great work in that last typing test.",
+      },
+      {
+        id: "a1e40e57-f1df-4eef-9bcd-1a06341e6b31",
+        node: <TypingGame />,
+        name: "Typing Game",
+        cheer: "Woah, speedy finders! You're doing great.",
+      },
+      {
+        id: "be9f43cf-ed4c-4e68-a66c-c186b1bfd32d",
+        node: <ReminderExplanation />,
+        name: "Quick Reminder",
+      },
+      {
+        id: "37eb84b6-ccbd-4412-9a4a-259b11174dbf",
+        node: <QuoteTest testId="3v9s8y43-5tq0-56yv-q8t2-7y854u21pt6" />,
+        name: "Quote Test",
+        cheer: "You're on fire! Keep up the good work.",
+      },
+      {
+        id: "5cf312f9-8521-4c09-838c-c5c24480a0e1",
+        node: <TypingGame />,
+        name: "Typing Game",
+        cheer: "You blasted those asteroids!",
+      },
+      {
+        id: "2c1bc2d9-61a0-4815-8623-b5a41d932ac8",
+        node: <LessonComplete />,
+        name: "Lesson Complete",
+      },
+    ],
+  },
+  u: {
+    steps: [
+      {
+        id: "fcfb55ba-30c7-4086-b4da-ac6d58689425",
+        node: <ConceptExplanation />,
+        name: "Concept Explanation",
+      },
+      {
+        id: "f4941006-867c-4147-8a75-8fc3d7135948",
+        node: <QuoteTest testId="4w0t9u54-6ur1-57uw-r9u3-8u965v32qu7" />,
+        name: "Quote Test",
+        cheer: "Great work in that last typing test.",
+      },
+      {
+        id: "cba7700f-2e64-4363-a6a2-4557b8d167e0",
+        node: <TypingGame />,
+        name: "Typing Game",
+        cheer: "Woah, speedy finders! You're doing great.",
+      },
+      {
+        id: "0790036c-f567-436a-bb4f-ad77a426f5f4",
+        node: <ReminderExplanation />,
+        name: "Quick Reminder",
+      },
+      {
+        id: "12cd84dd-2c3e-45e4-a6cc-76aedf5f5599",
+        node: <QuoteTest testId="5x1u0u65-7vs2-58ux-s0v4-9u076w43rv8" />,
+        name: "Quote Test",
+        cheer: "You're on fire! Keep up the good work.",
+      },
+      {
+        id: "bd615958-3ee2-4ac7-9367-963ba7ce8523",
+        node: <TypingGame />,
+        name: "Typing Game",
+        cheer: "You blasted those asteroids!",
+      },
+      {
+        id: "f318794c-a650-4893-84e9-376620f57a4b",
+        node: <LessonComplete />,
+        name: "Lesson Complete",
+      },
+    ],
+  },
+  i: {
+    steps: [
+      {
+        id: "c605a36f-b7dd-4c5e-899c-09d017a8ef14",
+        node: <ConceptExplanation />,
+        name: "Concept Explanation",
+      },
+      {
+        id: "9974c29a-7e8b-4de5-b533-074c815a7972",
+        node: <QuoteTest testId="6y2v1i76-8wt3-59iy-t1w5-0i187x54sw9" />,
+        name: "Quote Test",
+        cheer: "Great work in that last typing test.",
+      },
+      {
+        id: "2c37eab3-d1ca-4123-9a3a-767889b06ff6",
+        node: <TypingGame />,
+        name: "Typing Game",
+        cheer: "Woah, speedy finders! You're doing great.",
+      },
+      {
+        id: "0d23b93f-a648-46f5-b3d0-579d64e2acc4",
+        node: <ReminderExplanation />,
+        name: "Quick Reminder",
+      },
+      {
+        id: "23e835f6-1c43-4ee3-b8a1-41cb82ace611",
+        node: <QuoteTest testId="7z3w2i87-9xu4-60iz-u2x6-1i298y65tx0" />,
+        name: "Quote Test",
+        cheer: "You're on fire! Keep up the good work.",
+      },
+      {
+        id: "379afa40-8649-45bd-934d-129440111aa8",
+        node: <TypingGame />,
+        name: "Typing Game",
+        cheer: "You blasted those asteroids!",
+      },
+      {
+        id: "2480ade4-931e-43e3-8376-ad2fb4cf1339",
+        node: <LessonComplete />,
+        name: "Lesson Complete",
+      },
+    ],
+  },
+  o: {
+    steps: [
+      {
+        id: "17b96817-8ad9-40ca-b712-8bf198316b2f",
+        node: <ConceptExplanation />,
+        name: "Concept Explanation",
+      },
+      {
+        id: "8bd01dc3-331b-4415-9fa6-71ffde1aaa7a",
+        node: <QuoteTest testId="8a4x3o98-0yv5-61oa-v3y7-2o309z76uy1" />,
+        name: "Quote Test",
+        cheer: "Great work in that last typing test.",
+      },
+      {
+        id: "358c7776-1860-4659-825a-0a38ea1e5825",
+        node: <TypingGame />,
+        name: "Typing Game",
+        cheer: "Woah, speedy finders! You're doing great.",
+      },
+      {
+        id: "98c24669-0668-4fd8-b354-b3126bea249c",
+        node: <ReminderExplanation />,
+        name: "Quick Reminder",
+      },
+      {
+        id: "516ab03d-1294-483e-9ec1-8f92132071bf",
+        node: <QuoteTest testId="9b5y4o09-1zw6-62ob-w4z8-3o410a87vz2" />,
+        name: "Quote Test",
+        cheer: "You're on fire! Keep up the good work.",
+      },
+      {
+        id: "4dbb9a14-3de9-48b9-9e7c-c8b59dd89fe7",
+        node: <TypingGame />,
+        name: "Typing Game",
+        cheer: "You blasted those asteroids!",
+      },
+      {
+        id: "c17b2d2d-4d85-49e3-870f-014cb5585e9d",
+        node: <LessonComplete />,
+        name: "Lesson Complete",
+      },
+    ],
+  },
+  p: {
+    steps: [
+      {
+        id: "db8cc3d2-fbe8-4c70-a4a7-cba3a0e0dd29",
+        node: <ConceptExplanation />,
+        name: "Concept Explanation",
+      },
+      {
+        id: "f80849a0-9324-49e1-bfcc-13d2a68198d0",
+        node: <QuoteTest testId="0c6z5p10-2ax7-63pc-x5a9-4p521b98wa3" />,
+        name: "Quote Test",
+        cheer: "Great work in that last typing test.",
+      },
+      {
+        id: "660044f6-de35-4918-988c-03e74b58c5fb",
+        node: <TypingGame />,
+        name: "Typing Game",
+        cheer: "Woah, speedy finders! You're doing great.",
+      },
+      {
+        id: "6edf4b94-67c8-4cf4-9179-901677a6d70f",
+        node: <ReminderExplanation />,
+        name: "Quick Reminder",
+      },
+      {
+        id: "b886b9f5-911c-45f1-81c7-f5ab03d4866e",
+        node: <QuoteTest testId="1d7a6p21-3by8-64pd-y6b0-5p632c09xb4" />,
+        name: "Quote Test",
+        cheer: "You're on fire! Keep up the good work.",
+      },
+      {
+        id: "8dc3e5d8-1ce4-4419-80d6-0c9693b59fd4",
+        node: <TypingGame />,
+        name: "Typing Game",
+        cheer: "You blasted those asteroids!",
+      },
+      {
+        id: "7d20438f-af1d-4506-bd0f-a720b458730f",
+        node: <LessonComplete />,
+        name: "Lesson Complete",
+      },
+    ],
+  },
+  z: {
+    steps: [
+      {
+        id: "9861dccd-83a6-43f9-b29b-176cf9eac566",
+        node: <ConceptExplanation />,
+        name: "Concept Explanation",
+      },
+      {
+        id: "a3e30350-1c9e-47bc-86da-5c40af55bf9e",
+        node: <QuoteTest testId="2e8b7z32-4cz9-65zc-z7d1-6z743e10de5" />,
+        name: "Quote Test",
+        cheer: "Great work in that last typing test.",
+      },
+      {
+        id: "392b4406-945c-4e79-8985-c5de7ff3f5d7",
+        node: <TypingGame />,
+        name: "Typing Game",
+        cheer: "Woah, speedy finders! You're doing great.",
+      },
+      {
+        id: "e0769612-e86d-49e3-acbd-5d3246f32213",
+        node: <ReminderExplanation />,
+        name: "Quick Reminder",
+      },
+      {
+        id: "af90d294-186d-4ce4-aa29-5a6ca13478a6",
+        node: <QuoteTest testId="3f9c8z43-5dz0-66zd-z8e2-7z854f21ef6" />,
+        name: "Quote Test",
+        cheer: "You're on fire! Keep up the good work.",
+      },
+      {
+        id: "db0d76df-3b71-485a-9013-0a786a9793d3",
+        node: <TypingGame />,
+        name: "Typing Game",
+        cheer: "You blasted those asteroids!",
+      },
+      {
+        id: "871bbc9c-38a5-479b-9094-3eeaadebc62c",
+        node: <LessonComplete />,
+        name: "Lesson Complete",
+      },
+    ],
+  },
+  x: {
+    steps: [
+      {
+        id: "d6625929-e259-4052-8cb2-98e76ead9983",
+        node: <ConceptExplanation />,
+        name: "Concept Explanation",
+      },
+      {
+        id: "2e405f6c-8d5b-4b72-89b8-4c07c286447d",
+        node: <QuoteTest testId="4g0d9x54-6ex1-67xe-x9f3-8x965g32fg7" />,
+        name: "Quote Test",
+        cheer: "Great work in that last typing test.",
+      },
+      {
+        id: "52c7467d-97dd-4be5-9dea-5a5d83529e14",
+        node: <TypingGame />,
+        name: "Typing Game",
+        cheer: "Woah, speedy finders! You're doing great.",
+      },
+      {
+        id: "f350640a-f2ef-455e-b395-34a35fb40785",
+        node: <ReminderExplanation />,
+        name: "Quick Reminder",
+      },
+      {
+        id: "5e809e20-218c-42a4-934f-4f9ab30b4067",
+        node: <QuoteTest testId="5h1e0x65-7fx2-68xf-x0g4-9x076h43gh8" />,
+        name: "Quote Test",
+        cheer: "You're on fire! Keep up the good work.",
+      },
+      {
+        id: "ccf0cb65-db5d-4a66-a370-851c2657dfaa",
+        node: <TypingGame />,
+        name: "Typing Game",
+        cheer: "You blasted those asteroids!",
+      },
+      {
+        id: "229d57de-89e4-4a20-9352-8cca64bef678",
+        node: <LessonComplete />,
+        name: "Lesson Complete",
+      },
+    ],
+  },
+  c: {
+    steps: [
+      {
+        id: "278f1ba0-68f0-48c6-b586-3879e1eb3bae",
+        node: <ConceptExplanation />,
+        name: "Concept Explanation",
+      },
+      {
+        id: "319c46cb-8db3-4847-8e7a-91338ab06870",
+        node: <QuoteTest testId="6i2f1c76-8gc3-69ci-c1h5-0c187i54hi9" />,
+        name: "Quote Test",
+        cheer: "Great work in that last typing test.",
+      },
+      {
+        id: "2c1d3176-7d8b-44c6-88f5-b46be59d254c",
+        node: <TypingGame />,
+        name: "Typing Game",
+        cheer: "Woah, speedy finders! You're doing great.",
+      },
+      {
+        id: "567bb054-d7c4-4f9b-a274-aa71370cc33b",
+        node: <ReminderExplanation />,
+        name: "Quick Reminder",
+      },
+      {
+        id: "1fc6cb5d-0679-4094-934f-4a051dcfbe64",
+        node: <QuoteTest testId="7j3g2c87-9hc4-70cj-c2i6-1c298j65ij0" />,
+        name: "Quote Test",
+        cheer: "You're on fire! Keep up the good work.",
+      },
+      {
+        id: "98300817-09cb-4c5a-8f79-075d8c148fe7",
+        node: <TypingGame />,
+        name: "Typing Game",
+        cheer: "You blasted those asteroids!",
+      },
+      {
+        id: "3b90aca8-aaed-4132-b5b8-0343d39bf5dd",
+        node: <LessonComplete />,
+        name: "Lesson Complete",
+      },
+    ],
+  },
+  v: {
+    steps: [
+      {
+        id: "10cfc910-00e3-48f1-988f-d00b4205648e",
+        node: <ConceptExplanation />,
+        name: "Concept Explanation",
+      },
+      {
+        id: "2e954579-281d-40fc-86dd-acc703750333",
+        node: <QuoteTest testId="8k4h3v98-0iv5-71vk-v3j7-2v309k76jk1" />,
+        name: "Quote Test",
+        cheer: "Great work in that last typing test.",
+      },
+      {
+        id: "723e6e3d-5ab5-46ec-becd-a90f1f92a1a6",
+        node: <TypingGame />,
+        name: "Typing Game",
+        cheer: "Woah, speedy finders! You're doing great.",
+      },
+      {
+        id: "8eeb32de-8740-4214-831c-8133302583f1",
+        node: <ReminderExplanation />,
+        name: "Quick Reminder",
+      },
+      {
+        id: "45ef5d4d-37b9-429f-81ee-b8701da42886",
+        node: <QuoteTest testId="9l5i4v09-1jv6-72vl-v4k8-3v410l87kl2" />,
+        name: "Quote Test",
+        cheer: "You're on fire! Keep up the good work.",
+      },
+      {
+        id: "6e42110a-b18d-47c3-aa9e-2d29c3c815d7",
+        node: <TypingGame />,
+        name: "Typing Game",
+        cheer: "You blasted those asteroids!",
+      },
+      {
+        id: "39c7cad3-9435-44b8-a71d-aa9bc0d6b459",
+        node: <LessonComplete />,
+        name: "Lesson Complete",
+      },
+    ],
+  },
+  b: {
+    steps: [
+      {
+        id: "ced84790-5cfb-43a9-a768-0b4c4925538a",
+        node: <ConceptExplanation />,
+        name: "Concept Explanation",
+      },
+      {
+        id: "57032307-7d8b-47cb-84eb-ad83f0ae5600",
+        node: <QuoteTest testId="0m6j5b10-2kb7-73bm-b5l9-4b521m98lm3" />,
+        name: "Quote Test",
+        cheer: "Great work in that last typing test.",
+      },
+      {
+        id: "c6f99fea-e661-4a4c-9b07-833d53df6179",
+        node: <TypingGame />,
+        name: "Typing Game",
+        cheer: "Woah, speedy finders! You're doing great.",
+      },
+      {
+        id: "0386f13c-13f0-4268-aec2-74ccd66e48c8",
+        node: <ReminderExplanation />,
+        name: "Quick Reminder",
+      },
+      {
+        id: "745ea351-9f9c-465a-ac98-63d62bf0b8cb",
+        node: <QuoteTest testId="1n7k6b21-3lb8-74bn-b6m0-5b632n09mn4" />,
+        name: "Quote Test",
+        cheer: "You're on fire! Keep up the good work.",
+      },
+      {
+        id: "b88dd313-ee2f-41af-b19c-a70edbb083f4",
+        node: <TypingGame />,
+        name: "Typing Game",
+        cheer: "You blasted those asteroids!",
+      },
+      {
+        id: "11d6c8f8-f867-490d-8b9a-038912e2db60",
+        node: <LessonComplete />,
+        name: "Lesson Complete",
+      },
+    ],
+  },
+  n: {
+    steps: [
+      {
+        id: "d17d869d-2567-43d8-96a7-34e9c79bc6ed",
+        node: <ConceptExplanation />,
+        name: "Concept Explanation",
+      },
+      {
+        id: "0d881710-dcc7-4c51-a362-f7d5abba0e46",
+        node: <QuoteTest testId="2o8l7n32-4mn9-75no-n7o1-6n743o10no5" />,
+        name: "Quote Test",
+        cheer: "Great work in that last typing test.",
+      },
+      {
+        id: "a17296ab-d37c-4888-a058-d0b674866d8e",
+        node: <TypingGame />,
+        name: "Typing Game",
+        cheer: "Woah, speedy finders! You're doing great.",
+      },
+      {
+        id: "f7b4aa1b-7b0f-4f8c-ab57-603642a5c997",
+        node: <ReminderExplanation />,
+        name: "Quick Reminder",
+      },
+      {
+        id: "eec30f34-542d-40d0-bc8f-4599b023f91e",
+        node: <QuoteTest testId="3p9m8n43-5on0-76np-n8p2-7n854p21op6" />,
+        name: "Quote Test",
+        cheer: "You're on fire! Keep up the good work.",
+      },
+      {
+        id: "ed2e94b4-0f97-4e43-ae83-a25cb4aa9265",
+        node: <TypingGame />,
+        name: "Typing Game",
+        cheer: "You blasted those asteroids!",
+      },
+      {
+        id: "767e79df-149e-4fa2-932c-e423d54f28da",
+        node: <LessonComplete />,
+        name: "Lesson Complete",
+      },
+    ],
+  },
+  m: {
+    steps: [
+      {
+        id: "532e8cb0-006f-43e3-8f63-55909cb54e94",
+        node: <ConceptExplanation />,
+        name: "Concept Explanation",
+      },
+      {
+        id: "c9841099-8e3b-41ac-b34b-055f5826bf58",
+        node: <QuoteTest testId="4q0n9m54-6pm1-77mq-m9q3-8m965q32pq7" />,
+        name: "Quote Test",
+        cheer: "Great work in that last typing test.",
+      },
+      {
+        id: "016b93f2-8521-4845-a918-de0dc7e72f13",
+        node: <TypingGame />,
+        name: "Typing Game",
+        cheer: "Woah, speedy finders! You're doing great.",
+      },
+      {
+        id: "a409ac6f-e1d5-4010-918a-ad7905af1555",
+        node: <ReminderExplanation />,
+        name: "Quick Reminder",
+      },
+      {
+        id: "389992eb-b501-443a-bc31-b765492e39bf",
+        node: <QuoteTest testId="5r1o0m65-7qm2-78mr-m0r4-9m076r43qr8" />,
+        name: "Quote Test",
+        cheer: "You're on fire! Keep up the good work.",
+      },
+      {
+        id: "9c55ed6d-381a-4c31-95df-4510fb3790dd",
+        node: <TypingGame />,
+        name: "Typing Game",
+        cheer: "You blasted those asteroids!",
+      },
+      {
+        id: "d24e6197-4b51-40a5-9957-c7a882ddf42d",
+        node: <LessonComplete />,
+        name: "Lesson Complete",
+      },
+    ],
+  },
 };
-
