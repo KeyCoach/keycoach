@@ -36,12 +36,6 @@ export class SettingsScene extends Scene {
     // Initialize keyboard navigation
     this.navigation = new KeyboardNavigation(this).init();
 
-    // Settings menu container
-    // const horizontalPadding = 80;
-    // const verticalPadding = 40;
-    // const menuHeight = 380;
-    // const menuWidth = 500;
-
     // Title
     this.add
       .text(width / 2, height / 6, "Settings", {

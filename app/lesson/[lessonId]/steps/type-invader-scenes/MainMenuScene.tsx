@@ -46,6 +46,14 @@ export class MainMenuScene extends Scene {
     this.load.audio("menu-music-2", "/type-invader/assets/audio/menu-2.mp3");
     this.load.audio("menu-music-3", "/type-invader/assets/audio/menu-3.mp3");
 
+    // tutorial
+    this.load.image("tutorial-1", "/type-invader/assets/img/tutorial/tutorial-1.png");
+    this.load.image("tutorial-2", "/type-invader/assets/img/tutorial/tutorial-2.png");
+    this.load.image("tutorial-3", "/type-invader/assets/img/tutorial/tutorial-3.png");
+    this.load.image("tutorial-4", "/type-invader/assets/img/tutorial/tutorial-4.png");
+    this.load.image("tutorial-5", "/type-invader/assets/img/tutorial/tutorial-5.png");
+    this.load.image("tutorial-6", "/type-invader/assets/img/tutorial/tutorial-6.png");
+
     // TOD: Add missile sound effects by theme
     // this.load.audio("{theme}-missile", "/type-invader/assets/audio/theme/missile.mp3");
   }
@@ -69,7 +77,7 @@ export class MainMenuScene extends Scene {
 
     // Create animated title using the new MenuTitle class
     // You can customize colors based on theme later
-    this.menuTitle = new MenuTitle(this, "TYPE INVADERS", height / 2 - 80, "48px", {
+    this.menuTitle = new MenuTitle(this, "TYPE INVADERS", height / 2 - 100, "48px", {
       main: colors.white,
       shadow1: "#00FFFF", // Cyan
       shadow2: "#FF00FF", // Magenta
@@ -82,7 +90,7 @@ export class MainMenuScene extends Scene {
 
     // Play button
     const playButton = this.add
-      .text(width / 2, height / 2, "Play Now", {
+      .text(width / 2, height / 2 - 20, "Play Now", {
         fontSize: "32px",
         fontFamily: "Monospace",
         color: colors.green,
@@ -96,7 +104,7 @@ export class MainMenuScene extends Scene {
 
     // Settings button
     const settingsButton = this.add
-      .text(width / 2, height / 2 + 60, "Settings", {
+      .text(width / 2, height / 2 + 40, "Settings", {
         fontSize: "32px",
         fontFamily: "Monospace",
         color: colors.green,
@@ -107,6 +115,20 @@ export class MainMenuScene extends Scene {
       .on("pointerover", () => settingsButton.setColor(colors.yellow))
       .on("pointerout", () => settingsButton.setColor(colors.green))
       .on("pointerdown", () => this.scene.start("SettingsScene"));
+
+    // How to play button
+    const howToPlayButton = this.add
+      .text(width / 2, height / 2 + 100, "How To Play", {
+        fontSize: "32px",
+        fontFamily: "Monospace",
+        color: colors.green,
+      })
+      .setOrigin(0.5)
+      .setDepth(1)
+      .setInteractive({ useHandCursor: true })
+      .on("pointerover", () => howToPlayButton.setColor(colors.yellow))
+      .on("pointerout", () => howToPlayButton.setColor(colors.green))
+      .on("pointerdown", () => this.scene.start("HowToPlayScene"));
 
     // Add to navigation system
     this.navigation.addItems([
@@ -119,6 +141,11 @@ export class MainMenuScene extends Scene {
         element: settingsButton,
         position: { row: 1, col: 0 },
         onSelect: () => this.scene.start("SettingsScene"),
+      },
+      {
+        element: howToPlayButton,
+        position: { row: 2, col: 0 },
+        onSelect: () => this.scene.start("HowToPlayScene"),
       },
     ]);
 
