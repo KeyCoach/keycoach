@@ -4,7 +4,7 @@ import { showVideo as setVideoVisible, startVideo } from "./p5";
 import { defaultKeyPositions, HandsFromTrackingResults } from "./hand-tracking";
 import { handposeCallback, Hands, HandTrackContextType } from "./lib/types";
 import p5Types from "p5";
-import CameraSetupModal from "./camera-setup";
+import CameraSetupModal from "./camera-setup-new";
 
 // loads ml5 onto the Window Object
 declare global {

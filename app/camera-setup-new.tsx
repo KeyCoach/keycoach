@@ -12,7 +12,7 @@ export default function CameraSetupModalNew() {
   return (
     <Modal
       modalTitle="Set Up Camera"
-      isOpen={true}
+      isOpen={settingUp}
       onCloseAction={() => setSettingUp(false)}
       confirmButtonAction={() => setSettingUp(false)}
       showCloseButton={false}
@@ -154,18 +154,18 @@ function SetupInstructions() {
     },
     {
       title: "Place Mirror",
-      vidUrl: "PlaceMirror.mp4",
+      vidUrl: "PlaceMirror3.mov",
       directions: "Place the mirror on your laptop in front of your camera.",
     },
     {
       title: "Set Up Camera",
-      vidUrl: "AdjustMirror.mp4",
+      vidUrl: "AdjustMirror3.mov",
       directions:
         "Adjust the mirror so that your entire keyboard is visible. Tilt your laptop up so it sees your keyboard from above and line up the top of the video with the top of your keyboard.",
     },
     {
       title: "Calibrate Keys",
-      vidUrl: "CalibrateKeys.mp4",
+      vidUrl: "CalibrateKeys3.mov",
 
       directions: (
         <div>
@@ -189,6 +189,11 @@ function SetupInstructions() {
       ),
     },
     {
+      title: "Adjust Calibration",
+      vidUrl: "FixKeys3.mov",
+      directions:
+      "If the keys are not calibrated correctly, click any letters that do not have a red dot in the center until all keys display a centered dot.",    },
+    {
       title: "Troubleshooting",
       directions: (
         <div>
@@ -201,6 +206,9 @@ function SetupInstructions() {
             <li>
               <span className="text-lg underline">Lighting:</span> Make sure you have good lighting
               and avoid glare on your screen or keyboard.
+            </li>
+            <li>
+              <span className="text-lg underline">Start Over:</span> If at any point you want to restart just click the startover buttons below.
             </li>
           </ol>
         </div>
