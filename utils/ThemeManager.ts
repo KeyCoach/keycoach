@@ -131,6 +131,18 @@ export class ThemeManager {
 			.setDepth(-1); // Consistent depth for easy finding later
 	}
 
+	createPlainBackground(): Phaser.GameObjects.Graphics | null {
+		if (!this.scene) return null;
+
+		const { width, height } = this.scene.cameras.main;
+		const background = this.scene.add.graphics();
+		background.fillStyle(this.getColor("plainBackground"), 1);
+		background.fillRect(0, 0, width, height);
+		background.setDepth(-1);
+
+		return background;
+	}
+
 	createMenuBackground(
 		config: ButtonGroupConfig = {}
 	): Phaser.GameObjects.Graphics | null {

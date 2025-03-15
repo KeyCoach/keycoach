@@ -99,12 +99,12 @@ export class ModeSelectScene extends Scene {
     ]);
 
     // Add instructions text
-    this.add
-      .text(width / 2, height - 50, "Use arrow keys to navigate, ENTER to select", {
-        fontSize: "16px",
-        fontFamily: "Monospace",
-        color: colors.white,
-      })
-      .setOrigin(0.5);
+    // this.add
+    //   .text(width / 2, height - 50, "Use arrow keys to navigate, ENTER to select", {
+    //     fontSize: "16px",
+    //     fontFamily: "Monospace",
+    //     color: colors.white,
+    //   })
+    //   .setOrigin(0.5);
   }
 }

@@ -46,14 +46,6 @@ export class MainMenuScene extends Scene {
     this.load.audio("menu-music-2", "/type-invader/assets/audio/menu-2.mp3");
     this.load.audio("menu-music-3", "/type-invader/assets/audio/menu-3.mp3");
 
-    // tutorial
-    this.load.image("tutorial-1", "/type-invader/assets/img/tutorial/tutorial-1.png");
-    this.load.image("tutorial-2", "/type-invader/assets/img/tutorial/tutorial-2.png");
-    this.load.image("tutorial-3", "/type-invader/assets/img/tutorial/tutorial-3.png");
-    this.load.image("tutorial-4", "/type-invader/assets/img/tutorial/tutorial-4.png");
-    this.load.image("tutorial-5", "/type-invader/assets/img/tutorial/tutorial-5.png");
-    this.load.image("tutorial-6", "/type-invader/assets/img/tutorial/tutorial-6.png");
-
     // TOD: Add missile sound effects by theme
     // this.load.audio("{theme}-missile", "/type-invader/assets/audio/theme/missile.mp3");
   }
@@ -150,14 +142,14 @@ export class MainMenuScene extends Scene {
     ]);
 
     // Add instructions text
-    this.add
-      .text(width / 2, height - 50, "Use arrow keys to navigate, ENTER to select", {
-        fontSize: "16px",
-        fontFamily: "Monospace",
-        color: colors.white,
-      })
-      .setOrigin(0.5)
-      .setDepth(1);
+    // this.add
+    //   .text(width / 2, height - 50, "Use arrow keys to navigate, ENTER to select", {
+    //     fontSize: "16px",
+    //     fontFamily: "Monospace",
+    //     color: colors.white,
+    //   })
+    //   .setOrigin(0.5)
+    //   .setDepth(1);
 
     // Initialize shooting star system
     this.nextStarTime = this.time.now + Phaser.Math.Between(500, 2000);

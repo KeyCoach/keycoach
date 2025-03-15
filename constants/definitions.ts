@@ -21,6 +21,7 @@ export interface ThemeAssets {
 		asteroidText: number;
 		buttonFont: number;
 		menuBackground: number;
+		plainBackground: number;
 		buttonBoxBackground: number;
 	};
 	sounds: {
