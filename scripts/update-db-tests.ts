@@ -322,6 +322,8 @@ const tests: Test[] = [
     difficulty: 5,
     author: null,
     src: null,
+    type: TestType.Quote,
+    duration: null,
   },
   {
     id: "3l9i8q43-5jg0-46ql-g8j2-7q854k21fj6",
@@ -332,6 +334,8 @@ const tests: Test[] = [
     difficulty: 5,
     author: null,
     src: null,
+    type: TestType.Quote,
+    duration: null,
   },
   {
     id: "4m0j9w54-6kh1-47wm-h9k3-8w965l32gk7",
@@ -342,6 +346,8 @@ const tests: Test[] = [
     difficulty: 5,
     author: null,
     src: null,
+    type: TestType.Quote,
+    duration: null,
   },
   {
     id: "5n1k0w65-7li2-48wn-i0l4-9w076m43hl8",
@@ -352,6 +358,8 @@ const tests: Test[] = [
     difficulty: 5,
     author: null,
     src: null,
+    type: TestType.Quote,
+    duration: null,
   },
   {
     id: "6o2l1e76-8mj3-49eo-j1m5-0e187n54im9",
@@ -362,6 +370,8 @@ const tests: Test[] = [
     difficulty: 5,
     author: null,
     src: null,
+    type: TestType.Quote,
+    duration: null,
   },
   {
     id: "7p3m2e87-9nk4-50ep-k2n6-1e298o65jn0",
@@ -372,6 +382,8 @@ const tests: Test[] = [
     difficulty: 5,
     author: null,
     src: null,
+    type: TestType.Quote,
+    duration: null,
   },
   {
     id: "8q4n3r98-0ol5-51rq-l3o7-2r309p76ko1",
@@ -382,6 +394,8 @@ const tests: Test[] = [
     difficulty: 5,
     author: null,
     src: null,
+    type: TestType.Quote,
+    duration: null,
   },
   {
     id: "9r5o4r09-1pm6-52rr-m4p8-3r410q87lp2",
@@ -392,6 +406,8 @@ const tests: Test[] = [
     difficulty: 5,
     author: null,
     src: null,
+    type: TestType.Quote,
+    duration: null,
   },
   {
     id: "0s6p5t10-2qn7-53ts-n5q9-4t521r98mq3",
@@ -402,6 +418,8 @@ const tests: Test[] = [
     difficulty: 5,
     author: null,
     src: null,
+    type: TestType.Quote,
+    duration: null,
   },
   {
     id: "1t7q6t21-3ro8-54tt-o6r0-5t632s09nr4",
@@ -412,6 +430,8 @@ const tests: Test[] = [
     difficulty: 5,
     author: null,
     src: null,
+    type: TestType.Quote,
+    duration: null,
   },
   {
     id: "2u8r7y32-4sp9-55yu-p7s1-6y743t10os5",
@@ -422,6 +442,8 @@ const tests: Test[] = [
     difficulty: 5,
     author: null,
     src: null,
+    type: TestType.Quote,
+    duration: null,
   },
   {
     id: "3v9s8y43-5tq0-56yv-q8t2-7y854u21pt6",
@@ -432,6 +454,8 @@ const tests: Test[] = [
     difficulty: 5,
     author: null,
     src: null,
+    type: TestType.Quote,
+    duration: null,
   },
   {
     id: "4w0t9u54-6ur1-57uw-r9u3-8u965v32qu7",
@@ -442,6 +466,8 @@ const tests: Test[] = [
     difficulty: 5,
     author: null,
     src: null,
+    type: TestType.Quote,
+    duration: null,
   },
   {
     id: "5x1u0u65-7vs2-58ux-s0v4-9u076w43rv8",
@@ -452,6 +478,8 @@ const tests: Test[] = [
     difficulty: 5,
     author: null,
     src: null,
+    type: TestType.Quote,
+    duration: null,
   },
   {
     id: "6y2v1i76-8wt3-59iy-t1w5-0i187x54sw9",
@@ -462,6 +490,8 @@ const tests: Test[] = [
     difficulty: 5,
     author: null,
     src: null,
+    type: TestType.Quote,
+    duration: null,
   },
   {
     id: "7z3w2i87-9xu4-60iz-u2x6-1i298y65tx0",
@@ -472,6 +502,8 @@ const tests: Test[] = [
     difficulty: 5,
     author: null,
     src: null,
+    type: TestType.Quote,
+    duration: null,
   },
   {
     id: "8a4x3o98-0yv5-61oa-v3y7-2o309z76uy1",
@@ -482,6 +514,8 @@ const tests: Test[] = [
     difficulty: 5,
     author: null,
     src: null,
+    type: TestType.Quote,
+    duration: null,
   },
   {
     id: "9b5y4o09-1zw6-62ob-w4z8-3o410a87vz2",
@@ -492,6 +526,8 @@ const tests: Test[] = [
     difficulty: 5,
     author: null,
     src: null,
+    type: TestType.Quote,
+    duration: null,
   },
   {
     id: "0c6z5p10-2ax7-63pc-x5a9-4p521b98wa3",
@@ -502,6 +538,8 @@ const tests: Test[] = [
     difficulty: 5,
     author: null,
     src: null,
+    type: TestType.Quote,
+    duration: null,
   },
   {
     id: "1d7a6p21-3by8-64pd-y6b0-5p632c09xb4",
@@ -512,6 +550,8 @@ const tests: Test[] = [
     difficulty: 5,
     author: null,
     src: null,
+    type: TestType.Quote,
+    duration: null,
   },
   {
     id: "2e8b7z32-4cz9-65zc-z7d1-6z743e10de5",
@@ -522,6 +562,8 @@ const tests: Test[] = [
     difficulty: 5,
     author: null,
     src: null,
+    type: TestType.Quote,
+    duration: null,
   },
   {
     id: "3f9c8z43-5dz0-66zd-z8e2-7z854f21ef6",
@@ -532,6 +574,8 @@ const tests: Test[] = [
     difficulty: 5,
     author: null,
     src: null,
+    type: TestType.Quote,
+    duration: null,
   },
   {
     id: "4g0d9x54-6ex1-67xe-x9f3-8x965g32fg7",
@@ -542,6 +586,8 @@ const tests: Test[] = [
     difficulty: 5,
     author: null,
     src: null,
+    type: TestType.Quote,
+    duration: null,
   },
   {
     id: "5h1e0x65-7fx2-68xf-x0g4-9x076h43gh8",
@@ -552,6 +598,8 @@ const tests: Test[] = [
     difficulty: 5,
     author: null,
     src: null,
+    type: TestType.Quote,
+    duration: null,
   },
   {
     id: "6i2f1c76-8gc3-69ci-c1h5-0c187i54hi9",
@@ -562,6 +610,8 @@ const tests: Test[] = [
     difficulty: 5,
     author: null,
     src: null,
+    type: TestType.Quote,
+    duration: null,
   },
   {
     id: "7j3g2c87-9hc4-70cj-c2i6-1c298j65ij0",
@@ -572,6 +622,8 @@ const tests: Test[] = [
     difficulty: 5,
     author: null,
     src: null,
+    type: TestType.Quote,
+    duration: null,
   },
   {
     id: "8k4h3v98-0iv5-71vk-v3j7-2v309k76jk1",
@@ -582,6 +634,8 @@ const tests: Test[] = [
     difficulty: 5,
     author: null,
     src: null,
+    type: TestType.Quote,
+    duration: null,
   },
   {
     id: "9l5i4v09-1jv6-72vl-v4k8-3v410l87kl2",
@@ -592,6 +646,8 @@ const tests: Test[] = [
     difficulty: 5,
     author: null,
     src: null,
+    type: TestType.Quote,
+    duration: null,
   },
   {
     id: "0m6j5b10-2kb7-73bm-b5l9-4b521m98lm3",
@@ -602,6 +658,8 @@ const tests: Test[] = [
     difficulty: 5,
     author: null,
     src: null,
+    type: TestType.Quote,
+    duration: null,
   },
   {
     id: "1n7k6b21-3lb8-74bn-b6m0-5b632n09mn4",
@@ -612,6 +670,8 @@ const tests: Test[] = [
     difficulty: 5,
     author: null,
     src: null,
+    type: TestType.Quote,
+    duration: null,
   },
   {
     id: "2o8l7n32-4mn9-75no-n7o1-6n743o10no5",
@@ -622,6 +682,8 @@ const tests: Test[] = [
     difficulty: 5,
     author: null,
     src: null,
+    type: TestType.Quote,
+    duration: null,
   },
   {
     id: "3p9m8n43-5on0-76np-n8p2-7n854p21op6",
@@ -632,6 +694,8 @@ const tests: Test[] = [
     difficulty: 5,
     author: null,
     src: null,
+    type: TestType.Quote,
+    duration: null,
   },
   {
     id: "4q0n9m54-6pm1-77mq-m9q3-8m965q32pq7",
@@ -642,6 +706,8 @@ const tests: Test[] = [
     difficulty: 5,
     author: null,
     src: null,
+    type: TestType.Quote,
+    duration: null,
   },
   {
     id: "5r1o0m65-7qm2-78mr-m0r4-9m076r43qr8",
@@ -652,6 +718,8 @@ const tests: Test[] = [
     difficulty: 5,
     author: null,
     src: null,
+    type: TestType.Quote,
+    duration: null,
   },
 ];
 
