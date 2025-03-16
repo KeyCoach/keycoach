@@ -84,7 +84,7 @@ export function ConceptExplanation() {
     <div className="h-page flex items-center justify-center py-8">
       <div className="grid w-full max-w-5xl auto-rows-auto gap-8">
         <FadeInSection delay={0}>
-          <div className="flex min-h-[100px] flex-col items-center justify-center gap-4 rounded-2xl py-4 shadow-md dark:bg-slate-800 dark:shadow-slate-600">
+          <div className="flex min-h-[100px] flex-col items-center justify-center gap-4 rounded-2xl py-4 shadow-md bg-slate-200 dark:bg-slate-800 dark:shadow-slate-600">
             <h1 className="text-3xl font-bold">Learning the '{lessonId.toUpperCase()}' Key</h1>
             <p className="text-xl text-center max-w-2xl">
               Master the '{lessonId}' key to improve your typing speed and accuracy
@@ -105,14 +105,14 @@ export function ConceptExplanation() {
                   priority
                 />                
               </div>
-              <div className="bg-cerulean-50 dark:bg-cerulean-800 p-4 rounded-xl shadow-md max-w-xs">
+              <div className="bg-cerulean-200 dark:bg-cerulean-800 p-4 rounded-xl shadow-md max-w-xs">
                 <p className="text-lg">{steps[currentStep].mascotMessage}</p>
               </div>
             </div>
             
             {/* Lesson Content Side */}
             <div className="md:w-3/5">
-              <div className="bg-white dark:bg-slate-700 p-6 rounded-xl shadow-md">
+              <div className="bg-slate-100 dark:bg-slate-700 p-6 rounded-xl shadow-md">
                 <div className="flex items-center mb-4">
                   <div className="w-10 h-10 rounded-full bg-cerulean-600 flex items-center justify-center text-white font-bold">
                     {currentStep + 1}
@@ -130,8 +130,8 @@ export function ConceptExplanation() {
                 
                 {/* Compact Keyboard visualization */}
                 {currentStep === 0 && (
-                  <div className="my-4 p-4 bg-gray-100 dark:bg-slate-800 rounded-lg">
-                    <div className="text-center mb-2 text-sm uppercase font-semibold text-gray-600 dark:text-gray-300">
+                  <div className="my-4 p-4 bg-slate-100 dark:bg-slate-800 rounded-lg">
+                    <div className="text-center mb-2 text-sm uppercase font-semibold text-slate-600 dark:text-slate-300">
                       Keyboard Visualization
                     </div>
                     <div className="flex justify-center">

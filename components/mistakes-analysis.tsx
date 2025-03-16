@@ -24,7 +24,7 @@ export function MistakesAnalysis({ attempt }: { attempt: Attempt }) {
   const sortedErrors = Object.entries(errorMap).sort((a, b) => b[1] - a[1]);
 
   return (
-    <div className="rounded-2xl bg-white p-6 shadow-lg dark:bg-slate-800">
+    <div className="rounded-2xl bg-slate-100 p-6 shadow-lg dark:bg-slate-800">
       <div className="mb-6 flex items-center justify-between">
         <h2 className="text-2xl font-bold text-slate-800 dark:text-slate-100">Mistakes Analysis</h2>
       </div>

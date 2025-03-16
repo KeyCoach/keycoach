@@ -75,7 +75,7 @@ export default function Test() {
             {cameraActivated ? "Recalibrate Camera" : "Set up Camera"}
           </Button>
         </div>
-        <div className="m-8 h-fit rounded-lg shadow-md p-6">
+        <div className="m-8 h-fit rounded-lg bg-slate-100 dark:bg-slate-900 shadow-md p-6">
           <H2 className="">Color Key</H2>
           <hr className="my-3" />
           <div className="text-xl text-amber-800 dark:text-amber-200">

@@ -17,7 +17,7 @@ export function Navbar() {
       className={`top-0 z-50 w-full py-1 shadow-slate-300 ${
         isHomePage
           ? "bg-cerulean-800 dark:bg-cerulean-800 dark:text-slate-100"
-          : "bg-slate-50 shadow-md dark:shadow-slate-600 dark:bg-slate-950"
+          : "bg-slate-100 shadow-md dark:shadow-slate-600 dark:bg-slate-950"
       }`}
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">

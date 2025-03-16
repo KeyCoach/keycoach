@@ -79,7 +79,7 @@ function Attempt({ attempt }: { attempt: Attempt }) {
       </div>
 
       {/* Test Details */}
-      <div className="rounded-xl bg-slate-50 p-6 shadow-lg dark:bg-slate-800">
+      <div className="rounded-xl bg-slate-100 p-6 shadow-lg dark:bg-slate-800">
         <h2 className="mb-4 text-xl font-semibold text-slate-900 dark:text-slate-50">
           Test Details
         </h2>
@@ -118,7 +118,7 @@ function Attempt({ attempt }: { attempt: Attempt }) {
       <MistakesAnalysis attempt={attempt} />
 
       {/* Test Text */}
-      <div className="rounded-xl bg-slate-50 p-6 shadow-lg dark:bg-slate-800">
+      <div className="rounded-xl bg-slate-100 p-6 shadow-lg dark:bg-slate-800">
         <h2 className="mb-4 text-xl font-semibold text-slate-900 dark:text-slate-50">Test Text</h2>
         <p className="leading-relaxed text-slate-700 dark:text-slate-300">
           <TestTextReview attempt={attempt} />

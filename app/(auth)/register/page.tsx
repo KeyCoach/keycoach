@@ -65,7 +65,7 @@ export default function Register() {
     <div className="h-page w-full bg-white pt-20 dark:bg-slate-950">
       <LoadingOverlay show={loading} message="Registering..." />
       <div className="mx-auto w-full max-w-lg p-1 text-slate-900 dark:text-slate-50">
-        <div className="rounded-xl bg-slate-50 p-8 shadow dark:bg-slate-800">
+        <div className="rounded-xl bg-slate-100 p-8 shadow dark:bg-slate-800">
           <H1 className="mb-3 text-slate-900 dark:text-slate-50">Welcome to KeyCoach!</H1>
 
           <form onSubmit={HandleRegister}>

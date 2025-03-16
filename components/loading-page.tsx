@@ -38,7 +38,7 @@ export function LoadingPage({ sillyMessageIndex }: { sillyMessageIndex?: number 
         {sillyWaitingMessages.map((message, i) => (
           <div
             key={message}
-            className={`${isMounted && "duration-1000"} ${isMounted && messageIndex === i && "delay-700"} absolute mt-4 flex text-xl font-bold text-blue-500 transition-all ${messageIndex === i ? "opacity-100" : "opacity-0"}`}
+            className={`${isMounted && "duration-1000"} ${isMounted && messageIndex === i && "delay-700"} absolute mt-4 flex text-xl font-bold text-cerulean-500 transition-all ${messageIndex === i ? "opacity-100" : "opacity-0"}`}
           >
             <div className="mx-2 animate-bounce">⏳</div>
             {message}...

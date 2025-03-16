@@ -37,7 +37,7 @@ export default async function RootLayout({
         />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} flex max-h-screen min-h-screen flex-col bg-slate-50 text-slate-950 dark:bg-slate-950 dark:text-slate-50`}
+        className={`${geistSans.variable} ${geistMono.variable} flex max-h-screen min-h-screen flex-col bg-white text-slate-950 dark:bg-slate-950 dark:text-slate-50`}
       >
         <UserProvider user={user}>
           <HandTrackProvider>

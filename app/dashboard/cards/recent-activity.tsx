@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function RecentActivity({ attempts }: { attempts: Attempt[] }) {
   return (
-    <div className="rounded-xl bg-slate-50 p-6 shadow dark:bg-slate-800">
+    <div className="rounded-xl bg-slate-100 p-6 shadow dark:bg-slate-800">
       <div className="mb-4 flex items-center justify-between">
         <h2 className="text-xl font-semibold text-slate-900 dark:text-slate-50">Recent Activity</h2>
         <Link
@@ -37,7 +37,7 @@ export default function RecentActivity({ attempts }: { attempts: Attempt[] }) {
                 .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
                 .slice(0, 5)
                 .map((attempt, i) => (
-                  <tr key={i} className="border-b border-slate-100 dark:border-slate-800">
+                  <tr key={i} className="border-b border-slate-200 dark:border-slate-800">
                     <td className="py-3 text-slate-700 dark:text-slate-300">
                       {new Date(attempt.date).toLocaleDateString()}
                     </td>
