@@ -44,6 +44,7 @@ export default function TypingBox({
   duration: number;
 }) {
   const [scrollTranslate, setScrollTranslate] = useState(0);
+  const [typingStarted, setTypingStarted] = useState(false);
   const cursorRef = useRef<HTMLSpanElement>(null);
   const scrollAnchorRef = useRef<HTMLDivElement>(null);
   const testId = test.id;
@@ -69,6 +70,11 @@ export default function TypingBox({
       if (testFinished) {
         return;
       }
+
+      if (!typingStarted) {
+        setTypingStarted(true);
+      }
+
       if (normalKeys.includes(key)) {
         if (testStart === 0) {
           setTestStart(Date.now());
@@ -321,7 +327,10 @@ export default function TypingBox({
           {testType === TestType.Timed && <span>Time Left: {timeRemaining} s</span>}
         </div>
 
-        <div className="relative mb-2 max-h-[280px] min-h-[280px] overflow-hidden rounded-lg font-mono text-3xl leading-relaxed">
+        <div
+          className="relative mb-2 max-h-[280px] min-h-[280px] overflow-hidden rounded-lg font-mono text-3xl leading-relaxed"
+          id="test-text-body"
+        >
           <p
             className="absolute whitespace-pre-wrap text-slate-900 dark:text-slate-50"
             style={{ transform: `translateY(${scrollTranslate}px)` }}
@@ -396,6 +405,17 @@ export default function TypingBox({
             ))}
           </p>
         </div>
+
+        {/* Blur overlay */}
+        {!typingStarted && (
+          <div className="absolute inset-x-0 bottom-0 z-10 h-2/3">
+            {/* Solid blur for most of the area */}
+            <div className="rounded-lg absolute inset-x-0 bottom-0 h-[70%] bg-slate-100/85 backdrop-blur-md dark:bg-slate-900/85"></div>
+
+            {/* Small gradient transition at the top (10% of the overlay height) */}
+            <div className="absolute inset-x-0 top-0 h-[30%] bg-gradient-to-b from-transparent to-slate-100/85 dark:to-slate-900/85"></div>
+          </div>
+        )}
 
         {test.src && (
           <div className="text-right text-sm italic text-slate-600 dark:text-slate-400">
