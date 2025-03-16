@@ -171,8 +171,14 @@ export class GameScene extends Scene {
     if (this.isAdvancingLevel) return;
     this.isAdvancingLevel = true;
 
+    // Get the current level before advancing
+    const currentLevel = this.mechanics.getLevel();
+
     // Show typing stats between levels
     const stats = this.mechanics.getTypingStats();
+
+    // Ensure level is explicitly set in stats
+    stats.level = currentLevel;
     const statsUI = this.ui.showStats(stats);
 
     statsUI.continueButton.on("pointerdown", () => {

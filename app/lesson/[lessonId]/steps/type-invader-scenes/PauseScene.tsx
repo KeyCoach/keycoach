@@ -32,7 +32,7 @@ export class PauseScene extends Scene {
       .text(width / 2, height / 2 - 60, "PAUSED", {
         fontSize: "32px",
         fontFamily: "Monospace",
-        color: colors.yellow,
+        color: colors.teal,
       })
       .setOrigin(0.5);
 
