@@ -58,7 +58,7 @@ export default function GoalsCard({ avgSpeed }: { avgSpeed: number }) {
   }
 
   return (
-    <div className="rounded-xl bg-slate-50 p-6 shadow dark:bg-slate-800">
+    <div className="rounded-xl bg-slate-100 p-6 shadow dark:bg-slate-800">
       <h2 className="mb-4 text-xl font-semibold text-slate-900 dark:text-slate-50">
         Practice Goal
       </h2>

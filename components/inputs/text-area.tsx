@@ -26,7 +26,7 @@ export function TextArea({
       </label>
       <textarea
         rows={rows}
-        className={`w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-md text-slate-800 placeholder-slate-400 focus:border-blue-500 focus:ring focus:ring-blue-300 focus:ring-opacity-50 transition duration-200 ease-in-out box-border ${className}`}
+        className={`w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-md text-slate-800 placeholder-slate-400 focus:border-cerulean-500 focus:ring focus:ring-cerulean-300 focus:ring-opacity-50 transition duration-200 ease-in-out box-border ${className}`}
         {...props}
       />
     </div>
