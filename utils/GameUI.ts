@@ -1,5 +1,4 @@
-// GameUI.ts
-// import Phaser from "phaser";
+// GameUI.ts 
 import { Scene } from "phaser";
 import { colors, hexadecimalColors } from "@/constants/colors";
 import PauseButton from "@/components/type-invader/PauseButton";
@@ -17,6 +16,7 @@ export class GameUI {
   private progressBar: Phaser.GameObjects.Graphics;
   private progressBarBg: Phaser.GameObjects.Graphics;
   private statsElements: Phaser.GameObjects.GameObject[] = [];
+  private letterGlitchTimers: Phaser.Time.TimerEvent[] = [];
 
   constructor(scene: Scene, togglePause: () => void) {
     this.scene = scene;
@@ -29,10 +29,10 @@ export class GameUI {
       color: colors.red,
     });
 
-	// Create background for the Score section 
-	const scoreBg = this.scene.add.rectangle(110, height - 80, 170, 75, 0x000000, 0.5)
-	.setOrigin(0.5)
-	.setDepth(0);
+    // Create background for the Score section 
+    const scoreBg = this.scene.add.rectangle(110, height - 80, 170, 75, 0x000000, 0.5)
+      .setOrigin(0.5)
+      .setDepth(0);
 
     this.scoreText = this.scene.add.text(scoreLabel.x + scoreLabel.width - 2, 520, "0", {
       fontSize: "32px",
@@ -119,7 +119,7 @@ export class GameUI {
         {
           fontSize: "18px",
           color: colors.yellow,
-        },
+        }
       );
 
       this.scene.tweens.add({
@@ -235,6 +235,7 @@ export class GameUI {
     wordsCompleted: number;
     totalKeysPressed: number;
     mostProblematicChars?: [string, number][];
+    level?: number;
   }): StatsDisplay {
     const { width, height } = this.scene.cameras.main;
     this.clearStatsElements();
@@ -245,22 +246,32 @@ export class GameUI {
       .setDepth(3);
     this.statsElements.push(bg);
 
-    // Create stats text
-    const title = this.scene.add
-      .text(width / 2, height / 2 - 100, "LEVEL COMPLETED", {
-        // Was "YOUR TYPING STATS"
-        fontSize: "28px",
-        fontFamily: "Monospace",
-        color: colors.yellow,
-      })
-      .setOrigin(0.5)
-      .setDepth(3);
-    this.statsElements.push(title);
-
+    // Create animated level completion title
+    this.createAnimatedLevelTitle(stats.level || 1, width / 2, height / 2 - 130);
+    
+    // Add celebration particles
+    const particles = this.scene.add.particles(width / 2, height / 2 - 50, "particle", {
+      speed: { min: 150, max: 300 },
+      angle: { min: 0, max: 360 },
+      scale: { start: 0.8, end: 0 },
+      lifespan: 3000,
+      quantity: 3,
+      frequency: 200,
+      blendMode: "ADD",
+      tint: [0xffff00, 0x00ffff, 0xff00ff, 0xff0000, 0x00ff00] // Multi-colored particles
+    }).setDepth(2);
+    
+    // Stop particles after 3 seconds
+    this.scene.time.delayedCall(3000, () => {
+      particles.stop();
+    });
+    
+    this.statsElements.push(particles);
+    
     const statsText = this.scene.add
       .text(
         width / 2,
-        height / 2 - 50,
+        height / 2 - 10, // Adjusted position to accommodate larger title
         `WPM: ${stats.wpm}  |  Accuracy: ${Math.round(stats.accuracy)}%`,
         {
           fontSize: "22px",
@@ -275,7 +286,7 @@ export class GameUI {
     const wordsCompletedText = this.scene.add
       .text(
         width / 2,
-        height / 2 - 20,
+        height / 2 + 20, // Adjusted position to accommodate larger title
         `Words Completed: ${stats.wordsCompleted}  |  Keys Pressed: ${stats.totalKeysPressed}`,
         {
           fontSize: "18px",
@@ -298,7 +309,7 @@ export class GameUI {
       });
 
       const problemCharsText = this.scene.add
-        .text(width / 2, height / 2 + 20, errorText, {
+        .text(width / 2, height / 2 + 50, errorText, { // Adjusted position
           fontSize: "18px",
           fontFamily: "Monospace",
           color: colors.red,
@@ -310,8 +321,8 @@ export class GameUI {
 
     // Add continue button
     const continueButton = this.scene.add
-      .text(width / 2, height / 2 + 100, "Continue", {
-        fontSize: "24px",
+      .text(width / 2, height / 2 + 120, "Continue", { // Adjusted position
+        fontSize: "28px", // Increased font size for button
         fontFamily: "Monospace",
         color: colors.green,
       })
@@ -329,7 +340,129 @@ export class GameUI {
     };
   }
 
+  private createAnimatedLevelTitle(level: number, x: number, y: number) {
+    // Create title text
+    const titleText = `LEVEL ${level} COMPLETED`;
+    
+    // Create container for the title at its final destination position
+    const titleContainer = this.scene.add.container(x, y).setDepth(3);
+    this.statsElements.push(titleContainer);
+    
+    // Split text into individual letters
+    const letters = titleText.split('');
+    const letterSpacing = 28; // Spacing between letters
+    const totalWidth = letters.length * letterSpacing;
+    const startX = -totalWidth / 2 + letterSpacing / 2;
+    
+    // Create each letter with colored shadows for a glitch effect
+    letters.forEach((letter, i) => {
+      if (letter === ' ') {
+        // Skip spaces in animation
+        return;
+      }
+      
+      // Create letter container positioned at its final x position
+      const letterContainer = this.scene.add.container(startX + i * letterSpacing, 0);
+      
+      // Create shadow effects for the glitch animation
+      const shadow1 = this.scene.add.text(0, 0, letter, {
+        fontSize: "56px",
+        fontFamily: "Monospace",
+        color: "#00FFFF", // Cyan shadow
+      }).setOrigin(0.5).setAlpha(0.8);
+      
+      const shadow2 = this.scene.add.text(0, 0, letter, {
+        fontSize: "56px",
+        fontFamily: "Monospace",
+        color: "#FF00FF", // Magenta shadow
+      }).setOrigin(0.5).setAlpha(0.8);
+      
+      // Main text
+      const mainText = this.scene.add.text(0, 0, letter, {
+        fontSize: "56px",
+        fontFamily: "Monospace",
+        color: colors.yellow,
+      }).setOrigin(0.5);
+      
+      // Apply small random offset to the shadows for glitch effect
+      shadow1.setPosition(-4, 4);
+      shadow2.setPosition(4, -4);
+      
+      // Add elements to the letter container
+      letterContainer.add([shadow1, shadow2, mainText]);
+      
+      // Add letter container to the title container
+      titleContainer.add(letterContainer);
+      
+      // Initial position well above the screen
+      letterContainer.y = -400;
+      
+      // Add a slight random rotation
+      letterContainer.setRotation(Phaser.Math.DegToRad(Phaser.Math.Between(-15, 15)));
+      
+      // Animate the letter falling in from above with a delay based on position
+      this.scene.tweens.add({
+        targets: letterContainer,
+        y: 0, // Final position at the container's origin
+        rotation: 0, // Straighten the letter
+        duration: 800,
+        delay: i * 50, // Staggered delay for each letter
+        ease: 'Bounce.easeOut',
+        onComplete: () => {
+          // Add a subtle floating animation after the letter arrives
+          this.scene.tweens.add({
+            targets: letterContainer,
+            y: Phaser.Math.Between(-4, 4), // Random slight float
+            duration: Phaser.Math.Between(1500, 2500),
+            yoyo: true,
+            repeat: -1,
+            delay: Phaser.Math.Between(0, 300) // Randomize timing for each letter
+          });
+          
+          // Add occasional glitch effect
+          const glitchTimer = this.scene.time.addEvent({
+            delay: Phaser.Math.Between(1500, 3000),
+            callback: () => {
+              // Temporarily increase shadow offset for glitch effect
+              const origShadow1X = shadow1.x;
+              const origShadow1Y = shadow1.y;
+              const origShadow2X = shadow2.x;
+              const origShadow2Y = shadow2.y;
+              
+              shadow1.setPosition(
+                origShadow1X - Phaser.Math.Between(4, 8),
+                origShadow1Y + Phaser.Math.Between(4, 8)
+              );
+              
+              shadow2.setPosition(
+                origShadow2X + Phaser.Math.Between(4, 8),
+                origShadow2Y - Phaser.Math.Between(4, 8)
+              );
+              
+              // Reset after short delay
+              this.scene.time.delayedCall(150, () => {
+                shadow1.setPosition(origShadow1X, origShadow1Y);
+                shadow2.setPosition(origShadow2X, origShadow2Y);
+              });
+            },
+            callbackScope: this,
+            loop: true
+          });
+          
+          this.letterGlitchTimers.push(glitchTimer);
+        }
+      });
+    });
+  }
+
   private clearStatsElements() {
+    // Stop all glitch timers
+    this.letterGlitchTimers.forEach(timer => {
+      if (timer) timer.destroy();
+    });
+    this.letterGlitchTimers = [];
+    
+    // Destroy all elements
     this.statsElements.forEach((element) => element.destroy());
     this.statsElements = [];
   }

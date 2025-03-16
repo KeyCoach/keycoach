@@ -197,21 +197,16 @@ export class SettingsScene extends Scene {
     createVolumeSlider(height / 2 + 80, "Music:", gameSettings.musicVolume, 2);
     createVolumeSlider(height / 2 + 160, "SFX:", gameSettings.sfxVolume, 3);
 
-    // Create background for the Back button
-    const backButtonBg = this.add.rectangle(75, height - 30, 100, 50, 0x000000, 0.5) // Adjust size & opacity
-    .setOrigin(0.5)
-    .setDepth(0);
-
     // Back button
     const backButton = this.add
       .text(32, height - 40, "← Back", {
         fontSize: "24px",
         fontFamily: "Monospace",
-        color: colors.red,
+        color: colors.white,
       })
       .setInteractive({ useHandCursor: true })
       .on("pointerover", () => backButton.setColor(colors.yellow))
-      .on("pointerout", () => backButton.setColor(colors.red))
+      .on("pointerout", () => backButton.setColor(colors.white))
       .on("pointerdown", () => this.scene.start("MainMenuScene"));
 
     navigationItems.push({

@@ -174,6 +174,7 @@ export class GameMechanics {
       difficultWords: Array.from(this.typingStats.wordErrors.entries())
         .sort((a, b) => b[1] - a[1])
         .slice(0, 3),
+      level: this.level,
     };
   }
 

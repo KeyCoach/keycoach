@@ -67,6 +67,7 @@ export interface Asteroid {
 export interface StatsDisplay {
 	destroy: () => void;
 	continueButton: Phaser.GameObjects.Text;
+	level?: number;
 }
 
 export interface NavigationItem {
