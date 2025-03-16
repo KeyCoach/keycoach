@@ -28,9 +28,40 @@ export default async function RootLayout({
       <head>
         <title>Keycoach</title>
         <meta name="description" content="Improve your typing speed and accuracy with KeyCoach!" />
-        <link rel="icon" href="/favicon.ico" />
-        <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico" />
-        <link rel="apple-touch-icon" href="/favicon.ico" />
+
+        {/* Light mode favicon */}
+        <link rel="icon" href="favicon/favicon-light.ico" media="(prefers-color-scheme: light)" />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="32x32"
+          href="favicon/favicon-light.ico"
+          media="(prefers-color-scheme: light)"
+        />
+        <link
+          rel="apple-touch-icon"
+          href="favicon/favicon-light.ico"
+          media="(prefers-color-scheme: light)"
+        />
+
+        {/* Dark mode favicon */}
+        <link rel="icon" href="favicon/favicon-dark.ico" media="(prefers-color-scheme: dark)" />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="32x32"
+          href="favicon/favicon-dark.ico"
+          media="(prefers-color-scheme: dark)"
+        />
+        <link
+          rel="apple-touch-icon"
+          href="favicon/favicon-dark.ico"
+          media="(prefers-color-scheme: dark)"
+        />
+
+        {/* Fallback favicon */}
+        <link rel="icon" href="favicon/favicon-light.ico" />
+
         <meta
           name="keywords"
           content="typing, teacher, AI, handtracking, technique, keycoach, key coach"
