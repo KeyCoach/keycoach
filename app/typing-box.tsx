@@ -45,6 +45,8 @@ export default function TypingBox({
 }) {
   const [scrollTranslate, setScrollTranslate] = useState(0);
   const [typingStarted, setTypingStarted] = useState(false);
+  const [showTypingPrompt, setShowTypingPrompt] = useState(false);
+  const inactivityTimerRef = useRef<NodeJS.Timeout | null>(null);
   const cursorRef = useRef<HTMLSpanElement>(null);
   const scrollAnchorRef = useRef<HTMLDivElement>(null);
   const testId = test.id;
@@ -132,6 +134,27 @@ export default function TypingBox({
     },
     [sentence, testStart, userInputRef, testFinished, userInput],
   );
+
+  useEffect(() => {
+    // Clear any existing timer when typing starts
+    if (typingStarted && inactivityTimerRef.current) {
+      clearTimeout(inactivityTimerRef.current);
+      setShowTypingPrompt(false);
+      return;
+    }
+
+    if (!typingStarted) {
+      inactivityTimerRef.current = setTimeout(() => {
+        setShowTypingPrompt(true);
+      }, 3500);
+    }
+
+    return () => {
+      if (inactivityTimerRef.current) {
+        clearTimeout(inactivityTimerRef.current);
+      }
+    };
+  }, [typingStarted]);
 
   useEffect(() => {
     setTestStart(0);
@@ -410,10 +433,28 @@ export default function TypingBox({
         {!typingStarted && (
           <div className="absolute inset-x-0 bottom-0 z-10 h-2/3">
             {/* Solid blur for most of the area */}
-            <div className="rounded-lg absolute inset-x-0 bottom-0 h-[70%] bg-slate-100/85 backdrop-blur-md dark:bg-slate-900/85"></div>
+            <div className="absolute inset-x-0 bottom-0 h-[70%] rounded-lg bg-slate-100/85 backdrop-blur-md dark:bg-slate-900/85"></div>
 
             {/* Small gradient transition at the top (10% of the overlay height) */}
             <div className="absolute inset-x-0 top-0 h-[30%] bg-gradient-to-b from-transparent to-slate-100/85 dark:to-slate-900/85"></div>
+          </div>
+        )}
+
+        {/* {!typingStarted && showTypingPrompt && (
+          <div
+            className="animate-typingBoxFadeInUp absolute left-1/2 z-20 w-auto -translate-x-1/2 rounded-full bg-slate-800/80 px-4 py-2 text-sm text-white opacity-0 dark:bg-slate-200/80 dark:text-slate-900"
+            style={{ top: "60%" }}
+          >
+            Start typing to begin test
+          </div>
+        )} */}
+
+        {/* Typing prompt */}
+        {!typingStarted && showTypingPrompt && (
+          <div className="absolute inset-x-0 z-20 flex justify-center" style={{ top: "60%" }}>
+            <div className="animate-typingBoxFadeInUp rounded-full bg-slate-700/90 px-6 py-2 text-base text-white opacity-0 dark:bg-slate-300/90 dark:text-slate-900">
+              Start typing to begin test
+            </div>
           </div>
         )}
 
