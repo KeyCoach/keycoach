@@ -1,6 +1,5 @@
 "use client";
-import React, { useEffect } from "react";
-import { useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import TypingBox, { OnTestCompleteCallback } from "@/app/typing-box";
 import { useRouter } from "next/navigation";
 import { TestType, ToTestType, type Test } from "@/app/lib/types";
@@ -12,10 +11,41 @@ import { GenerateTimedTest, GenerateWordsTest } from "@/utils/generate-random-te
 import { TestTypeSelector } from "@/app/typing/test-type-selector";
 import { LiveTestStats } from "@/app/typing/live-test-stats";
 
+// TODO: Move this to a separate file
+// Custom hook for safely using localStorage
+function useLocalStorage<T>(key: string, initialValue: T): [T, (value: T) => void] {
+  const [storedValue, setStoredValue] = useState<T>(initialValue);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const item = localStorage.getItem(key);
+        setStoredValue(item ? JSON.parse(item) : initialValue);
+      } catch (error) {
+        console.error(`Error reading localStorage key "${key}":`, error);
+        setStoredValue(initialValue);
+      }
+    }
+  }, [key, initialValue]);
+
+  const setValue = (value: T) => {
+    try {
+      setStoredValue(value);
+      if (typeof window !== 'undefined') {
+        localStorage.setItem(key, JSON.stringify(value));
+      }
+    } catch (error) {
+      console.error(`Error setting localStorage key "${key}":`, error);
+    }
+  };
+
+  return [storedValue, setValue];
+}
+
 export default function Test() {
   const router = useRouter();
   const [test, setTest] = useState<Test | null>(null);
-  const { cameraActivated, setSettingUp } = useHandTracking();
+  const { cameraActivated, setSettingUp, settingUp } = useHandTracking();
   const [netWpm, setNetWpm] = useState(0);
   const [accuracy, setAccuracy] = useState(0);
   const [fingerAccuracy, setFingerAccuracy] = useState(0);
@@ -25,25 +55,36 @@ export default function Test() {
   const [duration, setDuration] = useState(30);
   const [loading, setLoading] = useState(false);
 
-  // set Test parameters from local storage
+  const [hasShownFeedbackModal, setHasShownFeedbackModal] = useLocalStorage<boolean>("hasShownFeedbackModal", false);
+  const previousSettingUpRef = useRef(settingUp);
+
   useEffect(() => {
-    const storedTestType = localStorage.getItem("testType") ?? "Words";
-    const storedWordCount = localStorage.getItem("wordCount") ?? "50";
-    const storedDuration = localStorage.getItem("duration") ?? "30";
-    if (storedTestType) setTestType(ToTestType(storedTestType));
-    if (storedWordCount) setWordCount(parseInt(storedWordCount));
-    if (storedDuration) setDuration(parseInt(storedDuration));
+    if (typeof window !== 'undefined') {
+      const storedTestType = localStorage.getItem("testType") ?? "Words";
+      const storedWordCount = localStorage.getItem("wordCount") ?? "50";
+      const storedDuration = localStorage.getItem("duration") ?? "30";
+      if (storedTestType) setTestType(ToTestType(storedTestType));
+      if (storedWordCount) setWordCount(parseInt(storedWordCount));
+      if (storedDuration) setDuration(parseInt(storedDuration));
+    }
   }, []);
 
   useEffect(() => {
-    if (test) {
+    if (test && typeof window !== 'undefined') {
       if (testType) localStorage.setItem("testType", testType);
       localStorage.setItem("wordCount", wordCount.toString());
       localStorage.setItem("duration", duration.toString());
     }
   }, [test, testType, wordCount, duration]);
 
-  // set Test
+  useEffect(() => {
+    if (previousSettingUpRef.current && !settingUp && cameraActivated && !hasShownFeedbackModal) {
+      setFeedbackModalOpen(true);
+      setHasShownFeedbackModal(true);
+    }
+    previousSettingUpRef.current = settingUp;
+  }, [settingUp, cameraActivated, hasShownFeedbackModal, setHasShownFeedbackModal]);
+
   useEffect(() => {
     if (testType === "Quote") {
       setLoading(true);
@@ -119,7 +160,7 @@ export default function Test() {
         cameraActivated={cameraActivated}
       />
 
-      {/* Comment out but keeping for reference */}
+      {/* Feedback modal that will automatically show after first camera setup */}
       <FeedbackInterpretModal
         isOpen={feedbackModalOpen}
         onCloseAction={() => setFeedbackModalOpen(false)}
