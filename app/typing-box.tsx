@@ -342,7 +342,7 @@ export default function TypingBox({
   const wrongWordClass = "underline decoration-red-400";
 
   return (
-    <div className="h-fit w-full max-w-7xl overflow-hidden rounded-lg bg-slate-100 p-8 dark:bg-slate-900">
+    <div className="h-fit w-full overflow-hidden rounded-lg bg-slate-100 p-8 dark:bg-slate-900">
       <div className="relative" ref={scrollAnchorRef}>
         <div className="mb-6 flex justify-between text-sm text-slate-600 dark:text-slate-400">
           <span>Words: {sentence.length}</span>
@@ -440,19 +440,10 @@ export default function TypingBox({
           </div>
         )}
 
-        {/* {!typingStarted && showTypingPrompt && (
-          <div
-            className="animate-typingBoxFadeInUp absolute left-1/2 z-20 w-auto -translate-x-1/2 rounded-full bg-slate-800/80 px-4 py-2 text-sm text-white opacity-0 dark:bg-slate-200/80 dark:text-slate-900"
-            style={{ top: "60%" }}
-          >
-            Start typing to begin test
-          </div>
-        )} */}
-
         {/* Typing prompt */}
         {!typingStarted && showTypingPrompt && (
           <div className="absolute inset-x-0 z-20 flex justify-center" style={{ top: "60%" }}>
-            <div className="animate-typingBoxFadeInUp rounded-full bg-slate-700/90 px-6 py-2 text-base text-white opacity-0 dark:bg-slate-300/90 dark:text-slate-900">
+            <div className="animate-typingBoxFadeInUp rounded-xl bg-slate-700/90 px-4 py-2 text-base text-white opacity-0 dark:bg-slate-300/90 dark:text-slate-900">
               Start typing to begin test
             </div>
           </div>
