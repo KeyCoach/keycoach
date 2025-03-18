@@ -1,8 +1,10 @@
 "use client";
 
+import { useState } from "react";
 import { Link } from "@/components/link";
-import { Card, H1, H3 } from "@/components";
+import { Card, H1, H3, Icon } from "@/components";
 import { lessonPlans } from "./lesson-plans";
+import { Badge, Button } from "@/components";
 
 const lessons = [
   "a", "b", "c", "d", "e", "f", "g", "h", "i", "j",
@@ -11,29 +13,121 @@ const lessons = [
 ];
 
 export default function LessonDashboard() {
+  const [screenView, setScreenView] = useState("grid");
+
   return (
     <div className="min-h-page mt-16 mb-12 flex w-full items-center bg-white dark:bg-slate-950">
-      <div className="mx-auto max-w-7xl text-center text-slate-900 dark:text-slate-50">
+      <div className="mx-auto max-w-7xl w-full text-center text-slate-900 dark:text-slate-50">
         <H1 className="mb-10">Lesson Dashboard</H1>
         <H3 className="mb-10 text-lg">
           Choose from our typing lessons below to improve your skills:
         </H3>
-        <div className="grid grid-cols-1 gap-4 px-4 sm:grid-cols-2 lg:grid-cols-4">
-          {lessons.map((lesson) => {
-            const lessonPlan = lessonPlans[lesson];
-            const link = lessonPlan ? `/lesson/${lesson}` : "/lesson";
-            return (
-              <Link key={lesson} className="text-slate-900 hover:no-underline" href={link}>
-                <Card
-                  title={`Lesson ${lesson.toUpperCase()}`}
-                  subtitle={`Learn essential typing skills about the ${lesson.toLocaleUpperCase()} key`}
-                  badgeIcon="remove"
-                  badgeTheme="amber"
-                  buttonText="Start Lesson"
-                />
-              </Link>
-            );
-          })}
+
+        <div className="w-full px-4">
+          <div className="flex justify-end w-full mb-6">
+            <div className="flex rounded-lg bg-slate-200 p-1 dark:bg-slate-800">
+              <button
+                onClick={() => setScreenView("grid")}
+                className={`flex items-center justify-center rounded-md p-2 transition-colors ${screenView === "grid"
+                  ? "bg-white text-slate-900 shadow-md dark:bg-slate-700 dark:text-white"
+                  : "text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white"
+                  }`}
+              >
+                <Icon src="/icons/grid.svg" alt="Grid view" w={24} h={24} />
+              </button>
+              <button
+                onClick={() => setScreenView("list")}
+                className={`flex items-center justify-center rounded-md p-2 transition-colors ${screenView === "list"
+                  ? "bg-white text-slate-900 shadow-md dark:bg-slate-700 dark:text-white"
+                  : "text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white"
+                  }`}
+              >
+                <Icon src="/icons/list.svg" alt="List view" w={24} h={24} />
+              </button>
+              {/* TODO: keyboard view later */}
+              {/* <button
+                onClick={() => setScreenView("keyboard")}
+                className={`flex items-center justify-center rounded-md p-2 transition-colors ${screenView === "keyboard"
+                  ? "bg-white text-slate-900 shadow-md dark:bg-slate-700 dark:text-white"
+                  : "text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white"
+                  }`}
+              >
+                <Icon src="/icons/keyboard.svg" alt="Keyboard view" w={24} h={24} />
+              </button> */}
+            </div>
+          </div>
+
+          {screenView === "grid" ? (
+            <div className="grid grid-cols-1 gap-x-4 gap-y-4 sm:grid-cols-2 lg:grid-cols-4">
+              {lessons.map((lesson) => {
+                const lessonPlan = lessonPlans[lesson];
+                const link = lessonPlan ? `/lesson/${lesson}` : "/lesson";
+                return (
+                  <Link key={lesson} className="text-slate-900 hover:no-underline" href={link}>
+                    <Card
+                      title={`Lesson ${lesson.toUpperCase()}`}
+                      subtitle={`Learn essential typing skills about the ${lesson.toLocaleUpperCase()} key`}
+                      badgeIcon="remove"
+                      badgeTheme="amber"
+                      buttonText="Start Lesson"
+                    />
+                  </Link>
+                );
+              })}
+            </div>
+          ) : (
+            <div className="w-full overflow-hidden rounded-lg border border-slate-200 dark:border-slate-700">
+              <table className="min-w-full divide-y divide-slate-200 dark:divide-slate-700">
+                <thead className="bg-slate-100 dark:bg-slate-800">
+                  <tr>
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-slate-700 dark:text-slate-300">
+                      Key
+                    </th>
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-slate-700 dark:text-slate-300 w-full">
+                      Description
+                    </th>
+                    <th scope="col" className="px-6 py-3 text-right text-xs font-medium uppercase tracking-wider text-slate-700 dark:text-slate-300">
+                      Progress
+                    </th>
+                    <th scope="col" className="px-6 py-3 text-right text-xs font-medium uppercase tracking-wider text-slate-700 dark:text-slate-300">
+                      Action
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-200 bg-white dark:divide-slate-700 dark:bg-slate-900">
+                  {lessons.map((lesson) => {
+                    const lessonPlan = lessonPlans[lesson];
+                    const link = lessonPlan ? `/lesson/${lesson}` : "/lesson";
+                    return (
+                      <tr key={lesson} className="hover:bg-slate-50 dark:hover:bg-slate-800">
+                        <td className="px-6 py-4 text-left">
+                          <span className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-amber-100 font-bold text-amber-800 dark:bg-amber-800 dark:text-amber-100">
+                            {lesson.toUpperCase()}
+                          </span>
+                        </td>
+                        <td className="px-6 py-4 text-left text-sm text-slate-700 dark:text-slate-300">
+                          Learn essential typing skills about the {lesson.toUpperCase()} key
+                        </td>
+                        <td className="px-6 py-4 text-right text-sm mx-auto flex justify-center">
+                          <Badge icon={"remove"} colorTheme={"amber"} className="w-fit" />
+                        </td>
+                        <td className="px-6 py-4 text-right text-sm">
+                          <Link
+                            href={link}
+                            className=""
+                          >
+                            <Button colorTheme="cerulean" >
+                              <span>{"Start Lesson"}</span>
+                            </Button>
+                          </Link>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          )}
         </div>
       </div>
     </div>
