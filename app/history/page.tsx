@@ -76,7 +76,7 @@ async function History({ user }: { user: TUser }) {
                       {Math.round(attempt.netWpm)}
                     </p>
                   </div>
-                  <div className="px-3 text-center">
+                  <div className="px-3 items-center text-center">
                     <p className="text-xs font-medium text-cerulean-700 dark:text-cerulean-400">
                       Accuracy
                     </p>
@@ -146,6 +146,14 @@ async function History({ user }: { user: TUser }) {
                   <h3 className="mb-3 font-medium text-slate-900 dark:text-slate-100">Test Text</h3>
                   <div className="max-h-40 overflow-y-auto rounded border border-slate-200 bg-slate-100 p-3 text-sm text-slate-700 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300">
                     <TestTextReview attempt={attempt} />
+                  </div>
+                  <div className="mt-4 pt-2 border-t border-slate-200 dark:border-slate-700 flex justify-end">
+                    <Button 
+                      href={`/typing/result/${attempt.id}`} 
+                      colorTheme="cerulean"
+                      className="w-full">
+                      View Detailed Results
+                    </Button>
                   </div>
                 </div>
 
