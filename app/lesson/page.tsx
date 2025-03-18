@@ -34,29 +34,38 @@ export default function LessonDashboard() {
   return (
     <div className="min-h-page mt-16 mb-12 flex w-full items-center bg-white dark:bg-slate-950">
       <div className="mx-auto max-w-7xl w-full text-center text-slate-900 dark:text-slate-50">
-        <H1 className="mb-10">Lesson Dashboard</H1>
-        <H3 className="mb-10 text-lg">
+        <H1 className="mb-8">Lesson Dashboard</H1>
+        <H3 className="mb-2 text-lg">
           Choose from our typing lessons below to improve your skills:
         </H3>
 
         <div className="w-full px-4">
-          <div className="flex justify-between w-full mb-6">
+          <div className="flex justify-between w-full mb-4 border-b-2 border-slate-800 rounded-t-lg">
             {/* Lesson type toggle */}
-            <div className="flex rounded-lg bg-slate-200 p-1 dark:bg-slate-800">
+            <div className="flex rounded-lg bg-slate-200 p-1 dark:bg-slate-800 relative rounded-b-none">
+              {/* Sliding background element */}
+              <div
+                className="absolute top-1 bottom-1 rounded-md bg-white shadow-md dark:bg-slate-700 transition-all duration-300 ease-in-out z-0"
+                style={{
+                  left: lessonType === "letters" ? "4px" : "calc(50% + 4px)",
+                  width: "calc(50% - 8px)",
+                }}
+              />
+
               <button
                 onClick={() => setLessonType("letters")}
-                className={`px-4 py-2 rounded-md transition-colors ${lessonType === "letters"
-                    ? "bg-white text-slate-900 shadow-md dark:bg-slate-700 dark:text-white"
-                    : "text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white"
+                className={`px-4 py-2 rounded-md transition-colors relative z-10 ${lessonType === "letters"
+                  ? "text-slate-900 dark:text-white"
+                  : "text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white"
                   }`}
               >
                 Letter Lessons
               </button>
               <button
                 onClick={() => setLessonType("special")}
-                className={`px-4 py-2 rounded-md transition-colors ${lessonType === "special"
-                    ? "bg-white text-slate-900 shadow-md dark:bg-slate-700 dark:text-white"
-                    : "text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white"
+                className={`px-4 py-2 rounded-md transition-colors relative z-10 ${lessonType === "special"
+                  ? "text-slate-900 dark:text-white"
+                  : "text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white"
                   }`}
               >
                 Special Lessons
@@ -64,21 +73,31 @@ export default function LessonDashboard() {
             </div>
 
             {/* View toggle */}
-            <div className="flex rounded-lg bg-slate-200 p-1 dark:bg-slate-800">
+            <div className="flex rounded-lg bg-slate-200 p-1 dark:bg-slate-800 relative rounded-b-none">
+              {/* Sliding background element */}
+              <div
+                className="absolute top-1 bottom-1 rounded-md bg-white shadow-md dark:bg-slate-700 transition-all duration-300 ease-in-out z-0"
+                style={{
+                  left: screenView === "grid" ? "4px" : "calc(50% + 4px)",
+                  width: "calc(50% - 8px)",
+                }}
+              />
+
+              {/* Buttons */}
               <button
                 onClick={() => setScreenView("grid")}
-                className={`flex items-center justify-center rounded-md p-2 transition-colors ${screenView === "grid"
-                    ? "bg-white text-slate-900 shadow-md dark:bg-slate-700 dark:text-white"
-                    : "text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white"
+                className={`flex items-center justify-center rounded-md p-2 transition-colors z-10 relative ${screenView === "grid"
+                  ? "text-slate-900 dark:text-white"
+                  : "text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white"
                   }`}
               >
                 <Icon src="/icons/grid.svg" alt="Grid view" w={24} h={24} />
               </button>
               <button
                 onClick={() => setScreenView("list")}
-                className={`flex items-center justify-center rounded-md p-2 transition-colors ${screenView === "list"
-                    ? "bg-white text-slate-900 shadow-md dark:bg-slate-700 dark:text-white"
-                    : "text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white"
+                className={`flex items-center justify-center rounded-md p-2 transition-colors z-10 relative ${screenView === "list"
+                  ? "text-slate-900 dark:text-white"
+                  : "text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white"
                   }`}
               >
                 <Icon src="/icons/list.svg" alt="List view" w={24} h={24} />
