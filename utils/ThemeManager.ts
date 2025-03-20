@@ -10,6 +10,7 @@ import {
 	ThemeColorsDefinition,
 	ThemeSoundsDefinition,
 } from "@/constants/themes";
+import { gameSettings } from "@/utils/type-invader-game";
 
 export class ThemeManager {
 	private scene: Phaser.Scene | null = null;
@@ -19,7 +20,44 @@ export class ThemeManager {
 	// Define theme assets for each theme
 	private themeAssets: Record<GameTheme, ThemeAssets> = ThemeAssetsDefinition;
 
-	constructor() {}
+	constructor() {
+		// Detect system color scheme and set initial theme
+		this.detectColorScheme();
+
+		// Listen for color scheme changes
+		if (typeof window !== 'undefined') {
+			window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+				this.detectColorScheme();
+			});
+
+			// Also listen for theme changes in the app (if theme toggle exists)
+			document.addEventListener('themeToggle', () => {
+				this.detectColorScheme();
+			});
+		}
+	}
+
+	/**
+	 * Detects the current color scheme and sets the appropriate theme
+	 */
+	private detectColorScheme(): void {
+		// Check if window is available (avoid SSR issues)
+		if (typeof window === 'undefined') return;
+
+		// Check for dark mode - either from media query or from HTML class
+		const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches ||
+						  document.documentElement.classList.contains('dark');
+		
+		// Set theme based on color scheme
+		if (isDarkMode) {
+			this.currentTheme = "space";
+		} else {
+			this.currentTheme = "beach";
+		}
+
+		// Also update gameSettings
+		gameSettings.theme = this.currentTheme;
+	}
 
 	setScene(scene: Phaser.Scene): void {
 		this.scene = scene;
@@ -27,6 +65,7 @@ export class ThemeManager {
 
 	setTheme(theme: GameTheme): void {
 		this.currentTheme = theme;
+		gameSettings.theme = theme;
 
 		// Skip if no scene is set
 		if (!this.scene) return;
@@ -51,8 +90,6 @@ export class ThemeManager {
 		const menuBackgrounds = this.scene?.children.list.filter(
 			(obj) => obj instanceof Phaser.GameObjects.Graphics && obj.depth === 1
 		);
-
-		console.log("scene key: " + this.scene.scene.key);
 
 		if (typeof menuBackgrounds != "undefined" && menuBackgrounds.length > 0) {
 			const menuBg = menuBackgrounds[0] as Phaser.GameObjects.Graphics;
