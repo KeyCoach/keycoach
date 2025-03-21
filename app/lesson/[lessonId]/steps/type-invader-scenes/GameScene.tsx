@@ -116,7 +116,6 @@ export class GameScene extends Scene {
       ? this.mechanics.updateMultiplier()
       : this.mechanics.resetMultiplierProgress();
 
-    // Check if multiplierChanged exists and is true, or if we're resetting the multiplier
     this.ui.updateMultiplier(multiplierInfo.multiplier, multiplierInfo.multiplierChanged);
 
     this.ui.updateProgressBar(multiplierInfo.progress);
