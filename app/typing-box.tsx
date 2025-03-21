@@ -318,7 +318,6 @@ export default function TypingBox({
       scrollAnchorRef.current.getBoundingClientRect().top + scrollAnchorHeight / 2;
 
     const cursorScrollDist = cursorRef.current.getBoundingClientRect().top - scrollAreaMidY;
-    // console.log(cursorScrollDist);
 
     if (cursorScrollDist > 0) {
       setScrollTranslate((prev) => prev - cursorScrollDist);

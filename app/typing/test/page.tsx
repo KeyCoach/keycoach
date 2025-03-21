@@ -118,14 +118,30 @@ export default function Test() {
         ) : (
           <div className="mt-12">
             {/* Using the TestTypeSelector component */}
-            <TestTypeSelector
-              testType={testType}
-              setTestType={setTestType}
-              wordCount={wordCount}
-              setWordCount={setWordCount}
-              duration={duration}
-              setDuration={setDuration}
-            />
+              <div className="flex flex-wrap items-center w-full">
+                {/* Left spacer for balance */}
+                <div className="hidden lg:block lg:flex-1"></div>
+
+                <div className="flex justify-center mx-auto lg:mx-0">
+                  <TestTypeSelector
+                    testType={testType}
+                    setTestType={setTestType}
+                    wordCount={wordCount}
+                    setWordCount={setWordCount}
+                    duration={duration}
+                    setDuration={setDuration}
+                  />
+                </div>
+
+                <div className="flex flex-wrap gap-2 justify-center lg:justify-end lg:flex-1 w-full lg:w-auto mt-4 lg:mt-0">
+                  <Button onClick={() => setSettingUp((prev) => !prev)} className="w-fit">
+                    {cameraActivated ? "Recalibrate Camera" : "Set up Camera"}
+                  </Button>
+                  {cameraActivated && (
+                    <Button onClick={() => setFeedbackModalOpen(true)}>Interpret Feedback</Button>
+                  )}
+                </div>
+              </div>
 
             <div className="mt-6 flex justify-center">
               <TypingBox
@@ -142,12 +158,7 @@ export default function Test() {
         )}
 
         <div className="flex justify-end mt-6 gap-4">
-          <Button onClick={() => setSettingUp((prev) => !prev)} className="w-fit">
-            {cameraActivated ? "Recalibrate Camera" : "Set up Camera"}
-          </Button>
-          {cameraActivated && (
-            <Button onClick={() => setFeedbackModalOpen(true)}>Interpret Feedback</Button>
-          )}
+
         </div>
       </div>
       <div className="col-span-1"></div>
