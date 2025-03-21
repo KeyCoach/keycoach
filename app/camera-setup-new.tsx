@@ -41,8 +41,7 @@ function Setup() {
   const rawKeyPositions = useRef<KeyPosition[][]>(JSON.parse(JSON.stringify(keyPositions)));
 
   type RowName = "topRow" | "homeRow" | "bottomRow";
-  const angles = { "topRow": 0, "homeRow": 0, "bottomRow": 0 };
-  // rgb of 255, 255, 255
+  
   const colors = { "topRow": [255, 255, 255], "homeRow": [255, 255, 255], "bottomRow": [255, 255, 255] };
   const KEY_MAP: { [key: string]: RowName } = {
     "KeyQ": "topRow",
@@ -78,17 +77,29 @@ function Setup() {
   };
 
   function findAngle(p1: KeyPosition, p2: KeyPosition) {
-    // return in degrees
-    return Math.abs(180 - Math.atan2(p2.y - p1.y, p2.x - p1.x) * (180 / Math.PI));
+    const radians = Math.atan2(p2.y - p1.y, p2.x - p1.x);
+    let degrees = radians * (180 / Math.PI);
+
+    if (degrees < 0) {
+      degrees += 360;
+    }
+
+    const angleDiff = Math.min(
+      Math.abs(degrees - 0),
+      Math.abs(degrees - 180),
+      Math.abs(degrees - 360)
+    );
+
+    return angleDiff;
   }
 
   function setColor(angle: number, row: RowName) {
-    if (angle > 5) {
-      colors[row] = [228, 110, 106];
+    if (angle > 6) {
+      colors[row] = [228, 110, 106]; // red-500
     } else if (angle > 3) {
-      colors[row] = [240, 177, 0];
+      colors[row] = [240, 177, 0];   // yellow-500
     } else {
-      colors[row] = [105, 184, 126];
+      colors[row] = [105, 184, 126]; // green-500
     }
   }
 
@@ -99,12 +110,10 @@ function Setup() {
       p.scale(-1, 1);
       p.image(capture, -capture.width, 0);
 
-      // Reset colors to default at the beginning of each draw cycle
       colors.topRow = [255, 255, 255];
       colors.homeRow = [255, 255, 255];
       colors.bottomRow = [255, 255, 255];
 
-      // Check key pairs and calculate angles first
       const keyQ = keyPositionsRef.current.flat().find((k) => k.key === "KeyQ" && k.positionSet);
       const keyW = keyPositionsRef.current.flat().find((k) => k.key === "KeyW" && k.positionSet);
       const keyA = keyPositionsRef.current.flat().find((k) => k.key === "KeyA" && k.positionSet);
@@ -112,26 +121,24 @@ function Setup() {
       const keyZ = keyPositionsRef.current.flat().find((k) => k.key === "KeyZ" && k.positionSet);
       const keyX = keyPositionsRef.current.flat().find((k) => k.key === "KeyX" && k.positionSet);
 
-      // Calculate angles and set colors for each row if both keys are set
       if (keyQ && keyW) {
-        const angle = Math.abs(findAngle(keyQ, keyW)); // Use absolute value
-        console.log("topRow: ", angle);
+        const angle = Math.abs(findAngle(keyQ, keyW));
+        // console.log("topRow: ", angle);
         setColor(angle, "topRow");
       }
       
       if (keyA && keyS) {
-        const angle = Math.abs(findAngle(keyA, keyS)); // Use absolute value
+        const angle = Math.abs(findAngle(keyA, keyS));
         // console.log("homeRow: ", angle);
         setColor(angle, "homeRow");
       }
       
       if (keyZ && keyX) {
-        const angle = Math.abs(findAngle(keyZ, keyX)); // Use absolute value
+        const angle = Math.abs(findAngle(keyZ, keyX));
         // console.log("bottomRow: ", angle);
         setColor(angle, "bottomRow");
       }
 
-      // Now draw dots for all keys with the calculated colors
       for (const key of keyPositionsRef.current.flat()) {
         if (key.positionSet && KEY_MAP[key.key]) {
           const rowName = KEY_MAP[key.key];
