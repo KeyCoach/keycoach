@@ -30,7 +30,7 @@ export function MistakesAnalysis({ attempt }: { attempt: Attempt }) {
       </div>
 
       <div className="space-y-6">
-        <div className="rounded-lg bg-cerulean-100 p-4 dark:bg-cerulean-800">
+        <div className="rounded-lg bg-cerulean-200 p-4 dark:bg-cerulean-700">
           <h3 className="mb-3 text-lg font-medium text-cerulean-700 dark:text-cerulean-200">
             Problem Keys
           </h3>
@@ -40,7 +40,7 @@ export function MistakesAnalysis({ attempt }: { attempt: Attempt }) {
                 key={key}
                 className="flex items-center justify-between rounded-md bg-white p-3 shadow-sm dark:bg-slate-700"
               >
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-cerulean-200 text-lg font-bold text-cerulean-700 dark:bg-cerulean-700 dark:text-cerulean-200">
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-cerulean-200 text-lg font-bold text-cerulean-700 dark:bg-cerulean-600 dark:text-cerulean-300">
                   {key.trim() || "_"}
                 </div>
                 <div className="text-right">
