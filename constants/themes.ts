@@ -1,3 +1,4 @@
+import { Scene } from "phaser";
 import { GameTheme, ThemeAssets } from "./definitions";
 
 export interface ThemeImagesDefinition {
@@ -61,45 +62,52 @@ const themeImages: Record<GameTheme, ThemeImagesDefinition> = {
 };
 
 const themeColors: Record<GameTheme, ThemeColorsDefinition> = {
+  // Dark Theme: Space - Cool blue/cyan color scheme
   space: {
-    primary: 0xf0f0f0,
-    secondary: 0x62de6d,
-    highlight: 0xebdf64,
-    asteroidText: 0xf0f0f0,
-    buttonFont: 0xffffff, // Assuming default value
-    buttonBoxBackground: 0x444444, // Assuming default value
-    menuBackground: 0x000000,
-    plainBackground: 0x020617,
+    primary: 0xf0f0f0,        // Bright white for main text
+    secondary: 0x62cde6,       // Bright cyan for secondary elements
+    highlight: 0x00ffff,       // Cyan highlight for important elements
+    asteroidText: 0xffffff,    // White text on asteroids for high contrast
+    buttonFont: 0x00cc99,      // Teal green for buttons
+    buttonBoxBackground: 0x222233, // Dark blue-gray for button backgrounds
+    menuBackground: 0x111122,   // Very dark blue for menu backgrounds
+    plainBackground: 0x020617,  // Nearly black blue for plain backgrounds
   },
-  birthday: {
-    primary: 0xffd700,
-    secondary: 0xff6b6b,
-    highlight: 0xe91e63,
-    asteroidText: 0x000000,
-    buttonFont: 0xffffff, // Assuming default value
-    buttonBoxBackground: 0x444444, // Assuming default value
-    menuBackground: 0x332244,
-    plainBackground: 0x020617,
-  },
+  
+  // Dark Theme: Soccer - Green and white color scheme
   soccer: {
-    primary: 0x000000,
-    secondary: 0xffffff,
-    highlight: 0x00ff00,
-    asteroidText: 0xfefefe,
-    buttonFont: 0xffffff, // Assuming default value
-    buttonBoxBackground: 0x444444, // Assuming default value
-    menuBackground: 0x000000,
-    plainBackground: 0x020617,
+    primary: 0xf0f0f0,         // Bright white for main text
+    secondary: 0x8aff8a,       // Light green for secondary elements
+    highlight: 0x00ff7f,       // Bright green highlight
+    asteroidText: 0xffffff,    // White text on soccer balls
+    buttonFont: 0x00dd55,      // Bright green for buttons
+    buttonBoxBackground: 0x333333, // Dark gray for button backgrounds
+    menuBackground: 0x1a1a1a,   // Very dark gray for menu backgrounds
+    plainBackground: 0x0a1a0a,  // Very dark green-tinted black
   },
+  
+  // Light Theme: Birthday - Vibrant party colors
+  birthday: {
+    primary: 0x222222,         // Dark gray for main text (good contrast on light bg)
+    secondary: 0xff55dd,       // Pink for secondary elements
+    highlight: 0xff3399,       // Bright pink highlight
+    asteroidText: 0x000000,    // Black text on balloons
+    buttonFont: 0xdd0088,      // Deep pink for buttons
+    buttonBoxBackground: 0xf8d2ff, // Very light pink for button backgrounds
+    menuBackground: 0xfff0ff,   // Nearly white pink for menu backgrounds
+    plainBackground: 0xffecf5,  // Very light pink for plain backgrounds
+  },
+  
+  // Light Theme: Beach - Tropical beach colors
   beach: {
-    primary: 0x00ffff,
-    secondary: 0xffff00,
-    highlight: 0xffa500,
-    asteroidText: 0xfefefe,
-    buttonFont: 0xffffff, // Assuming default value
-    buttonBoxBackground: 0x444444, // Assuming default value
-    menuBackground: 0x87ceeb,
-    plainBackground: 0x020617,
+    primary: 0x003366,         // Deep blue for main text (good contrast on light bg)
+    secondary: 0x0088cc,       // Medium blue for secondary elements
+    highlight: 0xff9933,       // Orange highlight for important elements
+    asteroidText: 0x000000,    // Black text on coconuts
+    buttonFont: 0x0066aa,      // Ocean blue for buttons
+    buttonBoxBackground: 0xd1f6ff, // Very light blue for button backgrounds
+    menuBackground: 0xebf9ff,   // Nearly white blue for menu backgrounds
+    plainBackground: 0xe6f7ff,  // Very light blue for plain backgrounds
   },
 };
 

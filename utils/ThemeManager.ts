@@ -1,4 +1,5 @@
 import { buttonGroupBackgroundSizes } from "@/constants/buttonGroupBackgroundSizes";
+import { colors } from "@/constants/colors";
 import {
 	GameTheme,
 	ThemeAssets,
@@ -101,6 +102,9 @@ export class ThemeManager {
 			menuBg.fillRoundedRect(width / 2 - 280, height / 2 - 165, 560, 330, 20);
 		}
 
+		// Update text colors for all UI elements
+		this.updateUIColors();
+
 		// Update asteroids to match the current theme
 		const asteroids = this.scene.children.list.filter(
 			(obj) =>
@@ -128,6 +132,42 @@ export class ThemeManager {
 		if (ships.length > 0) {
 			ships.forEach((ship) => {
 				(ship as Phaser.GameObjects.Sprite).setTexture(this.getAsset("ship"));
+			});
+		}
+	}
+
+	// Update colors for UI elements based on theme
+	private updateUIColors(): void {
+		if (!this.scene) return;
+
+		// Update text elements
+		const textElements = this.scene.children.list.filter(
+			(obj) => obj instanceof Phaser.GameObjects.Text
+		) as Phaser.GameObjects.Text[];
+
+		if (textElements.length > 0) {
+			const isDarkTheme = this.currentTheme === "space" || this.currentTheme === "soccer";
+
+			textElements.forEach(text => {
+				// Skip already colored specific elements
+				if (text.text.includes("Score")) {
+					text.setColor(this.getTextColor("primary"));
+				} else if (text.text.includes("x") && text.text.length <= 3) {
+					// This is likely the multiplier text
+					text.setColor(this.getTextColor("highlight"));
+				} else if (text.text.match(/^00:\d\d$/)) {
+					// This is likely the timer text
+					text.setColor(this.getTextColor("primary"));
+				} else if (text.style.color === colors.green) {
+					// Update button text colors
+					text.setColor(this.getTextColor("buttonFont"));
+				} else if (text.style.color === colors.red) {
+					// Low timer warning should stay red for visibility
+					text.setColor("#FF3333");
+				} else if (text.style.color === colors.yellow) {
+					// Highlighted elements
+					text.setColor(this.getTextColor("highlight"));
+				}
 			});
 		}
 	}

@@ -25,12 +25,20 @@ export class LetterSelectScene extends Scene {
     // const menuHeight = 380;
     // const menuWidth = 480;
 
+    // Get the current theme from the theme manager
+  const currentTheme = themeManager.getCurrentTheme();
+
+  // Determine text color based on the theme
+  const textColor = (currentTheme === "space" || currentTheme === "soccer") 
+      ? colors.white 
+      : colors.black;
+
     // Title
     this.add
       .text(width / 2, height / 6, "Select a Letter", {
         fontSize: "40px",
         fontFamily: "Monospace",
-        color: colors.white,
+        color: textColor,
       })
       .setOrigin(0.5)
       .setDepth(1);
@@ -72,7 +80,7 @@ export class LetterSelectScene extends Scene {
       letterButton
         .on("pointerover", () => {
           letterButton.setFillStyle(0x666666);
-          letterText.setColor(colors.yellow);
+          letterText.setColor(colors.teal);
         })
         .on("pointerout", () => {
           letterButton.setFillStyle(hexadecimalColors.menuButtonBg);
@@ -115,12 +123,12 @@ export class LetterSelectScene extends Scene {
       .text(32, height - 40, "← Back", {
         fontSize: "24px",
         fontFamily: "Monospace",
-        color: colors.white,
+        color: textColor,
         // name: "backButton",
       })
       .setInteractive({ useHandCursor: true })
-      .on("pointerover", () => backButton.setColor(colors.yellow))
-      .on("pointerout", () => backButton.setColor(colors.white))
+      .on("pointerover", () => backButton.setColor(colors.green))
+      .on("pointerout", () => backButton.setColor(textColor))
       .on("pointerdown", () => this.scene.start("ModeSelectScene"));
 
     // Add back button to navigation

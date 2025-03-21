@@ -56,12 +56,18 @@ export class HowToPlayScene extends Scene {
       this.tutorialImages.push(image);
     }
 
+    const currentTheme = themeManager.getCurrentTheme();
+
+    const textColor = (currentTheme === "space" || currentTheme === "soccer") 
+    ? colors.white 
+    : colors.black;
+
     // Page indicator text (e.g., "1/6")
     this.pageIndicator = this.add
       .text(width - 80, height - 40, `${this.currentImageIndex + 1}/${this.totalImages}`, {
         fontSize: "24px",
         fontFamily: "Monospace",
-        color: colors.white,
+        color: textColor,
       })
       .setDepth(1);
 
@@ -70,13 +76,13 @@ export class HowToPlayScene extends Scene {
       .text((width * 2) / 5, height - 30, "< Previous", {
         fontSize: "24px",
         fontFamily: "Monospace",
-        color: colors.green,
+        color: colors.blue,
       })
       .setOrigin(0.5)
       .setDepth(1)
       .setInteractive({ useHandCursor: true })
-      .on("pointerover", () => this.prevButton.setColor(colors.yellow))
-      .on("pointerout", () => this.prevButton.setColor(colors.green))
+      .on("pointerover", () => this.prevButton.setColor(colors.teal))
+      .on("pointerout", () => this.prevButton.setColor(colors.blue))
       .on("pointerdown", () => this.showPreviousImage());
 
     // Next button
@@ -84,13 +90,13 @@ export class HowToPlayScene extends Scene {
       .text((width * 3) / 5, height - 30, "Next >", {
         fontSize: "24px",
         fontFamily: "Monospace",
-        color: colors.green,
+        color: colors.blue,
       })
       .setOrigin(0.5)
       .setDepth(1)
       .setInteractive({ useHandCursor: true })
-      .on("pointerover", () => this.nextButton.setColor(colors.yellow))
-      .on("pointerout", () => this.nextButton.setColor(colors.green))
+      .on("pointerover", () => this.nextButton.setColor(colors.teal))
+      .on("pointerout", () => this.nextButton.setColor(colors.blue))
       .on("pointerdown", () => this.showNextImage());
 
     // Back button
@@ -98,12 +104,12 @@ export class HowToPlayScene extends Scene {
       .text(32, height - 40, "← Back", {
         fontSize: "24px",
         fontFamily: "Monospace",
-        color: colors.white,
+        color: textColor,
       })
       .setInteractive({ useHandCursor: true })
       .setDepth(1)
-      .on("pointerover", () => backButton.setColor(colors.yellow))
-      .on("pointerout", () => backButton.setColor(colors.white))
+      .on("pointerover", () => backButton.setColor(colors.green))
+      .on("pointerout", () => backButton.setColor(textColor))
       .on("pointerdown", () => this.scene.start("MainMenuScene"));
 
     // Add keys to navigation
@@ -167,13 +173,13 @@ export class HowToPlayScene extends Scene {
     if (this.currentImageIndex === 0) {
       this.prevButton.setColor(colors.gray || "#888888");
     } else {
-      this.prevButton.setColor(colors.green);
+      this.prevButton.setColor(colors.blue);
     }
 
     if (this.currentImageIndex === this.totalImages - 1) {
       this.nextButton.setColor(colors.gray || "#888888");
     } else {
-      this.nextButton.setColor(colors.green);
+      this.nextButton.setColor(colors.blue);
     }
   }
 
