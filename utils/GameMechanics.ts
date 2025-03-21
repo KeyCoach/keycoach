@@ -5,16 +5,16 @@ import { fetchWords } from "@/utils/wordsApi";
 import { Asteroid } from "@/constants/definitions";
 
 const MULTIPLIER_THRESHOLDS = {
-	2: 30,
-	3: 75,
-	4: 135,
+  2: 30,
+  3: 75,
+  4: 135,
 };
 
 const getRequiredCharactersForCurrentLevel = (chars: number): number => {
-	if (chars < MULTIPLIER_THRESHOLDS[2]) return 30;
-	if (chars < MULTIPLIER_THRESHOLDS[3]) return 45;
-	if (chars < MULTIPLIER_THRESHOLDS[4]) return 60;
-	return 60; // Max level
+  if (chars < MULTIPLIER_THRESHOLDS[2]) return 30;
+  if (chars < MULTIPLIER_THRESHOLDS[3]) return 45;
+  if (chars < MULTIPLIER_THRESHOLDS[4]) return 60;
+  return 60;
 };
 
 export class GameMechanics {
@@ -38,7 +38,8 @@ export class GameMechanics {
   private typingStats = {
     totalKeysPressed: 0,
     correctKeysPressed: 0,
-    startTime: 0,
+    startTime: 0, // Will be set on first keystroke
+    hasStartedTyping: false, // Flag to track if typing has started
     wordCompletions: 0,
     characterErrors: new Map<string, number>(),
     wordErrors: new Map<string, number>(),
@@ -47,7 +48,6 @@ export class GameMechanics {
 
   constructor(scene: Scene) {
     this.scene = scene;
-    this.typingStats.startTime = this.scene.time.now;
   }
 
   getLevel(): number {
@@ -119,7 +119,8 @@ export class GameMechanics {
     this.typingStats = {
       totalKeysPressed: 0,
       correctKeysPressed: 0,
-      startTime: this.scene.time.now,
+      startTime: 0,
+      hasStartedTyping: false,
       wordCompletions: 0,
       characterErrors: new Map<string, number>(),
       wordErrors: new Map<string, number>(),
@@ -154,8 +155,28 @@ export class GameMechanics {
   }
 
   getTypingStats() {
+    // If typing hasn't started, return default values
+    if (!this.typingStats.hasStartedTyping) {
+      return {
+        accuracy: 100, // 100% accuracy if no typing yet
+        wpm: 0,
+        wordsCompleted: 0,
+        totalKeysPressed: 0,
+        mostProblematicChars: [],
+        difficultWords: [],
+        level: this.level,
+      };
+    }
+
     const currentTime = this.scene.time.now;
     const minutes = (currentTime - this.typingStats.startTime) / 60000;
+
+    // Calculate characters per word (CPW)
+    // We add 1 to each completed word to account for the space character
+    const totalWordsCharCount = this.typingStats.correctKeysPressed + this.typingStats.wordCompletions;
+
+    // Calculate WPM using the standard formula: (characters + spaces) / 5 / minutes
+    const wpm = minutes > 0 ? Math.round(totalWordsCharCount / 5 / minutes) : 0;
 
     // Calculate accuracy as a number without the '%' sign
     const accuracyValue =
@@ -164,8 +185,8 @@ export class GameMechanics {
         : 100;
 
     return {
-      accuracy: accuracyValue, // Now returns a number instead of a string
-      wpm: minutes > 0 ? Math.round(this.typingStats.correctKeysPressed / 5 / minutes) : 0,
+      accuracy: accuracyValue,
+      wpm: wpm,
       wordsCompleted: this.typingStats.wordCompletions,
       totalKeysPressed: this.typingStats.totalKeysPressed,
       mostProblematicChars: Array.from(this.typingStats.characterErrors.entries())
@@ -525,6 +546,12 @@ export class GameMechanics {
 
     // Ignore ESC key presses
     if (char === "escape") return { isCorrect: false, char };
+
+    // Start the typing timer on the first keystroke
+    if (!this.typingStats.hasStartedTyping) {
+      this.typingStats.hasStartedTyping = true;
+      this.typingStats.startTime = this.scene.time.now;
+    }
 
     this.typingStats.totalKeysPressed++;
 
