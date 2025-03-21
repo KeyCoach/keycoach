@@ -1,17 +1,21 @@
 "use client";
-import axios from "axios";
+import axios from "@/app/axios-client";
 import { Link } from "@/components/link";
-import { Button, H1, LoadingOverlay, TextInput } from "@/components";
+import { Button, H1, LoadingOverlay, TextInput, TextInputWithAddon } from "@/components";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useUser } from "@/app/user-context";
 import { HasPasswordError } from "@/utils/has-password-error";
+import { Eye, EyeSlash } from "react-bootstrap-icons";
 
 export default function Register() {
   const [loading, setLoading] = useState(false);
   const { setUser } = useUser();
   const [error, setError] = useState("");
   const router = useRouter();
+  const [passwordVisible, setPasswordVisible] = useState(false);
+  const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
+
   async function HandleRegister(e: any) {
     e.preventDefault();
     const formData = new FormData(e.target);
@@ -56,17 +60,13 @@ export default function Register() {
         setLoading(false);
       });
   }
+
   return (
     <div className="h-page w-full bg-white pt-20 dark:bg-slate-950">
       <LoadingOverlay show={loading} message="Registering..." />
       <div className="mx-auto w-full max-w-lg p-1 text-slate-900 dark:text-slate-50">
-        <div className="rounded-xl bg-slate-50 p-8 shadow dark:bg-slate-800">
+        <div className="rounded-xl bg-slate-100 p-8 shadow dark:bg-slate-800">
           <H1 className="mb-3 text-slate-900 dark:text-slate-50">Welcome to KeyCoach!</H1>
-          <div className="mb-6 text-slate-600 dark:text-slate-400">
-            <Link href="/login" className="text-cerulean-600 underline dark:text-cerulean-400">
-              Already have an account? Sign in.
-            </Link>
-          </div>
 
           <form onSubmit={HandleRegister}>
             <div className="mb-4">
@@ -77,6 +77,7 @@ export default function Register() {
                 name="first-name"
                 placeholder="John"
                 autoComplete="given-name"
+                autoFocus
                 required
               />
             </div>
@@ -103,29 +104,40 @@ export default function Register() {
               />
             </div>
             <div className="mb-4">
-              <TextInput
+              <TextInputWithAddon
                 label="Password"
-                type="password"
+                type={passwordVisible ? "text" : "password"}
                 id="password"
                 name="password"
                 autoComplete="new-password"
                 placeholder="&bull;&bull;&bull;&bull;&bull;&bull;"
                 required
+                addon={passwordVisible ? <Eye /> : <EyeSlash />}
+                addonPosition="right"
+                addonOnClickAction={() => setPasswordVisible((prev) => !prev)}
+                addonClassName="cursor-pointer"
               />
             </div>
             <div className="mb-4">
-              <TextInput
+              <TextInputWithAddon
                 label="Confirm Password"
-                type="password"
+                type={confirmPasswordVisible ? "text" : "password"}
                 id="confirm-password"
                 name="confirm-password"
                 autoComplete="new-password"
                 placeholder="&bull;&bull;&bull;&bull;&bull;&bull;"
                 required
+                addon={confirmPasswordVisible ? <Eye /> : <EyeSlash />}
+                addonPosition="right"
+                addonOnClickAction={() => setConfirmPasswordVisible((prev) => !prev)}
+                addonClassName="cursor-pointer"
               />
             </div>
 
-            <div className="flex justify-end space-x-4">
+            <div className="flex justify-between items-center space-x-4">
+              <Link href="/login" className="!text-cerulean-600 dark:!text-cerulean-400">
+                Already have an account? Sign in.
+              </Link>
               <Button colorTheme="cerulean">Register</Button>
             </div>
             {error && <p className="mt-3 text-red-600 dark:text-red-400">{error}</p>}

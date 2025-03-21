@@ -12,10 +12,10 @@ type FeedbackStep = {
 
 export function FeedbackInterpretModal({
   isOpen,
-  onClose,
+  onCloseAction,
 }: {
   isOpen: boolean;
-  onClose: () => void;
+  onCloseAction: () => void;
 }) {
   const [currentStep, setCurrentStep] = useState(0);
 
@@ -57,7 +57,7 @@ export function FeedbackInterpretModal({
     if (currentStep < steps.length - 1) {
       setCurrentStep(currentStep + 1);
     } else {
-      onClose();
+      onCloseAction();
     }
   };
 
@@ -71,8 +71,8 @@ export function FeedbackInterpretModal({
     <Modal
       modalTitle="How to Interpret Feedback"
       isOpen={isOpen}
-      onCloseAction={onClose}
-      confirmButtonAction={onClose}
+      onCloseAction={onCloseAction}
+      confirmButtonAction={onCloseAction}
       showCloseButton={false}
       maxWidth="max-w-3xl"
     >
@@ -85,13 +85,13 @@ export function FeedbackInterpretModal({
             {steps[currentStep].description}
           </p>
 
-          <div className="relative mx-auto mb-8 overflow-hidden rounded-lg border border-slate-200 shadow-md dark:border-slate-700">
+          <div className="relative mx-auto mb-8 w-fit overflow-hidden rounded-lg border border-slate-200 shadow-md dark:border-slate-700">
             <Image
               src={steps[currentStep].imagePath}
               alt={`${steps[currentStep].title} illustration`}
               width={500}
               height={300}
-              className="bg-slate-100 dark:bg-slate-800"
+              className="me-4 bg-slate-100 dark:bg-slate-800"
             />
           </div>
         </div>

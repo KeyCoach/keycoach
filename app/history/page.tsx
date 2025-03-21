@@ -2,8 +2,8 @@ import { type User as TUser } from "@/app/lib/types";
 import { H1 } from "@/components";
 import { GetAttemptsByEmail } from "@/service-interfaces/dynamo-db";
 import { AuthenticateUser } from "@/app/actions";
-import { Link } from "@/components/link";
 import { Button } from "@/components";
+import { TestTextReview } from "../test-text-review";
 
 export default async function Results() {
   const user = await AuthenticateUser();
@@ -12,23 +12,19 @@ export default async function Results() {
       <div className="mx-auto w-full max-w-6xl p-6 text-slate-900 dark:text-slate-50">
         <div className="mb-6 flex items-center justify-between">
           <H1>Test History</H1>
-          <Button colorTheme="cerulean">
-            <Link className="block w-40 text-slate-50 no-underline" href="/dashboard">
-              Back to Dashboard
-            </Link>
+          <Button href="/dashboard" colorTheme="cerulean">
+            Back to Dashboard
           </Button>
         </div>
         {user ? (
           <History user={user} />
         ) : (
-          <div className="rounded-xl bg-slate-50 p-8 text-center shadow dark:bg-slate-800">
+          <div className="rounded-xl bg-slate-100 p-8 text-center shadow dark:bg-slate-800">
             <p className="mb-4 text-lg text-slate-700 dark:text-slate-300">
               Please log in to view your test history
             </p>
-            <Button colorTheme="cerulean">
-              <Link className="block w-40 text-slate-50 no-underline" href="/login">
-                Login
-              </Link>
+            <Button colorTheme="cerulean" href="/login">
+              Login
             </Button>
           </div>
         )}
@@ -41,14 +37,12 @@ async function History({ user }: { user: TUser }) {
   const attempts = await GetAttemptsByEmail(user.email);
   if (!attempts || attempts?.length === 0) {
     return (
-      <div className="rounded-xl bg-slate-50 p-8 text-center shadow dark:bg-slate-800">
+      <div className="rounded-xl bg-slate-100 p-8 text-center shadow dark:bg-slate-800">
         <p className="mb-4 text-lg text-slate-700 dark:text-slate-300">
           You haven't completed any tests yet
         </p>
-        <Button colorTheme="cerulean">
-          <Link className="block w-40 text-slate-50 no-underline" href="/typing/test">
-            Take your first test
-          </Link>
+        <Button colorTheme="cerulean" href="/typing/test">
+          Take your first test
         </Button>
       </div>
     );
@@ -61,7 +55,7 @@ async function History({ user }: { user: TUser }) {
         .map((attempt) => (
           <div
             key={attempt.id}
-            className="overflow-hidden rounded-xl bg-slate-50 shadow dark:bg-slate-800"
+            className="overflow-hidden rounded-xl bg-slate-100 shadow dark:bg-slate-800"
           >
             {/* Header with key metrics */}
             <div className="border-b border-slate-200 p-6 dark:border-slate-700">
@@ -82,7 +76,7 @@ async function History({ user }: { user: TUser }) {
                       {Math.round(attempt.netWpm)}
                     </p>
                   </div>
-                  <div className="px-3 text-center">
+                  <div className="px-3 items-center text-center">
                     <p className="text-xs font-medium text-cerulean-700 dark:text-cerulean-400">
                       Accuracy
                     </p>
@@ -95,7 +89,7 @@ async function History({ user }: { user: TUser }) {
                       Finger Accuracy
                     </p>
                     <p className="text-2xl font-bold text-amber-800 dark:text-amber-300">
-                      {attempt.fingerAccuracy.toFixed(0)}%
+                      {attempt.cameraActivated ? `${attempt.fingerAccuracy.toFixed(0)}%` : "N/A"}
                     </p>
                   </div>
                 </div>
@@ -104,7 +98,7 @@ async function History({ user }: { user: TUser }) {
 
             {/* Collapsible details section */}
             <details className="group">
-              <summary className="flex cursor-pointer items-center bg-slate-100 p-4 font-medium text-slate-700 hover:bg-slate-200 dark:bg-slate-700 dark:text-slate-300 dark:hover:bg-slate-600">
+              <summary className="flex cursor-pointer items-center bg-slate-200 p-4 font-medium text-slate-700 hover:bg-slate-300 dark:bg-slate-700 dark:text-slate-300 dark:hover:bg-slate-600">
                 <svg
                   className="mr-2 h-5 w-5 transition-transform group-open:rotate-90"
                   fill="none"
@@ -129,14 +123,6 @@ async function History({ user }: { user: TUser }) {
                   </h3>
                   <div className="space-y-2 text-sm">
                     <p className="flex justify-between">
-                      <span className="text-slate-500 dark:text-slate-400">Test ID:</span>
-                      <span className="font-mono">{attempt.testId}</span>
-                    </p>
-                    <p className="flex justify-between">
-                      <span className="text-slate-500 dark:text-slate-400">Difficulty:</span>
-                      <span className="capitalize">{attempt.test.difficulty}</span>
-                    </p>
-                    <p className="flex justify-between">
                       <span className="text-slate-500 dark:text-slate-400">Word Count:</span>
                       <span>{attempt.test.wordCount}</span>
                     </p>
@@ -146,7 +132,7 @@ async function History({ user }: { user: TUser }) {
                     </p>
                     <p className="flex justify-between">
                       <span className="text-slate-500 dark:text-slate-400">Duration:</span>
-                      <span>{(attempt.duration / 1000).toFixed(1)} seconds</span>
+                      <span>{Math.round(attempt.duration / 1000)} seconds</span>
                     </p>
                     <p className="flex justify-between">
                       <span className="text-slate-500 dark:text-slate-400">Mistakes:</span>
@@ -158,8 +144,16 @@ async function History({ user }: { user: TUser }) {
                 {/* Test text */}
                 <div className="rounded-lg bg-white p-4 dark:bg-slate-900">
                   <h3 className="mb-3 font-medium text-slate-900 dark:text-slate-100">Test Text</h3>
-                  <div className="max-h-40 overflow-y-auto rounded border border-slate-200 bg-slate-50 p-3 text-sm text-slate-700 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300">
-                    {attempt.test.textBody}
+                  <div className="max-h-40 overflow-y-auto rounded border border-slate-200 bg-slate-100 p-3 text-sm text-slate-700 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300">
+                    <TestTextReview attempt={attempt} />
+                  </div>
+                  <div className="mt-4 pt-2 border-t border-slate-200 dark:border-slate-700 flex justify-end">
+                    <Button 
+                      href={`/typing/result/${attempt.id}`} 
+                      colorTheme="cerulean"
+                      className="w-full">
+                      View Detailed Results
+                    </Button>
                   </div>
                 </div>
 

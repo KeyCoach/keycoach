@@ -7,14 +7,17 @@ export async function GET(request: NextRequest) {
   const testId = request.nextUrl.searchParams.get("testId");
 
   if (!testId) {
-    return Response.json(BackendErrors.MISSING_ARGUMENTS, { status: 422 });
+    return BackendErrors.MISSING_ARGUMENTS;
   }
 
   const test = await GetTestById(testId);
 
   if (!test) {
-    return Response.json(BackendErrors.ENTITY_NOT_FOUND, { status: 404 });
+    return BackendErrors.ENTITY_NOT_FOUND;
   }
 
-  return Response.json({ test });
+  return Response.json(
+    { test },
+    { headers: { "Cache-Control": "public, max-age=600, s-maxage=600" } },
+  );
 }

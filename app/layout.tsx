@@ -1,6 +1,5 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import favicon from "@/public/whistle.png";
 import { Navbar } from "./navbar";
 import UserProvider from "./user-context";
 import { AuthenticateUser } from "@/app/actions";
@@ -28,25 +27,59 @@ export default async function RootLayout({
     <html lang="en">
       <head>
         <title>Keycoach</title>
-        <meta name="description" content="Keycoach" />
-        {/* <link rel="icon" href="/favicon.ico" sizes="any" /> */}
-        <link rel="icon" href={favicon.src} />
-        <link rel="icon" type="image/png" sizes="32x32" href={favicon.src} />
-        <link rel="apple-touch-icon" href={favicon.src} />
+        <meta name="description" content="Improve your typing speed and accuracy with KeyCoach!" />
+
+        {/* Light mode favicon */}
+        <link rel="icon" href="favicon/favicon-light.ico" media="(prefers-color-scheme: light)" />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="32x32"
+          href="favicon/favicon-light.ico"
+          media="(prefers-color-scheme: light)"
+        />
+        <link
+          rel="apple-touch-icon"
+          href="favicon/favicon-light.ico"
+          media="(prefers-color-scheme: light)"
+        />
+
+        {/* Dark mode favicon */}
+        <link rel="icon" href="favicon/favicon-dark.ico" media="(prefers-color-scheme: dark)" />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="32x32"
+          href="favicon/favicon-dark.ico"
+          media="(prefers-color-scheme: dark)"
+        />
+        <link
+          rel="apple-touch-icon"
+          href="favicon/favicon-dark.ico"
+          media="(prefers-color-scheme: dark)"
+        />
+
+        {/* Fallback favicon */}
+        <link rel="icon" href="favicon/favicon-light.ico" />
+
+        <meta
+          name="keywords"
+          content="typing, teacher, AI, handtracking, technique, keycoach, key coach"
+        />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} light:bg-slate-50 light:text-slate-950 flex max-h-screen min-h-screen flex-col dark:bg-slate-950 dark:text-slate-50`}
+        className={`${geistSans.variable} ${geistMono.variable} flex max-h-screen min-h-screen flex-col bg-white text-slate-950 dark:bg-slate-950 dark:text-slate-50`}
       >
         <UserProvider user={user}>
-          <Navbar />
-          <div className="h-page relative overflow-y-auto">
-            <HandTrackProvider>
+          <HandTrackProvider>
+            <Navbar />
+            <div className="h-page relative overflow-y-auto">
               <>
                 {children}
                 <CameraWarning />
               </>
-            </HandTrackProvider>
-          </div>
+            </div>
+          </HandTrackProvider>
         </UserProvider>
       </body>
     </html>

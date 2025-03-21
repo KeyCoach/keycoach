@@ -1,14 +1,14 @@
-// GameUI.ts
-// import Phaser from "phaser";
+// GameUI.ts 
 import { Scene } from "phaser";
 import { colors, hexadecimalColors } from "@/constants/colors";
 import PauseButton from "@/components/type-invader/PauseButton";
 import { StatsDisplay } from "@/constants/definitions";
-import { soundManager } from "@/utils/type-invader-game";
+import { soundManager, themeManager } from "@/utils/type-invader-game";
 
 export class GameUI {
   private scene: Scene;
   private scoreText: Phaser.GameObjects.Text;
+  private scoreLabel: Phaser.GameObjects.Text;
   private scoreUpdateText: Phaser.GameObjects.Text | null = null;
   private scoreUpdateMultiplier: Phaser.GameObjects.Text | null = null;
   private timerText: Phaser.GameObjects.Text;
@@ -17,29 +17,30 @@ export class GameUI {
   private progressBar: Phaser.GameObjects.Graphics;
   private progressBarBg: Phaser.GameObjects.Graphics;
   private statsElements: Phaser.GameObjects.GameObject[] = [];
+  private letterGlitchTimers: Phaser.Time.TimerEvent[] = [];
 
   constructor(scene: Scene, togglePause: () => void) {
     this.scene = scene;
     const { width, height } = this.scene.cameras.main;
 
     // Create all UI elements
-    const scoreLabel = this.scene.add.text(32, 520, "Score: ", {
+    this.scoreLabel = this.scene.add.text(32, 520, "Score: ", {
       fontSize: "32px",
       fontFamily: "Monospace",
-      color: colors.red,
+      color: themeManager.getTextColor("primary"),
     });
 
-    this.scoreText = this.scene.add.text(scoreLabel.x + scoreLabel.width - 2, 520, "0", {
+    this.scoreText = this.scene.add.text(this.scoreLabel.x + this.scoreLabel.width - 2, 520, "0", {
       fontSize: "32px",
       fontFamily: "Monospace",
-      color: colors.white,
+      color: themeManager.getTextColor("primary"),
     });
 
     // Create timer text
     this.timerText = this.scene.add.text(width - 110, 520, "00:30", {
       fontSize: "32px",
       fontFamily: "Monospace",
-      color: colors.white,
+      color: themeManager.getTextColor("primary"),
     });
 
     // Create level text (initially hidden)
@@ -47,7 +48,7 @@ export class GameUI {
       .text(width / 2, height / 2, "", {
         fontSize: "48px",
         fontFamily: "Monospace",
-        color: colors.yellow,
+        color: themeManager.getTextColor("highlight"),
       })
       .setOrigin(0.5)
       .setAlpha(0);
@@ -56,7 +57,7 @@ export class GameUI {
     this.multiplierText = this.scene.add.text(32, 485, "1x", {
       fontSize: "24px",
       fontFamily: "Monospace",
-      color: colors.yellow,
+      color: themeManager.getTextColor("highlight"),
     });
 
     // Create pause button
@@ -72,10 +73,10 @@ export class GameUI {
 
     // Set depth to ensure UI is always on top
     this.scoreText.setDepth(2);
+    this.scoreLabel.setDepth(2);
     this.timerText.setDepth(2);
     this.levelText.setDepth(2);
     this.multiplierText.setDepth(2);
-    scoreLabel.setDepth(2);
     this.progressBar.setDepth(2);
     this.progressBarBg.setDepth(1);
   }
@@ -99,7 +100,7 @@ export class GameUI {
 
     this.scoreUpdateText = this.scene.add.text(scoreUpdateX, scoreUpdateY, `+${increase}`, {
       fontSize: "22px",
-      color: colors.green,
+      color: themeManager.getTextColor("secondary"),
     });
 
     // Apply random rotation for visual flair
@@ -113,8 +114,8 @@ export class GameUI {
         `(${multiplier}x)`,
         {
           fontSize: "18px",
-          color: colors.yellow,
-        },
+          color: themeManager.getTextColor("highlight"),
+        }
       );
 
       this.scene.tweens.add({
@@ -153,12 +154,13 @@ export class GameUI {
     if (seconds <= 10) {
       this.timerText.setColor(colors.red);
     } else {
-      this.timerText.setColor(colors.white);
+      this.timerText.setColor(themeManager.getTextColor("primary"));
     }
   }
 
   updateMultiplier(multiplier: number, animate: boolean = false) {
     this.multiplierText.setText(`${multiplier}x`);
+    this.multiplierText.setColor(themeManager.getTextColor("highlight"));
 
     // Add animation effect if requested
     if (animate) {
@@ -173,6 +175,7 @@ export class GameUI {
 
   showLevelText(level: number) {
     this.levelText.setText(`Level ${level}`).setAlpha(1);
+    this.levelText.setColor(colors.yellow);
 
     // Fade out after a delay
     this.scene.tweens.add({
@@ -186,12 +189,13 @@ export class GameUI {
     const { width, height } = this.scene.cameras.main;
 
     this.progressBar.clear();
-    this.progressBar.fillStyle(hexadecimalColors.teal, 0.5);
+    this.progressBar.fillStyle(themeManager.getColor("secondary"), 0.7);
     this.progressBar.fillRect(0, height - 6, width * progress, 6);
   }
 
   createMissile(shipX: number, shipY: number, targetX: number, targetY: number): void {
-    const missile = this.scene.add.ellipse(shipX, shipY - 20, 8, 16, hexadecimalColors.green);
+    // Use the theme's secondary color for missiles
+    const missile = this.scene.add.ellipse(shipX, shipY - 20, 8, 16, themeManager.getColor("secondary"));
 
     // Calculate angle between ship and target
     const angle = Phaser.Math.Angle.Between(missile.x, missile.y, targetX, targetY);
@@ -213,6 +217,7 @@ export class GameUI {
           lifespan: 200,
           quantity: 3,
           blendMode: "ADD",
+          tint: [themeManager.getColor("secondary")],
         });
 
         // Clean up impact and missile
@@ -230,37 +235,49 @@ export class GameUI {
     wordsCompleted: number;
     totalKeysPressed: number;
     mostProblematicChars?: [string, number][];
+    level?: number;
   }): StatsDisplay {
     const { width, height } = this.scene.cameras.main;
     this.clearStatsElements();
 
-    // Create semi-transparent background
+    // Create semi-transparent background with theme-appropriate color
+    const bgColor = themeManager.getColor("menuBackground");
     const bg = this.scene.add
-      .rectangle(width / 2, height / 2, width * 0.7, height * 0.6, 0x000000, 0.8)
+      .rectangle(width / 2, height / 2, width * 0.7, height * 0.6, bgColor, 0.85)
       .setDepth(3);
     this.statsElements.push(bg);
 
-    // Create stats text
-    const title = this.scene.add
-      .text(width / 2, height / 2 - 100, "LEVEL COMPLETED", {
-        // Was "YOUR TYPING STATS"
-        fontSize: "28px",
-        fontFamily: "Monospace",
-        color: colors.yellow,
-      })
-      .setOrigin(0.5)
-      .setDepth(3);
-    this.statsElements.push(title);
-
+    // Create animated level completion title
+    this.createAnimatedLevelTitle(stats.level || 1, width / 2, height / 2 - 130);
+    
+    // Add celebration particles
+    const particles = this.scene.add.particles(width / 2, height / 2 - 50, "particle", {
+      speed: { min: 150, max: 300 },
+      angle: { min: 0, max: 360 },
+      scale: { start: 0.8, end: 0 },
+      lifespan: 3000,
+      quantity: 3,
+      frequency: 200,
+      blendMode: "ADD",
+      tint: [themeManager.getColor("highlight"), themeManager.getColor("secondary")] // Use theme colors
+    }).setDepth(2);
+    
+    // Stop particles after 3 seconds
+    this.scene.time.delayedCall(3000, () => {
+      particles.stop();
+    });
+    
+    this.statsElements.push(particles);
+    
     const statsText = this.scene.add
       .text(
         width / 2,
-        height / 2 - 50,
+        height / 2 - 10, // Adjusted position to accommodate larger title
         `WPM: ${stats.wpm}  |  Accuracy: ${Math.round(stats.accuracy)}%`,
         {
           fontSize: "22px",
           fontFamily: "Monospace",
-          color: colors.white,
+          color: themeManager.getTextColor("primary"),
         },
       )
       .setOrigin(0.5)
@@ -270,12 +287,12 @@ export class GameUI {
     const wordsCompletedText = this.scene.add
       .text(
         width / 2,
-        height / 2 - 20,
+        height / 2 + 20, // Adjusted position to accommodate larger title
         `Words Completed: ${stats.wordsCompleted}  |  Keys Pressed: ${stats.totalKeysPressed}`,
         {
           fontSize: "18px",
           fontFamily: "Monospace",
-          color: colors.white,
+          color: themeManager.getTextColor("primary"),
         },
       )
       .setOrigin(0.5)
@@ -293,7 +310,7 @@ export class GameUI {
       });
 
       const problemCharsText = this.scene.add
-        .text(width / 2, height / 2 + 20, errorText, {
+        .text(width / 2, height / 2 + 50, errorText, { // Adjusted position
           fontSize: "18px",
           fontFamily: "Monospace",
           color: colors.red,
@@ -305,16 +322,16 @@ export class GameUI {
 
     // Add continue button
     const continueButton = this.scene.add
-      .text(width / 2, height / 2 + 100, "Continue", {
-        fontSize: "24px",
+      .text(width / 2, height / 2 + 120, "Continue", { // Adjusted position
+        fontSize: "28px", // Increased font size for button
         fontFamily: "Monospace",
-        color: colors.green,
+        color: themeManager.getTextColor("buttonFont"),
       })
       .setOrigin(0.5)
       .setDepth(3)
       .setInteractive()
-      .on("pointerover", () => continueButton.setColor(colors.yellow))
-      .on("pointerout", () => continueButton.setColor(colors.green));
+      .on("pointerover", () => continueButton.setColor(themeManager.getTextColor("highlight")))
+      .on("pointerout", () => continueButton.setColor(themeManager.getTextColor("buttonFont")));
 
     this.statsElements.push(continueButton);
 
@@ -324,8 +341,130 @@ export class GameUI {
     };
   }
 
+  private createAnimatedLevelTitle(level: number, x: number, y: number) {
+    // Create title text
+    const titleText = `LEVEL ${level} COMPLETED`;
+    
+    // Create container for the title at its final destination position
+    const titleContainer = this.scene.add.container(x, y).setDepth(3);
+    this.statsElements.push(titleContainer);
+    
+    // Split text into individual letters
+    const letters = titleText.split('');
+    const letterSpacing = 28; // Spacing between letters
+    const totalWidth = letters.length * letterSpacing;
+    const startX = -totalWidth / 2 + letterSpacing / 2;
+    
+    // Create each letter with colored shadows for a glitch effect
+    letters.forEach((letter, i) => {
+      if (letter === ' ') {
+        // Skip spaces in animation
+        return;
+      }
+      
+      // Create letter container positioned at its final x position
+      const letterContainer = this.scene.add.container(startX + i * letterSpacing, 0);
+      
+      // Use theme colors for shadow effects
+      const shadow1 = this.scene.add.text(0, 0, letter, {
+        fontSize: "56px",
+        fontFamily: "Monospace",
+        color: themeManager.getTextColor("secondary"), // First shadow matches secondary theme color
+      }).setOrigin(0.5).setAlpha(0.8);
+      
+      const shadow2 = this.scene.add.text(0, 0, letter, {
+        fontSize: "56px",
+        fontFamily: "Monospace",
+        color: themeManager.getTextColor("highlight"), // Second shadow matches highlight theme color
+      }).setOrigin(0.5).setAlpha(0.8);
+      
+      // Main text
+      const mainText = this.scene.add.text(0, 0, letter, {
+        fontSize: "56px",
+        fontFamily: "Monospace",
+        color: themeManager.getTextColor("primary"), // Main text uses primary theme color
+      }).setOrigin(0.5);
+      
+      // Apply small random offset to the shadows for glitch effect
+      shadow1.setPosition(-4, 4);
+      shadow2.setPosition(4, -4);
+      
+      // Add elements to the letter container
+      letterContainer.add([shadow1, shadow2, mainText]);
+      
+      // Add letter container to the title container
+      titleContainer.add(letterContainer);
+      
+      // Initial position well above the screen
+      letterContainer.y = -400;
+      
+      // Add a slight random rotation
+      letterContainer.setRotation(Phaser.Math.DegToRad(Phaser.Math.Between(-15, 15)));
+      
+      // Animate the letter falling in from above with a delay based on position
+      this.scene.tweens.add({
+        targets: letterContainer,
+        y: 0, // Final position at the container's origin
+        rotation: 0, // Straighten the letter
+        duration: 800,
+        delay: i * 50, // Staggered delay for each letter
+        ease: 'Bounce.easeOut',
+        onComplete: () => {
+          // Add a subtle floating animation after the letter arrives
+          this.scene.tweens.add({
+            targets: letterContainer,
+            y: Phaser.Math.Between(-4, 4), // Random slight float
+            duration: Phaser.Math.Between(1500, 2500),
+            yoyo: true,
+            repeat: -1,
+            delay: Phaser.Math.Between(0, 300) // Randomize timing for each letter
+          });
+          
+          // Add occasional glitch effect
+          const glitchTimer = this.scene.time.addEvent({
+            delay: Phaser.Math.Between(1500, 3000),
+            callback: () => {
+              // Temporarily increase shadow offset for glitch effect
+              const origShadow1X = shadow1.x;
+              const origShadow1Y = shadow1.y;
+              const origShadow2X = shadow2.x;
+              const origShadow2Y = shadow2.y;
+              
+              shadow1.setPosition(
+                origShadow1X - Phaser.Math.Between(4, 8),
+                origShadow1Y + Phaser.Math.Between(4, 8)
+              );
+              
+              shadow2.setPosition(
+                origShadow2X + Phaser.Math.Between(4, 8),
+                origShadow2Y - Phaser.Math.Between(4, 8)
+              );
+              
+              // Reset after short delay
+              this.scene.time.delayedCall(150, () => {
+                shadow1.setPosition(origShadow1X, origShadow1Y);
+                shadow2.setPosition(origShadow2X, origShadow2Y);
+              });
+            },
+            callbackScope: this,
+            loop: true
+          });
+          
+          this.letterGlitchTimers.push(glitchTimer);
+        }
+      });
+    });
+  }
+
   private clearStatsElements() {
+    // Stop all glitch timers
+    this.letterGlitchTimers.forEach(timer => {
+      if (timer) timer.destroy();
+    });
+    this.letterGlitchTimers = [];
+    
+    // Destroy all elements
     this.statsElements.forEach((element) => element.destroy());
     this.statsElements = [];
   }
-}
+} 

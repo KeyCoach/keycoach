@@ -5,6 +5,7 @@ import { LoginButton, LogoutButton } from "./nav-buttons";
 import { useUser } from "./user-context";
 import { usePathname } from "next/navigation";
 
+// TODO: collapse nav bar on small screens?
 export function Navbar() {
   const { user } = useUser();
   const pathName = usePathname();
@@ -15,8 +16,8 @@ export function Navbar() {
       style={{ height: "4.5rem" }}
       className={`top-0 z-50 w-full py-1 shadow-slate-300 ${
         isHomePage
-          ? "bg-cerulean-800 dark:bg-cerulean-800"
-          : "bg-slate-50 shadow-md shadow-slate-600 dark:bg-slate-950"
+          ? "bg-cerulean-800 dark:bg-cerulean-800 dark:text-slate-100"
+          : "bg-slate-100 shadow-md dark:shadow-slate-600 dark:bg-slate-950"
       }`}
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">

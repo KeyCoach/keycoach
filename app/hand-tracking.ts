@@ -1,4 +1,4 @@
-import { Hands, KeyPosition, Letter, Mistake, MistakeType, Word } from "@/app/lib/types";
+import { Hands, KeyPosition, Letter, Mistake, MistakeType, TestType, Word } from "@/app/lib/types";
 import { Dispatch, SetStateAction } from "react";
 
 /** Reformats hand tracking results */
@@ -265,8 +265,14 @@ export function UpdateFingerTechnique(
 
   const usedCorrectFinger = UsedCorrectFinger(fingerDistances, correctFingers, keyPositions);
 
+  let wordIndex: number;
+  let letterIndex: number;
+
   setUserInput((prev) => {
     const userInput: Word[] = JSON.parse(JSON.stringify(prev));
+
+    wordIndex = userInput.length - 1;
+    letterIndex = userInput.at(-1)!.inputs.length;
 
     for (const word of userInput) {
       for (const letter of word.inputs) {
@@ -280,7 +286,16 @@ export function UpdateFingerTechnique(
   });
 
   if (!usedCorrectFinger) {
-    setMistakes((prev) => [...prev, { key, time: timeSinceStart, type: MistakeType.Technique }]);
+    setMistakes((prev) => [
+      ...prev,
+      {
+        wordIndex,
+        letterIndex,
+        key,
+        time: timeSinceStart,
+        type: MistakeType.Technique,
+      },
+    ]);
   }
 }
 
@@ -292,11 +307,150 @@ function UsedCorrectFinger(
   const fCoords = keyPositions["KeyF"];
   const gCoords = keyPositions["KeyG"];
   const keyDistance = Math.sqrt((fCoords.x - gCoords.x) ** 2 + (fCoords.y - gCoords.y) ** 2);
-  console.log(keyDistance);
   const usedCorrectFinger = correctFingers.some(
     (fingerName) => fingerDistances[fingerName] < keyDistance * 1.2,
   );
   return usedCorrectFinger;
+}
+
+/**
+ * Delete the entire last word.
+ *
+ * If the last word has at least one letter, delete the word
+ *
+ * If the last word has no letters, delete the word, the space before it, and the word before that
+ */
+export function HandleCtrlBackspace(userInput: Word[]) {
+  const currWord = userInput.at(-1)!;
+  const firstWord = userInput[0].word;
+
+  if (currWord.inputs.length === 0) {
+    userInput = userInput.slice(0, -1);
+  }
+
+  if (userInput.length === 0) {
+    return [{ word: firstWord, inputs: [] }];
+  }
+
+  userInput.at(-1)!.inputs = [];
+
+  return userInput;
+}
+
+/**
+ * Delete the last letter of the last word.
+ *
+ * If the last word has no letters, delete the word, the space before it, and any missing letters before that.
+ */
+export function HandleBackspace(userInput: Word[]) {
+  const currWord = userInput.at(-1)!;
+
+  if (userInput.length === 1 && currWord.inputs.length === 0) {
+    return userInput;
+  }
+
+  if (currWord.inputs.length === 0 && userInput.length > 1) {
+    userInput = userInput.slice(0, -1);
+    while (userInput.at(-1)?.inputs.at(-1)?.status === Letter.Missing) {
+      userInput.at(-1)?.inputs.pop();
+    }
+  } else {
+    userInput.at(-1)!.inputs.pop();
+  }
+
+  return userInput;
+}
+
+/**
+ * Add a space to move the user to the next word.
+ *
+ * Do nothing if they haven't typed anything yet.
+ * */
+export function HandleSpace(
+  userInput: Word[],
+  sentence: string[],
+  inputId: string,
+  timePressed: number,
+) {
+  const currWord = userInput.at(-1)!;
+  if (currWord.inputs.length === 0) return userInput;
+
+  // Show shadow of missing letters
+  currWord.inputs.push(
+    ...currWord.word
+      .split("")
+      .map((letter) => ({
+        id: inputId,
+        key: letter,
+        status: Letter.Missing,
+        correctFinger: null,
+        time: timePressed,
+      }))
+      .slice(currWord.inputs.length),
+  );
+
+  userInput.push({
+    word: sentence[userInput.length],
+    inputs: [],
+  });
+
+  return userInput;
+}
+
+/**
+ * Add a letter to the last word. Determine if the letter is correct or not.
+ * */
+export function HandleNormalKey(
+  userInput: Word[],
+  key: string,
+  inputId: string,
+  timePressed: number,
+) {
+  const currWord = userInput.at(-1)!;
+
+  const currLetter = currWord.word[currWord.inputs.length];
+  const status = currLetter !== key ? Letter.Wrong : Letter.Correct;
+
+  currWord.inputs.push({
+    id: inputId,
+    key: currLetter || key,
+    correctFinger: null,
+    status,
+    time: timePressed,
+  });
+  return userInput;
+}
+
+export function TestIsComplete(
+  userInput: Word[],
+  sentence: string[],
+  testType: TestType,
+  duration = 0,
+  testStart = 0,
+) {
+  if (testType === TestType.Timed) {
+    if (Date.now() - testStart > duration * 1000 && userInput.length > 1) {
+      return true;
+    }
+  }
+
+  if (userInput.length < sentence.length) return false;
+  if (userInput.length > sentence.length) return true;
+  const lastWord = userInput.at(-1)!;
+  if (lastWord.inputs.length < lastWord.word.length) return false;
+  return lastWord.inputs.every(
+    (input) => input.status === Letter.Correct || input.status === Letter.Wrong,
+  );
+}
+
+export function InvalidKey(e: KeyboardEvent, keyPositions: KeyPosition[][]) {
+  if (e.ctrlKey && e.code !== "Backspace") {
+    return true;
+  }
+
+  if (!keyPositions.flat().some((key) => key.key === e.code)) {
+    return true;
+  }
 }
 
 export const normalKeys = [

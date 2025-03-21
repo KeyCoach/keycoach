@@ -14,12 +14,7 @@ export function LogoutButton() {
   }
 
   return (
-    <Link
-      href="#"
-      onClick={removeCookie}
-      linkVariant="navbar-link"
-      className="transition-all duration-150 ease-in-out hover:underline"
-    >
+    <Link href="#" onClick={removeCookie} linkVariant="navbar-link">
       Logout
     </Link>
   );
@@ -41,12 +36,7 @@ export function LoginButton() {
   }
 
   return (
-    <Link
-      className="no-underline transition-all duration-150 ease-in-out hover:underline"
-      href="#"
-      linkVariant="navbar-link"
-      onClick={GoToLogin}
-    >
+    <Link href="#" linkVariant="navbar-link" onClick={GoToLogin}>
       Login
     </Link>
   );

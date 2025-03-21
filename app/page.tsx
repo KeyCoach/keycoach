@@ -82,23 +82,17 @@ export default function Home(): React.ReactNode {
 
           <div className="space-y-8">
             <div className="flex justify-center space-x-8">
-              <Link className="text-slate-50 no-underline" href="/typing/test">
-                <Button className="w-56" colorTheme="ceruleanLight">
-                  Test my Speed
-                </Button>
-              </Link>
+              <Button className="w-56" colorTheme="ceruleanLight" href="/typing/test">
+                Test my Speed
+              </Button>
 
-              <Link className="text-slate-50 no-underline" href="/lesson">
-                <Button className="w-56" colorTheme="ceruleanLight">
-                  Try a Lesson
-                </Button>
-              </Link>
+              <Button className="w-56" colorTheme="ceruleanLight" href="/lesson">
+                Try a Lesson
+              </Button>
 
-              <Link className="text-slate-50 no-underline" href="/type-invader">
-                <Button className="w-56" colorTheme="ceruleanLight">
-                  Play Type Invaders
-                </Button>
-              </Link>
+              <Button className="w-56" colorTheme="ceruleanLight" href="/type-invader">
+                Play Type Invaders
+              </Button>
             </div>
           </div>
         </div>

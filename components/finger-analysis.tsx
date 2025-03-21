@@ -4,7 +4,7 @@ import { Attempt, MistakeType } from "@/app/lib/types";
 export function FingerPlacementAnalysis({ attempt }: { attempt: Attempt }) {
   if (!attempt.cameraActivated) {
     return (
-      <div className="rounded-2xl bg-white p-6 shadow-lg dark:bg-slate-800">
+      <div className="rounded-2xl bg-slate-100 p-6 shadow-lg dark:bg-slate-800">
         <div className="space-y-4 text-center">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -27,7 +27,7 @@ export function FingerPlacementAnalysis({ attempt }: { attempt: Attempt }) {
             To receive detailed finger placement accuracy, you need to set up your camera.
           </p>
           <p className="text-slate-600 dark:text-slate-300">
-            Setup your camera when taking your next test.
+            Set up your camera when taking your next test.
           </p>
         </div>
       </div>

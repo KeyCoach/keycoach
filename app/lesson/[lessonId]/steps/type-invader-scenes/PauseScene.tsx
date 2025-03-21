@@ -32,7 +32,7 @@ export class PauseScene extends Scene {
       .text(width / 2, height / 2 - 60, "PAUSED", {
         fontSize: "32px",
         fontFamily: "Monospace",
-        color: colors.yellow,
+        color: colors.white,
       })
       .setOrigin(0.5);
 
@@ -41,7 +41,7 @@ export class PauseScene extends Scene {
       .text(width / 2, height / 2, "Resume Game", {
         fontSize: "24px",
         fontFamily: "Monospace",
-        color: colors.white,
+        color: colors.blue,
       })
       .setOrigin(0.5)
       .setInteractive({ useHandCursor: true });
@@ -50,7 +50,7 @@ export class PauseScene extends Scene {
       .text(width / 2, height / 2 + 40, "Return to Main Menu", {
         fontSize: "24px",
         fontFamily: "Monospace",
-        color: colors.white,
+        color: colors.blue,
       })
       .setOrigin(0.5)
       .setInteractive({ useHandCursor: true });

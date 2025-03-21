@@ -1,10 +1,19 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { LoadingPage } from "@/components";
-import { KeyPosition, Letter, Mistake, MistakeType, Test, Word } from "@/app/lib/types";
+import { KeyPosition, Letter, Mistake, MistakeType, Test, TestType, Word } from "@/app/lib/types";
 import { v4 as uuidv4 } from "uuid";
-import { normalKeys, UpdateFingerTechnique } from "@/app/hand-tracking";
+import {
+  HandleBackspace,
+  HandleCtrlBackspace,
+  HandleNormalKey,
+  HandleSpace,
+  InvalidKey,
+  normalKeys,
+  TestIsComplete,
+  UpdateFingerTechnique,
+} from "@/app/hand-tracking";
 import { useHandTracking } from "@/app/hand-track-context";
-import axios from "axios";
+import axios from "@/app/axios-client";
 import { CalculateStats } from "@/utils/calculate-stats";
 
 export type OnTestCompleteCallback = (
@@ -22,6 +31,8 @@ export default function TypingBox({
   setGrossWpm,
   setAccuracy,
   setFingerAccuracy,
+  testType,
+  duration = Infinity,
 }: {
   test: Test;
   onTestComplete: OnTestCompleteCallback;
@@ -29,8 +40,17 @@ export default function TypingBox({
   setGrossWpm?: React.Dispatch<React.SetStateAction<number>>;
   setAccuracy?: React.Dispatch<React.SetStateAction<number>>;
   setFingerAccuracy?: React.Dispatch<React.SetStateAction<number>>;
+  testType: TestType;
+  duration: number;
 }) {
+  const [scrollTranslate, setScrollTranslate] = useState(0);
+  const [typingStarted, setTypingStarted] = useState(false);
+  const [showTypingPrompt, setShowTypingPrompt] = useState(false);
+  const inactivityTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const cursorRef = useRef<HTMLSpanElement>(null);
+  const scrollAnchorRef = useRef<HTMLDivElement>(null);
   const testId = test.id;
+
   const { keyPositionsSet, settingUp, modelReady, keyPositions, detectHands, cameraActivated } =
     useHandTracking();
   const sentence = useMemo(() => test.textBody.split(" "), [test.textBody]);
@@ -39,9 +59,11 @@ export default function TypingBox({
   const [testStart, setTestStart] = useState(0);
   const [userInput, setUserInput] = useState<Word[]>([{ word: sentence[0], inputs: [] }]);
   const [mistakes, setMistakes] = useState<Mistake[]>([]);
+  const [timeRemaining, setTimeRemaining] = useState(duration);
+  const testEnd = testStart + duration * 1000;
 
   const userInputRef = useRef(userInput);
-  const testFinished = TestIsComplete(userInput, sentence);
+  const testFinished = TestIsComplete(userInput, sentence, testType, duration, testStart);
   const cameraSetup = keyPositionsSet && cameraActivated;
 
   /** handle key presses. Add, edit, and delete recorded keys */
@@ -50,23 +72,43 @@ export default function TypingBox({
       if (testFinished) {
         return;
       }
+
+      if (!typingStarted) {
+        setTypingStarted(true);
+      }
+
       if (normalKeys.includes(key)) {
         if (testStart === 0) {
           setTestStart(Date.now());
         }
         const currWord = userInputRef.current.at(-1)!;
-        const currLetter = currWord.word[currWord.inputs.length];
+        const currLetter = currWord.word[currWord.inputs.length] ?? " ";
         const status = currLetter !== key ? Letter.Wrong : Letter.Correct;
 
         if (key === " ") {
           if (currWord.inputs.length !== currWord.word.length) {
             setMistakes((prev) => [
               ...prev,
-              { key, time: timeSinceStart, type: MistakeType.Missing },
+              {
+                wordIndex: userInput.length - 1,
+                letterIndex: currWord.inputs.length,
+                key: currLetter,
+                time: timeSinceStart,
+                type: MistakeType.Missing,
+              },
             ]);
           }
         } else if (status === Letter.Wrong) {
-          setMistakes((prev) => [...prev, { key, time: timeSinceStart, type: MistakeType.Wrong }]);
+          setMistakes((prev) => [
+            ...prev,
+            {
+              wordIndex: userInput.length - 1,
+              letterIndex: currWord.inputs.length,
+              key: currLetter,
+              time: timeSinceStart,
+              type: MistakeType.Wrong,
+            },
+          ]);
         }
       }
 
@@ -90,8 +132,46 @@ export default function TypingBox({
         return result;
       });
     },
-    [sentence, testStart, userInputRef, testFinished],
+    [sentence, testStart, userInputRef, testFinished, userInput],
   );
+
+  useEffect(() => {
+    // Clear any existing timer when typing starts
+    if (typingStarted && inactivityTimerRef.current) {
+      clearTimeout(inactivityTimerRef.current);
+      setShowTypingPrompt(false);
+      return;
+    }
+
+    if (!typingStarted) {
+      inactivityTimerRef.current = setTimeout(() => {
+        setShowTypingPrompt(true);
+      }, 3500);
+    }
+
+    return () => {
+      if (inactivityTimerRef.current) {
+        clearTimeout(inactivityTimerRef.current);
+      }
+    };
+  }, [typingStarted]);
+
+  useEffect(() => {
+    setTestStart(0);
+    setUserInput([{ word: sentence[0], inputs: [] }]);
+    setMistakes([]);
+    setTimeRemaining(duration);
+    setScrollTranslate(0);
+  }, [duration, sentence, testType]);
+
+  useEffect(() => {
+    if (!testStart) return;
+    const interval = setInterval(() => {
+      const timeRemaining = Math.max(0, Math.round((testEnd - Date.now()) / 1000));
+      setTimeRemaining(timeRemaining);
+    }, 100);
+    return () => clearInterval(interval);
+  }, [testStart, testEnd]);
 
   /** keep onscreen user metrics up to date */
   useEffect(() => {
@@ -183,7 +263,7 @@ export default function TypingBox({
       const attemptId = uuidv4();
       setSendingRequest(true);
 
-      const body = {
+      const newAttempt: Record<string, any> = {
         testId,
         attemptId,
         duration: Date.now() - testStart,
@@ -191,7 +271,20 @@ export default function TypingBox({
         mistakes,
         cameraActivated,
       };
-      await axios.post("/api/attempt", body);
+
+      if (testType === TestType.Timed) {
+        const newTest = { ...test };
+        newTest.textBody = userInput.map((word) => word.word).join(" ");
+        newTest.wordCount = newTest.textBody.split(" ").length;
+        newTest.charCount = newTest.textBody.split("").length;
+        newAttempt.test = newTest;
+      } else if (testType === TestType.Words) {
+        const newTest = { ...test };
+        newTest.duration = null;
+        newAttempt.test = newTest;
+      }
+
+      await axios.post("/api/attempt", newAttempt);
 
       onTestComplete(attemptId, userInput, mistakes, testStart, Date.now());
     }
@@ -199,6 +292,9 @@ export default function TypingBox({
       completeTest();
     }
   }, [
+    test,
+    duration,
+    testType,
     testFinished,
     onTestComplete,
     userInput,
@@ -209,6 +305,25 @@ export default function TypingBox({
     cameraActivated,
   ]);
 
+  useEffect(() => {
+    if (!cursorRef.current || !scrollAnchorRef.current) {
+      return;
+    }
+
+    const scrollAnchorHeight =
+      scrollAnchorRef.current.getBoundingClientRect().bottom -
+      scrollAnchorRef.current.getBoundingClientRect().top;
+
+    const scrollAreaMidY =
+      scrollAnchorRef.current.getBoundingClientRect().top + scrollAnchorHeight / 2;
+
+    const cursorScrollDist = cursorRef.current.getBoundingClientRect().top - scrollAreaMidY;
+
+    if (cursorScrollDist > 0) {
+      setScrollTranslate((prev) => prev - cursorScrollDist);
+    }
+  }, [userInput]);
+
   if ((cameraSetup && !modelReady) || sendingRequest) {
     return <LoadingPage />;
   }
@@ -217,54 +332,72 @@ export default function TypingBox({
     return <LoadingPage />;
   }
 
+  const letterClasses = {
+    correct: "text-slate-900 dark:text-slate-50",
+    wrong: "text-red-500 dark:text-red-400",
+    missing: "text-slate-400",
+    wrongFinger: "text-yellow-600 dark:text-yellow-400",
+  };
+  const wrongWordClass = "underline decoration-red-400";
+
   return (
-    <div className="relative h-fit max-w-7xl overflow-hidden rounded-lg bg-slate-200 dark:bg-slate-900">
-      <div className="p-8">
+    <div className="h-fit w-full overflow-hidden rounded-lg bg-slate-100 p-8 dark:bg-slate-900">
+      <div className="relative" ref={scrollAnchorRef}>
         <div className="mb-6 flex justify-between text-sm text-slate-600 dark:text-slate-400">
           <span>Words: {sentence.length}</span>
           {test.author && <span>Author: {test.author}</span>}
+          {testType === TestType.Timed && <span>Time Left: {timeRemaining} s</span>}
         </div>
 
-        <div className="mb-8 min-h-[200px] rounded-lg p-6 font-mono text-3xl leading-relaxed">
-          <p className="whitespace-pre-wrap text-slate-900 dark:text-slate-50">
+        <div
+          className="relative mb-2 max-h-[280px] min-h-[280px] overflow-hidden rounded-lg font-mono text-3xl leading-relaxed"
+          id="test-text-body"
+        >
+          <p
+            className="absolute whitespace-pre-wrap text-slate-900 dark:text-slate-50"
+            style={{ transform: `translateY(${scrollTranslate}px)` }}
+          >
             {/*  words they have typed */}
             {userInput.map((word, i) => (
               <span key={i}>
                 <span className="inline-block">
                   {word.inputs.map((input, j) => {
-                    const letterClasses: Record<Letter, string> = {
-                      [Letter.Correct]: "text-slate-900 dark:text-slate-50",
-                      [Letter.Wrong]: "text-red-500 dark:text-red-400",
-                      [Letter.Missing]: "text-slate-400 dark:text-slate-500",
-                    };
-
-                    const wrongFingerClass = "text-orange-500 dark:text-orange-400";
-
-                    let letterClass = letterClasses[input.status];
-                    if (input.status === Letter.Correct && !input.correctFinger) {
-                      letterClass = wrongFingerClass;
+                    let letterClass = "";
+                    if (input.status === Letter.Wrong) {
+                      letterClass = letterClasses.wrong;
+                    } else if (input.status === Letter.Missing) {
+                      letterClass = letterClasses.missing;
+                    } else if (input.correctFinger === false) {
+                      // uses "=== false" to exclude null (null means no finger data)
+                      letterClass = letterClasses.wrongFinger;
+                    } else {
+                      letterClass = letterClasses.correct;
                     }
 
                     const correctWord = word.inputs.every(
-                      (input) => input.status === Letter.Correct,
+                      (input) => input.status === Letter.Correct && input.correctFinger !== false,
                     );
 
-                    const wrongWordClass = correctWord ? "" : "underline decoration-red-400";
+                    const wrongWord = correctWord ? "" : wrongWordClass;
                     return (
                       // letters they've typed so far
                       <span
                         key={"letter" + i + "," + j}
                         kc-id="letter"
-                        className={`${letterClasses[input.status]} ${wrongWordClass}`}
+                        className={` ${letterClass} ${wrongWord}`}
                       >
                         {input.key}
                       </span>
                     );
                   })}
                   {/* their cursor */}
+                  <span ref={cursorRef}>
+                    {/* ref for cursor that doesn't animate and do weird stuff */}
+                  </span>
                   {i === userInput.length - 1 && (
                     <span className="blink absolute font-bold">⎸</span>
                   )}
+
                   {/* the rest of the word */}
                   {word.word
                     ?.slice(word.inputs.length)
@@ -295,6 +428,26 @@ export default function TypingBox({
           </p>
         </div>
 
+        {/* Blur overlay */}
+        {!typingStarted && (
+          <div className="absolute inset-x-0 bottom-0 z-10 h-2/3">
+            {/* Solid blur for most of the area */}
+            <div className="absolute inset-x-0 bottom-0 h-[70%] rounded-lg bg-slate-100/85 backdrop-blur-md dark:bg-slate-900/85"></div>
+
+            {/* Small gradient transition at the top (10% of the overlay height) */}
+            <div className="absolute inset-x-0 top-0 h-[30%] bg-gradient-to-b from-transparent to-slate-100/85 dark:to-slate-900/85"></div>
+          </div>
+        )}
+
+        {/* Typing prompt */}
+        {!typingStarted && showTypingPrompt && (
+          <div className="absolute inset-x-0 z-20 flex justify-center" style={{ top: "60%" }}>
+            <div className="animate-typingBoxFadeInUp rounded-xl bg-slate-700/90 px-4 py-2 text-base text-white opacity-0 dark:bg-slate-300/90 dark:text-slate-900">
+              Start typing to begin test
+            </div>
+          </div>
+        )}
+
         {test.src && (
           <div className="text-right text-sm italic text-slate-600 dark:text-slate-400">
             <p>From "{test.src}"</p>
@@ -303,122 +456,4 @@ export default function TypingBox({
       </div>
     </div>
   );
-}
-
-/**
- * Delete the entire last word.
- *
- * If the last word has at least one letter, delete the word
- *
- * If the last word has no letters, delete the word, the space before it, and the word before that
- */
-function HandleCtrlBackspace(userInput: Word[]) {
-  const currWord = userInput.at(-1)!;
-  const firstWord = userInput[0].word;
-
-  if (currWord.inputs.length === 0) {
-    userInput = userInput.slice(0, -1);
-  }
-
-  if (userInput.length === 0) {
-    return [{ word: firstWord, inputs: [] }];
-  }
-
-  userInput.at(-1)!.inputs = [];
-
-  return userInput;
-}
-
-/**
- * Delete the last letter of the last word.
- *
- * If the last word has no letters, delete the word, the space before it, and any missing letters before that.
- */
-function HandleBackspace(userInput: Word[]) {
-  const currWord = userInput.at(-1)!;
-
-  if (userInput.length === 1 && currWord.inputs.length === 0) {
-    return userInput;
-  }
-
-  if (currWord.inputs.length === 0 && userInput.length > 1) {
-    userInput = userInput.slice(0, -1);
-    while (userInput.at(-1)?.inputs.at(-1)?.status === Letter.Missing) {
-      userInput.at(-1)?.inputs.pop();
-    }
-  } else {
-    userInput.at(-1)!.inputs.pop();
-  }
-
-  return userInput;
-}
-
-/**
- * Add a space to move the user to the next word.
- *
- * Do nothing if they haven't typed anything yet.
- * */
-function HandleSpace(userInput: Word[], sentence: string[], inputId: string, timePressed: number) {
-  const currWord = userInput.at(-1)!;
-  if (currWord.inputs.length === 0) return userInput;
-
-  // Show shadow of missing letters
-  currWord.inputs.push(
-    ...currWord.word
-      .split("")
-      .map((letter) => ({
-        id: inputId,
-        key: letter,
-        status: Letter.Missing,
-        correctFinger: null,
-        time: timePressed,
-      }))
-      .slice(currWord.inputs.length),
-  );
-
-  userInput.push({
-    word: sentence[userInput.length],
-    inputs: [],
-  });
-
-  return userInput;
-}
-
-/**
- * Add a letter to the last word. Determine if the letter is correct or not.
- * */
-function HandleNormalKey(userInput: Word[], key: string, inputId: string, timePressed: number) {
-  const currWord = userInput.at(-1)!;
-
-  const currLetter = currWord.word[currWord.inputs.length];
-  const status = currLetter !== key ? Letter.Wrong : Letter.Correct;
-
-  currWord.inputs.push({
-    id: inputId,
-    key: currLetter || key,
-    correctFinger: null,
-    status,
-    time: timePressed,
-  });
-  return userInput;
-}
-
-function TestIsComplete(userInput: Word[], sentence: string[]) {
-  if (userInput.length < sentence.length) return false;
-  if (userInput.length > sentence.length) return true;
-  const lastWord = userInput.at(-1)!;
-  if (lastWord.inputs.length < lastWord.word.length) return false;
-  return lastWord.inputs.every(
-    (input) => input.status === Letter.Correct || input.status === Letter.Wrong,
-  );
-}
-
-function InvalidKey(e: KeyboardEvent, keyPositions: KeyPosition[][]) {
-  if (e.ctrlKey && e.code !== "Backspace") {
-    return true;
-  }
-
-  if (!keyPositions.flat().some((key) => key.key === e.code)) {
-    return true;
-  }
 }

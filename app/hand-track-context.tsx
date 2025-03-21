@@ -4,7 +4,7 @@ import { showVideo as setVideoVisible, startVideo } from "./p5";
 import { defaultKeyPositions, HandsFromTrackingResults } from "./hand-tracking";
 import { handposeCallback, Hands, HandTrackContextType } from "./lib/types";
 import p5Types from "p5";
-import CameraSetupModal from "./camera-setup";
+import CameraSetupModal from "./camera-setup-new";
 
 // loads ml5 onto the Window Object
 declare global {
@@ -85,7 +85,7 @@ export function HandTrackProvider({ children }: { children: React.ReactNode }) {
 }
 
 function useSetupCamera(
-  trackingActive: boolean,
+  cameraActivated: boolean,
   showVideo: boolean,
   drawFunction?: (p: p5Types, capture: p5Types.Element) => void,
 ) {
@@ -96,21 +96,22 @@ function useSetupCamera(
   const detectHands = useRef<handposeCallback>(() => () => {});
 
   useEffect(() => {
-    if (!trackingActive) return;
+    if (!cameraActivated) return;
     let capture: p5Types.MediaElement;
     let p: p5Types;
     let handpose: any;
 
     async function loadMl5() {
-      if (document.getElementById("ml5-script")) return;
-      if (window.ml5) return;
+      if (!document.getElementById("ml5-script")) {
+        const ml5Script = document.createElement("script");
+        ml5Script.src = "https://unpkg.com/ml5@1/dist/ml5.js";
+        ml5Script.id = "ml5-script";
+        ml5Script.async = true;
+        document.head.appendChild(ml5Script);
+      }
 
-      const ml5Script = document.createElement("script");
-      ml5Script.src = "https://unpkg.com/ml5@1/dist/ml5.js";
-      ml5Script.id = "ml5-script";
-      ml5Script.async = true;
-      document.head.appendChild(ml5Script);
       while (!window.ml5) {
+        console.log("waiting for ml5");
         await new Promise((resolve) => setTimeout(resolve, 100));
       }
     }
@@ -171,8 +172,9 @@ function useSetupCamera(
 
     setup();
 
+    console.log("setup");
     return () => {};
-  }, [trackingActive, showVideo, drawFunction]);
+  }, [cameraActivated, showVideo, drawFunction]);
 
   return { modelReady, canvasRef, detectHands };
 }

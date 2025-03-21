@@ -134,7 +134,7 @@ export function BufferScreen({
     <div className="h-page flex items-center justify-center px-4">
       <div className="grid w-full max-w-5xl auto-rows-auto gap-16">
         <FadeInSection delay={0}>
-          <div className="relative flex min-h-[100px] flex-col items-center justify-center gap-4 rounded-2xl py-4 shadow-md dark:bg-slate-800 dark:shadow-slate-600">
+          <div className="relative flex min-h-[100px] flex-col items-center justify-center gap-4 rounded-2xl py-4 shadow-md bg-slate-200 dark:bg-slate-800 dark:shadow-slate-600">
             <BounceAnimation
               duration="normal"
               startRotation={-6}
@@ -217,7 +217,7 @@ export function BufferScreen({
             </div>
             <div
               id="character-quote"
-              className="flex h-40 w-1/2 items-center justify-center rounded-2xl bg-slate-800 p-6 shadow-md"
+              className="flex h-40 w-1/2 items-center justify-center rounded-2xl bg-slate-100 dark:bg-slate-800 p-6 shadow-md"
             >
               {quote}
             </div>

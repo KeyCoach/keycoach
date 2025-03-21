@@ -1,5 +1,4 @@
-import { Link } from "@/components/link";
-import { H1 } from "@/components";
+import { Button, H1 } from "@/components";
 import { AuthenticateUser } from "@/app/actions";
 import { GetAttemptsByEmail } from "@/service-interfaces/dynamo-db";
 import GoalsCard from "./cards/goals";
@@ -15,12 +14,8 @@ export default async function Dashboard() {
       <div className="h-page w-full bg-white pt-24 dark:bg-slate-950">
         <div className="mx-auto max-w-3xl text-center text-slate-900 dark:text-slate-50">
           <H1 className="mb-6">Please log in to view your dashboard</H1>
-          <Link
-            href="/login"
-            className="inline-block rounded-lg bg-cerulean-600 px-4 py-2 text-white"
-          >
-            Login
-          </Link>
+
+          <Button href="/login">Login</Button>
         </div>
       </div>
     );

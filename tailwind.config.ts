@@ -14,6 +14,10 @@ export default {
           "0%": { opacity: "0", transform: "translateY(8rem)" },
           "100%": { opacity: "1", transform: "translateY(0)" },
         },
+        typingBoxFadeInUp: {
+          "0%": { opacity: "0", transform: "translateY(2rem)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
+        },
         modalBackground: {
           "0%": { opacity: "0" },
           "100%": { opacity: "1" },
@@ -21,6 +25,7 @@ export default {
       },
       animation: {
         fadeInUp: "fadeInUp 0.4s ease-out",
+        typingBoxFadeInUp: "typingBoxFadeInUp 0.8s ease-in-out forwards",
         modalBackground: "modalBackground 0.4s ease",
       },
       minWidth: {
@@ -107,11 +112,11 @@ export default {
           200: "#B9DCE6",
           300: "#8BC6D6",
           400: "#5FAFC6",
-          500: "#264D61",
-          600: "#214355",
-          700: "#1B3848",
-          800: "#152D3A",
-          900: "#0E212C",
+          500: "#3A94B0",
+          600: "#327E96",
+          700: "#29687C",
+          800: "#205162",
+          900: "#173B48",
         },
       },
     },

@@ -1,10 +1,12 @@
-import { Link } from "@/components/link";
 import { H1 } from "@/components";
 import { Button } from "@/components";
 import { GetAttemptById } from "@/service-interfaces/dynamo-db";
+import { TestTextReview } from "@/app/test-text-review";
 import { AuthenticateUser } from "@/app/actions";
 import { type Attempt } from "@/app/lib/types";
 import { FingerPlacementAnalysis } from "@/components/finger-analysis";
+import { MistakesAnalysis } from "@/components/mistakes-analysis";
+import { KeyboardHeatmap } from "@/components/keyboard-analysis";
 
 export default async function TestResult({ params }: { params: Promise<{ attemptId: string }> }) {
   const user = await AuthenticateUser();
@@ -18,14 +20,12 @@ export default async function TestResult({ params }: { params: Promise<{ attempt
         <H1 className="mb-6 text-slate-900 dark:text-slate-50">Typing Results</H1>
 
         <div className="mb-8 flex gap-4">
-          <Link className="text-slate-50 no-underline" href="/typing/test">
-            <Button colorTheme="cerulean" variant="previous-nav">
-              Take another Test
-            </Button>
-          </Link>
-          <Link className="text-slate-50 no-underline" href="/lesson">
-            <Button colorTheme="cerulean">Continue Learning</Button>
-          </Link>
+          <Button colorTheme="cerulean" variant="previous-nav" href="/typing/test">
+            Take another Test
+          </Button>
+          <Button colorTheme="cerulean" href="/lesson">
+            Continue Learning
+          </Button>
         </div>
 
         {attempt ? <Attempt attempt={attempt} /> : <p>No test found</p>}
@@ -79,11 +79,8 @@ function Attempt({ attempt }: { attempt: Attempt }) {
         </div>
       </div>
 
-      {/* Finger Placement Analysis */}
-      <FingerPlacementAnalysis attempt={attempt} />
-
       {/* Test Details */}
-      <div className="rounded-xl bg-slate-50 p-6 shadow-lg dark:bg-slate-800">
+      {/* <div className="rounded-xl bg-slate-100 p-6 shadow-lg dark:bg-slate-800">
         <h2 className="mb-4 text-xl font-semibold text-slate-900 dark:text-slate-50">
           Test Details
         </h2>
@@ -100,9 +97,11 @@ function Attempt({ attempt }: { attempt: Attempt }) {
             </p>
           </div>
           <div>
-            <p className="mb-2">
-              <span className="font-medium">Author:</span> {attempt.test.author}
-            </p>
+            {attempt.test.author && (
+              <p className="mb-2">
+                <span className="font-medium">Author:</span> {attempt.test.author}
+              </p>
+            )}
             <p className="mb-2">
               <span className="font-medium">Difficulty:</span> {attempt.test.difficulty}
             </p>
@@ -111,13 +110,23 @@ function Attempt({ attempt }: { attempt: Attempt }) {
             </p>
           </div>
         </div>
-      </div>
+      </div> */}
+
+
+      {/* Keyboard Heatmap */}
+      <KeyboardHeatmap attempt={attempt} />
+
+      {/* Finger Placement Analysis */}
+      {/* <FingerPlacementAnalysis attempt={attempt} /> */}
+
+      {/* Finger Placement Analysis */}
+      <MistakesAnalysis attempt={attempt} />
 
       {/* Test Text */}
-      <div className="rounded-xl bg-slate-50 p-6 shadow-lg dark:bg-slate-800">
+      <div className="rounded-xl bg-slate-100 p-6 shadow-lg dark:bg-slate-800">
         <h2 className="mb-4 text-xl font-semibold text-slate-900 dark:text-slate-50">Test Text</h2>
         <p className="leading-relaxed text-slate-700 dark:text-slate-300">
-          {attempt.test.textBody}
+          <TestTextReview attempt={attempt} />
         </p>
       </div>
     </div>

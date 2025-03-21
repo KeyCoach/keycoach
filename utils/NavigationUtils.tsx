@@ -107,11 +107,11 @@ export class KeyboardNavigation {
 	addItems(items: NavigationItem[]) {
 		this.items.push(...items);
 		this.updateGrid();
-
+		// conditional on using arrow keys
 		// If these are the first items, highlight the first one
-		if (this.items.length === items.length) {
-			this.highlightItem(0);
-		}
+		// if (this.items.length === items.length) {
+		// 	this.highlightItem(0);
+		// }
 
 		return this;
 	}
@@ -275,11 +275,11 @@ export class KeyboardNavigation {
 
 		const item = this.items[index];
 		if (item.element instanceof Phaser.GameObjects.Text) {
-			(item.element as Phaser.GameObjects.Text).setColor(colors.yellow);
+			(item.element as Phaser.GameObjects.Text).setColor(colors.teal);
 		} else if (item.element instanceof Phaser.GameObjects.Rectangle) {
 			(item.element as Phaser.GameObjects.Rectangle).setStrokeStyle(
 				2,
-				0xffff00
+				0x00cccc // teal
 			);
 		}
 
@@ -294,7 +294,7 @@ export class KeyboardNavigation {
 		if (linkedIndex >= 0) {
 			const linkedItem = this.items[linkedIndex];
 			if (linkedItem.element instanceof Phaser.GameObjects.Text) {
-				(linkedItem.element as Phaser.GameObjects.Text).setColor(colors.yellow);
+				(linkedItem.element as Phaser.GameObjects.Text).setColor(colors.teal);
 			}
 		}
 	}

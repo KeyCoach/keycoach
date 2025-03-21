@@ -10,18 +10,6 @@
   --black: #000;
 }
 
-/*@media (prefers-color-scheme: dark) {*/
-/*  :root {*/
-/*    --background: #0a0a0a;*/
-/*    --foreground: #ededed;*/
-/*  }*/
-/*}*/
-
-a {
-  color: blue;
-  text-decoration: underline;
-}
-
 * {
   margin: 0;
   padding: 0;
@@ -95,8 +83,12 @@ body {
 }
 
 .h-page {
-  height: calc(100vh - 4.5rem);
+  height: calc((100vh - 4.5rem));
   max-height: calc(100vh - 4.5rem);
+}
+.h-page-50 {
+  height: calc((100vh - 4.5rem) / 2);
+  max-height: calc((100vh - 4.5rem) / 2);
 }
 
 main > canvas.p5Canvas {
