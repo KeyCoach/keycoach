@@ -50,7 +50,7 @@ function Setup() {
       // Draw red dots for the key positions
       for (const key of keyPositionsRef.current.flat()) {
         if (key.positionSet) {
-          p.fill(255, 0, 0);
+          p.fill(255, 0, 0); // TODO: change color based on slope
           p.noStroke();
 
           p.circle(-capture.width + key.x, key.y, 5);
