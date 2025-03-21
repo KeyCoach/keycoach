@@ -159,6 +159,7 @@ export class GameMechanics {
     if (!this.typingStats.hasStartedTyping) {
       return {
         accuracy: 100, // 100% accuracy if no typing yet
+        fingerAccuracy: 100,
         wpm: 0,
         wordsCompleted: 0,
         totalKeysPressed: 0,

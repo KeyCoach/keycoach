@@ -1,6 +1,6 @@
 // GameScene.tsx (partial update with sound implementation)
 import { Scene } from "phaser";
-import { themeManager, soundManager } from "@/utils/type-invader-game";
+import { gameSettings, themeManager, soundManager } from "@/utils/type-invader-game";
 import { GameMechanics } from "@/utils/GameMechanics";
 import { GameUI } from "@/utils/GameUI";
 import { MultiplierInfo } from "@/constants/definitions";
@@ -173,6 +173,8 @@ export class GameScene extends Scene {
 
     // Show typing stats between levels
     const stats = this.mechanics.getTypingStats();
+
+    stats.fingerAccuracy = (window as any).typeInvaderFingerAccuracy || 100;
 
     // Ensure level is explicitly set in stats
     stats.level = currentLevel;
