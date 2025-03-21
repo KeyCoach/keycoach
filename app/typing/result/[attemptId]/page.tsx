@@ -6,6 +6,7 @@ import { AuthenticateUser } from "@/app/actions";
 import { type Attempt } from "@/app/lib/types";
 import { FingerPlacementAnalysis } from "@/components/finger-analysis";
 import { MistakesAnalysis } from "@/components/mistakes-analysis";
+import { KeyboardHeatmap } from "@/components/keyboard-analysis";
 
 export default async function TestResult({ params }: { params: Promise<{ attemptId: string }> }) {
   const user = await AuthenticateUser();
@@ -79,7 +80,7 @@ function Attempt({ attempt }: { attempt: Attempt }) {
       </div>
 
       {/* Test Details */}
-      <div className="rounded-xl bg-slate-100 p-6 shadow-lg dark:bg-slate-800">
+      {/* <div className="rounded-xl bg-slate-100 p-6 shadow-lg dark:bg-slate-800">
         <h2 className="mb-4 text-xl font-semibold text-slate-900 dark:text-slate-50">
           Test Details
         </h2>
@@ -109,10 +110,14 @@ function Attempt({ attempt }: { attempt: Attempt }) {
             </p>
           </div>
         </div>
-      </div>
+      </div> */}
+
+
+      {/* Keyboard Heatmap */}
+      <KeyboardHeatmap attempt={attempt} />
 
       {/* Finger Placement Analysis */}
-      <FingerPlacementAnalysis attempt={attempt} />
+      {/* <FingerPlacementAnalysis attempt={attempt} /> */}
 
       {/* Finger Placement Analysis */}
       <MistakesAnalysis attempt={attempt} />

@@ -26,7 +26,7 @@ export class MainMenuScene extends Scene {
     // birthday party
     this.load.image("party-background", "/type-invader/assets/img/party/party-bg.png");
     this.load.image("balloon", "/type-invader/assets/img/party/white-balloon.png");
-    // this.load.audio("party-theme", "/type-invader/assets/audio/party/theme.mp3");
+    this.load.audio("party-theme", "/type-invader/assets/audio/menu-1.mp3");
     this.load.audio("birthday-explosion", "/type-invader/assets/audio/party/explosion.mp3");
 
     // soccer

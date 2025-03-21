@@ -17,7 +17,7 @@ export function LiveTestStats({
     return (
         <div
             id="live-test-stats"
-            className="absolute bottom-16 left-0 right-0 mb-18 flex justify-center"
+            className="absolute bottom-0 left-0 right-0 mb-4 flex justify-center"
         >
             <div className="flex justify-center">
                 <div className="m-4 min-w-48 h-fit rounded-lg bg-green-200/70 p-4 text-center shadow-md dark:bg-green-900/60">

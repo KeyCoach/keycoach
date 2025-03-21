@@ -30,8 +30,8 @@ export function MistakesAnalysis({ attempt }: { attempt: Attempt }) {
       </div>
 
       <div className="space-y-6">
-        <div className="rounded-lg bg-amber-100 p-4 dark:bg-amber-900">
-          <h3 className="mb-3 text-lg font-medium text-amber-800 dark:text-amber-200">
+        <div className="rounded-lg bg-cerulean-100 p-4 dark:bg-cerulean-800">
+          <h3 className="mb-3 text-lg font-medium text-cerulean-700 dark:text-cerulean-200">
             Problem Keys
           </h3>
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
@@ -40,12 +40,12 @@ export function MistakesAnalysis({ attempt }: { attempt: Attempt }) {
                 key={key}
                 className="flex items-center justify-between rounded-md bg-white p-3 shadow-sm dark:bg-slate-700"
               >
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-amber-200 text-lg font-bold text-amber-800 dark:bg-amber-800 dark:text-amber-200">
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-cerulean-200 text-lg font-bold text-cerulean-700 dark:bg-cerulean-700 dark:text-cerulean-200">
                   {key.trim() || "_"}
                 </div>
                 <div className="text-right">
                   <div className="text-xs text-slate-500 dark:text-slate-400">mistakes</div>
-                  <div className="font-bold text-amber-700 dark:text-amber-300">{count}</div>
+                  <div className="font-bold text-cerulean-700 dark:text-cerulean-300">{count}</div>
                 </div>
               </div>
             ))}
