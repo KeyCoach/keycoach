@@ -40,6 +40,69 @@ function Setup() {
   const keyPositionsRef = useRef(keyPositions);
   const rawKeyPositions = useRef<KeyPosition[][]>(JSON.parse(JSON.stringify(keyPositions)));
 
+  type RowName = "topRow" | "homeRow" | "bottomRow";
+  
+  const colors = { "topRow": [255, 255, 255], "homeRow": [255, 255, 255], "bottomRow": [255, 255, 255] };
+  const KEY_MAP: { [key: string]: RowName } = {
+    "KeyQ": "topRow",
+    "KeyW": "topRow",
+    "KeyE": "topRow",
+    "KeyR": "topRow",
+    "KeyT": "topRow",
+    "KeyY": "topRow",
+    "KeyU": "topRow",
+    "KeyI": "topRow",
+    "KeyO": "topRow",
+    "KeyP": "topRow",
+    "KeyA": "homeRow",
+    "KeyS": "homeRow",
+    "KeyD": "homeRow",
+    "KeyF": "homeRow",
+    "KeyG": "homeRow",
+    "KeyH": "homeRow",
+    "KeyJ": "homeRow",
+    "KeyK": "homeRow",
+    "KeyL": "homeRow",
+    "Semicolon": "homeRow",
+    "KeyZ": "bottomRow",
+    "KeyX": "bottomRow",
+    "KeyC": "bottomRow",
+    "KeyV": "bottomRow",
+    "KeyB": "bottomRow",
+    "KeyN": "bottomRow",
+    "KeyM": "bottomRow",
+    "Comma": "bottomRow",
+    "Period": "bottomRow",
+    "Slash": "bottomRow",
+  };
+
+  function findAngle(p1: KeyPosition, p2: KeyPosition) {
+    const radians = Math.atan2(p2.y - p1.y, p2.x - p1.x);
+    let degrees = radians * (180 / Math.PI);
+
+    if (degrees < 0) {
+      degrees += 360;
+    }
+
+    const angleDiff = Math.min(
+      Math.abs(degrees - 0),
+      Math.abs(degrees - 180),
+      Math.abs(degrees - 360)
+    );
+
+    return angleDiff;
+  }
+
+  function setColor(angle: number, row: RowName) {
+    if (angle > 6) {
+      colors[row] = [228, 110, 106]; // red-500
+    } else if (angle > 3) {
+      colors[row] = [240, 177, 0];   // yellow-500
+    } else {
+      colors[row] = [105, 184, 126]; // green-500
+    }
+  }
+
   useEffect(() => {
     if (!showVideo) setShowVideo(true);
 
@@ -47,13 +110,41 @@ function Setup() {
       p.scale(-1, 1);
       p.image(capture, -capture.width, 0);
 
-      // Draw red dots for the key positions
-      for (const key of keyPositionsRef.current.flat()) {
-        if (key.positionSet) {
-          p.fill(255, 0, 0);
-          p.noStroke();
+      colors.topRow = [255, 255, 255];
+      colors.homeRow = [255, 255, 255];
+      colors.bottomRow = [255, 255, 255];
 
-          p.circle(-capture.width + key.x, key.y, 5);
+      const keyQ = keyPositionsRef.current.flat().find((k) => k.key === "KeyQ" && k.positionSet);
+      const keyW = keyPositionsRef.current.flat().find((k) => k.key === "KeyW" && k.positionSet);
+      const keyA = keyPositionsRef.current.flat().find((k) => k.key === "KeyA" && k.positionSet);
+      const keyS = keyPositionsRef.current.flat().find((k) => k.key === "KeyS" && k.positionSet);
+      const keyZ = keyPositionsRef.current.flat().find((k) => k.key === "KeyZ" && k.positionSet);
+      const keyX = keyPositionsRef.current.flat().find((k) => k.key === "KeyX" && k.positionSet);
+
+      if (keyQ && keyW) {
+        const angle = Math.abs(findAngle(keyQ, keyW));
+        // console.log("topRow: ", angle);
+        setColor(angle, "topRow");
+      }
+      
+      if (keyA && keyS) {
+        const angle = Math.abs(findAngle(keyA, keyS));
+        // console.log("homeRow: ", angle);
+        setColor(angle, "homeRow");
+      }
+      
+      if (keyZ && keyX) {
+        const angle = Math.abs(findAngle(keyZ, keyX));
+        // console.log("bottomRow: ", angle);
+        setColor(angle, "bottomRow");
+      }
+
+      for (const key of keyPositionsRef.current.flat()) {
+        if (key.positionSet && KEY_MAP[key.key]) {
+          const rowName = KEY_MAP[key.key];
+          p.fill(colors[rowName][0], colors[rowName][1], colors[rowName][2]);
+          p.noStroke();
+          p.circle(-capture.width + key.x, key.y, 8);
         }
       }
     });
@@ -192,7 +283,8 @@ function SetupInstructions() {
       title: "Adjust Calibration",
       vidUrl: "FixKeys3.mov",
       directions:
-      "If the keys are not calibrated correctly, click any letters that do not have a red dot in the center until all keys display a centered dot.",    },
+        "If the keys are not calibrated correctly, click any letters that do not have a red dot in the center until all keys display a centered dot.",
+    },
     {
       title: "Troubleshooting",
       directions: (
@@ -264,9 +356,8 @@ function SetupInstructions() {
           {steps.map((_, index) => (
             <div
               key={index}
-              className={`h-2 w-2 rounded-full ${
-                step === index ? "bg-cerulean-500" : "bg-slate-300 dark:bg-slate-600"
-              }`}
+              className={`h-2 w-2 rounded-full ${step === index ? "bg-cerulean-500" : "bg-slate-300 dark:bg-slate-600"
+                }`}
             />
           ))}
         </div>
