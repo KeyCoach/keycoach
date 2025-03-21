@@ -4,7 +4,7 @@ import { Attempt, MistakeType } from "@/app/lib/types";
 export function FingerPlacementAnalysis({ attempt }: { attempt: Attempt }) {
   if (!attempt.cameraActivated) {
     return (
-      <div className="rounded-2xl bg-white p-6 shadow-lg dark:bg-slate-800">
+      <div className="rounded-2xl bg-slate-100 p-6 shadow-lg dark:bg-slate-800">
         <div className="space-y-4 text-center">
           <svg
             xmlns="http://www.w3.org/2000/svg"

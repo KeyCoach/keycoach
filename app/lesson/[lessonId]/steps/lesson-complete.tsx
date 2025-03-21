@@ -21,7 +21,7 @@ export function LessonComplete() {
     <div className="h-page flex items-center justify-center px-4">
       <div className="grid w-full max-w-xl auto-rows-auto gap-8">
         <FadeInSection delay={0}>
-          <div className="relative flex flex-col items-center justify-center gap-4 rounded-2xl py-8 shadow-md dark:bg-slate-800 dark:shadow-slate-600">
+          <div className="relative flex flex-col items-center justify-center gap-4 rounded-2xl py-8 shadow-md bg-slate-200 dark:bg-slate-800 dark:shadow-slate-600">
             <h1 className="text-3xl font-bold">Lesson Complete!</h1>
             <p className="px-6 text-center text-xl">
               Congratulations! You've successfully finished this lesson.
@@ -40,7 +40,7 @@ export function LessonComplete() {
                 priority
               />
             </div>
-            <div className="flex h-40 w-1/2 items-center justify-center rounded-2xl bg-slate-200 p-6 text-black shadow-md dark:bg-slate-800 dark:text-white">
+            <div className="flex h-40 w-1/2 items-center justify-center rounded-2xl bg-slate-100 p-6 text-black shadow-md dark:bg-slate-800 dark:text-white">
               Great job! Keep practicing to improve your typing skills even more.
             </div>
           </div>

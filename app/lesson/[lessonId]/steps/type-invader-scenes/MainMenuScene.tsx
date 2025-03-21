@@ -26,7 +26,7 @@ export class MainMenuScene extends Scene {
     // birthday party
     this.load.image("party-background", "/type-invader/assets/img/party/party-bg.png");
     this.load.image("balloon", "/type-invader/assets/img/party/white-balloon.png");
-    // this.load.audio("party-theme", "/type-invader/assets/audio/party/theme.mp3");
+    this.load.audio("party-theme", "/type-invader/assets/audio/menu-1.mp3");
     this.load.audio("birthday-explosion", "/type-invader/assets/audio/party/explosion.mp3");
 
     // soccer
@@ -69,7 +69,7 @@ export class MainMenuScene extends Scene {
 
     // Create animated title using the new MenuTitle class
     // You can customize colors based on theme later
-    this.menuTitle = new MenuTitle(this, "TYPE INVADERS", height / 2 - 80, "48px", {
+    this.menuTitle = new MenuTitle(this, "TYPE INVADERS", height / 2 - 100, "48px", {
       main: colors.white,
       shadow1: "#00FFFF", // Cyan
       shadow2: "#FF00FF", // Magenta
@@ -82,31 +82,45 @@ export class MainMenuScene extends Scene {
 
     // Play button
     const playButton = this.add
-      .text(width / 2, height / 2, "Play Now", {
+      .text(width / 2, height / 2 - 20, "Play Now", {
         fontSize: "32px",
         fontFamily: "Monospace",
-        color: colors.green,
+        color: colors.blue,
       })
       .setOrigin(0.5)
       .setDepth(1)
       .setInteractive({ useHandCursor: true })
-      .on("pointerover", () => playButton.setColor(colors.yellow))
-      .on("pointerout", () => playButton.setColor(colors.green))
+      .on("pointerover", () => playButton.setColor(colors.teal))
+      .on("pointerout", () => playButton.setColor(colors.blue))
       .on("pointerdown", () => this.scene.start("ModeSelectScene"));
 
     // Settings button
     const settingsButton = this.add
-      .text(width / 2, height / 2 + 60, "Settings", {
+      .text(width / 2, height / 2 + 40, "Settings", {
         fontSize: "32px",
         fontFamily: "Monospace",
-        color: colors.green,
+        color: colors.blue,
       })
       .setOrigin(0.5)
       .setDepth(1)
       .setInteractive({ useHandCursor: true })
-      .on("pointerover", () => settingsButton.setColor(colors.yellow))
-      .on("pointerout", () => settingsButton.setColor(colors.green))
+      .on("pointerover", () => settingsButton.setColor(colors.teal))
+      .on("pointerout", () => settingsButton.setColor(colors.blue))
       .on("pointerdown", () => this.scene.start("SettingsScene"));
+
+    // How to play button
+    const howToPlayButton = this.add
+      .text(width / 2, height / 2 + 100, "How To Play", {
+        fontSize: "32px",
+        fontFamily: "Monospace",
+        color: colors.blue,
+      })
+      .setOrigin(0.5)
+      .setDepth(1)
+      .setInteractive({ useHandCursor: true })
+      .on("pointerover", () => howToPlayButton.setColor(colors.teal))
+      .on("pointerout", () => howToPlayButton.setColor(colors.blue))
+      .on("pointerdown", () => this.scene.start("HowToPlayScene"));
 
     // Add to navigation system
     this.navigation.addItems([
@@ -120,17 +134,22 @@ export class MainMenuScene extends Scene {
         position: { row: 1, col: 0 },
         onSelect: () => this.scene.start("SettingsScene"),
       },
+      {
+        element: howToPlayButton,
+        position: { row: 2, col: 0 },
+        onSelect: () => this.scene.start("HowToPlayScene"),
+      },
     ]);
 
     // Add instructions text
-    this.add
-      .text(width / 2, height - 50, "Use arrow keys to navigate, ENTER to select", {
-        fontSize: "16px",
-        fontFamily: "Monospace",
-        color: colors.white,
-      })
-      .setOrigin(0.5)
-      .setDepth(1);
+    // this.add
+    //   .text(width / 2, height - 50, "Use arrow keys to navigate, ENTER to select", {
+    //     fontSize: "16px",
+    //     fontFamily: "Monospace",
+    //     color: colors.white,
+    //   })
+    //   .setOrigin(0.5)
+    //   .setDepth(1);
 
     // Initialize shooting star system
     this.nextStarTime = this.time.now + Phaser.Math.Between(500, 2000);

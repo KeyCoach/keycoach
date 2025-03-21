@@ -3,7 +3,7 @@ import { H3 } from "./headers";
 export function LoadingSpinner({ size = "w-10 h-10", className = "" }) {
   return (
     <div
-      className={`${size} inline-block animate-spin rounded-full border-4 border-blue-500 border-t-transparent ${className}`}
+      className={`${size} inline-block animate-spin rounded-full border-4 border-cerulean-500 border-t-transparent ${className}`}
     ></div>
   );
 }

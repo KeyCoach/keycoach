@@ -25,12 +25,20 @@ export class LetterSelectScene extends Scene {
     // const menuHeight = 380;
     // const menuWidth = 480;
 
+    // Get the current theme from the theme manager
+  const currentTheme = themeManager.getCurrentTheme();
+
+  // Determine text color based on the theme
+  const textColor = (currentTheme === "space" || currentTheme === "soccer") 
+      ? colors.white 
+      : colors.black;
+
     // Title
     this.add
       .text(width / 2, height / 6, "Select a Letter", {
         fontSize: "40px",
         fontFamily: "Monospace",
-        color: colors.white,
+        color: textColor,
       })
       .setOrigin(0.5)
       .setDepth(1);
@@ -72,7 +80,7 @@ export class LetterSelectScene extends Scene {
       letterButton
         .on("pointerover", () => {
           letterButton.setFillStyle(0x666666);
-          letterText.setColor(colors.yellow);
+          letterText.setColor(colors.teal);
         })
         .on("pointerout", () => {
           letterButton.setFillStyle(hexadecimalColors.menuButtonBg);
@@ -110,22 +118,17 @@ export class LetterSelectScene extends Scene {
       });
     });
 
-    // Create background for the Back button
-    const backButtonBg = this.add.rectangle(75, height - 30, 100, 50, 0x000000, 0.5) // Adjust size & opacity
-    .setOrigin(0.5)
-    .setDepth(0);
-
     // Back button
     const backButton = this.add
       .text(32, height - 40, "← Back", {
         fontSize: "24px",
         fontFamily: "Monospace",
-        color: colors.red,
+        color: textColor,
         // name: "backButton",
       })
       .setInteractive({ useHandCursor: true })
-      .on("pointerover", () => backButton.setColor(colors.yellow))
-      .on("pointerout", () => backButton.setColor(colors.red))
+      .on("pointerover", () => backButton.setColor(colors.green))
+      .on("pointerout", () => backButton.setColor(textColor))
       .on("pointerdown", () => this.scene.start("ModeSelectScene"));
 
     // Add back button to navigation
@@ -139,12 +142,12 @@ export class LetterSelectScene extends Scene {
     this.navigation.addItems(navigationItems);
 
     // Add instructions text
-    this.add
-      .text(width / 2, height - 50, "Use arrow keys to navigate, ENTER to select", {
-        fontSize: "16px",
-        fontFamily: "Monospace",
-        color: colors.white,
-      })
-      .setOrigin(0.5);
+    // this.add
+    //   .text(width / 2, height - 50, "Use arrow keys to navigate, ENTER to select", {
+    //     fontSize: "16px",
+    //     fontFamily: "Monospace",
+    //     color: colors.white,
+    //   })
+    //   .setOrigin(0.5);
   }
 }

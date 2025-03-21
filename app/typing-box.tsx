@@ -44,6 +44,9 @@ export default function TypingBox({
   duration: number;
 }) {
   const [scrollTranslate, setScrollTranslate] = useState(0);
+  const [typingStarted, setTypingStarted] = useState(false);
+  const [showTypingPrompt, setShowTypingPrompt] = useState(false);
+  const inactivityTimerRef = useRef<NodeJS.Timeout | null>(null);
   const cursorRef = useRef<HTMLSpanElement>(null);
   const scrollAnchorRef = useRef<HTMLDivElement>(null);
   const testId = test.id;
@@ -69,6 +72,11 @@ export default function TypingBox({
       if (testFinished) {
         return;
       }
+
+      if (!typingStarted) {
+        setTypingStarted(true);
+      }
+
       if (normalKeys.includes(key)) {
         if (testStart === 0) {
           setTestStart(Date.now());
@@ -126,6 +134,27 @@ export default function TypingBox({
     },
     [sentence, testStart, userInputRef, testFinished, userInput],
   );
+
+  useEffect(() => {
+    // Clear any existing timer when typing starts
+    if (typingStarted && inactivityTimerRef.current) {
+      clearTimeout(inactivityTimerRef.current);
+      setShowTypingPrompt(false);
+      return;
+    }
+
+    if (!typingStarted) {
+      inactivityTimerRef.current = setTimeout(() => {
+        setShowTypingPrompt(true);
+      }, 3500);
+    }
+
+    return () => {
+      if (inactivityTimerRef.current) {
+        clearTimeout(inactivityTimerRef.current);
+      }
+    };
+  }, [typingStarted]);
 
   useEffect(() => {
     setTestStart(0);
@@ -289,7 +318,6 @@ export default function TypingBox({
       scrollAnchorRef.current.getBoundingClientRect().top + scrollAnchorHeight / 2;
 
     const cursorScrollDist = cursorRef.current.getBoundingClientRect().top - scrollAreaMidY;
-    console.log(cursorScrollDist);
 
     if (cursorScrollDist > 0) {
       setScrollTranslate((prev) => prev - cursorScrollDist);
@@ -313,7 +341,7 @@ export default function TypingBox({
   const wrongWordClass = "underline decoration-red-400";
 
   return (
-    <div className="h-fit w-full max-w-7xl overflow-hidden rounded-lg bg-slate-100 p-8 dark:bg-slate-900">
+    <div className="h-fit w-full overflow-hidden rounded-lg bg-slate-100 p-8 dark:bg-slate-900">
       <div className="relative" ref={scrollAnchorRef}>
         <div className="mb-6 flex justify-between text-sm text-slate-600 dark:text-slate-400">
           <span>Words: {sentence.length}</span>
@@ -321,7 +349,10 @@ export default function TypingBox({
           {testType === TestType.Timed && <span>Time Left: {timeRemaining} s</span>}
         </div>
 
-        <div className="relative mb-8 max-h-[320px] min-h-[320px] overflow-hidden rounded-lg p-6 font-mono text-3xl leading-relaxed">
+        <div
+          className="relative mb-2 max-h-[280px] min-h-[280px] overflow-hidden rounded-lg font-mono text-3xl leading-relaxed"
+          id="test-text-body"
+        >
           <p
             className="absolute whitespace-pre-wrap text-slate-900 dark:text-slate-50"
             style={{ transform: `translateY(${scrollTranslate}px)` }}
@@ -396,6 +427,26 @@ export default function TypingBox({
             ))}
           </p>
         </div>
+
+        {/* Blur overlay */}
+        {!typingStarted && (
+          <div className="absolute inset-x-0 bottom-0 z-10 h-2/3">
+            {/* Solid blur for most of the area */}
+            <div className="absolute inset-x-0 bottom-0 h-[70%] rounded-lg bg-slate-100/85 backdrop-blur-md dark:bg-slate-900/85"></div>
+
+            {/* Small gradient transition at the top (10% of the overlay height) */}
+            <div className="absolute inset-x-0 top-0 h-[30%] bg-gradient-to-b from-transparent to-slate-100/85 dark:to-slate-900/85"></div>
+          </div>
+        )}
+
+        {/* Typing prompt */}
+        {!typingStarted && showTypingPrompt && (
+          <div className="absolute inset-x-0 z-20 flex justify-center" style={{ top: "60%" }}>
+            <div className="animate-typingBoxFadeInUp rounded-xl bg-slate-700/90 px-4 py-2 text-base text-white opacity-0 dark:bg-slate-300/90 dark:text-slate-900">
+              Start typing to begin test
+            </div>
+          </div>
+        )}
 
         {test.src && (
           <div className="text-right text-sm italic text-slate-600 dark:text-slate-400">

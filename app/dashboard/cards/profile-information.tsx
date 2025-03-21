@@ -85,7 +85,7 @@ function ChangePassword({
 
   if (!user) return;
   return (
-    <div className="rounded-xl bg-slate-50 p-6 shadow dark:bg-slate-800">
+    <div className="rounded-xl bg-slate-100 p-6 shadow dark:bg-slate-800">
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
           <TextInput
@@ -187,7 +187,7 @@ function EditProfileInformation({
 
   if (!user) return;
   return (
-    <div className="rounded-xl bg-slate-50 p-6 shadow dark:bg-slate-800">
+    <div className="rounded-xl bg-slate-100 p-6 shadow dark:bg-slate-800">
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
           <TextInput label="First Name" name="fname" defaultValue={user.fname} />
@@ -242,7 +242,7 @@ function DisplayProfileInformation({
 
   if (!user) return;
   return (
-    <div className="rounded-xl bg-slate-50 p-6 shadow dark:bg-slate-800">
+    <div className="rounded-xl bg-slate-100 p-6 shadow dark:bg-slate-800">
       <h2 className="mb-4 text-xl font-semibold text-slate-900 dark:text-slate-50">
         Profile Information
       </h2>

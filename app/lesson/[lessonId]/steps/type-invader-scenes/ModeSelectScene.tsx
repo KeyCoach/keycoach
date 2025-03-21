@@ -24,12 +24,18 @@ export class ModeSelectScene extends Scene {
     // const menuHeight = 230;
     // const menuWidth = 400;
 
+    const currentTheme = themeManager.getCurrentTheme();
+
+    const textColor = (currentTheme === "space" || currentTheme === "soccer") 
+    ? colors.white 
+    : colors.black;
+
     // Title
     this.add
       .text(width / 2, height / 2 - 80, "Select Game Mode", {
         fontSize: "48px",
         fontFamily: "Monospace",
-        color: colors.white,
+        color: textColor,
       })
       .setOrigin(0.5)
       .setDepth(1);
@@ -39,13 +45,13 @@ export class ModeSelectScene extends Scene {
       .text(width / 2, height / 2, "Free Play", {
         fontSize: "32px",
         fontFamily: "Monospace",
-        color: colors.green,
+        color: colors.blue,
       })
       .setOrigin(0.5)
       .setDepth(1)
       .setInteractive({ useHandCursor: true })
-      .on("pointerover", () => freePlayButton.setColor(colors.yellow))
-      .on("pointerout", () => freePlayButton.setColor(colors.green))
+      .on("pointerover", () => freePlayButton.setColor(colors.teal))
+      .on("pointerout", () => freePlayButton.setColor(colors.blue))
       .on("pointerdown", () => this.scene.start("GameScene", { mode: "free" }));
 
     // Letter Mode button
@@ -62,21 +68,16 @@ export class ModeSelectScene extends Scene {
       .on("pointerout", () => letterModeButton.setColor(colors.green))
       .on("pointerdown", () => this.scene.start("LetterSelectScene"));
 
-    // Create background for the Back button
-    const backButtonBg = this.add.rectangle(75, height - 30, 100, 50, 0x000000, 0.5) // Adjust size & opacity
-    .setOrigin(0.5)
-    .setDepth(0);
-
     // Back button
     const backButton = this.add
       .text(32, height - 40, "← Back", {
         fontSize: "24px",
         fontFamily: "Monospace",
-        color: colors.red,
+        color: colors.white,
       })
       .setInteractive({ useHandCursor: true })
       .on("pointerover", () => backButton.setColor(colors.yellow))
-      .on("pointerout", () => backButton.setColor(colors.red))
+      .on("pointerout", () => backButton.setColor(colors.white))
       .on("pointerdown", () => this.scene.start("MainMenuScene"));
 
     // Add to navigation system
@@ -99,12 +100,12 @@ export class ModeSelectScene extends Scene {
     ]);
 
     // Add instructions text
-    this.add
-      .text(width / 2, height - 50, "Use arrow keys to navigate, ENTER to select", {
-        fontSize: "16px",
-        fontFamily: "Monospace",
-        color: colors.white,
-      })
-      .setOrigin(0.5);
+    // this.add
+    //   .text(width / 2, height - 50, "Use arrow keys to navigate, ENTER to select", {
+    //     fontSize: "16px",
+    //     fontFamily: "Monospace",
+    //     color: colors.white,
+    //   })
+    //   .setOrigin(0.5);
   }
 }

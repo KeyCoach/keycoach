@@ -1,4 +1,5 @@
 import { buttonGroupBackgroundSizes } from "@/constants/buttonGroupBackgroundSizes";
+import { colors } from "@/constants/colors";
 import {
 	GameTheme,
 	ThemeAssets,
@@ -10,6 +11,7 @@ import {
 	ThemeColorsDefinition,
 	ThemeSoundsDefinition,
 } from "@/constants/themes";
+import { gameSettings } from "@/utils/type-invader-game";
 
 export class ThemeManager {
 	private scene: Phaser.Scene | null = null;
@@ -19,7 +21,44 @@ export class ThemeManager {
 	// Define theme assets for each theme
 	private themeAssets: Record<GameTheme, ThemeAssets> = ThemeAssetsDefinition;
 
-	constructor() {}
+	constructor() {
+		// Detect system color scheme and set initial theme
+		this.detectColorScheme();
+
+		// Listen for color scheme changes
+		if (typeof window !== 'undefined') {
+			window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+				this.detectColorScheme();
+			});
+
+			// Also listen for theme changes in the app (if theme toggle exists)
+			document.addEventListener('themeToggle', () => {
+				this.detectColorScheme();
+			});
+		}
+	}
+
+	/**
+	 * Detects the current color scheme and sets the appropriate theme
+	 */
+	private detectColorScheme(): void {
+		// Check if window is available (avoid SSR issues)
+		if (typeof window === 'undefined') return;
+
+		// Check for dark mode - either from media query or from HTML class
+		const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches ||
+						  document.documentElement.classList.contains('dark');
+		
+		// Set theme based on color scheme
+		if (isDarkMode) {
+			this.currentTheme = "space";
+		} else {
+			this.currentTheme = "beach";
+		}
+
+		// Also update gameSettings
+		gameSettings.theme = this.currentTheme;
+	}
 
 	setScene(scene: Phaser.Scene): void {
 		this.scene = scene;
@@ -27,6 +66,7 @@ export class ThemeManager {
 
 	setTheme(theme: GameTheme): void {
 		this.currentTheme = theme;
+		gameSettings.theme = theme;
 
 		// Skip if no scene is set
 		if (!this.scene) return;
@@ -52,8 +92,6 @@ export class ThemeManager {
 			(obj) => obj instanceof Phaser.GameObjects.Graphics && obj.depth === 1
 		);
 
-		console.log("scene key: " + this.scene.scene.key);
-
 		if (typeof menuBackgrounds != "undefined" && menuBackgrounds.length > 0) {
 			const menuBg = menuBackgrounds[0] as Phaser.GameObjects.Graphics;
 			menuBg.clear();
@@ -63,6 +101,9 @@ export class ThemeManager {
 			const { width, height } = this.scene.cameras.main;
 			menuBg.fillRoundedRect(width / 2 - 280, height / 2 - 165, 560, 330, 20);
 		}
+
+		// Update text colors for all UI elements
+		this.updateUIColors();
 
 		// Update asteroids to match the current theme
 		const asteroids = this.scene.children.list.filter(
@@ -91,6 +132,42 @@ export class ThemeManager {
 		if (ships.length > 0) {
 			ships.forEach((ship) => {
 				(ship as Phaser.GameObjects.Sprite).setTexture(this.getAsset("ship"));
+			});
+		}
+	}
+
+	// Update colors for UI elements based on theme
+	private updateUIColors(): void {
+		if (!this.scene) return;
+
+		// Update text elements
+		const textElements = this.scene.children.list.filter(
+			(obj) => obj instanceof Phaser.GameObjects.Text
+		) as Phaser.GameObjects.Text[];
+
+		if (textElements.length > 0) {
+			const isDarkTheme = this.currentTheme === "space" || this.currentTheme === "soccer";
+
+			textElements.forEach(text => {
+				// Skip already colored specific elements
+				if (text.text.includes("Score")) {
+					text.setColor(this.getTextColor("primary"));
+				} else if (text.text.includes("x") && text.text.length <= 3) {
+					// This is likely the multiplier text
+					text.setColor(this.getTextColor("highlight"));
+				} else if (text.text.match(/^00:\d\d$/)) {
+					// This is likely the timer text
+					text.setColor(this.getTextColor("primary"));
+				} else if (text.style.color === colors.green) {
+					// Update button text colors
+					text.setColor(this.getTextColor("buttonFont"));
+				} else if (text.style.color === colors.red) {
+					// Low timer warning should stay red for visibility
+					text.setColor("#FF3333");
+				} else if (text.style.color === colors.yellow) {
+					// Highlighted elements
+					text.setColor(this.getTextColor("highlight"));
+				}
 			});
 		}
 	}
@@ -129,6 +206,18 @@ export class ThemeManager {
 			.setOrigin(0.5)
 			.setDisplaySize(width, height)
 			.setDepth(-1); // Consistent depth for easy finding later
+	}
+
+	createPlainBackground(): Phaser.GameObjects.Graphics | null {
+		if (!this.scene) return null;
+
+		const { width, height } = this.scene.cameras.main;
+		const background = this.scene.add.graphics();
+		background.fillStyle(this.getColor("plainBackground"), 1);
+		background.fillRect(0, 0, width, height);
+		background.setDepth(-1);
+
+		return background;
 	}
 
 	createMenuBackground(

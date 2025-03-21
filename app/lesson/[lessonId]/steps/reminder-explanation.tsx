@@ -16,7 +16,7 @@ export function ReminderExplanation() {
     <div className="h-page flex items-center justify-center py-8">
       <div className="grid w-full max-w-5xl auto-rows-auto gap-8">
         <FadeInSection delay={0}>
-          <div className="flex min-h-[80px] flex-col items-center justify-center gap-4 rounded-2xl py-4 shadow-md dark:bg-slate-800 dark:shadow-slate-600">
+          <div className="flex min-h-[80px] flex-col items-center justify-center gap-4 rounded-2xl py-4 shadow-md bg-slate-200 dark:bg-slate-800 dark:shadow-slate-600">
             <h1 className="text-3xl font-bold">Quick Reminder: '{lessonId.toUpperCase()}' Key</h1>
           </div>
         </FadeInSection>
@@ -34,14 +34,14 @@ export function ReminderExplanation() {
                   priority
                 />                
               </div>
-              <div className="bg-cerulean-50 dark:bg-cerulean-800 p-4 rounded-xl shadow-md max-w-xs">
+              <div className="bg-cerulean-200 dark:bg-cerulean-800 p-4 rounded-xl shadow-md max-w-xs">
                 <p className="text-lg">Let's quickly review the '{lessonId}' key before we continue your practice!</p>
               </div>
             </div>
             
             {/* Reminder Content Side */}
             <div className="md:w-3/5">
-              <div className="bg-white dark:bg-slate-700 p-6 rounded-xl shadow-md">
+              <div className="bg-slate-100 dark:bg-slate-700 p-6 rounded-xl shadow-md">
                 <h2 className="text-xl font-semibold text-cerulean-700 dark:text-cerulean-300 mb-4">
                   Key Tips for the '{lessonId.toUpperCase()}' Key
                 </h2>

@@ -116,10 +116,7 @@ export class GameScene extends Scene {
       ? this.mechanics.updateMultiplier()
       : this.mechanics.resetMultiplierProgress();
 
-    // Check if multiplierChanged exists and is true, or if we're resetting the multiplier
-    if (multiplierInfo.multiplierChanged || !result.isCorrect) {
-      this.ui.updateMultiplier(multiplierInfo.multiplier, true);
-    }
+    this.ui.updateMultiplier(multiplierInfo.multiplier, multiplierInfo.multiplierChanged);
 
     this.ui.updateProgressBar(multiplierInfo.progress);
   };
@@ -171,8 +168,14 @@ export class GameScene extends Scene {
     if (this.isAdvancingLevel) return;
     this.isAdvancingLevel = true;
 
+    // Get the current level before advancing
+    const currentLevel = this.mechanics.getLevel();
+
     // Show typing stats between levels
     const stats = this.mechanics.getTypingStats();
+
+    // Ensure level is explicitly set in stats
+    stats.level = currentLevel;
     const statsUI = this.ui.showStats(stats);
 
     statsUI.continueButton.on("pointerdown", () => {

@@ -14,6 +14,10 @@ export default {
           "0%": { opacity: "0", transform: "translateY(8rem)" },
           "100%": { opacity: "1", transform: "translateY(0)" },
         },
+        typingBoxFadeInUp: {
+          "0%": { opacity: "0", transform: "translateY(2rem)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
+        },
         modalBackground: {
           "0%": { opacity: "0" },
           "100%": { opacity: "1" },
@@ -21,6 +25,7 @@ export default {
       },
       animation: {
         fadeInUp: "fadeInUp 0.4s ease-out",
+        typingBoxFadeInUp: "typingBoxFadeInUp 0.8s ease-in-out forwards",
         modalBackground: "modalBackground 0.4s ease",
       },
       minWidth: {

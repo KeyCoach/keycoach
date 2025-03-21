@@ -11,7 +11,7 @@ export const buttonGroupBackgroundSizes: Record<string, ButtonGroupConfig> = {
 	},
 	MainMenuScene: {
 		width: 400,
-		height: 250,
+		height: 310,
 		horizontalPadding: 0,
 		verticalPadding: 0,
 		borderRadius: 20,
@@ -40,5 +40,13 @@ export const buttonGroupBackgroundSizes: Record<string, ButtonGroupConfig> = {
 		verticalPadding: 20,
 		borderRadius: 20,
 		alpha: 0.7,
+	},
+	HowToPlayScene: {
+		width: 0,
+		height: 0,
+		horizontalPadding: 0,
+		verticalPadding: 0,
+		borderRadius: 0,
+		alpha: 0,
 	},
 };

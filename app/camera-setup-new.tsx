@@ -1,4 +1,4 @@
-import { Divider, H2, H3, H4, LoadingSpinner, Modal } from "@/components";
+import { H2, LoadingSpinner, Modal } from "@/components";
 import { RefObject, useEffect, useRef, useState } from "react";
 import { Button } from "@/components";
 import { AddNewKey, defaultKeyPositions } from "@/app/hand-tracking";
@@ -12,7 +12,7 @@ export default function CameraSetupModalNew() {
   return (
     <Modal
       modalTitle="Set Up Camera"
-      isOpen={true}
+      isOpen={settingUp}
       onCloseAction={() => setSettingUp(false)}
       confirmButtonAction={() => setSettingUp(false)}
       showCloseButton={false}
@@ -40,6 +40,69 @@ function Setup() {
   const keyPositionsRef = useRef(keyPositions);
   const rawKeyPositions = useRef<KeyPosition[][]>(JSON.parse(JSON.stringify(keyPositions)));
 
+  type RowName = "topRow" | "homeRow" | "bottomRow";
+  
+  const colors = { "topRow": [255, 255, 255], "homeRow": [255, 255, 255], "bottomRow": [255, 255, 255] };
+  const KEY_MAP: { [key: string]: RowName } = {
+    "KeyQ": "topRow",
+    "KeyW": "topRow",
+    "KeyE": "topRow",
+    "KeyR": "topRow",
+    "KeyT": "topRow",
+    "KeyY": "topRow",
+    "KeyU": "topRow",
+    "KeyI": "topRow",
+    "KeyO": "topRow",
+    "KeyP": "topRow",
+    "KeyA": "homeRow",
+    "KeyS": "homeRow",
+    "KeyD": "homeRow",
+    "KeyF": "homeRow",
+    "KeyG": "homeRow",
+    "KeyH": "homeRow",
+    "KeyJ": "homeRow",
+    "KeyK": "homeRow",
+    "KeyL": "homeRow",
+    "Semicolon": "homeRow",
+    "KeyZ": "bottomRow",
+    "KeyX": "bottomRow",
+    "KeyC": "bottomRow",
+    "KeyV": "bottomRow",
+    "KeyB": "bottomRow",
+    "KeyN": "bottomRow",
+    "KeyM": "bottomRow",
+    "Comma": "bottomRow",
+    "Period": "bottomRow",
+    "Slash": "bottomRow",
+  };
+
+  function findAngle(p1: KeyPosition, p2: KeyPosition) {
+    const radians = Math.atan2(p2.y - p1.y, p2.x - p1.x);
+    let degrees = radians * (180 / Math.PI);
+
+    if (degrees < 0) {
+      degrees += 360;
+    }
+
+    const angleDiff = Math.min(
+      Math.abs(degrees - 0),
+      Math.abs(degrees - 180),
+      Math.abs(degrees - 360)
+    );
+
+    return angleDiff;
+  }
+
+  function setColor(angle: number, row: RowName) {
+    if (angle > 6) {
+      colors[row] = [228, 110, 106]; // red-500
+    } else if (angle > 3) {
+      colors[row] = [240, 177, 0];   // yellow-500
+    } else {
+      colors[row] = [105, 184, 126]; // green-500
+    }
+  }
+
   useEffect(() => {
     if (!showVideo) setShowVideo(true);
 
@@ -47,13 +110,41 @@ function Setup() {
       p.scale(-1, 1);
       p.image(capture, -capture.width, 0);
 
-      // Draw red dots for the key positions
-      for (const key of keyPositionsRef.current.flat()) {
-        if (key.positionSet) {
-          p.fill(255, 0, 0);
-          p.noStroke();
+      colors.topRow = [255, 255, 255];
+      colors.homeRow = [255, 255, 255];
+      colors.bottomRow = [255, 255, 255];
 
-          p.circle(-capture.width + key.x, key.y, 5);
+      const keyQ = keyPositionsRef.current.flat().find((k) => k.key === "KeyQ" && k.positionSet);
+      const keyW = keyPositionsRef.current.flat().find((k) => k.key === "KeyW" && k.positionSet);
+      const keyA = keyPositionsRef.current.flat().find((k) => k.key === "KeyA" && k.positionSet);
+      const keyS = keyPositionsRef.current.flat().find((k) => k.key === "KeyS" && k.positionSet);
+      const keyZ = keyPositionsRef.current.flat().find((k) => k.key === "KeyZ" && k.positionSet);
+      const keyX = keyPositionsRef.current.flat().find((k) => k.key === "KeyX" && k.positionSet);
+
+      if (keyQ && keyW) {
+        const angle = Math.abs(findAngle(keyQ, keyW));
+        // console.log("topRow: ", angle);
+        setColor(angle, "topRow");
+      }
+      
+      if (keyA && keyS) {
+        const angle = Math.abs(findAngle(keyA, keyS));
+        // console.log("homeRow: ", angle);
+        setColor(angle, "homeRow");
+      }
+      
+      if (keyZ && keyX) {
+        const angle = Math.abs(findAngle(keyZ, keyX));
+        // console.log("bottomRow: ", angle);
+        setColor(angle, "bottomRow");
+      }
+
+      for (const key of keyPositionsRef.current.flat()) {
+        if (key.positionSet && KEY_MAP[key.key]) {
+          const rowName = KEY_MAP[key.key];
+          p.fill(colors[rowName][0], colors[rowName][1], colors[rowName][2]);
+          p.noStroke();
+          p.circle(-capture.width + key.x, key.y, 8);
         }
       }
     });
@@ -154,24 +245,24 @@ function SetupInstructions() {
     },
     {
       title: "Place Mirror",
-      vidUrl: "PlaceMirror.mp4",
+      vidUrl: "PlaceMirror3.mov",
       directions: "Place the mirror on your laptop in front of your camera.",
     },
     {
       title: "Set Up Camera",
-      vidUrl: "AdjustMirror.mp4",
+      vidUrl: "AdjustMirror3.mov",
       directions:
         "Adjust the mirror so that your entire keyboard is visible. Tilt your laptop up so it sees your keyboard from above and line up the top of the video with the top of your keyboard.",
     },
     {
       title: "Calibrate Keys",
-      vidUrl: "CalibrateKeys.mp4",
+      vidUrl: "CalibrateKeys3.mov",
 
       directions: (
         <div>
           <p className="mb-3">
             Press on the keys to calibrate them. Follow the pattern in this video to calibrate your
-            keys. Make sure your whole hand is visible in the camera.
+            keys. Make sure your whole hand is visible in the video.
           </p>
           <p>
             With your right hand, type:
@@ -189,6 +280,12 @@ function SetupInstructions() {
       ),
     },
     {
+      title: "Adjust Calibration",
+      vidUrl: "FixKeys3.mov",
+      directions:
+        "If the keys are not calibrated correctly, click any letters that do not have a red dot in the center until all keys display a centered dot.",
+    },
+    {
       title: "Troubleshooting",
       directions: (
         <div>
@@ -201,6 +298,9 @@ function SetupInstructions() {
             <li>
               <span className="text-lg underline">Lighting:</span> Make sure you have good lighting
               and avoid glare on your screen or keyboard.
+            </li>
+            <li>
+              <span className="text-lg underline">Start Over:</span> If at any point you want to restart just click the startover buttons below.
             </li>
           </ol>
         </div>
@@ -256,9 +356,8 @@ function SetupInstructions() {
           {steps.map((_, index) => (
             <div
               key={index}
-              className={`h-2 w-2 rounded-full ${
-                step === index ? "bg-cerulean-500" : "bg-slate-300 dark:bg-slate-600"
-              }`}
+              className={`h-2 w-2 rounded-full ${step === index ? "bg-cerulean-500" : "bg-slate-300 dark:bg-slate-600"
+                }`}
             />
           ))}
         </div>

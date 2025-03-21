@@ -21,6 +21,7 @@ export interface ThemeAssets {
 		asteroidText: number;
 		buttonFont: number;
 		menuBackground: number;
+		plainBackground: number;
 		buttonBoxBackground: number;
 	};
 	sounds: {
@@ -66,6 +67,7 @@ export interface Asteroid {
 export interface StatsDisplay {
 	destroy: () => void;
 	continueButton: Phaser.GameObjects.Text;
+	level?: number;
 }
 
 export interface NavigationItem {
