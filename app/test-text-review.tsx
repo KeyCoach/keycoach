@@ -51,10 +51,6 @@ export function TestTextReview({ attempt }: { attempt: Attempt }) {
             </span>
           );
         })}
-        {/* their cursor */}
-        {wordIndex === attempt.userInput.length - 1 && (
-          <span className="blink absolute font-bold">⎸</span>
-        )}
         {/* the rest of the word */}
         {word.word
           ?.slice(word.inputs.length)

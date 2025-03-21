@@ -56,7 +56,7 @@ export default function Login() {
   return (
     <div className="h-page w-full bg-white pt-20 dark:bg-slate-950">
       <LoadingOverlay show={loading} message="Logging you in..." />
-      <div className="mx-auto w-full max-w-lg bg-white bg-slate-950 p-1 text-slate-900 dark:text-slate-50">
+      <div className="mx-auto w-full max-w-lg bg-white dark:bg-slate-950 p-1 text-slate-900 dark:text-slate-50">
         <div className="rounded-xl bg-slate-100 p-8 shadow dark:bg-slate-800">
           <H1 className="mb-3 text-slate-900 dark:text-slate-50">Welcome Back!</H1>
 
