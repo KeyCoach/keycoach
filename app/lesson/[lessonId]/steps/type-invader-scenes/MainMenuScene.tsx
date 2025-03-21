@@ -85,13 +85,13 @@ export class MainMenuScene extends Scene {
       .text(width / 2, height / 2 - 20, "Play Now", {
         fontSize: "32px",
         fontFamily: "Monospace",
-        color: colors.green,
+        color: colors.blue,
       })
       .setOrigin(0.5)
       .setDepth(1)
       .setInteractive({ useHandCursor: true })
-      .on("pointerover", () => playButton.setColor(colors.yellow))
-      .on("pointerout", () => playButton.setColor(colors.green))
+      .on("pointerover", () => playButton.setColor(colors.teal))
+      .on("pointerout", () => playButton.setColor(colors.blue))
       .on("pointerdown", () => this.scene.start("ModeSelectScene"));
 
     // Settings button
@@ -99,13 +99,13 @@ export class MainMenuScene extends Scene {
       .text(width / 2, height / 2 + 40, "Settings", {
         fontSize: "32px",
         fontFamily: "Monospace",
-        color: colors.green,
+        color: colors.blue,
       })
       .setOrigin(0.5)
       .setDepth(1)
       .setInteractive({ useHandCursor: true })
-      .on("pointerover", () => settingsButton.setColor(colors.yellow))
-      .on("pointerout", () => settingsButton.setColor(colors.green))
+      .on("pointerover", () => settingsButton.setColor(colors.teal))
+      .on("pointerout", () => settingsButton.setColor(colors.blue))
       .on("pointerdown", () => this.scene.start("SettingsScene"));
 
     // How to play button
@@ -113,13 +113,13 @@ export class MainMenuScene extends Scene {
       .text(width / 2, height / 2 + 100, "How To Play", {
         fontSize: "32px",
         fontFamily: "Monospace",
-        color: colors.green,
+        color: colors.blue,
       })
       .setOrigin(0.5)
       .setDepth(1)
       .setInteractive({ useHandCursor: true })
-      .on("pointerover", () => howToPlayButton.setColor(colors.yellow))
-      .on("pointerout", () => howToPlayButton.setColor(colors.green))
+      .on("pointerover", () => howToPlayButton.setColor(colors.teal))
+      .on("pointerout", () => howToPlayButton.setColor(colors.blue))
       .on("pointerdown", () => this.scene.start("HowToPlayScene"));
 
     // Add to navigation system

@@ -36,12 +36,18 @@ export class SettingsScene extends Scene {
     // Initialize keyboard navigation
     this.navigation = new KeyboardNavigation(this).init();
 
+    const currentTheme = themeManager.getCurrentTheme();
+
+    const textColor = (currentTheme === "space" || currentTheme === "soccer") 
+    ? colors.white 
+    : colors.black;
+
     // Title
     this.add
       .text(width / 2, height / 6, "Settings", {
         fontSize: "40px",
         fontFamily: "Monospace",
-        color: colors.white,
+        color: textColor,
       })
       .setOrigin(0.5)
       .setDepth(1);
@@ -53,7 +59,7 @@ export class SettingsScene extends Scene {
       .text(width / 6, height / 3, "Theme:", {
         fontSize: "24px",
         fontFamily: "Monospace",
-        color: colors.white,
+        color: textColor,
       })
       .setOrigin(0, 0.5)
       .setDepth(1);
@@ -75,13 +81,13 @@ export class SettingsScene extends Scene {
         .text(button.x, button.y, theme, {
           fontSize: "20px",
           fontFamily: "Monospace",
-          color: gameSettings.theme === theme.toLowerCase() ? colors.yellow : colors.white,
+          color: gameSettings.theme === theme.toLowerCase() ? colors.green : colors.white,
         })
         .setOrigin(0.5)
         .setDepth(2);
 
       button.on("pointerover", () => {
-        text.setColor(colors.yellow);
+        text.setColor(colors.green);
       });
 
       button.on("pointerout", () => {
@@ -109,7 +115,7 @@ export class SettingsScene extends Scene {
       .text(width / 6, height / 2, "Sound:", {
         fontSize: "24px",
         fontFamily: "Monospace",
-        color: colors.white,
+        color: textColor,
       })
       .setOrigin(0, 0.5)
       .setDepth(1);
@@ -145,7 +151,7 @@ export class SettingsScene extends Scene {
         .text(width / 6, yPos, label, {
           fontSize: "24px",
           fontFamily: "Monospace",
-          color: colors.white,
+          color: textColor,
         })
         .setOrigin(0, 0.5)
         .setDepth(1);
@@ -164,7 +170,7 @@ export class SettingsScene extends Scene {
         .text(width / 2 + 120, yPos, `${Math.round(initialValue * 100)}%`, {
           fontSize: "20px",
           fontFamily: "Monospace",
-          color: colors.white,
+          color: textColor,
         })
         .setOrigin(0, 0.5)
         .setDepth(1);
@@ -202,11 +208,11 @@ export class SettingsScene extends Scene {
       .text(32, height - 40, "← Back", {
         fontSize: "24px",
         fontFamily: "Monospace",
-        color: colors.white,
+        color: textColor,
       })
       .setInteractive({ useHandCursor: true })
-      .on("pointerover", () => backButton.setColor(colors.yellow))
-      .on("pointerout", () => backButton.setColor(colors.white))
+      .on("pointerover", () => backButton.setColor(colors.green))
+      .on("pointerout", () => backButton.setColor(textColor))
       .on("pointerdown", () => this.scene.start("MainMenuScene"));
 
     navigationItems.push({

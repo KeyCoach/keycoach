@@ -143,8 +143,8 @@ export class GameOverScene extends Scene {
       .setOrigin(0.5)
       .setDepth(1)
       .setInteractive({ useHandCursor: true })
-      .on("pointerover", () => restartText.setColor(colors.yellow))
-      .on("pointerout", () => restartText.setColor(colors.green))
+      .on("pointerover", () => restartText.setColor(colors.teal))
+      .on("pointerout", () => restartText.setColor(colors.blue))
       .on("pointerdown", () => {
         this.cleanupScene();
         this.scene.start("MainMenuScene");

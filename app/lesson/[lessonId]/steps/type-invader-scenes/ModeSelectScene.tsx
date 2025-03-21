@@ -24,12 +24,18 @@ export class ModeSelectScene extends Scene {
     // const menuHeight = 230;
     // const menuWidth = 400;
 
+    const currentTheme = themeManager.getCurrentTheme();
+
+    const textColor = (currentTheme === "space" || currentTheme === "soccer") 
+    ? colors.white 
+    : colors.black;
+
     // Title
     this.add
       .text(width / 2, height / 2 - 80, "Select Game Mode", {
         fontSize: "48px",
         fontFamily: "Monospace",
-        color: colors.white,
+        color: textColor,
       })
       .setOrigin(0.5)
       .setDepth(1);
@@ -39,13 +45,13 @@ export class ModeSelectScene extends Scene {
       .text(width / 2, height / 2, "Free Play", {
         fontSize: "32px",
         fontFamily: "Monospace",
-        color: colors.green,
+        color: colors.blue,
       })
       .setOrigin(0.5)
       .setDepth(1)
       .setInteractive({ useHandCursor: true })
-      .on("pointerover", () => freePlayButton.setColor(colors.yellow))
-      .on("pointerout", () => freePlayButton.setColor(colors.green))
+      .on("pointerover", () => freePlayButton.setColor(colors.teal))
+      .on("pointerout", () => freePlayButton.setColor(colors.blue))
       .on("pointerdown", () => this.scene.start("GameScene", { mode: "free" }));
 
     // Letter Mode button

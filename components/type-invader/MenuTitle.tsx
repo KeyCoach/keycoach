@@ -1,5 +1,6 @@
 // utils/MenuTitle.ts
 import { Scene } from "phaser";
+import { themeManager } from "@/utils/type-invader-game";
 
 interface TitleColorScheme {
 	main: string; // Main text color
@@ -32,19 +33,26 @@ export class MenuTitle {
 		titleText: string,
 		finalY: number,
 		fontSize: string = "128px",
-		colorScheme: TitleColorScheme = {
-			main: "#FFFFFF",
-			shadow1: "#00FFFF",
-			shadow2: "#FF00FF",
-			glowColor: 0xffffff,
-			glowAlpha: 0.07,
-		}
+		colorScheme?: TitleColorScheme
 	) {
 		this.scene = scene;
 		this.titleText = titleText;
 		this.finalY = finalY;
 		this.fontSize = fontSize;
-		this.colorScheme = colorScheme;
+		
+		// If no color scheme is provided, use the theme colors
+		if (!colorScheme) {
+			this.colorScheme = {
+				main: themeManager.getTextColor("primary"),
+				shadow1: themeManager.getTextColor("secondary"),
+				shadow2: themeManager.getTextColor("highlight"),
+				glowColor: themeManager.getColor("highlight"),
+				glowAlpha: 0.07
+			};
+		} else {
+			this.colorScheme = colorScheme;
+		}
+		
 		this.titleContainer = this.scene.add.container(0, 0);
 	}
 
@@ -93,7 +101,7 @@ export class MenuTitle {
 				startY
 			);
 
-			// First shadow (e.g., cyan)
+			// First shadow
 			const shadow1 = this.scene.add
 				.text(0, 0, letter, {
 					fontSize: this.fontSize,
@@ -103,7 +111,7 @@ export class MenuTitle {
 				.setOrigin(0.5)
 				.setAlpha(0.8);
 
-			// Second shadow (e.g., magenta)
+			// Second shadow
 			const shadow2 = this.scene.add
 				.text(0, 0, letter, {
 					fontSize: this.fontSize,
@@ -195,7 +203,6 @@ export class MenuTitle {
 					if (index === this.letters.length - 1) {
 						this.isAnimating = false;
 					}
-							
 				},
 			});
 		});
@@ -248,6 +255,23 @@ export class MenuTitle {
 				this.glitchEffect(letter);
 			}
 		});
+	}
+
+	/**
+	 * Updates the color scheme of the title based on the current theme
+	 */
+	public updateToCurrentTheme(): void {
+		// Update the color scheme with new theme colors
+		this.colorScheme = {
+			main: themeManager.getTextColor("primary"),
+			shadow1: themeManager.getTextColor("secondary"),
+			shadow2: themeManager.getTextColor("highlight"),
+			glowColor: themeManager.getColor("highlight"),
+			glowAlpha: 0.07
+		};
+		
+		// Apply new colors to existing letters
+		this.updateColors(this.colorScheme);
 	}
 
 	/**
