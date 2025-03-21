@@ -17,11 +17,12 @@ export default function TypeInvaderPage() {
         <Stars numDots={numDots} />
         <div className="w-text mx-auto pt-12">
           <div className="relative mb-4 flex justify-between items-center">
-            <GameControls cameraActivated={cameraActivated} setSettingUp={setSettingUp} />
+            {/* <GameControls cameraActivated={cameraActivated} setSettingUp={setSettingUp} /> */}
 
-            <div className="rounded-lg bg-slate-800 p-2 text-slate-200">
+            {/* TODO: retrieve finger accuracy from Phaser game */}
+            {/* <div className="rounded-lg bg-slate-800 p-2 text-slate-200">
               <span>Finger Accuracy: {fingerAccuracy.toFixed(1)}%</span>
-            </div>
+            </div> */}
           </div>
 
           <div ref={canvasRef} className="hidden"></div>

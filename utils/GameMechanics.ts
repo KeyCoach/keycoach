@@ -159,7 +159,7 @@ export class GameMechanics {
     if (!this.typingStats.hasStartedTyping) {
       return {
         accuracy: 100, // 100% accuracy if no typing yet
-        fingerAccuracy: 100,
+        fingerAccuracy: (window as any).typeInvaderFingerAccuracy || 100,
         wpm: 0,
         wordsCompleted: 0,
         totalKeysPressed: 0,
@@ -171,6 +171,10 @@ export class GameMechanics {
 
     const currentTime = this.scene.time.now;
     const minutes = (currentTime - this.typingStats.startTime) / 60000;
+
+    // Get finger accuracy from the window object
+    const fingerAccuracy = (window as any).typeInvaderFingerAccuracy || 100;
+    console.log("Getting finger accuracy for stats:", fingerAccuracy);
 
     // Calculate characters per word (CPW)
     // We add 1 to each completed word to account for the space character
@@ -187,6 +191,7 @@ export class GameMechanics {
 
     return {
       accuracy: accuracyValue,
+      fingerAccuracy: fingerAccuracy,
       wpm: wpm,
       wordsCompleted: this.typingStats.wordCompletions,
       totalKeysPressed: this.typingStats.totalKeysPressed,
@@ -536,6 +541,7 @@ export class GameMechanics {
   }
 
   // Input handling
+  // Input handling
   handleKeyInput(event: KeyboardEvent): {
     isCorrect: boolean;
     char: string;
@@ -555,6 +561,13 @@ export class GameMechanics {
     }
 
     this.typingStats.totalKeysPressed++;
+
+    // Update global finger accuracy if available (from TypeInvader component)
+    // This is the key addition - reading the latest fingerAccuracy on each keystroke
+    const currentFingerAccuracy = (window as any).typeInvaderFingerAccuracy;
+    if (currentFingerAccuracy !== undefined) {
+      console.log("Updated finger accuracy from keystroke:", currentFingerAccuracy);
+    }
 
     // Find an asteroid that has already been partially typed
     let targetedAsteroidIndex = this.asteroids.findIndex(
@@ -583,7 +596,7 @@ export class GameMechanics {
     if (asteroid.word.toLowerCase().startsWith(char)) {
       this.typingStats.correctKeysPressed++;
       this.updateMultiplier();
-      
+
       // If only one letter remains, destroy the asteroid
       if (asteroid.word.length === 1) {
         const x = asteroid.sprite.x;

@@ -13,6 +13,7 @@ export class GameUI {
   private timerText: Phaser.GameObjects.Text;
   private levelText: Phaser.GameObjects.Text;
   private multiplierText: Phaser.GameObjects.Text;
+  private fingerAccuracyText: Phaser.GameObjects.Text;
   private progressBar: Phaser.GameObjects.Graphics;
   private progressBarBg: Phaser.GameObjects.Graphics;
   private statsElements: Phaser.GameObjects.GameObject[] = [];
@@ -42,6 +43,12 @@ export class GameUI {
       fontFamily: "Monospace",
       color: colors.white,
     });
+
+    this.fingerAccuracyText = this.scene.add.text(width - 280, 485, "Finger Accuracy: 100%", {
+      fontSize: "24px",
+      fontFamily: "Monospace",
+      color: colors.white,
+    }).setDepth(2);
 
     // Create level text (initially hidden)
     this.levelText = this.scene.add
@@ -79,6 +86,7 @@ export class GameUI {
     scoreLabel.setDepth(2);
     this.progressBar.setDepth(2);
     this.progressBarBg.setDepth(1);
+    this.fingerAccuracyText.setVisible(false);
   }
 
   updateScore(score: number) {
@@ -155,6 +163,35 @@ export class GameUI {
       this.timerText.setColor(colors.red);
     } else {
       this.timerText.setColor(colors.white);
+    }
+  }
+
+  updateFingerAccuracy(accuracy: number, enabled: boolean = false) {
+    if (!this.fingerAccuracyText) {
+      // Create it if it doesn't exist yet
+      const { width } = this.scene.cameras.main;
+      this.fingerAccuracyText = this.scene.add.text(width - 280, 485, "Finger Accuracy: 100%", {
+        fontSize: "24px",
+        fontFamily: "Monospace",
+        color: colors.white,
+      }).setDepth(2);
+    }
+
+    // Only show if enabled (camera tracking active)
+    this.fingerAccuracyText.setVisible(enabled);
+
+    if (!enabled) return;
+
+    // Update text with current accuracy
+    this.fingerAccuracyText.setText(`Finger Accuracy: ${accuracy.toFixed(1)}%`);
+
+    // Change color based on accuracy
+    if (accuracy < 70) {
+      this.fingerAccuracyText.setColor(colors.red);
+    } else if (accuracy < 90) {
+      this.fingerAccuracyText.setColor(colors.yellow);
+    } else {
+      this.fingerAccuracyText.setColor(colors.green);
     }
   }
 

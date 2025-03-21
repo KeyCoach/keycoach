@@ -79,10 +79,19 @@ export class GameScene extends Scene {
     if (this.isPaused || this.isAdvancingLevel) return;
 
     // Update game mechanics
-    const gameStatus = this.mechanics.update();
+    const gameStatus = this.mechanics?.update();
+
+    // Check if UI exists before using it
+    if (this.ui) {
+      const fingerAccuracy = (window as any).typeInvaderFingerAccuracy;
+      if (fingerAccuracy !== undefined) {
+        const cameraActive = (window as any).typeInvaderCameraActive || false;
+        this.ui.updateFingerAccuracy(fingerAccuracy, cameraActive);
+      }
+    }
 
     // Check for game over condition
-    if (!gameStatus) {
+    if (gameStatus === false && this.mechanics) {
       this.gameOver();
     }
   }
