@@ -582,7 +582,7 @@ export class GameMechanics {
     if (asteroid.word.toLowerCase().startsWith(char)) {
       this.typingStats.correctKeysPressed++;
       this.updateMultiplier();
-
+      
       // If only one letter remains, destroy the asteroid
       if (asteroid.word.length === 1) {
         const x = asteroid.sprite.x;
