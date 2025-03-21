@@ -281,15 +281,6 @@ export function KeyboardHeatmap({ attempt }: { attempt: Attempt }) {
       });
   }
 
-  // If we still have no data to display but camera was active
-  if (Object.keys(fingerErrorMap).length === 0 && hasFingerData) {
-    // Create a simulated heatmap based on common finger placement errors
-    const commonErrorKeys = ["F", "J", "H", "G", "R", "U", "B", "Y"];
-    commonErrorKeys.forEach((key) => {
-      fingerErrorMap[key] = Math.floor(Math.random() * 3) + 1; // 1-3 errors for demo purposes
-    });
-  }
-
   // Find the maximum error count to normalize heat intensity
   const maxErrorCount = Math.max(...Object.values(fingerErrorMap), 1);
 
@@ -399,7 +390,7 @@ export function KeyboardHeatmap({ attempt }: { attempt: Attempt }) {
   };
 
   return (
-    <div className="relative rounded-2xl bg-white p-6 shadow-lg dark:bg-slate-800">
+    <div className="relative rounded-2xl bg-slate-100 p-6 shadow-lg dark:bg-slate-800">
       <div className="mb-6">
         <h2 className="text-2xl font-bold text-slate-800 dark:text-slate-100">
           Finger Placement Analysis
