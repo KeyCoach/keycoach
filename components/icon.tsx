@@ -6,12 +6,14 @@ export function Icon({
   w = 18,
   h = 18,
   className,
+  style,
 }: Readonly<{
   src?: string;
   alt?: string;
   w?: number;
   h?: number;
   className?: string;
+  style?: React.CSSProperties;
 }>) {
   return (
     <Image
@@ -24,6 +26,7 @@ export function Icon({
         display: "inline-block",
         width: `${w}px`,
         height: `${h}px`,
+        ...style,
       }}
     />
   );

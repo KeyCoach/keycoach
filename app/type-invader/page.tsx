@@ -7,7 +7,7 @@ export default function TypeInvaderPage() {
     <div className="h-page relative">
       <Stars numDots={numDots} />
       <div className="w-text mx-auto pt-12">
-        <div className="overflow-hidden rounded-lg shadow">
+        <div className="overflow-hidden rounded-lg">
           <TypeInvaderWrapper />
         </div>
       </div>

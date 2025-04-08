@@ -18,5 +18,5 @@ export default function TypeInvader() {
     };
   }, []);
 
-  return <div id="game-container" className="z-10" />;
+  return <div id="game-container" className="z-10 shadow" />;
 }

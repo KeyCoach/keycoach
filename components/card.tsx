@@ -5,26 +5,28 @@ import Image from "next/image";
 interface CardProps {
   title: string;
   subtitle: string;
-  badgeIcon: string;
+  badgeIcon?: string;
   badgeTheme?: "obsidian" | "cerulean" | "red" | "amber" | "green";
   buttonText: string;
   onButtonClick?: () => void;
   imageUrl?: string;
   imageAlt?: string;
+  hideBadge?: boolean;
 }
 
 export function Card({
   title,
   subtitle,
-  badgeIcon,
+  badgeIcon = "remove",
   badgeTheme = "green",
   buttonText,
   onButtonClick,
   imageUrl,
   imageAlt,
+  hideBadge = false,
 }: CardProps) {
   return (
-    <div className="w-full max-w-xs rounded-lg shadow-md dark:shadow-slate-600 shadow-slate-200 overflow-hidden transition-transform transform hover:scale-105 hover:shadow-lg">
+    <div className="w-full max-w-xs transform overflow-hidden rounded-lg shadow-md shadow-slate-200 transition-transform hover:scale-105 hover:shadow-lg dark:shadow-slate-600">
       {imageUrl ? (
         <>
           <div className="relative h-40 w-full">
@@ -40,7 +42,7 @@ export function Card({
             <h3 className="mb-1 text-lg font-bold">{title}</h3>
             <p className="text-gray-600 mb-4 text-sm">{subtitle}</p>
             <div className="flex items-center justify-between">
-              <Badge icon={badgeIcon} colorTheme={badgeTheme} />
+              {hideBadge ? <div></div> : <Badge icon={badgeIcon} colorTheme={badgeTheme} />}
               <Button colorTheme="cerulean" onClick={onButtonClick}>
                 <span>{buttonText}</span>
               </Button>
@@ -55,7 +57,7 @@ export function Card({
           </div>
           <div className="mt-auto bg-slate-300 p-4 dark:bg-slate-800">
             <div className="flex items-center justify-between">
-              <Badge icon={badgeIcon} colorTheme={badgeTheme} />
+              {hideBadge ? <div></div> : <Badge icon={badgeIcon} colorTheme={badgeTheme} />}
               <Button colorTheme="cerulean" onClick={onButtonClick}>
                 <span>{buttonText}</span>
               </Button>
@@ -66,4 +68,3 @@ export function Card({
     </div>
   );
 }
-
