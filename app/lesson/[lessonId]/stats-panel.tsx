@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Icon } from "@/components/icon";
 import { useLessonContext } from "./lesson-context";
 import { useHandTracking } from "@/app/hand-track-context";
@@ -10,6 +10,8 @@ function formatNumber(num: number, percentage = false) {
   return num.toFixed(0);
 }
 
+let statsLen = 0;
+
 export default function StatsPanel() {
   const { avgNetWpm, avgFingerAcc, avgAcc, stats } = useLessonContext();
   const [isExpanded, setIsExpanded] = useState(Object.keys(stats).length > 0);
@@ -18,10 +20,21 @@ export default function StatsPanel() {
   const acc = formatNumber(avgAcc, true);
   const { cameraActivated } = useHandTracking();
 
+  useEffect(() => {
+    statsLen = Object.keys(stats).length;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    if (statsLen !== Object.keys(stats).length) {
+      setIsExpanded(true);
+    }
+  }, [stats]);
+
   return (
-    <section className="w-contain max-w-md flex-1 -translate-y-3/4 text-nowrap rounded-lg border border-slate-950 bg-slate-100 p-4 text-slate-950 shadow-md shadow-slate-200 dark:bg-slate-800 dark:text-slate-50 dark:shadow-slate-600">
+    <section className="w-contain max-w-md flex-1 -translate-y-3/4 text-nowrap rounded-lg bg-slate-100 p-4 text-slate-950 shadow-md shadow-slate-200 dark:bg-slate-800 dark:text-slate-50 dark:shadow-slate-600">
       <div
-        className="flex cursor-pointer items-center justify-between gap-6"
+        className="flex cursor-pointer items-center justify-between gap-6 stroke-black"
         onClick={() => setIsExpanded(!isExpanded)}
       >
         <h2 className="text-xl font-bold">Lesson Stats</h2>
@@ -30,7 +43,7 @@ export default function StatsPanel() {
           alt="chevron icon"
           w={16}
           h={16}
-          className="duration-250 ease rotate-180 transition-transform"
+          className="duration-250 ease rotate-180 transition-transform dark:invert"
         />
       </div>
       <div
